@@ -1,0 +1,101 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+---
+<Base title="Diseño Gráfico — Marcos Santiago">
+  <Nav />
+  <main style="padding-top:120px">
+    <div class="container">
+      <p class="section-label">Portafolio · Diseño Gráfico</p>
+      <h1 class="section-title">Diseño Gráfico</h1>
+      <p class="section-sub">Identidades visuales, branding y experiencias digitales.</p>
+
+      <div class="behance-cta">
+        <div class="cta-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div>
+          <h2 class="cta-title">Ver en Behance</h2>
+          <p class="cta-sub">
+            El portafolio completo de diseño está en <strong>behance.net/marcossantiago</strong> —
+            proyectos de identidad visual, branding, diseño editorial y experiencias digitales.
+          </p>
+          <a href="https://www.behance.net/marcossantiago" target="_blank" rel="noopener" class="btn primary" style="margin-top:24px">
+            Abrir Behance →
+          </a>
+        </div>
+      </div>
+
+      <div class="areas-grid">
+        {[
+          {
+            label: 'Identidad Visual',
+            desc: 'Logos, sistemas de marca y guías de estilo para negocios y proyectos.',
+            color: '#e8c84a',
+          },
+          {
+            label: 'Branding',
+            desc: 'Estrategia visual, naming y posicionamiento de marca.',
+            color: '#e8c84a',
+          },
+          {
+            label: 'Diseño Digital',
+            desc: 'UI/UX, diseño web y activos para plataformas digitales.',
+            color: '#e8c84a',
+          },
+          {
+            label: 'Editorial',
+            desc: 'Diseño de publicaciones, posters, flyers y materiales impresos.',
+            color: '#e8c84a',
+          },
+        ].map(a => (
+          <div class="area-card" style={`--c:${a.color}`}>
+            <h3 class="area-label">{a.label}</h3>
+            <p class="area-desc">{a.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+.behance-cta {
+  margin-top: 56px;
+  display: flex; gap: 40px; align-items: flex-start;
+  padding: 48px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 20px;
+}
+@media (max-width: 600px) { .behance-cta { flex-direction: column; gap: 24px } }
+.cta-icon { color: #e8c84a; flex-shrink: 0; margin-top: 4px }
+.cta-title {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 2px; margin-bottom: 12px;
+}
+.cta-sub { color: var(--muted); font-size: .9rem; line-height: 1.7 }
+.cta-sub strong { color: var(--white) }
+
+.areas-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 12px; margin-top: 48px;
+}
+@media (max-width: 768px) { .areas-grid { grid-template-columns: repeat(2,1fr) } }
+@media (max-width: 400px) { .areas-grid { grid-template-columns: 1fr } }
+
+.area-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px 20px;
+  border-top: 2px solid var(--c);
+}
+.area-label {
+  font-family: var(--mono); font-size: .6rem;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--c); margin-bottom: 8px;
+}
+.area-desc { font-size: .83rem; color: var(--muted); line-height: 1.55 }
+</style>

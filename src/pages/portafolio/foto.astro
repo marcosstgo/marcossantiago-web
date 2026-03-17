@@ -1,0 +1,84 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+---
+<Base title="Fotografía — Marcos Santiago">
+  <Nav />
+  <main style="padding-top:120px">
+    <div class="container">
+      <p class="section-label">Portafolio · Fotografía</p>
+      <h1 class="section-title">Fotografía</h1>
+      <p class="section-sub">Eventos, cultura y momentos que definen lo que somos.</p>
+
+      <div class="gallery-cta">
+        <div class="cta-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2zM12 17a4 4 0 100-8 4 4 0 000 8z"/>
+          </svg>
+        </div>
+        <div>
+          <h2 class="cta-title">Ver la galería completa</h2>
+          <p class="cta-sub">
+            Toda la fotografía vive en <strong>fotos.marcossantiago.com</strong> —<br>
+            cubierta de eventos, cultura puertorriqueña y proyectos personales.
+          </p>
+          <a href="https://fotos.marcossantiago.com" target="_blank" rel="noopener" class="btn primary" style="margin-top:24px">
+            Abrir galería →
+          </a>
+        </div>
+      </div>
+
+      <div class="topics-grid">
+        {[
+          { label: 'Eventos', desc: 'Conciertos, festivales, celebraciones.' },
+          { label: 'Cultura', desc: 'Puerto Rico, sus personas y sus lugares.' },
+          { label: 'Retratos', desc: 'Personas, historias, momentos íntimos.' },
+          { label: 'Calle', desc: 'Lo que pasa cuando nadie está mirando.' },
+        ].map(t => (
+          <div class="topic-card">
+            <h3 class="topic-label">{t.label}</h3>
+            <p class="topic-desc">{t.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+.gallery-cta {
+  margin-top: 56px;
+  display: flex; gap: 40px; align-items: flex-start;
+  padding: 48px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 20px;
+}
+@media (max-width: 600px) { .gallery-cta { flex-direction: column; gap: 24px } }
+.cta-icon { color: #a0c4ff; flex-shrink: 0; margin-top: 4px }
+.cta-title {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 2px; margin-bottom: 12px;
+}
+.cta-sub { color: var(--muted); font-size: .9rem; line-height: 1.7 }
+.cta-sub strong { color: var(--white) }
+
+.topics-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 12px; margin-top: 48px;
+}
+@media (max-width: 768px) { .topics-grid { grid-template-columns: repeat(2,1fr) } }
+@media (max-width: 400px) { .topics-grid { grid-template-columns: 1fr } }
+
+.topic-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px 20px;
+}
+.topic-label {
+  font-family: var(--mono); font-size: .6rem;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: #a0c4ff; margin-bottom: 8px;
+}
+.topic-desc { font-size: .83rem; color: var(--muted); line-height: 1.55 }
+</style>

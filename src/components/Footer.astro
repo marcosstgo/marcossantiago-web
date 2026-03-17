@@ -1,0 +1,62 @@
+---
+const year = new Date().getFullYear();
+const links = [
+  { href: 'https://github.com/marcosstgo',         icon: 'fab fa-github',    label: 'GitHub' },
+  { href: 'https://vimeo.com/marcosstgo',           icon: 'fab fa-vimeo-v',   label: 'Vimeo' },
+  { href: 'https://www.behance.net/marcossantiago', icon: 'fab fa-behance',   label: 'Behance' },
+  { href: 'https://instagram.com/m4rcos',           icon: 'fab fa-instagram', label: 'Instagram' },
+  { href: 'https://x.com/Marc0sSantiago',           icon: 'fab fa-x-twitter', label: 'X' },
+];
+---
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="footer-name">MARCOS SANTIAGO</span>
+        <span class="footer-copy">© {year} · Aibonito, Puerto Rico</span>
+      </div>
+      <div class="footer-social">
+        {links.map(l => (
+          <a href={l.href} target="_blank" rel="noopener" aria-label={l.label} class="social-btn">
+            <i class={l.icon}></i>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    margin-top: 64px;
+  }
+  .footer-inner {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-left { display: flex; flex-direction: column; gap: 3px }
+  .footer-name {
+    font-family: var(--display);
+    font-size: 1rem;
+    letter-spacing: 4px;
+  }
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: .5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .footer-social { display: flex; gap: 4px }
+  .social-btn {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); border-radius: 8px;
+    color: var(--muted); font-size: .85rem;
+    transition: .15s;
+  }
+  .social-btn:hover { border-color: var(--border-h); color: var(--white) }
+</style>

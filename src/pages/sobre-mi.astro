@@ -1,0 +1,180 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const skills = [
+  { cat: 'Diseño', items: ['Identidad Visual', 'Branding', 'UI/UX', 'Diseño Editorial', 'Adobe Suite'] },
+  { cat: 'Fotografía', items: ['Eventos', 'Documental', 'Retratos', 'Lightroom', 'Capture One'] },
+  { cat: 'Videografía', items: ['Producción', 'Edición', 'Color Grading', 'Premiere Pro', 'DaVinci Resolve'] },
+  { cat: 'Desarrollo', items: ['HTML/CSS/JS', 'C# / WPF', '.NET', 'Astro', 'Linux / Raspberry Pi'] },
+];
+---
+<Base title="Sobre mí — Marcos Santiago" description="Artista Gráfico, Fotógrafo, Videógrafo y Desarrollador desde Aibonito, Puerto Rico.">
+  <Nav />
+  <main style="padding-top:120px">
+    <div class="container">
+
+      <div class="about-hero">
+        <div class="about-copy">
+          <p class="section-label">Sobre mí</p>
+          <h1 class="about-title">
+            <span class="name">MARCOS</span>
+            <span class="last">SANTIAGO</span>
+          </h1>
+          <p class="about-loc">Aibonito, Puerto Rico</p>
+          <div class="about-bio">
+            <p>
+              Soy Artista Gráfico, Fotógrafo, Videógrafo y Programador Analista.
+              Trabajo desde Aibonito, Puerto Rico — un municipio en el centro de la isla
+              conocido por el Festival de las Flores.
+            </p>
+            <p>
+              Diseño identidades visuales y marcas, capturo eventos y momentos culturales,
+              produzco video para negocios y proyectos creativos, y construyo software
+              que la gente realmente usa.
+            </p>
+            <p>
+              Detrás de todo está la misma motivación: crear cosas que importen
+              y que duren.
+            </p>
+          </div>
+          <div class="about-actions">
+            <a href="/portafolio/" class="btn primary">Ver portafolio</a>
+            <a href="/contacto/" class="btn ghost">Contacto</a>
+          </div>
+        </div>
+        <div class="about-photo">
+          <div class="photo-placeholder">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+            <span>Foto próximamente</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <section class="section">
+        <p class="section-label">Habilidades</p>
+        <h2 class="section-title">Herramientas &amp; disciplinas</h2>
+        <div class="skills-grid">
+          {skills.map(s => (
+            <div class="skill-block">
+              <h3 class="skill-cat">{s.cat}</h3>
+              <ul class="skill-list">
+                {s.items.map(i => <li>{i}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Location -->
+      <section class="section">
+        <div class="location-card">
+          <div>
+            <p class="section-label">Ubicación</p>
+            <h2 class="location-title">Aibonito, Puerto Rico</h2>
+            <p class="location-sub">
+              Disponible para proyectos remotos y presenciales en Puerto Rico.
+              Para eventos fuera de la isla, hablemos primero.
+            </p>
+          </div>
+          <a href="/contacto/" class="btn ghost">Hablemos →</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+/* ── HERO ── */
+.about-hero {
+  display: grid; grid-template-columns: 1.2fr .8fr;
+  gap: 64px; align-items: center;
+  padding-bottom: 80px; border-bottom: 1px solid var(--border);
+}
+@media (max-width: 768px) {
+  .about-hero { grid-template-columns: 1fr; gap: 40px }
+  .about-photo { order: -1 }
+}
+.about-title {
+  font-family: var(--display);
+  font-size: clamp(4rem, 9vw, 8rem);
+  letter-spacing: 2px; line-height: .88;
+  margin: 12px 0 6px;
+}
+.about-title .name { display: block }
+.about-title .last {
+  display: block;
+  -webkit-text-stroke: 1px rgba(240,237,232,.35);
+  color: transparent;
+}
+.about-loc {
+  font-family: var(--mono); font-size: .52rem;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 28px;
+}
+.about-bio p {
+  color: var(--muted); font-size: .95rem;
+  line-height: 1.8; margin-bottom: 14px; max-width: 52ch;
+}
+.about-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px }
+
+.about-photo { aspect-ratio: 4/5; border-radius: 16px; overflow: hidden }
+.photo-placeholder {
+  width: 100%; height: 100%;
+  background: var(--surface); border: 2px dashed var(--border);
+  border-radius: 16px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px;
+  color: var(--dim);
+  font-family: var(--mono); font-size: .52rem;
+  letter-spacing: 2px; text-transform: uppercase;
+}
+
+/* ── SKILLS ── */
+.skills-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 12px; margin-top: 48px;
+}
+@media (max-width: 900px) { .skills-grid { grid-template-columns: repeat(2,1fr) } }
+@media (max-width: 480px) { .skills-grid { grid-template-columns: 1fr } }
+
+.skill-block {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px 20px;
+}
+.skill-cat {
+  font-family: var(--mono); font-size: .6rem;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 16px;
+}
+.skill-list { list-style: none; display: flex; flex-direction: column; gap: 8px }
+.skill-list li {
+  font-size: .85rem; color: var(--muted);
+  padding-left: 12px; position: relative;
+}
+.skill-list li::before {
+  content: '—'; position: absolute; left: 0;
+  color: var(--dim);
+}
+
+/* ── LOCATION ── */
+.location-card {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 32px; flex-wrap: wrap;
+  padding: 48px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 20px;
+}
+.location-title {
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  letter-spacing: 2px; margin: 8px 0;
+}
+.location-sub { color: var(--muted); font-size: .9rem; max-width: 48ch }
+</style>

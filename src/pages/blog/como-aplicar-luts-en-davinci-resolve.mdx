@@ -1,0 +1,93 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Cómo Aplicar LUTs en DaVinci Resolve"
+date: "2025-02-14"
+desc: "Los LUTs (Look-Up Tables) son herramientas esenciales en la corrección de color que permiten transformar el aspecto de un video de manera rápida y eficiente en DaVinci Resolve."
+tags: ["LUTS", "Video"]
+slug: "como-aplicar-luts-en-davinci-resolve"
+---
+
+<p>Los <strong>LUTs</strong> (<em>Look-Up Tables</em>) son herramientas esenciales en la corrección de color que permiten transformar el aspecto de un video de manera rápida y eficiente. En este artículo, te explicamos cómo aplicarlos en <strong>DaVinci Resolve</strong> paso a paso.</p>
+
+<h2>1. Importar y Organizar los LUTs</h2>
+
+<p>Antes de aplicar un LUT, es importante asegurarse de que esté disponible en DaVinci Resolve.</p>
+
+<h3><strong>Agregar LUTs Personalizados</strong></h3>
+
+<ol>
+<li><strong>Abrir las Preferencias:</strong> Ve a <strong>File</strong> &gt; <strong>Project Settings</strong> o presiona <code>Shift + 9</code>.</li>
+<li><strong>Acceder a la Sección de Color:</strong> En la pestaña de "Color Management", localiza la opción <strong>Lookup Tables (LUTs)</strong>.</li>
+<li><strong>Abrir la Carpeta de LUTs:</strong> Haz clic en <strong>Open LUT Folder</strong> y copia los LUTs personalizados en la carpeta.</li>
+<li><strong>Actualizar la Lista de LUTs:</strong> Vuelve a DaVinci Resolve y presiona el botón <strong>Update Lists</strong> para que aparezcan en la biblioteca.</li>
+</ol>
+
+<h2>2. Aplicar un LUT a un Clip</h2>
+
+<p>Existen varias formas de aplicar un LUT en DaVinci Resolve. A continuación, te mostramos los métodos más comunes.</p>
+
+<h3><strong>A. Aplicación Directa en un Clip</strong></h3>
+
+<ol>
+<li>Dirígete a la pestaña <strong>Color</strong>.</li>
+<li>Selecciona el clip al que deseas aplicar el LUT.</li>
+<li>Abre el panel <strong>LUTs</strong> (en la parte izquierda de la interfaz).</li>
+<li>Explora las categorías disponibles y haz doble clic sobre el LUT deseado para aplicarlo.</li>
+</ol>
+
+<h3><strong>B. Aplicar LUT en un Nodo Específico</strong></h3>
+
+<p>Para un mayor control sobre el efecto del LUT, es recomendable usar nodos.</p>
+
+<ol>
+<li>Ve a la pestaña <strong>Color</strong> y haz clic derecho en el área de nodos.</li>
+<li>Selecciona <strong>Add Serial Node</strong> (<code>Alt + S</code>).</li>
+<li>Haz clic derecho sobre el nodo y elige <strong>LUT</strong> &gt; Selecciona el LUT deseado.</li>
+<li>Ajusta la intensidad del efecto disminuyendo la opacidad del nodo en <strong>Key Output Gain</strong>.</li>
+</ol>
+
+<h3><strong>C. Aplicar un LUT a Múltiples Clips</strong></h3>
+
+<ol>
+<li>Ve a la pestaña <strong>Edit</strong> y selecciona los clips en los que deseas aplicar el LUT.</li>
+<li>Haz clic derecho y elige <strong>Apply LUT</strong> &gt; Selecciona el LUT.</li>
+<li>Opcionalmente, usa la <strong>pestaña Color</strong> para realizar ajustes finos.</li>
+</ol>
+
+<h2>3. Ajustar la Intensidad del LUT</h2>
+
+<p>Aplicar un LUT directamente puede ser demasiado fuerte para algunos clips. Para reducir su impacto:</p>
+
+<ol>
+<li>Ve a la pestaña <strong>Color</strong> y selecciona el nodo donde aplicaste el LUT.</li>
+<li>Abre el panel <strong>Key</strong> (pestaña inferior derecha).</li>
+<li>Ajusta el <strong>Gain</strong> para modificar la intensidad del LUT.</li>
+<li>También puedes usar herramientas como "Curves" o "Primaries" para refinar la apariencia.</li>
+</ol>
+
+<h2>4. Aplicar un LUT en la Timeline Completa</h2>
+
+<p>Si deseas que un LUT afecte a toda la secuencia:</p>
+
+<ol>
+<li>En la pestaña <strong>Color</strong>, haz clic en el botón <strong>Timeline</strong>.</li>
+<li>Agrega un nodo (<code>Alt + S</code>) y aplica el LUT.</li>
+<li>Ajusta la intensidad según sea necesario.</li>
+</ol>
+
+<h2>5. Exportar con LUT Aplicado</h2>
+
+<p>Una vez que los LUTs han sido aplicados y ajustados:</p>
+
+<ol>
+<li>Ve a la pestaña <strong>Deliver</strong>.</li>
+<li>Configura los parámetros de exportación.</li>
+<li>En "Render Settings", asegúrate de que la opción <strong>Use LUT</strong> esté activada si deseas incluir el efecto en la exportación.</li>
+<li>Renderiza el archivo final.</li>
+</ol>
+
+<h2>Conclusión</h2>
+
+<p>Aplicar LUTs en DaVinci Resolve es un proceso sencillo que puede mejorar significativamente la apariencia de tus videos. Experimenta con diferentes LUTs y ajusta su intensidad para lograr un look profesional y cinematográfico.</p>
+
+<p>¡Ahora estás listo para llevar tus producciones al siguiente nivel con DaVinci Resolve!</p>

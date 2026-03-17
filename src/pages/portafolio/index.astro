@@ -1,0 +1,65 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const areas = [
+  { label: 'Diseño Gráfico', href: '/portafolio/diseno/', color: '#e8c84a', count: 'Behance →' },
+  { label: 'Fotografía',     href: '/portafolio/foto/',   color: '#a0c4ff', count: 'Gallery →' },
+  { label: 'Videografía',    href: '/portafolio/video/',  color: '#ff9f7f', count: 'Vimeo →' },
+  { label: 'Desarrollo',     href: '/portafolio/dev/',    color: '#88e0b0', count: 'GitHub →' },
+];
+---
+<Base title="Portafolio — Marcos Santiago">
+  <Nav />
+  <main style="padding-top:120px">
+    <div class="container">
+      <p class="section-label">Trabajo</p>
+      <h1 class="section-title">Portafolio</h1>
+      <p class="section-sub">Selecciona un área para explorar el trabajo.</p>
+
+      <div class="areas-grid">
+        {areas.map(a => (
+          <a href={a.href} class="area-card" style={`--c:${a.color}`}>
+            <span class="area-count">{a.count}</span>
+            <h2 class="area-label">{a.label}</h2>
+            <div class="area-bar"></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+.areas-grid {
+  display: grid; grid-template-columns: repeat(2,1fr);
+  gap: 12px; margin-top: 56px;
+}
+@media (max-width: 600px) { .areas-grid { grid-template-columns: 1fr } }
+
+.area-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 40px 32px;
+  display: flex; flex-direction: column; gap: 12px;
+  position: relative; overflow: hidden;
+  transition: border-color .2s, transform .2s;
+}
+.area-card:hover { border-color: rgba(255,255,255,.2); transform: translateY(-3px) }
+.area-card:hover .area-bar { transform: scaleX(1) }
+.area-count {
+  font-family: var(--mono); font-size: .55rem;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--c);
+}
+.area-label {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: 2px; color: var(--white);
+}
+.area-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: var(--c); transform: scaleX(0);
+  transform-origin: left; transition: transform .3s ease;
+}
+</style>

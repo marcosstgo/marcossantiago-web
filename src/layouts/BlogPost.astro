@@ -1,0 +1,82 @@
+---
+import Base from './Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const { title, date, desc, tags } = Astro.props.frontmatter;
+const formattedDate = new Date(date).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<Base title={`${title} — Marcos Santiago`} description={desc}>
+  <Nav />
+  <main style="padding-top:120px">
+    <div class="container">
+      <div class="post-header">
+        <a href="/blog/" class="back-link">← Blog</a>
+        <p class="post-meta-date">{formattedDate}</p>
+        {tags && tags.length > 0 && (
+          <div class="post-tags">
+            {tags.map((t: string) => <span class="tag">{t}</span>)}
+          </div>
+        )}
+        <h1 class="post-title">{title}</h1>
+      </div>
+      <article class="post-body">
+        <slot />
+      </article>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+.post-header {
+  max-width: 72ch; margin-bottom: 56px;
+}
+.back-link {
+  font-family: var(--mono); font-size: .52rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); display: inline-block; margin-bottom: 24px;
+  transition: color .15s;
+}
+.back-link:hover { color: var(--white) }
+.post-meta-date {
+  font-family: var(--mono); font-size: .5rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 12px;
+}
+.post-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px }
+.tag {
+  font-family: var(--mono); font-size: .46rem;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 4px;
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  color: var(--dim);
+}
+.post-title {
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  letter-spacing: 2px; line-height: .95;
+  margin-top: 8px;
+}
+.post-body {
+  max-width: 72ch;
+  font-size: .97rem; line-height: 1.85; color: rgba(240,237,232,.8);
+}
+.post-body h2, .post-body h3 {
+  font-family: var(--display);
+  letter-spacing: 2px; color: var(--white);
+  margin: 40px 0 14px;
+}
+.post-body h2 { font-size: clamp(1.8rem, 3vw, 2.8rem) }
+.post-body h3 { font-size: clamp(1.4rem, 2.5vw, 2rem) }
+.post-body p { margin-bottom: 20px }
+.post-body strong { color: var(--white) }
+.post-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px }
+.post-body ul, .post-body ol { padding-left: 24px; margin-bottom: 20px }
+.post-body li { margin-bottom: 8px }
+.post-body blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 20px; margin: 24px 0;
+  color: var(--muted); font-style: italic;
+}
+</style>

@@ -1,0 +1,51 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Qué puertos usa Battlefield 6 en PC"
+date: "2025-11-13"
+desc: "Battlefield 6 todavía no tiene documentación oficial de EA sobre qué puertos hay que abrir en el router. Utilicé TCPView para monitorear las conexiones del proceso bf6.exe y compartir los resultados."
+tags: ["Games"]
+slug: "que-puertos-usa-battlefield-6-en-pc"
+---
+
+<p><strong>Por:</strong> Marcos J. Santiago Santos<br /><strong>Fecha:</strong> 12 de noviembre de 2025</p>
+
+<hr />
+
+<h2>Introducción</h2>
+
+<p>Battlefield 6 todavía no tiene documentación oficial de EA sobre qué puertos hay que abrir en el router para tener una conexión estable o NAT abierta.<br />Por eso decidí investigarlo yo mismo y compartir los resultados.</p>
+
+<p>Utilicé <strong>TCPView</strong> para monitorear las conexiones del proceso <code>bf6.exe</code> mientras el juego estaba corriendo, tanto en el menú principal como dentro de partidas reales.</p>
+
+<hr />
+
+<h2>Qué encontré</h2>
+
+<p>Durante las pruebas, el juego estableció conexiones constantes hacia servidores de <strong>EA, Amazon (AWS)</strong> y <strong>Cloudflare</strong>, usando los siguientes rangos de puertos:</p>
+
+<ul>
+<li><strong>TCP:</strong> 443, 8085, 8095, 9000–10010, 15001–15051</li>
+<li><strong>UDP:</strong> 3659, 9999, 14000–14016, 22990–23006, 25200–25300, 49152–65535</li>
+</ul>
+
+<p>Los puertos TCP se usan principalmente para autenticación, estadísticas y control del juego.<br />Los UDP son los que manejan el tráfico en tiempo real, como movimiento, disparos y voz.</p>
+
+<hr />
+
+<h2>Cómo configurarlo</h2>
+
+<p>Si tienes un router <strong>OpenWRT</strong> o <strong>GL.iNet</strong>, puedes redirigir esos puertos hacia la IP de tu PC.<br />Por ejemplo:</p>
+
+<ul>
+<li>IP interna: <code>192.168.x.xxx</code></li>
+<li>Protocolo: TCP/UDP</li>
+<li>Puertos: <code>443,8085,8095,9000-10010,15001-15051 3659,9999,14000-14016,22990-23006,25200-25300,49152-65535</code></li>
+</ul>
+
+<p>También puedes activar <strong>UPnP</strong> si tu router es de confianza, para que el juego abra los puertos automáticamente.</p>
+
+<hr />
+
+<h2>Conclusión</h2>
+
+<p>Esta lista cubre todos los puertos que Battlefield 6 usa actualmente en PC.<br />Hasta que EA publique su documentación oficial, esta guía puede ayudarte a mejorar tu conexión o resolver problemas de NAT.</p>

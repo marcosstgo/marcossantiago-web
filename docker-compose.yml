@@ -1,0 +1,10 @@
+services:
+  marcossantiago:
+    build: .
+    image: marcossantiago-web:latest
+    container_name: marcossantiago-web
+    restart: unless-stopped
+    ports:
+      - "3010:80"
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

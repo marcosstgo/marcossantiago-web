@@ -1,0 +1,125 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const projects = [
+  {
+    name: 'CORILLO',
+    desc: 'Plataforma de streaming independiente para Puerto Rico. Canal grid en vivo, player HLS, chat en tiempo real, notificaciones Discord/Telegram y panel de administración.',
+    href: 'https://corillo.live',
+    tags: ['HTML', 'JS', 'MediaMTX', 'HLS', 'Nginx', 'Raspberry Pi'],
+    year: '2024',
+    status: 'live',
+  },
+  {
+    name: 'STREAMER PRO',
+    desc: 'App de escritorio para streaming RTMP multi-plataforma. Soporte NVENC, modos de captura y highlights, logo overlay, watchdog con auto-recovery y auto-update.',
+    href: 'https://corillo.live/streamer-pro/',
+    tags: ['C#', 'WPF', 'FFmpeg', '.NET'],
+    year: '2025',
+    status: 'live',
+  },
+  {
+    name: 'ANTI-BUFFERBLOAT PRO',
+    desc: 'Optimizador de red para Windows: reduce latencia y bufferbloat con perfiles Gaming/Reset, 8 acciones TCP, PC Gaming Boost y monitoreo en tiempo real.',
+    href: 'https://corillo.live/antibufferbloat-pro/',
+    tags: ['C#', 'WPF', 'Windows', '.NET'],
+    year: '2025',
+    status: 'live',
+  },
+];
+---
+<Base title="Desarrollo — Marcos Santiago">
+  <Nav />
+  <main style="padding-top:120px">
+    <div class="container">
+      <p class="section-label">Portafolio · Desarrollo</p>
+      <h1 class="section-title">Proyectos</h1>
+      <p class="section-sub">Plataformas, apps y herramientas que la gente usa.</p>
+
+      <div class="projects-list">
+        {projects.map(p => (
+          <a href={p.href} target="_blank" rel="noopener" class="project-card">
+            <div class="project-top">
+              <div>
+                <span class="project-year">{p.year}</span>
+                {p.status === 'live' && <span class="project-live">● LIVE</span>}
+              </div>
+              <span class="project-arrow">↗</span>
+            </div>
+            <h2 class="project-name">{p.name}</h2>
+            <p class="project-desc">{p.desc}</p>
+            <div class="project-tags">
+              {p.tags.map(t => <span class="tag">{t}</span>)}
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="github-cta">
+        <p class="section-label">Código abierto</p>
+        <h2 class="github-title">Ver más en GitHub</h2>
+        <p class="github-sub">Repos públicos, contribuciones y experimentos.</p>
+        <a href="https://github.com/marcosstgo" target="_blank" rel="noopener" class="btn primary" style="margin-top:20px">
+          github.com/marcosstgo →
+        </a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+.projects-list {
+  display: grid; grid-template-columns: repeat(2,1fr);
+  gap: 12px; margin-top: 56px;
+}
+@media (max-width: 700px) { .projects-list { grid-template-columns: 1fr } }
+
+.project-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px;
+  display: flex; flex-direction: column; gap: 14px;
+  position: relative; overflow: hidden;
+  transition: border-color .2s, transform .2s;
+}
+.project-card:hover { border-color: rgba(255,255,255,.2); transform: translateY(-3px) }
+.project-top { display: flex; align-items: center; justify-content: space-between }
+.project-year {
+  font-family: var(--mono); font-size: .5rem;
+  letter-spacing: 2px; color: var(--dim);
+}
+.project-live {
+  font-family: var(--mono); font-size: .48rem;
+  letter-spacing: 2px; color: #88e0b0; margin-left: 10px;
+}
+.project-arrow { font-size: 1.1rem; color: var(--muted); transition: transform .2s }
+.project-card:hover .project-arrow { transform: translate(3px,-3px); color: var(--white) }
+.project-name {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 3px; color: var(--white);
+}
+.project-desc { font-size: .85rem; color: var(--muted); line-height: 1.7 }
+.project-tags { display: flex; gap: 6px; flex-wrap: wrap }
+.tag {
+  font-family: var(--mono); font-size: .48rem;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 4px;
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.github-cta {
+  margin-top: 80px; padding: 48px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px;
+}
+.github-title {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 2px; margin-top: 8px;
+}
+.github-sub { color: var(--muted); font-size: .9rem; margin-top: 6px }
+</style>

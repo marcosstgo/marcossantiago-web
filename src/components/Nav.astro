@@ -1,0 +1,163 @@
+---
+const links = [
+  { href: '/portafolio/', label: 'Portafolio' },
+  { href: '/blog/',       label: 'Blog' },
+  { href: '/sobre-mi/',   label: 'Sobre mí' },
+  { href: '/contacto/',   label: 'Contacto' },
+];
+const current = Astro.url.pathname;
+---
+<header>
+  <div class="container">
+    <nav>
+      <a href="/" class="nav-brand" aria-label="Marcos Santiago">
+        <span class="nav-name">MARCOS SANTIAGO</span>
+        <span class="nav-loc">Aibonito, PR</span>
+      </a>
+      <div class="nav-links">
+        {links.map(l => (
+          <a
+            href={l.href}
+            class:list={['nav-link', { active: current.startsWith(l.href) }]}
+          >{l.label}</a>
+        ))}
+      </div>
+      <button class="nav-hamburger" id="navToggle" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- Mobile nav -->
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-inner">
+    {links.map(l => (
+      <a href={l.href} class="mobile-nav-link">{l.label}</a>
+    ))}
+    <a href="/contacto/" class="btn primary" style="margin-top:8px;justify-content:center">
+      Hablemos
+    </a>
+  </div>
+</div>
+
+<style>
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    border-bottom: 1px solid transparent;
+    transition: background .3s, border-color .3s;
+  }
+  header.scrolled {
+    background: rgba(8,8,8,.92);
+    border-color: var(--border);
+    backdrop-filter: blur(12px);
+  }
+  nav {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    gap: 24px;
+  }
+  .nav-brand {
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .nav-name {
+    font-family: var(--display);
+    font-size: 1.15rem;
+    letter-spacing: 4px;
+    line-height: 1;
+    color: var(--white);
+  }
+  .nav-loc {
+    font-family: var(--mono);
+    font-size: .48rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .nav-links {
+    display: flex; gap: 4px; align-items: center;
+  }
+  .nav-link {
+    font-family: var(--mono);
+    font-size: .58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: .15s;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--white) }
+  .nav-link.active {
+    background: rgba(255,255,255,.06);
+  }
+  .nav-hamburger {
+    display: none;
+    flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block; width: 22px; height: 1.5px;
+    background: var(--white); border-radius: 2px;
+    transition: .25s ease;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg) }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0 }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg) }
+
+  .mobile-nav {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(8,8,8,.97);
+    z-index: 99;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .2s, visibility .2s;
+  }
+  .mobile-nav.open { visibility: visible; opacity: 1 }
+  .mobile-nav-inner {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 100px 24px 40px;
+  }
+  .mobile-nav-link {
+    font-family: var(--display);
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+    color: rgba(240,237,232,.6);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    transition: color .15s;
+  }
+  .mobile-nav-link:hover { color: var(--white) }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none }
+    .nav-hamburger { display: flex }
+    .mobile-nav { display: block }
+  }
+</style>
+
+<script>
+  // Scroll header
+  const header = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    header?.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Mobile nav toggle
+  const toggle = document.getElementById('navToggle');
+  const mobileNav = document.getElementById('mobileNav');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.classList.toggle('open');
+    mobileNav?.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  mobileNav?.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => {
+      toggle?.classList.remove('open');
+      mobileNav.classList.remove('open');
+      document.body.style.overflow = '';
+    })
+  );
+</script>

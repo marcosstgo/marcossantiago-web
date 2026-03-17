@@ -1,0 +1,101 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+---
+<Base title="Videografía — Marcos Santiago">
+  <Nav />
+  <main style="padding-top:120px">
+    <div class="container">
+      <p class="section-label">Portafolio · Videografía</p>
+      <h1 class="section-title">Videografía</h1>
+      <p class="section-sub">Producción de video para eventos, cultura y marcas en Puerto Rico.</p>
+
+      <div class="vimeo-cta">
+        <div class="cta-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+          </svg>
+        </div>
+        <div>
+          <h2 class="cta-title">Ver en Vimeo</h2>
+          <p class="cta-sub">
+            El portafolio completo de video está en <strong>vimeo.com/marcosstgo</strong> —
+            cobertura de eventos, cultura puertorriqueña y proyectos de producción.
+          </p>
+          <a href="https://vimeo.com/marcosstgo" target="_blank" rel="noopener" class="btn primary" style="margin-top:24px">
+            Abrir Vimeo →
+          </a>
+        </div>
+      </div>
+
+      <div class="services-grid">
+        {[
+          {
+            label: 'Eventos',
+            desc: 'Cobertura de conciertos, festivales, bodas y actividades culturales.',
+            color: '#ff9f7f',
+          },
+          {
+            label: 'Documental',
+            desc: 'Historias cortas sobre personas, lugares y cultura puertorriqueña.',
+            color: '#ff9f7f',
+          },
+          {
+            label: 'Marcas',
+            desc: 'Videos promocionales, reels y contenido para redes sociales.',
+            color: '#ff9f7f',
+          },
+          {
+            label: 'Producción',
+            desc: 'Grabación, edición, color grading y entrega final.',
+            color: '#ff9f7f',
+          },
+        ].map(s => (
+          <div class="service-card" style={`--c:${s.color}`}>
+            <h3 class="service-label">{s.label}</h3>
+            <p class="service-desc">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+.vimeo-cta {
+  margin-top: 56px;
+  display: flex; gap: 40px; align-items: flex-start;
+  padding: 48px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 20px;
+}
+@media (max-width: 600px) { .vimeo-cta { flex-direction: column; gap: 24px } }
+.cta-icon { color: #ff9f7f; flex-shrink: 0; margin-top: 4px }
+.cta-title {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 2px; margin-bottom: 12px;
+}
+.cta-sub { color: var(--muted); font-size: .9rem; line-height: 1.7 }
+.cta-sub strong { color: var(--white) }
+
+.services-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 12px; margin-top: 48px;
+}
+@media (max-width: 768px) { .services-grid { grid-template-columns: repeat(2,1fr) } }
+@media (max-width: 400px) { .services-grid { grid-template-columns: 1fr } }
+
+.service-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px 20px;
+  border-top: 2px solid var(--c);
+}
+.service-label {
+  font-family: var(--mono); font-size: .6rem;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--c); margin-bottom: 8px;
+}
+.service-desc { font-size: .83rem; color: var(--muted); line-height: 1.55 }
+</style>

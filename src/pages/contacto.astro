@@ -1,0 +1,116 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const channels = [
+  {
+    label: 'Instagram',
+    handle: '@m4rcos',
+    href: 'https://instagram.com/m4rcos',
+    icon: 'fab fa-instagram',
+    color: '#e8c84a',
+    desc: 'Proyectos, proceso y lo que sea.',
+  },
+  {
+    label: 'X / Twitter',
+    handle: '@Marc0sSantiago',
+    href: 'https://x.com/Marc0sSantiago',
+    icon: 'fab fa-x-twitter',
+    color: '#a0c4ff',
+    desc: 'Ideas, opiniones y actualizaciones.',
+  },
+  {
+    label: 'GitHub',
+    handle: 'marcosstgo',
+    href: 'https://github.com/marcosstgo',
+    icon: 'fab fa-github',
+    color: '#88e0b0',
+    desc: 'Código, repos y proyectos abiertos.',
+  },
+  {
+    label: 'Behance',
+    handle: 'marcossantiago',
+    href: 'https://www.behance.net/marcossantiago',
+    icon: 'fab fa-behance',
+    color: '#ff9f7f',
+    desc: 'Portafolio de diseño y proyectos creativos.',
+  },
+];
+---
+<Base title="Contacto — Marcos Santiago" description="Contacta a Marcos Santiago — Artista Gráfico, Fotógrafo, Videógrafo y Desarrollador desde Aibonito, Puerto Rico.">
+  <Nav />
+  <main style="padding-top:120px">
+    <div class="container">
+      <p class="section-label">Contacto</p>
+      <h1 class="section-title">Hablemos</h1>
+      <p class="section-sub" style="max-width:52ch">
+        ¿Tienes un proyecto en mente? ¿Necesitas diseño, fotos, video o desarrollo?
+        Encuéntrame en cualquiera de estos canales.
+      </p>
+
+      <div class="channels-grid">
+        {channels.map(c => (
+          <a href={c.href} target="_blank" rel="noopener" class="channel-card" style={`--c:${c.color}`}>
+            <div class="channel-top">
+              <i class={c.icon + ' channel-icon'}></i>
+              <span class="channel-arrow">↗</span>
+            </div>
+            <div class="channel-label">{c.label}</div>
+            <div class="channel-handle">{c.handle}</div>
+            <p class="channel-desc">{c.desc}</p>
+          </a>
+        ))}
+      </div>
+
+      <div class="location-note">
+        <p class="section-label">Ubicación</p>
+        <p class="loc-text">Aibonito, Puerto Rico — disponible para proyectos remotos y locales.</p>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+.channels-grid {
+  display: grid; grid-template-columns: repeat(2,1fr);
+  gap: 12px; margin-top: 56px;
+}
+@media (max-width: 600px) { .channels-grid { grid-template-columns: 1fr } }
+
+.channel-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px;
+  display: flex; flex-direction: column; gap: 8px;
+  position: relative; overflow: hidden;
+  transition: border-color .2s, transform .2s;
+}
+.channel-card::after {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: var(--c); opacity: 0; transition: opacity .2s;
+}
+.channel-card:hover { border-color: rgba(255,255,255,.2); transform: translateY(-3px) }
+.channel-card:hover::after { opacity: 1 }
+.channel-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px }
+.channel-icon { font-size: 1.6rem; color: var(--c) }
+.channel-arrow { font-size: 1rem; color: var(--muted); transition: transform .2s }
+.channel-card:hover .channel-arrow { transform: translate(3px,-3px); color: var(--white) }
+.channel-label {
+  font-family: var(--mono); font-size: .52rem;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
+}
+.channel-handle {
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  letter-spacing: 2px; color: var(--white);
+}
+.channel-desc { font-size: .83rem; color: var(--muted); margin-top: 4px }
+
+.location-note {
+  margin-top: 64px; padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+.loc-text { color: var(--muted); font-size: .9rem; margin-top: 8px }
+</style>
