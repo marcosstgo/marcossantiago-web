@@ -1,4 +1,5 @@
 ---
+import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
@@ -37,8 +38,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="/styles/global.css" />
 </head>
 <body>
   <slot />
