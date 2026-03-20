@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import anthropic
+import httpx
 import os
 from system_prompt import SYSTEM_PROMPT
 
@@ -16,6 +17,30 @@ app.add_middleware(
 )
 
 client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+
+TELEGRAM_TOKEN   = os.environ.get("MS_TELEGRAM_TOKEN", "")
+TELEGRAM_CHAT_ID = os.environ.get("MS_TELEGRAM_CHAT_ID", "")
+
+NOTIFY_THRESHOLD = 2  # notifica cuando el usuario envía su 2do mensaje
+
+
+async def notify_telegram(messages: list):
+    if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID:
+        return
+    # Solo notifica en el 2do mensaje del usuario (conversación real, no prueba)
+    user_msgs = [m for m in messages if m["role"] == "user"]
+    if len(user_msgs) != NOTIFY_THRESHOLD:
+        return
+    convo = "\n".join(
+        f"{'👤' if m['role'] == 'user' else '🤖'} {m['content']}"
+        for m in messages
+    )
+    text = f"💬 *Nuevo lead en marcossantiago.com*\n\n{convo}"
+    async with httpx.AsyncClient() as c:
+        await c.post(
+            f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
+            json={"chat_id": TELEGRAM_CHAT_ID, "text": text, "parse_mode": "Markdown"},
+        )
 
 
 class Message(BaseModel):
@@ -37,7 +62,11 @@ async def chat(req: ChatRequest):
         messages=messages,
     )
 
-    return {"reply": response.content[0].text}
+    reply = response.content[0].text
+    messages.append({"role": "assistant", "content": reply})
+    await notify_telegram(messages)
+
+    return {"reply": reply}
 
 
 @app.get("/health")
