@@ -18,4 +18,5 @@ services:
     restart: unless-stopped
     ports:
       - "3005:3005"
-    env_file: .env
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
