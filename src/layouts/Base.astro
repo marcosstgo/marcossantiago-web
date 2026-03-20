@@ -66,6 +66,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         <div class="ms-msg ms-msg-bot">
           <p>¡Hola! Soy el asistente virtual de Marcos. ¿En qué puedo ayudarte? 📷</p>
         </div>
+        <div id="ms-quick-replies">
+          <button class="ms-quick-btn">📸 Fotografía de boda</button>
+          <button class="ms-quick-btn">🎬 Video para evento</button>
+          <button class="ms-quick-btn">🎨 Quiero un logo</button>
+          <button class="ms-quick-btn">💻 Proyecto web</button>
+          <button class="ms-quick-btn">💰 Cotización</button>
+        </div>
       </div>
 
       <div id="ms-chat-input-row">
@@ -184,6 +191,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   #ms-chat-send:hover { opacity: .85 }
   #ms-chat-send:disabled { opacity: .4; cursor: default }
 
+  #ms-quick-replies {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 4px;
+  }
+  .ms-quick-btn {
+    font-size: .78rem; padding: 6px 12px;
+    border-radius: 20px; border: 1px solid var(--accent);
+    background: var(--accent-dim); color: var(--accent);
+    cursor: pointer; transition: .15s; white-space: nowrap;
+    font-family: var(--body);
+  }
+  .ms-quick-btn:hover { background: var(--accent); color: #fff }
+
   @media (max-width: 400px) {
     #ms-chat-panel { width: calc(100vw - 32px) }
     #ms-chat-widget { right: 16px; bottom: 16px }
@@ -252,6 +272,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       send.disabled = false;
       input.focus();
     }
+
+    // Quick reply buttons
+    document.querySelectorAll('.ms-quick-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const quickReplies = document.getElementById('ms-quick-replies');
+        if (quickReplies) quickReplies.remove();
+        input.value = btn.textContent.replace(/^[^\w]+/, '').trim();
+        sendMsg();
+      });
+    });
 
     send.addEventListener('click', sendMsg);
     input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMsg() });
