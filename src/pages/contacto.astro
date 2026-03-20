@@ -279,12 +279,13 @@ const channels = [
     wizard = null;
 
     try {
-      await fetch('/ms-chat/lead', {
+      const r = await fetch('/ms-chat/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre, servicio, fecha: fecha || 'Por coordinar', contacto, mensaje: '' }),
       });
-    } catch (_) {}
+      console.log('[lead]', r.status, await r.text());
+    } catch (e) { console.error('[lead error]', e); }
 
     const waMsg = encodeURIComponent(
       `Hola Marcos! Soy ${nombre}. Me interesa: ${servicio}. Fecha: ${fecha || 'Por coordinar'}. Contacto: ${contacto}.`
