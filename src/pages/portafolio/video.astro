@@ -2,14 +2,55 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+
+const services = [
+  {
+    label: 'Bodas',
+    desc: 'Video cinematográfico de tu boda — desde los preparativos hasta la última pieza de baile. Film destacado + cobertura completa del día.',
+  },
+  {
+    label: 'Quinceañeros',
+    desc: 'Video profesional del gran día: vals, court, sorpresas y celebración. Un recuerdo cinematográfico para siempre.',
+  },
+  {
+    label: 'Eventos y Conciertos',
+    desc: 'Cobertura multicámara de conciertos, festivales, activaciones y celebraciones. Entrega de highlight reel y cobertura completa.',
+  },
+  {
+    label: 'Video Corporativo',
+    desc: 'Videos institucionales, lanzamientos de producto, testimoniales y contenido para entrenar equipos. Calidad profesional lista para presentaciones.',
+  },
+  {
+    label: 'Reels y Redes Sociales',
+    desc: 'Contenido vertical y horizontal para Instagram, TikTok y YouTube. Cortos, dinámicos y optimizados para cada plataforma.',
+  },
+  {
+    label: 'Documental',
+    desc: 'Historias cortas sobre personas, proyectos y cultura puertorriqueña. Entrevistas, b-roll narrativo y edición de autor.',
+  },
+  {
+    label: 'Marcas y Publicidad',
+    desc: 'Spots publicitarios, videos de producto y campañas para negocios locales. Concepto, producción y entrega final.',
+  },
+  {
+    label: 'Color Grading y Post',
+    desc: 'Solo edición y color: corrección, grading cinematográfico, sound design y entrega en el formato que necesites.',
+  },
+];
 ---
-<Base title="Videografía — Marcos Santiago">
+<Base
+  title="Videografía — Marcos Santiago"
+  description="Videografía profesional en Puerto Rico — bodas, quinceañeros, eventos, video corporativo, reels y producción audiovisual. Basado en Aibonito, PR."
+>
   <Nav />
   <main style="padding-top:120px">
     <div class="container">
+
       <p class="section-label">Portafolio · Videografía</p>
       <h1 class="section-title">Videografía</h1>
-      <p class="section-sub">Producción de video para eventos, cultura y marcas en Puerto Rico.</p>
+      <p class="section-sub">
+        Producción audiovisual para eventos, marcas y proyectos en Puerto Rico. Desde el concepto hasta la entrega final — con la narrativa y el cuidado visual que cada historia merece.
+      </p>
 
       <div class="vimeo-cta">
         <div class="cta-icon">
@@ -21,7 +62,7 @@ import Footer from '../../components/Footer.astro';
           <h2 class="cta-title">Ver en Vimeo</h2>
           <p class="cta-sub">
             El portafolio completo de video está en <strong>vimeo.com/marcosstgo</strong> —
-            cobertura de eventos, cultura puertorriqueña y proyectos de producción.
+            bodas, eventos, documentales y producción de marca.
           </p>
           <a href="https://vimeo.com/marcosstgo" target="_blank" rel="noopener" class="btn primary" style="margin-top:24px">
             Abrir Vimeo →
@@ -29,35 +70,49 @@ import Footer from '../../components/Footer.astro';
         </div>
       </div>
 
+      <div style="margin-top:80px">
+        <p class="section-label">Servicios</p>
+        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">Qué produzco</h2>
+      </div>
+
       <div class="services-grid">
-        {[
-          {
-            label: 'Eventos',
-            desc: 'Cobertura de conciertos, festivales, bodas y actividades culturales.',
-            color: '#ff9f7f',
-          },
-          {
-            label: 'Documental',
-            desc: 'Historias cortas sobre personas, lugares y cultura puertorriqueña.',
-            color: '#ff9f7f',
-          },
-          {
-            label: 'Marcas',
-            desc: 'Videos promocionales, reels y contenido para redes sociales.',
-            color: '#ff9f7f',
-          },
-          {
-            label: 'Producción',
-            desc: 'Grabación, edición, color grading y entrega final.',
-            color: '#ff9f7f',
-          },
-        ].map(s => (
-          <div class="service-card" style={`--c:${s.color}`}>
+        {services.map(s => (
+          <div class="service-card">
             <h3 class="service-label">{s.label}</h3>
             <p class="service-desc">{s.desc}</p>
           </div>
         ))}
       </div>
+
+      <div class="includes-section">
+        <p class="section-label">Qué incluye</p>
+        <div class="includes-grid">
+          {[
+            'Reunión de pre-producción para entender tu visión',
+            'Grabación con equipo profesional 4K',
+            'Edición completa y color grading cinematográfico',
+            'Sound design y música licenciada',
+            'Revisiones incluidas hasta tu aprobación',
+            'Entrega en múltiples formatos y resoluciones',
+          ].map(item => (
+            <div class="include-item">
+              <span class="include-check">✓</span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="contact-cta">
+        <div>
+          <h2 class="cta-title">¿Tienes un proyecto?</h2>
+          <p class="cta-sub">Escríbeme para disponibilidad, paquetes y cotizaciones. Disponible en toda Puerto Rico.</p>
+        </div>
+        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
+          <i class="fab fa-whatsapp"></i> (787) 243-9670
+        </a>
+      </div>
+
     </div>
   </main>
   <Footer />
@@ -81,21 +136,51 @@ import Footer from '../../components/Footer.astro';
 .cta-sub strong { color: var(--white) }
 
 .services-grid {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  gap: 12px; margin-top: 48px;
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px; margin-top: 32px;
 }
-@media (max-width: 768px) { .services-grid { grid-template-columns: repeat(2,1fr) } }
-@media (max-width: 400px) { .services-grid { grid-template-columns: 1fr } }
+@media (max-width: 768px) { .services-grid { grid-template-columns: 1fr } }
 
 .service-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 24px 20px;
-  border-top: 2px solid var(--c);
+  border-left: 3px solid #ff9f7f;
+  border-radius: 12px; padding: 28px 24px;
 }
 .service-label {
   font-family: var(--mono); font-size: .6rem;
   letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--c); margin-bottom: 8px;
+  color: #ff9f7f; margin-bottom: 10px;
 }
-.service-desc { font-size: .83rem; color: var(--muted); line-height: 1.55 }
+.service-desc { font-size: .88rem; color: var(--muted); line-height: 1.65 }
+
+.includes-section {
+  margin-top: 72px; padding-top: 56px;
+  border-top: 1px solid var(--border);
+}
+.includes-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 16px; margin-top: 28px;
+}
+@media (max-width: 600px) { .includes-grid { grid-template-columns: 1fr } }
+.include-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: .9rem; color: var(--muted);
+}
+.include-check {
+  color: #ff9f7f; font-family: var(--mono);
+  font-size: .75rem; flex-shrink: 0; margin-top: 2px;
+}
+
+.contact-cta {
+  margin-top: 64px; padding: 48px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 32px; flex-wrap: wrap;
+}
+.btn.whatsapp {
+  background: #25d366; color: #fff;
+  border-color: transparent; flex-shrink: 0;
+}
+.btn.whatsapp:hover { opacity: .88; box-shadow: 0 0 24px rgba(37,211,102,.25) }
 </style>

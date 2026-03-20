@@ -2,14 +2,55 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+
+const services = [
+  {
+    label: 'Logotipos',
+    desc: 'Diseño de logo desde cero — concepto, variantes, uso en negro/blanco y entrega en todos los formatos (SVG, PNG, PDF).',
+  },
+  {
+    label: 'Identidad Visual Completa',
+    desc: 'Sistema de marca completo: logo, paleta de colores, tipografía, iconografía y guía de uso. Todo lo que necesitas para ser consistente.',
+  },
+  {
+    label: 'Branding para Negocios',
+    desc: 'Estrategia visual para negocios locales en Puerto Rico — restaurants, salones, boutiques, clínicas y cualquier negocio que quiera verse profesional.',
+  },
+  {
+    label: 'Branding para Eventos',
+    desc: 'Identidad visual para bodas, quinceañeros, fiestas y eventos corporativos — flyers, programas, señalización y materiales coordinados.',
+  },
+  {
+    label: 'Diseño para Redes Sociales',
+    desc: 'Templates, posts, stories y banners para Instagram, Facebook y LinkedIn. Diseño adaptado a tu marca y listo para usar.',
+  },
+  {
+    label: 'Material Impreso',
+    desc: 'Tarjetas de presentación, flyers, afiches, menús, brochures y cualquier material impreso. Archivos listos para imprenta.',
+  },
+  {
+    label: 'Diseño Editorial',
+    desc: 'Revistas, catálogos, libros, programas y publicaciones. Composición tipográfica y diagramación profesional.',
+  },
+  {
+    label: 'UI / Diseño Web',
+    desc: 'Diseño de interfaces, prototipos y activos visuales para sitios web y aplicaciones. Trabajo en Figma con entrega de especificaciones para desarrollo.',
+  },
+];
 ---
-<Base title="Diseño Gráfico — Marcos Santiago">
+<Base
+  title="Diseño Gráfico — Marcos Santiago"
+  description="Diseño gráfico profesional en Puerto Rico — logos, identidad visual, branding, material impreso y diseño digital. Basado en Aibonito, PR."
+>
   <Nav />
   <main style="padding-top:120px">
     <div class="container">
+
       <p class="section-label">Portafolio · Diseño Gráfico</p>
       <h1 class="section-title">Diseño Gráfico</h1>
-      <p class="section-sub">Identidades visuales, branding y experiencias digitales.</p>
+      <p class="section-sub">
+        Identidades visuales, branding y experiencias digitales para negocios y proyectos en Puerto Rico. El diseño bien hecho no solo se ve bien — comunica, convierte y se recuerda.
+      </p>
 
       <div class="behance-cta">
         <div class="cta-icon">
@@ -21,7 +62,7 @@ import Footer from '../../components/Footer.astro';
           <h2 class="cta-title">Ver en Behance</h2>
           <p class="cta-sub">
             El portafolio completo de diseño está en <strong>behance.net/marcossantiago</strong> —
-            proyectos de identidad visual, branding, diseño editorial y experiencias digitales.
+            identidad visual, branding, diseño editorial y proyectos digitales.
           </p>
           <a href="https://www.behance.net/marcossantiago" target="_blank" rel="noopener" class="btn primary" style="margin-top:24px">
             Abrir Behance →
@@ -29,35 +70,49 @@ import Footer from '../../components/Footer.astro';
         </div>
       </div>
 
-      <div class="areas-grid">
-        {[
-          {
-            label: 'Identidad Visual',
-            desc: 'Logos, sistemas de marca y guías de estilo para negocios y proyectos.',
-            color: '#e8c84a',
-          },
-          {
-            label: 'Branding',
-            desc: 'Estrategia visual, naming y posicionamiento de marca.',
-            color: '#e8c84a',
-          },
-          {
-            label: 'Diseño Digital',
-            desc: 'UI/UX, diseño web y activos para plataformas digitales.',
-            color: '#e8c84a',
-          },
-          {
-            label: 'Editorial',
-            desc: 'Diseño de publicaciones, posters, flyers y materiales impresos.',
-            color: '#e8c84a',
-          },
-        ].map(a => (
-          <div class="area-card" style={`--c:${a.color}`}>
-            <h3 class="area-label">{a.label}</h3>
-            <p class="area-desc">{a.desc}</p>
+      <div style="margin-top:80px">
+        <p class="section-label">Servicios</p>
+        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">Qué diseño</h2>
+      </div>
+
+      <div class="services-grid">
+        {services.map(s => (
+          <div class="service-card">
+            <h3 class="service-label">{s.label}</h3>
+            <p class="service-desc">{s.desc}</p>
           </div>
         ))}
       </div>
+
+      <div class="includes-section">
+        <p class="section-label">Proceso</p>
+        <div class="includes-grid">
+          {[
+            'Brief inicial para entender tu negocio y objetivos',
+            'Investigación y conceptualización',
+            'Presentación de propuestas con justificación',
+            'Revisiones hasta lograr el resultado correcto',
+            'Entrega en todos los formatos necesarios',
+            'Manual de uso de marca incluido',
+          ].map(item => (
+            <div class="include-item">
+              <span class="include-check">✓</span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="contact-cta">
+        <div>
+          <h2 class="cta-title">¿Necesitas diseño?</h2>
+          <p class="cta-sub">Escríbeme para cotizaciones y disponibilidad. Trabajo con negocios de todos los tamaños en Puerto Rico.</p>
+        </div>
+        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
+          <i class="fab fa-whatsapp"></i> (787) 243-9670
+        </a>
+      </div>
+
     </div>
   </main>
   <Footer />
@@ -71,7 +126,7 @@ import Footer from '../../components/Footer.astro';
   border: 1px solid var(--border); border-radius: 20px;
 }
 @media (max-width: 600px) { .behance-cta { flex-direction: column; gap: 24px } }
-.cta-icon { color: #e8c84a; flex-shrink: 0; margin-top: 4px }
+.cta-icon { color: var(--accent); flex-shrink: 0; margin-top: 4px }
 .cta-title {
   font-family: var(--display);
   font-size: clamp(2rem, 4vw, 3rem);
@@ -80,22 +135,52 @@ import Footer from '../../components/Footer.astro';
 .cta-sub { color: var(--muted); font-size: .9rem; line-height: 1.7 }
 .cta-sub strong { color: var(--white) }
 
-.areas-grid {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  gap: 12px; margin-top: 48px;
+.services-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px; margin-top: 32px;
 }
-@media (max-width: 768px) { .areas-grid { grid-template-columns: repeat(2,1fr) } }
-@media (max-width: 400px) { .areas-grid { grid-template-columns: 1fr } }
+@media (max-width: 768px) { .services-grid { grid-template-columns: 1fr } }
 
-.area-card {
+.service-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 24px 20px;
-  border-top: 2px solid var(--c);
+  border-left: 3px solid var(--accent);
+  border-radius: 12px; padding: 28px 24px;
 }
-.area-label {
+.service-label {
   font-family: var(--mono); font-size: .6rem;
   letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--c); margin-bottom: 8px;
+  color: var(--accent); margin-bottom: 10px;
 }
-.area-desc { font-size: .83rem; color: var(--muted); line-height: 1.55 }
+.service-desc { font-size: .88rem; color: var(--muted); line-height: 1.65 }
+
+.includes-section {
+  margin-top: 72px; padding-top: 56px;
+  border-top: 1px solid var(--border);
+}
+.includes-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 16px; margin-top: 28px;
+}
+@media (max-width: 600px) { .includes-grid { grid-template-columns: 1fr } }
+.include-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: .9rem; color: var(--muted);
+}
+.include-check {
+  color: var(--accent); font-family: var(--mono);
+  font-size: .75rem; flex-shrink: 0; margin-top: 2px;
+}
+
+.contact-cta {
+  margin-top: 64px; padding: 48px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 32px; flex-wrap: wrap;
+}
+.btn.whatsapp {
+  background: #25d366; color: #fff;
+  border-color: transparent; flex-shrink: 0;
+}
+.btn.whatsapp:hover { opacity: .88; box-shadow: 0 0 24px rgba(37,211,102,.25) }
 </style>

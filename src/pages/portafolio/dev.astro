@@ -36,7 +36,7 @@ const projects = [
     <div class="container">
       <p class="section-label">Portafolio · Desarrollo</p>
       <h1 class="section-title">Proyectos</h1>
-      <p class="section-sub">Plataformas, apps y herramientas que la gente usa.</p>
+      <p class="section-sub">Plataformas web, aplicaciones de escritorio y herramientas que la gente realmente usa — desde streaming en vivo hasta optimización de redes en Windows.</p>
 
       <div class="projects-list">
         {projects.map(p => (
@@ -55,6 +55,34 @@ const projects = [
             </div>
           </a>
         ))}
+      </div>
+
+      <div class="dev-services">
+        <p class="section-label">Servicios</p>
+        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">¿Necesitas algo construido?</h2>
+        <div class="dev-services-grid">
+          {[
+            { label: 'Sitios Web', desc: 'Sitios rápidos, responsivos y bien diseñados. HTML estático, Astro o CMS según lo que necesites.' },
+            { label: 'Web Apps', desc: 'Aplicaciones web con backend, autenticación, bases de datos y APIs. Desde MVPs hasta sistemas completos.' },
+            { label: 'Apps de Escritorio', desc: 'Aplicaciones Windows en C# / WPF. Integración con hardware, automatización y herramientas internas.' },
+            { label: 'Herramientas y Scripts', desc: 'Automatización, scripts de servidor, bots y herramientas que te ahorran tiempo y trabajo manual.' },
+          ].map(s => (
+            <div class="dev-service-card">
+              <h3 class="service-label">{s.label}</h3>
+              <p class="service-desc">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="contact-cta">
+        <div>
+          <h2 class="cta-title">¿Tienes un proyecto?</h2>
+          <p class="cta-sub">Escríbeme con tu idea — te doy una evaluación honesta de alcance, tiempo y costo.</p>
+        </div>
+        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
+          <i class="fab fa-whatsapp"></i> (787) 243-9670
+        </a>
       </div>
 
       <div class="github-cta">
@@ -122,4 +150,41 @@ const projects = [
   letter-spacing: 2px; margin-top: 8px;
 }
 .github-sub { color: var(--muted); font-size: .9rem; margin-top: 6px }
+
+.dev-services { margin-top: 80px; padding-top: 64px; border-top: 1px solid var(--border) }
+.dev-services-grid {
+  display: grid; grid-template-columns: repeat(2,1fr);
+  gap: 12px; margin-top: 32px;
+}
+@media (max-width: 700px) { .dev-services-grid { grid-template-columns: 1fr } }
+.dev-service-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid #88e0b0;
+  border-radius: 12px; padding: 28px 24px;
+}
+.service-label {
+  font-family: var(--mono); font-size: .6rem;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: #88e0b0; margin-bottom: 10px;
+}
+.service-desc { font-size: .88rem; color: var(--muted); line-height: 1.65 }
+
+.contact-cta {
+  margin-top: 48px; padding: 48px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 32px; flex-wrap: wrap;
+}
+.cta-title {
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  letter-spacing: 2px; margin-bottom: 8px;
+}
+.cta-sub { color: var(--muted); font-size: .9rem; line-height: 1.7; max-width: 48ch }
+.btn.whatsapp {
+  background: #25d366; color: #fff;
+  border-color: transparent; flex-shrink: 0;
+}
+.btn.whatsapp:hover { opacity: .88; box-shadow: 0 0 24px rgba(37,211,102,.25) }
 </style>

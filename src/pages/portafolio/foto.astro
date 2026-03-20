@@ -2,14 +2,55 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+
+const services = [
+  {
+    label: 'Bodas',
+    desc: 'Cobertura completa del día: preparativos, ceremonia, recepción y momentos espontáneos. Entrega de galería editada en alta resolución.',
+  },
+  {
+    label: 'Quinceañeros',
+    desc: 'Sesión de retratos, cobertura del evento, court, waltz y celebración. Recuerdos que duran toda la vida.',
+  },
+  {
+    label: 'Eventos Corporativos',
+    desc: 'Conferencias, lanzamientos de productos, activaciones de marca y actividades de empresa. Fotos listas para uso en prensa y redes.',
+  },
+  {
+    label: 'Conciertos y Festivales',
+    desc: 'Fotografía de artistas en vivo, backstage, audiencia y ambiente. Manejo de condiciones de baja luz y acción rápida.',
+  },
+  {
+    label: 'Fiestas Patronales y Cultura',
+    desc: 'Documentación de la cultura puertorriqueña — fiestas patronales, tradiciones, carnavales y celebraciones locales.',
+  },
+  {
+    label: 'Retratos y Branding Personal',
+    desc: 'Sesiones para profesionales, artistas y creadores. Fotos de perfil, headshots y contenido visual para tu marca personal.',
+  },
+  {
+    label: 'Productos y Comercial',
+    desc: 'Fotografía de productos para e-commerce, catálogos y publicidad. Luz de estudio o ambientada según el producto.',
+  },
+  {
+    label: 'Fotografía de Calle',
+    desc: 'Proyectos personales y documentales del día a día en Puerto Rico — personas, lugares y momentos auténticos.',
+  },
+];
 ---
-<Base title="Fotografía — Marcos Santiago">
+<Base
+  title="Fotografía — Marcos Santiago"
+  description="Fotografía profesional en Puerto Rico — bodas, quinceañeros, eventos corporativos, conciertos, retratos y más. Basado en Aibonito, PR."
+>
   <Nav />
   <main style="padding-top:120px">
     <div class="container">
+
       <p class="section-label">Portafolio · Fotografía</p>
       <h1 class="section-title">Fotografía</h1>
-      <p class="section-sub">Eventos, cultura y momentos que definen lo que somos.</p>
+      <p class="section-sub">
+        Más de una década capturando momentos en Puerto Rico — desde bodas íntimas en las montañas hasta conciertos multitudinarios. Cada evento es único y lo trato como tal.
+      </p>
 
       <div class="gallery-cta">
         <div class="cta-icon">
@@ -20,8 +61,8 @@ import Footer from '../../components/Footer.astro';
         <div>
           <h2 class="cta-title">Ver la galería completa</h2>
           <p class="cta-sub">
-            Toda la fotografía vive en <strong>fotos.marcossantiago.com</strong> —<br>
-            cubierta de eventos, cultura puertorriqueña y proyectos personales.
+            Toda la fotografía vive en <strong>fotos.marcossantiago.com</strong> —
+            bodas, eventos, cultura puertorriqueña y proyectos personales.
           </p>
           <a href="https://fotos.marcossantiago.com" target="_blank" rel="noopener" class="btn primary" style="margin-top:24px">
             Abrir galería →
@@ -29,19 +70,49 @@ import Footer from '../../components/Footer.astro';
         </div>
       </div>
 
-      <div class="topics-grid">
-        {[
-          { label: 'Eventos', desc: 'Conciertos, festivales, celebraciones.' },
-          { label: 'Cultura', desc: 'Puerto Rico, sus personas y sus lugares.' },
-          { label: 'Retratos', desc: 'Personas, historias, momentos íntimos.' },
-          { label: 'Calle', desc: 'Lo que pasa cuando nadie está mirando.' },
-        ].map(t => (
-          <div class="topic-card">
-            <h3 class="topic-label">{t.label}</h3>
-            <p class="topic-desc">{t.desc}</p>
+      <div style="margin-top:80px">
+        <p class="section-label">Servicios</p>
+        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">Lo que cubro</h2>
+      </div>
+
+      <div class="services-grid">
+        {services.map(s => (
+          <div class="service-card">
+            <h3 class="service-label">{s.label}</h3>
+            <p class="service-desc">{s.desc}</p>
           </div>
         ))}
       </div>
+
+      <div class="includes-section">
+        <p class="section-label">Qué incluye</p>
+        <div class="includes-grid">
+          {[
+            'Consulta previa para entender tu visión',
+            'Cobertura completa del evento',
+            'Edición profesional de todas las fotos',
+            'Galería digital en alta resolución',
+            'Licencia de uso personal y comercial',
+            'Entrega en 7–14 días hábiles',
+          ].map(item => (
+            <div class="include-item">
+              <span class="include-check">✓</span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="contact-cta">
+        <div>
+          <h2 class="cta-title">¿Tienes un evento?</h2>
+          <p class="cta-sub">Escríbeme directamente para disponibilidad, paquetes y cotizaciones. Basado en Aibonito — disponible en toda Puerto Rico.</p>
+        </div>
+        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
+          <i class="fab fa-whatsapp"></i> (787) 243-9670
+        </a>
+      </div>
+
     </div>
   </main>
   <Footer />
@@ -64,21 +135,52 @@ import Footer from '../../components/Footer.astro';
 .cta-sub { color: var(--muted); font-size: .9rem; line-height: 1.7 }
 .cta-sub strong { color: var(--white) }
 
-.topics-grid {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  gap: 12px; margin-top: 48px;
+.services-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px; margin-top: 32px;
 }
-@media (max-width: 768px) { .topics-grid { grid-template-columns: repeat(2,1fr) } }
-@media (max-width: 400px) { .topics-grid { grid-template-columns: 1fr } }
+@media (max-width: 768px) { .services-grid { grid-template-columns: 1fr } }
 
-.topic-card {
+.service-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 24px 20px;
+  border-left: 3px solid #a0c4ff;
+  border-radius: 12px; padding: 28px 24px;
 }
-.topic-label {
+.service-label {
   font-family: var(--mono); font-size: .6rem;
   letter-spacing: 2.5px; text-transform: uppercase;
-  color: #a0c4ff; margin-bottom: 8px;
+  color: #a0c4ff; margin-bottom: 10px;
 }
-.topic-desc { font-size: .83rem; color: var(--muted); line-height: 1.55 }
+.service-desc { font-size: .88rem; color: var(--muted); line-height: 1.65 }
+
+.includes-section {
+  margin-top: 72px; padding-top: 56px;
+  border-top: 1px solid var(--border);
+}
+.includes-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 16px; margin-top: 28px;
+}
+@media (max-width: 600px) { .includes-grid { grid-template-columns: 1fr } }
+.include-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: .9rem; color: var(--muted);
+}
+.include-check {
+  color: #a0c4ff; font-family: var(--mono);
+  font-size: .75rem; flex-shrink: 0; margin-top: 2px;
+}
+
+.contact-cta {
+  margin-top: 64px; padding: 48px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 32px; flex-wrap: wrap;
+}
+.btn.whatsapp {
+  background: #25d366; color: #fff;
+  border-color: transparent; flex-shrink: 0;
+}
+.btn.whatsapp:hover { opacity: .88; box-shadow: 0 0 24px rgba(37,211,102,.25) }
 </style>
