@@ -1,10 +1,21 @@
 services:
-  marcossantiago:
-    build: .
+  marcossantiago-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: marcossantiago-web:latest
     container_name: marcossantiago-web
     restart: unless-stopped
     ports:
       - "3010:80"
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+
+  marcossantiago-bot:
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+    image: marcossantiago-bot:latest
+    container_name: marcossantiago-bot
+    restart: unless-stopped
+    ports:
+      - "3005:3005"
+    env_file: .env
