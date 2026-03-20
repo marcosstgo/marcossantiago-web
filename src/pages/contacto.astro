@@ -239,6 +239,43 @@ const channels = [
   border-top: 1px solid var(--border);
 }
 .loc-text { color: var(--muted); font-size: .9rem; margin-top: 8px }
+
+/* ── Terminal Form ── */
+.term-form {
+  display: flex; flex-direction: column; gap: 6px;
+  background: color-mix(in srgb, var(--white) 4%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px 16px;
+  margin-left: 16px;
+}
+.term-form-row {
+  display: flex; align-items: center; gap: 10px;
+}
+.term-f-label {
+  font-family: var(--mono); font-size: .62rem;
+  letter-spacing: 1px; color: var(--accent);
+  white-space: nowrap; flex-shrink: 0; width: 90px;
+}
+.term-f-input {
+  flex: 1; background: transparent;
+  border: none; border-bottom: 1px solid var(--border);
+  outline: none; padding: 4px 2px;
+  font-family: var(--mono); font-size: .78rem;
+  color: var(--white); transition: border-color .15s;
+}
+.term-f-input:focus { border-color: var(--accent) }
+.term-f-input::placeholder { color: var(--dim) }
+select.term-f-input option { background: var(--ink); color: var(--white) }
+.term-form-submit {
+  margin-top: 8px;
+  font-family: var(--mono); font-size: .58rem;
+  letter-spacing: 1.5px; text-transform: lowercase;
+  padding: 8px 14px; border-radius: 6px;
+  background: #25d366; color: #fff; border: none;
+  cursor: pointer; transition: opacity .15s;
+  align-self: flex-start;
+}
+.term-form-submit:hover { opacity: .88 }
 </style>
 
 <script>
@@ -288,22 +325,47 @@ const channels = [
     output.scrollTop = output.scrollHeight;
   }
 
-  function parseWhatsapp(text) {
-    const match = text.match(/\[WHATSAPP_READY:nombre=([^,\]]+),servicio=([^,\]]+),fecha=([^\]]+)\]/);
-    if (!match) return { clean: text, waData: null };
-    return {
-      clean: text.replace(match[0], '').trim(),
-      waData: { nombre: match[1], servicio: match[2], fecha: match[3] }
-    };
-  }
-
-  function addWaButton(waData) {
-    const msg = encodeURIComponent(`Hola Marcos! Soy ${waData.nombre}. Estuve en tu sitio web y me interesa: ${waData.servicio}. Fecha: ${waData.fecha}.`);
-    const div = document.createElement('div');
-    div.className = 'term-bot-line';
-    div.innerHTML = `<span class="term-gt">›</span><a href="https://wa.me/17872439670?text=${msg}" target="_blank" rel="noopener" class="term-wa-btn"><i class="fab fa-whatsapp"></i> Continuar por WhatsApp →</a>`;
-    output.appendChild(div);
-    scrollBottom();
+  function buildTermForm() {
+    const wrap = document.createElement('div');
+    wrap.className = 'term-form';
+    wrap.innerHTML = `
+      <div class="term-form-row"><span class="term-f-label">nombre    ›</span><input class="term-f-input" id="tf-nombre"   placeholder="Tu nombre *" /></div>
+      <div class="term-form-row"><span class="term-f-label">servicio  ›</span>
+        <select class="term-f-input" id="tf-servicio">
+          <option value="">Seleccionar *</option>
+          <option>Fotografía</option>
+          <option>Videografía</option>
+          <option>Diseño Gráfico</option>
+          <option>Desarrollo Web</option>
+        </select>
+      </div>
+      <div class="term-form-row"><span class="term-f-label">fecha     ›</span><input class="term-f-input" id="tf-fecha"    placeholder="Fecha del evento (opcional)" /></div>
+      <div class="term-form-row"><span class="term-f-label">contacto  ›</span><input class="term-f-input" id="tf-contacto" placeholder="Teléfono o email *" /></div>
+      <div class="term-form-row"><span class="term-f-label">mensaje   ›</span><input class="term-f-input" id="tf-mensaje"  placeholder="Mensaje adicional (opcional)" /></div>
+      <button class="term-form-submit">$ ./enviar_a_marcos --whatsapp</button>
+    `;
+    wrap.querySelector('.term-form-submit').addEventListener('click', async () => {
+      const nombre   = wrap.querySelector('#tf-nombre').value.trim();
+      const servicio = wrap.querySelector('#tf-servicio').value;
+      const fecha    = wrap.querySelector('#tf-fecha').value.trim() || 'Por coordinar';
+      const contacto = wrap.querySelector('#tf-contacto').value.trim();
+      const mensaje  = wrap.querySelector('#tf-mensaje').value.trim();
+      if (!nombre || !servicio || !contacto) {
+        if (!nombre)   wrap.querySelector('#tf-nombre').style.borderColor   = 'var(--accent)';
+        if (!servicio) wrap.querySelector('#tf-servicio').style.borderColor = 'var(--accent)';
+        if (!contacto) wrap.querySelector('#tf-contacto').style.borderColor = 'var(--accent)';
+        return;
+      }
+      await fetch('/ms-chat/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, servicio, fecha, contacto, mensaje }),
+      });
+      const waMsg = encodeURIComponent(`Hola Marcos! Soy ${nombre}. Me interesa: ${servicio}. Fecha: ${fecha}. Contacto: ${contacto}.${mensaje ? ' ' + mensaje : ''}`);
+      window.open(`https://wa.me/17872439670?text=${waMsg}`, '_blank');
+      wrap.innerHTML = `<div class="term-bot-line"><span class="term-gt">›</span><span style="color:#25d366">✓ Listo ${nombre}! Abriendo WhatsApp...</span></div>`;
+    });
+    return wrap;
   }
 
   async function sendMsg(text) {
@@ -327,9 +389,10 @@ const channels = [
       });
       const data = await res.json();
       document.getElementById('term-typing-indicator')?.remove();
-      const { clean, waData } = parseWhatsapp(data.reply);
+      const showForm = data.reply.includes('[SHOW_FORM]');
+      const clean    = data.reply.replace('[SHOW_FORM]', '').trim();
       addBotLine(clean);
-      if (waData) addWaButton(waData);
+      if (showForm) output.appendChild(buildTermForm());
       history.push({ role: 'assistant', content: data.reply });
     } catch {
       document.getElementById('term-typing-indicator')?.remove();
