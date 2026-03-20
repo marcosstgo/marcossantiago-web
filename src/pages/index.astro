@@ -60,7 +60,11 @@ const devProjects = [
 
   <!-- ═══ HERO ═══ -->
   <section class="hero">
-    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-bg" aria-hidden="true">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
     <div class="container">
       <div class="hero-inner">
 
@@ -171,9 +175,60 @@ const devProjects = [
 }
 .hero-bg {
   position: absolute; inset: 0; z-index: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 70% 40%, rgba(232,200,74,.05), transparent 60%),
-    radial-gradient(ellipse 40% 40% at 5% 90%, color-mix(in srgb, var(--white) 2%, transparent), transparent 50%);
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: .5;
+  will-change: transform;
+}
+
+/* Blob 1 — azul accent, lado derecho */
+.blob-1 {
+  width: 600px; height: 600px;
+  top: -10%; right: -5%;
+  background: radial-gradient(circle, rgba(74,108,247,.25), transparent 70%);
+  animation: float1 18s ease-in-out infinite;
+}
+
+/* Blob 2 — índigo más oscuro, centro-izquierda */
+.blob-2 {
+  width: 500px; height: 500px;
+  bottom: -15%; left: 5%;
+  background: radial-gradient(circle, rgba(53,88,232,.2), transparent 70%);
+  animation: float2 22s ease-in-out infinite;
+}
+
+/* Blob 3 — violeta sutil, centro */
+.blob-3 {
+  width: 400px; height: 400px;
+  top: 30%; left: 35%;
+  background: radial-gradient(circle, rgba(120,80,255,.12), transparent 70%);
+  animation: float3 26s ease-in-out infinite;
+}
+
+@keyframes float1 {
+  0%, 100% { transform: translate(0, 0) scale(1) }
+  33%       { transform: translate(-40px, 30px) scale(1.08) }
+  66%       { transform: translate(30px, -20px) scale(.95) }
+}
+@keyframes float2 {
+  0%, 100% { transform: translate(0, 0) scale(1) }
+  33%       { transform: translate(50px, -40px) scale(1.1) }
+  66%       { transform: translate(-30px, 25px) scale(.92) }
+}
+@keyframes float3 {
+  0%, 100% { transform: translate(0, 0) scale(1) }
+  25%       { transform: translate(-30px, 40px) scale(1.05) }
+  50%       { transform: translate(40px, -30px) scale(.96) }
+  75%       { transform: translate(-20px, -20px) scale(1.08) }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob { animation: none }
 }
 .hero-inner {
   position: relative; z-index: 1;
