@@ -22,6 +22,10 @@ const current = Astro.url.pathname;
           >{l.label}</a>
         ))}
       </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
+        <i class="fa-solid fa-sun"  id="iconSun"></i>
+        <i class="fa-solid fa-moon" id="iconMoon"></i>
+      </button>
       <button class="nav-hamburger" id="navToggle" aria-label="Menú">
         <span></span><span></span><span></span>
       </button>
@@ -48,7 +52,7 @@ const current = Astro.url.pathname;
     transition: background .3s, border-color .3s;
   }
   header.scrolled {
-    background: rgba(8,8,8,.92);
+    background: color-mix(in srgb, var(--ink) 92%, transparent);
     border-color: var(--border);
     backdrop-filter: blur(12px);
   }
@@ -109,7 +113,7 @@ const current = Astro.url.pathname;
   .mobile-nav {
     display: none;
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(8,8,8,.97);
+    background: color-mix(in srgb, var(--ink) 97%, transparent);
     z-index: 99;
     visibility: hidden;
     opacity: 0;
@@ -131,6 +135,20 @@ const current = Astro.url.pathname;
   }
   .mobile-nav-link:hover { color: var(--white) }
 
+  .theme-toggle {
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    background: none; border: 1px solid var(--border);
+    border-radius: 8px; cursor: pointer;
+    color: var(--muted); font-size: .8rem;
+    transition: .15s; flex-shrink: 0;
+  }
+  .theme-toggle:hover { border-color: var(--border-h); color: var(--white) }
+  #iconSun  { display: none }
+  #iconMoon { display: block }
+  :global([data-theme="light"]) #iconSun  { display: block }
+  :global([data-theme="light"]) #iconMoon { display: none }
+
   @media (max-width: 768px) {
     .nav-links { display: none }
     .nav-hamburger { display: flex }
@@ -139,6 +157,14 @@ const current = Astro.url.pathname;
 </style>
 
 <script>
+  // Theme toggle
+  const themeBtn = document.getElementById('themeToggle');
+  themeBtn?.addEventListener('click', () => {
+    const isLight = document.documentElement.dataset.theme === 'light';
+    document.documentElement.dataset.theme = isLight ? 'dark' : 'light';
+    localStorage.setItem('ms-theme', isLight ? 'dark' : 'light');
+  });
+
   // Scroll header
   const header = document.querySelector('header');
   window.addEventListener('scroll', () => {

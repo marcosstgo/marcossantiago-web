@@ -1,15 +1,15 @@
 /* ── Design Tokens ── */
 :root {
-  --ink:     #080808;
-  --surface: #0f0f0f;
-  --panel:   #161616;
-  --border:  rgba(255,255,255,.07);
-  --border-h:rgba(255,255,255,.14);
-  --white:   #f0ede8;
-  --muted:   rgba(240,237,232,.4);
-  --dim:     rgba(240,237,232,.25);
-  --accent:  #e8c84a;
-  --accent-dim: rgba(232,200,74,.15);
+  --ink:        #080a0f;
+  --surface:    #0d1018;
+  --panel:      #131824;
+  --border:     rgba(255,255,255,.07);
+  --border-h:   rgba(255,255,255,.14);
+  --white:      #f0ede8;
+  --muted:      rgba(240,237,232,.4);
+  --dim:        rgba(240,237,232,.25);
+  --accent:     #4a6cf7;
+  --accent-dim: rgba(74,108,247,.15);
 
   --display: 'Bebas Neue', cursive;
   --body:    'DM Sans', sans-serif;
@@ -17,6 +17,20 @@
 
   --radius:  12px;
   --max:     1140px;
+}
+
+/* ── Light mode ── */
+[data-theme="light"] {
+  --ink:        #f2f1ef;
+  --surface:    #e9e7e3;
+  --panel:      #dedad5;
+  --border:     rgba(0,0,0,.09);
+  --border-h:   rgba(0,0,0,.18);
+  --white:      #0d0f14;
+  --muted:      rgba(13,15,20,.45);
+  --dim:        rgba(13,15,20,.28);
+  --accent:     #3558e8;
+  --accent-dim: rgba(53,88,232,.12);
 }
 
 /* ── Reset ── */
