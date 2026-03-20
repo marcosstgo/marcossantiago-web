@@ -193,6 +193,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   #ms-chat-send:hover { opacity: .85 }
   #ms-chat-send:disabled { opacity: .4; cursor: default }
 
+  .ms-wa-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #25d366; color: #fff;
+    padding: 10px 16px; border-radius: 10px;
+    font-family: var(--mono); font-size: .58rem;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    text-decoration: none; margin-top: 4px;
+    transition: opacity .15s;
+  }
+  .ms-wa-btn:hover { opacity: .88 }
+
   #ms-quick-replies {
     display: flex; flex-wrap: wrap; gap: 6px;
     margin-top: 4px;
@@ -239,13 +250,30 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       if (isOpen) input.focus();
     });
 
+    function parseWhatsapp(text) {
+      const match = text.match(/\[WHATSAPP_READY:nombre=([^,\]]+),servicio=([^,\]]+),fecha=([^\]]+)\]/);
+      if (!match) return { clean: text, waData: null };
+      const clean = text.replace(match[0], '').trim();
+      return { clean, waData: { nombre: match[1], servicio: match[2], fecha: match[3] } };
+    }
+
+    function buildWaButton(waData) {
+      const msg = encodeURIComponent(`Hola Marcos! Soy ${waData.nombre}. Estuve en tu sitio web y me interesa: ${waData.servicio}. Fecha: ${waData.fecha}.`);
+      const div = document.createElement('div');
+      div.className = 'ms-msg ms-msg-bot';
+      div.innerHTML = `<a href="https://wa.me/17872439670?text=${msg}" target="_blank" rel="noopener" class="ms-wa-btn"><i class="fab fa-whatsapp"></i> Continuar por WhatsApp</a>`;
+      return div;
+    }
+
     function addMsg(role, text) {
+      const { clean, waData } = role === 'assistant' ? parseWhatsapp(text) : { clean: text, waData: null };
       const div = document.createElement('div');
       div.className = 'ms-msg ms-msg-' + (role === 'user' ? 'user' : 'bot');
       const p = document.createElement('p');
-      p.textContent = text;
+      p.textContent = clean;
       div.appendChild(p);
       msgs.appendChild(div);
+      if (waData) msgs.appendChild(buildWaButton(waData));
       msgs.scrollTop = msgs.scrollHeight;
       return div;
     }

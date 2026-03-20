@@ -224,6 +224,16 @@ const channels = [
 }
 #term-input::placeholder { color: var(--dim) }
 
+.term-wa-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #25d366; color: #fff;
+  padding: 8px 16px; border-radius: 6px;
+  font-family: var(--mono); font-size: .62rem;
+  letter-spacing: 1.5px; text-decoration: none;
+  transition: opacity .15s; margin-top: 2px;
+}
+.term-wa-btn:hover { opacity: .88 }
+
 .location-note {
   margin-top: 64px; padding-top: 40px;
   border-top: 1px solid var(--border);
@@ -278,6 +288,24 @@ const channels = [
     output.scrollTop = output.scrollHeight;
   }
 
+  function parseWhatsapp(text) {
+    const match = text.match(/\[WHATSAPP_READY:nombre=([^,\]]+),servicio=([^,\]]+),fecha=([^\]]+)\]/);
+    if (!match) return { clean: text, waData: null };
+    return {
+      clean: text.replace(match[0], '').trim(),
+      waData: { nombre: match[1], servicio: match[2], fecha: match[3] }
+    };
+  }
+
+  function addWaButton(waData) {
+    const msg = encodeURIComponent(`Hola Marcos! Soy ${waData.nombre}. Estuve en tu sitio web y me interesa: ${waData.servicio}. Fecha: ${waData.fecha}.`);
+    const div = document.createElement('div');
+    div.className = 'term-bot-line';
+    div.innerHTML = `<span class="term-gt">›</span><a href="https://wa.me/17872439670?text=${msg}" target="_blank" rel="noopener" class="term-wa-btn"><i class="fab fa-whatsapp"></i> Continuar por WhatsApp →</a>`;
+    output.appendChild(div);
+    scrollBottom();
+  }
+
   async function sendMsg(text) {
     if (!text) return;
     input.value = '';
@@ -299,7 +327,9 @@ const channels = [
       });
       const data = await res.json();
       document.getElementById('term-typing-indicator')?.remove();
-      addBotLine(data.reply);
+      const { clean, waData } = parseWhatsapp(data.reply);
+      addBotLine(clean);
+      if (waData) addWaButton(waData);
       history.push({ role: 'assistant', content: data.reply });
     } catch {
       document.getElementById('term-typing-indicator')?.remove();
