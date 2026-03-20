@@ -240,44 +240,6 @@ const channels = [
 }
 .loc-text { color: var(--muted); font-size: .9rem; margin-top: 8px }
 
-/* ── Terminal Form ── */
-.term-form {
-  display: flex; flex-direction: column; gap: 0;
-  margin-left: 18px; margin-top: 4px;
-}
-.term-form-row {
-  display: flex; align-items: center; gap: 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
-  padding: 5px 0;
-}
-.term-form-row:first-child { border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent) }
-.term-f-label {
-  font-family: var(--mono); font-size: .65rem;
-  letter-spacing: .5px; color: var(--accent);
-  white-space: nowrap; flex-shrink: 0; width: 96px;
-}
-.term-f-input {
-  flex: 1; background: transparent;
-  border: none; outline: none;
-  padding: 2px 6px;
-  font-family: var(--mono); font-size: .78rem;
-  color: var(--white); transition: color .15s;
-  appearance: none; -webkit-appearance: none;
-}
-.term-f-input:focus { color: color-mix(in srgb, var(--white) 100%, transparent) }
-.term-f-input::placeholder { color: var(--dim) }
-select.term-f-input { cursor: pointer }
-select.term-f-input option { background: #0e1016; color: var(--white) }
-.term-form-submit {
-  margin-top: 10px;
-  font-family: var(--mono); font-size: .6rem;
-  letter-spacing: 1px;
-  padding: 7px 16px; border-radius: 4px;
-  background: #25d366; color: #fff; border: none;
-  cursor: pointer; transition: opacity .15s;
-  align-self: flex-start;
-}
-.term-form-submit:hover { opacity: .88 }
 </style>
 
 <script>
@@ -285,6 +247,64 @@ select.term-f-input option { background: #0e1016; color: var(--white) }
   const output  = document.getElementById('term-output');
   const input   = document.getElementById('term-input');
   const history = [];
+
+  // ── Wizard ────────────────────────────────────────────────────────
+  let wizard = null; // null | { step, data }
+
+  const STEPS = [
+    { key: 'nombre',   q: '¿Cuál es tu nombre?' },
+    { key: 'fecha',    q: '¿Fecha del evento? (Enter para omitir)' },
+    { key: 'contacto', q: '¿Teléfono o email para contactarte?' },
+  ];
+
+  function startWizard(service) {
+    wizard = { step: 0, data: { servicio: service } };
+    input.disabled = false;
+    input.focus();
+    setTimeout(() => addBotLine(STEPS[0].q), 380);
+  }
+
+  async function handleWizardInput(text) {
+    const step = STEPS[wizard.step];
+    wizard.data[step.key] = text || (step.key === 'fecha' ? 'Por coordinar' : '');
+    wizard.step++;
+
+    if (wizard.step < STEPS.length) {
+      setTimeout(() => addBotLine(STEPS[wizard.step].q), 300);
+      return;
+    }
+
+    // All answers collected
+    const { nombre, servicio, fecha, contacto } = wizard.data;
+    wizard = null;
+
+    try {
+      await fetch('/ms-chat/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, servicio, fecha: fecha || 'Por coordinar', contacto, mensaje: '' }),
+      });
+    } catch (_) {}
+
+    const waMsg = encodeURIComponent(
+      `Hola Marcos! Soy ${nombre}. Me interesa: ${servicio}. Fecha: ${fecha || 'Por coordinar'}. Contacto: ${contacto}.`
+    );
+    addBotLine(`Perfecto ${nombre}! Abriendo WhatsApp para conectarte con Marcos...`);
+    setTimeout(() => window.open(`https://wa.me/17872439670?text=${waMsg}`, '_blank'), 900);
+
+    input.disabled = false;
+    input.focus();
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────
+  function stripMd(t) {
+    return t
+      .replace(/\*\*(.+?)\*\*/g, '$1')
+      .replace(/\*(.+?)\*/g,     '$1')
+      .replace(/`(.+?)`/g,       '$1')
+      .replace(/^#{1,3}\s+/gm,   '')
+      .trim();
+  }
 
   function addUserLine(text) {
     const div = document.createElement('div');
@@ -294,28 +314,18 @@ select.term-f-input option { background: #0e1016; color: var(--white) }
     scrollBottom();
   }
 
-  function stripMd(text) {
-    return text
-      .replace(/\*\*(.+?)\*\*/g, '$1')
-      .replace(/\*(.+?)\*/g, '$1')
-      .replace(/`(.+?)`/g, '$1')
-      .replace(/^#{1,3}\s+/gm, '')
-      .trim();
-  }
-
   function addBotLine(text) {
     const clean = stripMd(text);
     const div = document.createElement('div');
     div.className = 'term-bot-line';
-    const gt   = document.createElement('span');
+    const gt  = document.createElement('span');
     gt.className = 'term-gt';
     gt.textContent = '›';
-    const msg  = document.createElement('span');
+    const msg = document.createElement('span');
     div.appendChild(gt);
     div.appendChild(msg);
     output.appendChild(div);
     scrollBottom();
-    // Typewriter effect
     let i = 0;
     const timer = setInterval(() => {
       msg.textContent += clean[i++];
@@ -337,59 +347,23 @@ select.term-f-input option { background: #0e1016; color: var(--white) }
     output.scrollTop = output.scrollHeight;
   }
 
-  function buildTermForm() {
-    const wrap = document.createElement('div');
-    wrap.className = 'term-form';
-    wrap.innerHTML = `
-      <div class="term-form-row"><span class="term-f-label">nombre    ›</span><input class="term-f-input" id="tf-nombre"   placeholder="Tu nombre *" /></div>
-      <div class="term-form-row"><span class="term-f-label">servicio  ›</span>
-        <select class="term-f-input" id="tf-servicio">
-          <option value="">Seleccionar *</option>
-          <option>Fotografía</option>
-          <option>Videografía</option>
-          <option>Diseño Gráfico</option>
-          <option>Desarrollo Web</option>
-        </select>
-      </div>
-      <div class="term-form-row"><span class="term-f-label">fecha     ›</span><input class="term-f-input" id="tf-fecha"    placeholder="Fecha del evento (opcional)" /></div>
-      <div class="term-form-row"><span class="term-f-label">contacto  ›</span><input class="term-f-input" id="tf-contacto" placeholder="Teléfono o email *" /></div>
-      <div class="term-form-row"><span class="term-f-label">mensaje   ›</span><input class="term-f-input" id="tf-mensaje"  placeholder="Mensaje adicional (opcional)" /></div>
-      <button class="term-form-submit">$ ./enviar_a_marcos --whatsapp</button>
-    `;
-    wrap.querySelector('.term-form-submit').addEventListener('click', async () => {
-      const nombre   = wrap.querySelector('#tf-nombre').value.trim();
-      const servicio = wrap.querySelector('#tf-servicio').value;
-      const fecha    = wrap.querySelector('#tf-fecha').value.trim() || 'Por coordinar';
-      const contacto = wrap.querySelector('#tf-contacto').value.trim();
-      const mensaje  = wrap.querySelector('#tf-mensaje').value.trim();
-      if (!nombre || !servicio || !contacto) {
-        if (!nombre)   wrap.querySelector('#tf-nombre').style.borderColor   = 'var(--accent)';
-        if (!servicio) wrap.querySelector('#tf-servicio').style.borderColor = 'var(--accent)';
-        if (!contacto) wrap.querySelector('#tf-contacto').style.borderColor = 'var(--accent)';
-        return;
-      }
-      await fetch('/ms-chat/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, servicio, fecha, contacto, mensaje }),
-      });
-      const waMsg = encodeURIComponent(`Hola Marcos! Soy ${nombre}. Me interesa: ${servicio}. Fecha: ${fecha}. Contacto: ${contacto}.${mensaje ? ' ' + mensaje : ''}`);
-      window.open(`https://wa.me/17872439670?text=${waMsg}`, '_blank');
-      wrap.innerHTML = `<div class="term-bot-line"><span class="term-gt">›</span><span style="color:#25d366">✓ Listo ${nombre}! Abriendo WhatsApp...</span></div>`;
-    });
-    return wrap;
-  }
-
+  // ── Chat ──────────────────────────────────────────────────────────
   async function sendMsg(text) {
     if (!text) return;
     input.value = '';
+    addUserLine(text);
+
+    // In wizard mode — collect answers locally
+    if (wizard !== null) {
+      handleWizardInput(text);
+      return;
+    }
+
     input.disabled = true;
 
-    // Remove quick replies
     const quick = document.getElementById('term-quick');
     if (quick) quick.remove();
 
-    addUserLine(text);
     history.push({ role: 'user', content: text });
     addTyping();
 
@@ -401,11 +375,17 @@ select.term-f-input option { background: #0e1016; color: var(--white) }
       });
       const data = await res.json();
       document.getElementById('term-typing-indicator')?.remove();
-      const showForm = data.reply.includes('[SHOW_FORM]');
-      const clean    = data.reply.replace('[SHOW_FORM]', '').trim();
+
+      const triggerWizard = data.reply.includes('[SHOW_FORM]');
+      const clean = data.reply.replace('[SHOW_FORM]', '').trim();
       addBotLine(clean);
-      if (showForm) output.appendChild(buildTermForm());
       history.push({ role: 'assistant', content: data.reply });
+
+      if (triggerWizard) {
+        const service = history.filter(m => m.role === 'user').slice(-1)[0]?.content || 'Por definir';
+        startWizard(service);
+        return; // wizard re-enables input
+      }
     } catch {
       document.getElementById('term-typing-indicator')?.remove();
       addBotLine('Error de conexión. Escríbeme directo: wa.me/17872439670');
