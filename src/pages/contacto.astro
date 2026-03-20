@@ -151,7 +151,7 @@ const channels = [
 .terminal-section { margin-top: 80px; padding-top: 64px; border-top: 1px solid var(--border) }
 
 .terminal {
-  background: #0a0c10;
+  background: var(--ink);
   border: 1px solid var(--border);
   border-radius: 14px; overflow: hidden;
   font-family: var(--mono);
@@ -161,7 +161,7 @@ const channels = [
   display: grid; grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 12px 16px;
-  background: color-mix(in srgb, var(--white) 5%, transparent);
+  background: var(--panel);
   border-bottom: 1px solid var(--border);
 }
 .term-dots { display: flex; gap: 6px }
@@ -215,7 +215,7 @@ const channels = [
   display: flex; align-items: center; gap: 10px;
   padding: 14px 20px;
   border-top: 1px solid var(--border);
-  background: color-mix(in srgb, var(--white) 2%, transparent);
+  background: var(--surface);
 }
 #term-input {
   flex: 1; background: transparent; border: none; outline: none;
