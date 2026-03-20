@@ -16,6 +16,7 @@ const links = [
       <div class="footer-left">
         <span class="footer-name">MARCOS SANTIAGO</span>
         <span class="footer-copy">© {year} · Aibonito, Puerto Rico</span>
+        <a href="/terminos/" class="footer-terms">Términos y Condiciones</a>
       </div>
       <div class="footer-social">
         {links.map(l => (
@@ -52,6 +53,16 @@ const links = [
     text-transform: uppercase;
     color: var(--muted);
   }
+  .footer-terms {
+    font-family: var(--mono);
+    font-size: .5rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .footer-terms:hover { color: var(--muted) }
   .footer-social { display: flex; gap: 4px }
   .social-btn {
     width: 36px; height: 36px;
