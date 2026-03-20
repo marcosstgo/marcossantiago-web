@@ -8,7 +8,7 @@ interface Props {
 const {
   title,
   description = 'Marcos Santiago — Graphic Artist, Photographer, Videographer & Developer. Aibonito, Puerto Rico.',
-  image = '/img/og.png'
+  image = '/marcos-photo.jpg'
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -67,11 +67,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
           <p>¡Hola! Soy el asistente virtual de Marcos. ¿En qué puedo ayudarte? 📷</p>
         </div>
         <div id="ms-quick-replies">
-          <button class="ms-quick-btn">📸 Fotografía de boda</button>
-          <button class="ms-quick-btn">🎬 Video para evento</button>
-          <button class="ms-quick-btn">🎨 Quiero un logo</button>
-          <button class="ms-quick-btn">💻 Proyecto web</button>
-          <button class="ms-quick-btn">💰 Cotización</button>
+          <button class="ms-quick-btn">Fotografía de boda</button>
+          <button class="ms-quick-btn">Video para evento</button>
+          <button class="ms-quick-btn">Quiero un logo</button>
+          <button class="ms-quick-btn">Proyecto web</button>
+          <button class="ms-quick-btn">Cotización</button>
         </div>
       </div>
 
@@ -318,9 +318,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ nombre, servicio, fecha, contacto, mensaje }),
         });
-        const waMsg = encodeURIComponent(`Hola Marcos! Soy ${nombre}. Me interesa: ${servicio}. Fecha: ${fecha}. Contacto: ${contacto}.${mensaje ? ' ' + mensaje : ''}`);
-        window.open(`https://wa.me/17872439670?text=${waMsg}`, '_blank');
-        wrap.innerHTML = `<p class="ms-form-thanks">¡Listo, ${nombre}! Abriendo WhatsApp... 🎉</p>`;
+        wrap.innerHTML = `<p class="ms-form-thanks">Mensaje enviado a Marcos Santiago. Te contactará pronto.</p>`;
       });
       return wrap;
     }
