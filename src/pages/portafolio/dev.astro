@@ -84,7 +84,7 @@ const projects = [
   position: relative; overflow: hidden;
   transition: border-color .2s, transform .2s;
 }
-.project-card:hover { border-color: rgba(255,255,255,.2); transform: translateY(-3px) }
+.project-card:hover { border-color: color-mix(in srgb, var(--white) 20%, transparent); transform: translateY(-3px) }
 .project-top { display: flex; align-items: center; justify-content: space-between }
 .project-year {
   font-family: var(--mono); font-size: .5rem;
@@ -107,7 +107,7 @@ const projects = [
   font-family: var(--mono); font-size: .48rem;
   letter-spacing: 1.5px; text-transform: uppercase;
   padding: 3px 8px; border-radius: 4px;
-  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--white) 4%, transparent); border: 1px solid var(--border);
   color: var(--muted);
 }
 

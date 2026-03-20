@@ -90,7 +90,7 @@ body::after {
   letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
   padding: 11px 20px; border-radius: 8px;
   border: 1px solid var(--border);
-  background: transparent; color: rgba(240,237,232,.7);
+  background: transparent; color: color-mix(in srgb, var(--white) 70%, transparent);
   transition: .2s ease; white-space: nowrap; cursor: pointer;
 }
 .btn:hover { border-color: var(--border-h); color: var(--white) }
@@ -99,7 +99,7 @@ body::after {
   border-color: transparent;
 }
 .btn.primary:hover { opacity: .88; box-shadow: 0 0 24px rgba(232,200,74,.2) }
-.btn.ghost { border-color: rgba(255,255,255,.15) }
+.btn.ghost { border-color: color-mix(in srgb, var(--white) 15%, transparent) }
 
 /* ── Section spacing ── */
 .section { padding: 96px 0 }

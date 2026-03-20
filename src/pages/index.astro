@@ -168,7 +168,7 @@ const devProjects = [
   position: absolute; inset: 0; z-index: 0;
   background:
     radial-gradient(ellipse 80% 60% at 70% 40%, rgba(232,200,74,.05), transparent 60%),
-    radial-gradient(ellipse 40% 40% at 5% 90%, rgba(255,255,255,.02), transparent 50%);
+    radial-gradient(ellipse 40% 40% at 5% 90%, color-mix(in srgb, var(--white) 2%, transparent), transparent 50%);
 }
 .hero-inner {
   position: relative; z-index: 1;
@@ -193,7 +193,7 @@ const devProjects = [
 .hero-title .name { display: block }
 .hero-title .last {
   display: block;
-  -webkit-text-stroke: 1px rgba(240,237,232,.35);
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--white) 35%, transparent);
   color: transparent;
 }
 .hero-tagline {
@@ -274,7 +274,7 @@ const devProjects = [
   font-family: var(--mono); font-size: .48rem;
   letter-spacing: 1.5px; text-transform: uppercase;
   padding: 3px 8px; border-radius: 4px;
-  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--white) 4%, transparent); border: 1px solid var(--border);
   color: var(--muted);
 }
 .dev-arrow { font-size: 1.2rem; color: var(--muted); flex-shrink: 0; transition: transform .2s }
