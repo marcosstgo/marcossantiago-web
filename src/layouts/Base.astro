@@ -193,16 +193,36 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   #ms-chat-send:hover { opacity: .85 }
   #ms-chat-send:disabled { opacity: .4; cursor: default }
 
-  .ms-wa-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: #25d366; color: #fff;
-    padding: 10px 16px; border-radius: 10px;
+  .ms-lead-form {
+    display: flex; flex-direction: column; gap: 8px;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px;
+    margin-top: 4px;
+  }
+  .ms-field {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 12px;
+    font-size: .82rem; color: var(--white);
+    font-family: var(--body); outline: none;
+    transition: border-color .15s; width: 100%;
+    resize: none;
+  }
+  .ms-field:focus { border-color: var(--accent) }
+  .ms-field::placeholder { color: var(--muted) }
+  select.ms-field option { background: var(--surface); color: var(--white) }
+  .ms-form-submit {
+    background: #25d366; color: #fff; border: none;
+    border-radius: 8px; padding: 10px;
     font-family: var(--mono); font-size: .58rem;
     letter-spacing: 1.5px; text-transform: uppercase;
-    text-decoration: none; margin-top: 4px;
-    transition: opacity .15s;
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; gap: 8px; transition: opacity .15s;
   }
-  .ms-wa-btn:hover { opacity: .88 }
+  .ms-form-submit:hover { opacity: .88 }
+  .ms-form-thanks {
+    font-size: .85rem; color: #25d366;
+    text-align: center; padding: 8px 0; margin: 0;
+  }
 
   #ms-quick-replies {
     display: flex; flex-wrap: wrap; gap: 6px;
@@ -250,32 +270,59 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       if (isOpen) input.focus();
     });
 
-    function parseWhatsapp(text) {
-      const match = text.match(/\[WHATSAPP_READY:nombre=([^,\]]+),servicio=([^,\]]+),fecha=([^\]]+)\]/);
-      if (!match) return { clean: text, waData: null };
-      const clean = text.replace(match[0], '').trim();
-      return { clean, waData: { nombre: match[1], servicio: match[2], fecha: match[3] } };
-    }
-
-    function buildWaButton(waData) {
-      const msg = encodeURIComponent(`Hola Marcos! Soy ${waData.nombre}. Estuve en tu sitio web y me interesa: ${waData.servicio}. Fecha: ${waData.fecha}.`);
-      const div = document.createElement('div');
-      div.className = 'ms-msg ms-msg-bot';
-      div.innerHTML = `<a href="https://wa.me/17872439670?text=${msg}" target="_blank" rel="noopener" class="ms-wa-btn"><i class="fab fa-whatsapp"></i> Continuar por WhatsApp</a>`;
-      return div;
-    }
-
     function addMsg(role, text) {
-      const { clean, waData } = role === 'assistant' ? parseWhatsapp(text) : { clean: text, waData: null };
+      const clean = text.replace('[SHOW_FORM]', '').trim();
+      const showForm = text.includes('[SHOW_FORM]');
       const div = document.createElement('div');
       div.className = 'ms-msg ms-msg-' + (role === 'user' ? 'user' : 'bot');
       const p = document.createElement('p');
       p.textContent = clean;
       div.appendChild(p);
       msgs.appendChild(div);
-      if (waData) msgs.appendChild(buildWaButton(waData));
+      if (showForm) msgs.appendChild(buildLeadForm());
       msgs.scrollTop = msgs.scrollHeight;
       return div;
+    }
+
+    function buildLeadForm() {
+      const wrap = document.createElement('div');
+      wrap.className = 'ms-lead-form';
+      wrap.innerHTML = `
+        <input type="text"   class="ms-field" id="ms-f-nombre"   placeholder="Tu nombre *" />
+        <select              class="ms-field" id="ms-f-servicio">
+          <option value="">Servicio *</option>
+          <option>Fotografía</option>
+          <option>Videografía</option>
+          <option>Diseño Gráfico</option>
+          <option>Desarrollo Web</option>
+        </select>
+        <input type="text"   class="ms-field" id="ms-f-fecha"    placeholder="Fecha del evento (ej: 15 de junio)" />
+        <input type="text"   class="ms-field" id="ms-f-contacto" placeholder="Teléfono o email *" />
+        <textarea            class="ms-field" id="ms-f-mensaje"  placeholder="Mensaje adicional (opcional)" rows="2"></textarea>
+        <button class="ms-form-submit"><i class="fab fa-whatsapp"></i> Enviar a Marcos</button>
+      `;
+      wrap.querySelector('.ms-form-submit').addEventListener('click', async () => {
+        const nombre   = wrap.querySelector('#ms-f-nombre').value.trim();
+        const servicio = wrap.querySelector('#ms-f-servicio').value;
+        const fecha    = wrap.querySelector('#ms-f-fecha').value.trim() || 'Por coordinar';
+        const contacto = wrap.querySelector('#ms-f-contacto').value.trim();
+        const mensaje  = wrap.querySelector('#ms-f-mensaje').value.trim();
+        if (!nombre || !servicio || !contacto) {
+          wrap.querySelector('#ms-f-nombre').style.borderColor = nombre   ? '' : 'var(--accent)';
+          wrap.querySelector('#ms-f-servicio').style.borderColor = servicio ? '' : 'var(--accent)';
+          wrap.querySelector('#ms-f-contacto').style.borderColor = contacto ? '' : 'var(--accent)';
+          return;
+        }
+        await fetch('/ms-chat/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, servicio, fecha, contacto, mensaje }),
+        });
+        const waMsg = encodeURIComponent(`Hola Marcos! Soy ${nombre}. Me interesa: ${servicio}. Fecha: ${fecha}. Contacto: ${contacto}.${mensaje ? ' ' + mensaje : ''}`);
+        window.open(`https://wa.me/17872439670?text=${waMsg}`, '_blank');
+        wrap.innerHTML = `<p class="ms-form-thanks">¡Listo, ${nombre}! Abriendo WhatsApp... 🎉</p>`;
+      });
+      return wrap;
     }
 
     async function sendMsg() {

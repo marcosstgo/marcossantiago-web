@@ -50,6 +50,13 @@ class Message(BaseModel):
 class ChatRequest(BaseModel):
     messages: List[Message]
 
+class LeadRequest(BaseModel):
+    nombre: str
+    servicio: str
+    fecha: str
+    contacto: str
+    mensaje: str = ""
+
 
 @app.post("/chat")
 async def chat(req: ChatRequest):
@@ -67,6 +74,26 @@ async def chat(req: ChatRequest):
     await notify_telegram(messages)
 
     return {"reply": reply}
+
+
+@app.post("/lead")
+async def lead(req: LeadRequest):
+    if TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
+        lines = [
+            "🎯 *Nuevo lead — marcossantiago.com*",
+            f"👤 Nombre: {req.nombre}",
+            f"🛠 Servicio: {req.servicio}",
+            f"📅 Fecha: {req.fecha}",
+            f"📞 Contacto: {req.contacto}",
+        ]
+        if req.mensaje:
+            lines.append(f"💬 Mensaje: {req.mensaje}")
+        async with httpx.AsyncClient() as c:
+            await c.post(
+                f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage",
+                json={"chat_id": TELEGRAM_CHAT_ID, "text": "\n".join(lines), "parse_mode": "Markdown"},
+            )
+    return {"ok": True}
 
 
 @app.get("/health")
