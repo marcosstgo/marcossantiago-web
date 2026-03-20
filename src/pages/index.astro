@@ -70,7 +70,12 @@ const devProjects = [
             <span class="name">MARCOS</span>
             <span class="last">SANTIAGO</span>
           </h1>
-          <p class="hero-tagline">Artista Gráfico · Fotógrafo · Videógrafo · Desarrollador</p>
+          <div class="hero-badges">
+            <span class="badge">Artista Gráfico</span>
+            <span class="badge">Fotógrafo</span>
+            <span class="badge">Videógrafo</span>
+            <span class="badge">Desarrollador</span>
+          </div>
           <p class="hero-desc">
             Diseño marcas e identidades visuales, capturo momentos, produzco video y construyo productos digitales. Todo desde Aibonito, Puerto Rico.
           </p>
@@ -196,10 +201,17 @@ const devProjects = [
   -webkit-text-stroke: 1px color-mix(in srgb, var(--white) 35%, transparent);
   color: transparent;
 }
-.hero-tagline {
-  font-family: var(--mono); font-size: .58rem;
-  letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 18px;
+.hero-badges {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 20px;
+}
+.badge {
+  font-family: var(--mono); font-size: .52rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
 }
 .hero-desc {
   color: var(--muted); font-size: .95rem;
