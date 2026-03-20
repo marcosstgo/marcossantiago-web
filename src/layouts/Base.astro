@@ -90,6 +90,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     z-index: 9000; display: flex; flex-direction: column;
     align-items: flex-end; gap: 12px;
   }
+  /* Ocultar widget flotante en /contacto/ */
+  body.page-contacto #ms-chat-widget { display: none }
 
   #ms-chat-btn {
     width: 56px; height: 56px; border-radius: 50%;
@@ -211,6 +213,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </style>
 
   <script is:inline>
+  // Mark body with current page
+  (function() {
+    const path = window.location.pathname.replace(/\//g, '-').replace(/^-|-$/g, '') || 'home';
+    document.body.classList.add('page-' + path);
+  })();
+
   (function() {
     const btn     = document.getElementById('ms-chat-btn');
     const panel   = document.getElementById('ms-chat-panel');

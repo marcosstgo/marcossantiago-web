@@ -26,11 +26,12 @@ const channels = [
   <Nav />
   <main style="padding-top:120px">
     <div class="container">
+
       <p class="section-label">Contacto</p>
       <h1 class="section-title">Hablemos</h1>
       <p class="section-sub" style="max-width:52ch">
         ¿Tienes un proyecto en mente? ¿Necesitas diseño, fotos, video o desarrollo?
-        Encuéntrame en cualquiera de estos canales.
+        Encuéntrame en cualquiera de estos canales o escríbeme directamente abajo.
       </p>
 
       <div class="channels-grid">
@@ -47,10 +48,64 @@ const channels = [
         ))}
       </div>
 
+      <!-- ── Terminal Bot ── -->
+      <div class="terminal-section">
+        <p class="section-label">Asistente</p>
+        <h2 class="section-title" style="font-size:clamp(1.8rem,3.5vw,2.8rem);margin-bottom:8px">
+          ¿Prefiere escribir aquí?
+        </h2>
+        <p class="section-sub" style="margin-bottom:32px">
+          Cuéntame tu proyecto y te oriento en lo que necesitas.
+        </p>
+
+        <div class="terminal">
+          <!-- Title bar -->
+          <div class="term-bar">
+            <div class="term-dots">
+              <span class="dot dot-r"></span>
+              <span class="dot dot-y"></span>
+              <span class="dot dot-g"></span>
+            </div>
+            <span class="term-title">marcos@contacto:~</span>
+            <span></span>
+          </div>
+
+          <!-- Output -->
+          <div class="term-output" id="term-output">
+            <div class="term-line">
+              <span class="term-prompt">marcos@contacto:~$</span>
+              <span class="term-cmd"> ./asistente --start</span>
+            </div>
+            <div class="term-bot-line" id="term-welcome">
+              <span class="term-gt">›</span>
+              <span>¡Hola! ¿En qué puedo ayudarte hoy? Pregúntame sobre fotografía, video, diseño o desarrollo.</span>
+            </div>
+            <div id="term-quick" class="term-quick-wrap">
+              <span class="term-gt">›</span>
+              <div class="term-quick-btns">
+                <button class="term-q-btn">Fotografía de boda</button>
+                <button class="term-q-btn">Video para evento</button>
+                <button class="term-q-btn">Diseño de logo</button>
+                <button class="term-q-btn">Proyecto web</button>
+                <button class="term-q-btn">Cotización</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Input -->
+          <div class="term-input-row">
+            <span class="term-prompt">marcos@contacto:~$</span>
+            <input id="term-input" type="text" autocomplete="off" spellcheck="false"
+              placeholder="escribe tu mensaje y presiona Enter" />
+          </div>
+        </div>
+      </div>
+
       <div class="location-note">
         <p class="section-label">Ubicación</p>
         <p class="loc-text">Aibonito, Puerto Rico — disponible para proyectos remotos y locales.</p>
       </div>
+
     </div>
   </main>
   <Footer />
@@ -92,9 +147,175 @@ const channels = [
 }
 .channel-desc { font-size: .83rem; color: var(--muted); margin-top: 4px }
 
+/* ── Terminal ── */
+.terminal-section { margin-top: 80px; padding-top: 64px; border-top: 1px solid var(--border) }
+
+.terminal {
+  background: #0a0c10;
+  border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+  font-family: var(--mono);
+}
+
+.term-bar {
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 12px 16px;
+  background: color-mix(in srgb, var(--white) 5%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+.term-dots { display: flex; gap: 6px }
+.dot { width: 12px; height: 12px; border-radius: 50% }
+.dot-r { background: #ff5f57 }
+.dot-y { background: #febc2e }
+.dot-g { background: #28c840 }
+.term-title {
+  text-align: center; font-size: .52rem;
+  letter-spacing: 2px; color: var(--muted);
+}
+
+.term-output {
+  padding: 20px 20px 8px;
+  min-height: 200px; max-height: 420px;
+  overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
+  scrollbar-width: thin;
+}
+
+.term-line { display: flex; gap: 8px; font-size: .78rem }
+.term-prompt { color: var(--accent); white-space: nowrap; flex-shrink: 0 }
+.term-cmd { color: color-mix(in srgb, var(--white) 60%, transparent) }
+
+.term-user-line { display: flex; gap: 8px; font-size: .82rem }
+.term-user-line .term-prompt { color: #88e0b0 }
+.term-user-text { color: var(--white) }
+
+.term-bot-line {
+  display: flex; gap: 8px; font-size: .82rem;
+  color: color-mix(in srgb, var(--white) 80%, transparent);
+  line-height: 1.6;
+}
+.term-gt { color: var(--accent); flex-shrink: 0; margin-top: 1px }
+
+.term-typing .term-gt { animation: blink-cursor .8s step-end infinite }
+@keyframes blink-cursor { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.term-quick-wrap { display: flex; gap: 8px; align-items: flex-start }
+.term-quick-btns { display: flex; flex-wrap: wrap; gap: 6px }
+.term-q-btn {
+  font-family: var(--mono); font-size: .58rem;
+  letter-spacing: 1px;
+  padding: 4px 12px; border-radius: 4px;
+  border: 1px solid var(--accent);
+  background: transparent; color: var(--accent);
+  cursor: pointer; transition: .15s;
+}
+.term-q-btn:hover { background: var(--accent); color: #0a0c10 }
+
+.term-input-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--white) 2%, transparent);
+}
+#term-input {
+  flex: 1; background: transparent; border: none; outline: none;
+  font-family: var(--mono); font-size: .82rem;
+  color: var(--white); caret-color: var(--accent);
+}
+#term-input::placeholder { color: var(--dim) }
+
 .location-note {
   margin-top: 64px; padding-top: 40px;
   border-top: 1px solid var(--border);
 }
 .loc-text { color: var(--muted); font-size: .9rem; margin-top: 8px }
 </style>
+
+<script>
+(function () {
+  const output  = document.getElementById('term-output');
+  const input   = document.getElementById('term-input');
+  const history = [];
+
+  function addUserLine(text) {
+    const div = document.createElement('div');
+    div.className = 'term-user-line';
+    div.innerHTML = `<span class="term-prompt">marcos@contacto:~$</span><span class="term-user-text"> ${text}</span>`;
+    output.appendChild(div);
+    scrollBottom();
+  }
+
+  function addBotLine(text) {
+    const div = document.createElement('div');
+    div.className = 'term-bot-line';
+    const gt   = document.createElement('span');
+    gt.className = 'term-gt';
+    gt.textContent = '›';
+    const msg  = document.createElement('span');
+    div.appendChild(gt);
+    div.appendChild(msg);
+    output.appendChild(div);
+    scrollBottom();
+    // Typewriter effect
+    let i = 0;
+    const timer = setInterval(() => {
+      msg.textContent += text[i++];
+      scrollBottom();
+      if (i >= text.length) clearInterval(timer);
+    }, 14);
+  }
+
+  function addTyping() {
+    const div = document.createElement('div');
+    div.className = 'term-bot-line term-typing';
+    div.innerHTML = '<span class="term-gt">›</span><span>_</span>';
+    div.id = 'term-typing-indicator';
+    output.appendChild(div);
+    scrollBottom();
+  }
+
+  function scrollBottom() {
+    output.scrollTop = output.scrollHeight;
+  }
+
+  async function sendMsg(text) {
+    if (!text) return;
+    input.value = '';
+    input.disabled = true;
+
+    // Remove quick replies
+    const quick = document.getElementById('term-quick');
+    if (quick) quick.remove();
+
+    addUserLine(text);
+    history.push({ role: 'user', content: text });
+    addTyping();
+
+    try {
+      const res  = await fetch('/ms-chat/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history }),
+      });
+      const data = await res.json();
+      document.getElementById('term-typing-indicator')?.remove();
+      addBotLine(data.reply);
+      history.push({ role: 'assistant', content: data.reply });
+    } catch {
+      document.getElementById('term-typing-indicator')?.remove();
+      addBotLine('Error de conexión. Escríbeme directo: wa.me/17872439670');
+    }
+
+    input.disabled = false;
+    input.focus();
+  }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMsg(input.value.trim());
+  });
+
+  document.querySelectorAll('.term-q-btn').forEach(btn => {
+    btn.addEventListener('click', () => sendMsg(btn.textContent));
+  });
+})();
+</script>
