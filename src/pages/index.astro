@@ -76,7 +76,9 @@ const devProjects = [
           </p>
           <div class="hero-actions">
             <a href="/portafolio/" class="btn primary">Ver portafolio</a>
-            <a href="/contacto/" class="btn ghost">Hablemos</a>
+            <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
+              <i class="fab fa-whatsapp"></i> (787) 243-9670
+            </a>
           </div>
         </div>
 
@@ -210,6 +212,11 @@ const devProjects = [
   line-height: 1.75; max-width: 48ch; margin-bottom: 28px;
 }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap }
+.btn.whatsapp {
+  background: #25d366; color: #fff;
+  border-color: transparent;
+}
+.btn.whatsapp:hover { opacity: .88; box-shadow: 0 0 24px rgba(37,211,102,.25) }
 
 .hero-photo { aspect-ratio: 4/5; border-radius: 16px; overflow: hidden }
 .photo-placeholder {
