@@ -279,19 +279,14 @@ const channels = [
     wizard = null;
 
     try {
-      const r = await fetch('/ms-chat/lead', {
+      await fetch('/ms-chat/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre, servicio, fecha: fecha || 'Por coordinar', contacto, mensaje: '' }),
       });
-      console.log('[lead]', r.status, await r.text());
     } catch (e) { console.error('[lead error]', e); }
 
-    const waMsg = encodeURIComponent(
-      `Hola Marcos! Soy ${nombre}. Me interesa: ${servicio}. Fecha: ${fecha || 'Por coordinar'}. Contacto: ${contacto}.`
-    );
-    addBotLine(`Perfecto ${nombre}! Abriendo WhatsApp para conectarte con Marcos...`);
-    setTimeout(() => window.open(`https://wa.me/17872439670?text=${waMsg}`, '_blank'), 900);
+    addBotLine(`Mensaje enviado a Marcos Santiago. Te contactará pronto al ${contacto}.`);
 
     input.disabled = false;
     input.focus();
