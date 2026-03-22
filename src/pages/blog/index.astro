@@ -3,15 +3,32 @@ import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 
-const modules = import.meta.glob('./*.mdx', { eager: true });
-const posts = Object.values(modules)
-  .map((p: any) => ({
-    title: p.frontmatter.title,
-    date: p.frontmatter.date,
-    tags: p.frontmatter.tags || [],
-    slug: p.frontmatter.slug,
-    desc: p.frontmatter.desc || '',
-  }))
+const modules    = import.meta.glob('./*.mdx', { eager: true });
+const rawModules = import.meta.glob('./*.mdx', { eager: true, query: '?raw', import: 'default' });
+
+function readingTime(raw: string): number {
+  const content = raw.replace(/^---[\s\S]*?---/, '').replace(/<[^>]+>/g, ' ');
+  const words   = content.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 220));
+}
+
+function fmtDate(d: string) {
+  const [y, m, day] = d.split('-').map(Number);
+  return new Date(y, m - 1, day).toLocaleDateString('es-PR', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+const posts = Object.entries(modules)
+  .map(([path, p]: [string, any]) => {
+    const raw = String(rawModules[path] ?? '');
+    return {
+      title:   p.frontmatter.title,
+      date:    p.frontmatter.date,
+      tags:    p.frontmatter.tags || [],
+      slug:    p.frontmatter.slug,
+      desc:    p.frontmatter.desc || '',
+      minRead: readingTime(raw),
+    };
+  })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 <Base title="Blog — Marcos Santiago" description="Programación, diseño, fotografía, video y lo que me pase por la cabeza. Por Marcos Santiago desde Aibonito, Puerto Rico.">
@@ -41,7 +58,8 @@ const posts = Object.values(modules)
           {posts.map(p => (
             <a href={`/blog/${p.slug}/`} class="post-row">
               <div class="post-meta">
-                <span class="post-date">{p.date}</span>
+                <span class="post-date">{fmtDate(p.date)}</span>
+                <span class="post-read">{p.minRead} min</span>
                 <div class="post-tags">
                   {p.tags.map(t => <span class="tag">{t}</span>)}
                 </div>
@@ -94,6 +112,11 @@ const posts = Object.values(modules)
 .post-date {
   font-family: var(--mono); font-size: .5rem;
   letter-spacing: 2px; color: var(--dim);
+}
+.post-read {
+  font-family: var(--mono); font-size: .48rem;
+  letter-spacing: 1.5px; color: var(--dim);
+  opacity: .6;
 }
 .post-tags { display: flex; gap: 4px; flex-wrap: wrap }
 .tag {

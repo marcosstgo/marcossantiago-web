@@ -3,8 +3,30 @@ import Base from './Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
-const { title, date, desc, tags } = Astro.props.frontmatter;
-const formattedDate = new Date(date).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' });
+const { title, date, desc, tags, slug } = Astro.props.frontmatter;
+const formattedDate = (() => {
+  const [y, m, d] = date.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' });
+})();
+
+// Reading time
+const rawModules = import.meta.glob('../pages/blog/*.mdx', { eager: true, query: '?raw', import: 'default' });
+const rawEntry   = Object.entries(rawModules).find(([path]) => path.endsWith(`/${slug}.mdx`));
+const rawContent = rawEntry ? String(rawEntry[1]) : '';
+const minRead    = Math.max(1, Math.ceil(
+  rawContent.replace(/^---[\s\S]*?---/, '').replace(/<[^>]+>/g, ' ')
+    .trim().split(/\s+/).filter(Boolean).length / 220
+));
+
+// Prev / Next
+const allModules = import.meta.glob('../pages/blog/*.mdx', { eager: true });
+const allPosts   = Object.values(allModules)
+  .map((p: any) => ({ slug: p.frontmatter.slug, title: p.frontmatter.title, date: p.frontmatter.date }))
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const idx  = allPosts.findIndex(p => p.slug === slug);
+const next = idx > 0                    ? allPosts[idx - 1] : null; // newer
+const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 ---
 <Base title={`${title} — Marcos Santiago`} description={desc}>
   <Nav />
@@ -12,17 +34,46 @@ const formattedDate = new Date(date).toLocaleDateString('es-PR', { year: 'numeri
     <div class="container">
       <div class="post-header">
         <a href="/blog/" class="back-link">← Blog</a>
-        <p class="post-meta-date">{formattedDate}</p>
-        {tags && tags.length > 0 && (
-          <div class="post-tags">
-            {tags.map((t: string) => <span class="tag">{t}</span>)}
-          </div>
-        )}
+        <div class="post-header-meta">
+          <span class="post-meta-date">{formattedDate}</span>
+          <span class="meta-sep">·</span>
+          <span class="post-meta-read">{minRead} min de lectura</span>
+          {tags && tags.length > 0 && (
+            <>
+              <span class="meta-sep">·</span>
+              <div class="post-tags">
+                {tags.map((t: string) => <span class="tag">{t}</span>)}
+              </div>
+            </>
+          )}
+        </div>
         <h1 class="post-title">{title}</h1>
       </div>
+
       <article class="post-body">
         <slot />
       </article>
+
+      <!-- Prev / Next -->
+      {(prev || next) && (
+        <nav class="post-nav">
+          <div class="post-nav-inner">
+            {prev
+              ? <a href={`/blog/${prev.slug}/`} class="nav-post nav-prev">
+                  <span class="nav-label">← Anterior</span>
+                  <span class="nav-title">{prev.title}</span>
+                </a>
+              : <div />
+            }
+            {next && (
+              <a href={`/blog/${next.slug}/`} class="nav-post nav-next">
+                <span class="nav-label">Siguiente →</span>
+                <span class="nav-title">{next.title}</span>
+              </a>
+            )}
+          </div>
+        </nav>
+      )}
     </div>
   </main>
   <Footer />
@@ -39,12 +90,17 @@ const formattedDate = new Date(date).toLocaleDateString('es-PR', { year: 'numeri
   transition: color .15s;
 }
 .back-link:hover { color: var(--white) }
-.post-meta-date {
-  font-family: var(--mono); font-size: .5rem;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--dim); margin-bottom: 12px;
+
+.post-header-meta {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
 }
-.post-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px }
+.post-meta-date, .post-meta-read {
+  font-family: var(--mono); font-size: .5rem;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
+}
+.meta-sep { color: var(--dim); font-size: .5rem }
+.post-tags { display: flex; gap: 6px; flex-wrap: wrap }
 .tag {
   font-family: var(--mono); font-size: .46rem;
   letter-spacing: 1.5px; text-transform: uppercase;
@@ -58,9 +114,12 @@ const formattedDate = new Date(date).toLocaleDateString('es-PR', { year: 'numeri
   letter-spacing: 2px; line-height: .95;
   margin-top: 8px;
 }
+
+/* ── Article body ── */
 .post-body {
   max-width: 72ch;
-  font-size: .97rem; line-height: 1.85; color: color-mix(in srgb, var(--white) 80%, transparent);
+  font-size: .97rem; line-height: 1.85;
+  color: color-mix(in srgb, var(--white) 80%, transparent);
 }
 .post-body h2, .post-body h3 {
   font-family: var(--display);
@@ -69,14 +128,85 @@ const formattedDate = new Date(date).toLocaleDateString('es-PR', { year: 'numeri
 }
 .post-body h2 { font-size: clamp(1.8rem, 3vw, 2.8rem) }
 .post-body h3 { font-size: clamp(1.4rem, 2.5vw, 2rem) }
-.post-body p { margin-bottom: 20px }
+.post-body p  { margin-bottom: 20px }
 .post-body strong { color: var(--white) }
-.post-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px }
+.post-body a  { color: var(--accent); text-decoration: underline; text-underline-offset: 3px }
 .post-body ul, .post-body ol { padding-left: 24px; margin-bottom: 20px }
 .post-body li { margin-bottom: 8px }
 .post-body blockquote {
   border-left: 2px solid var(--accent);
   padding-left: 20px; margin: 24px 0;
   color: var(--muted); font-style: italic;
+}
+.post-body hr {
+  border: none; border-top: 1px solid var(--border); margin: 36px 0;
+}
+
+/* Code */
+.post-body code {
+  font-family: var(--mono); font-size: .85em;
+  background: color-mix(in srgb, var(--white) 6%, transparent);
+  border: 1px solid var(--border);
+  padding: 2px 6px; border-radius: 4px;
+  color: color-mix(in srgb, var(--accent) 80%, var(--white));
+}
+.post-body pre {
+  background: color-mix(in srgb, var(--white) 4%, transparent);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px 24px; overflow-x: auto;
+  margin-bottom: 24px;
+}
+.post-body pre code {
+  background: none; border: none; padding: 0;
+  font-size: .88rem; color: var(--white);
+}
+
+/* Tables */
+.post-body table {
+  width: 100%; border-collapse: collapse;
+  margin-bottom: 24px; font-size: .88rem;
+}
+.post-body th {
+  font-family: var(--mono); font-size: .6rem;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  text-align: left; padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+}
+.post-body td {
+  padding: 10px 14px; border-bottom: 1px solid var(--border);
+  color: color-mix(in srgb, var(--white) 75%, transparent);
+  vertical-align: top;
+}
+.post-body tr:last-child td { border-bottom: none }
+.post-body tr:hover td { background: color-mix(in srgb, var(--white) 3%, transparent) }
+
+/* ── Prev / Next ── */
+.post-nav {
+  max-width: 72ch;
+  border-top: 1px solid var(--border);
+  margin-top: 64px; padding-top: 40px; padding-bottom: 80px;
+}
+.post-nav-inner {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+@media (max-width: 600px) { .post-nav-inner { grid-template-columns: 1fr } }
+.nav-post {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 20px; border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: border-color .2s, background .2s;
+}
+.nav-post:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--surface)) }
+.nav-next { text-align: right }
+.nav-label {
+  font-family: var(--mono); font-size: .5rem;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+}
+.nav-title {
+  font-family: var(--display); font-size: 1rem;
+  letter-spacing: 1px; color: var(--white);
+  line-height: 1.2;
 }
 </style>
