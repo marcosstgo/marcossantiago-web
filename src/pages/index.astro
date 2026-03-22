@@ -34,42 +34,74 @@ const disciplines = [
   },
 ];
 
-const devProjects = [
+const featuredProjects = [
   {
     name: 'KIOSKKO',
-    desc: 'Plataforma SaaS de e-commerce para negocios en Puerto Rico. Tienda online con carrito, pagos con Stripe y ATH Móvil, panel admin completo y configuración sin código.',
+    tagline: 'E-commerce para negocios en Puerto Rico',
+    desc: 'Plataforma SaaS con tienda online, carrito, pagos con Stripe y ATH Móvil, panel admin completo y configuración sin código.',
     href: 'https://kioskko.com',
     tags: ['Astro', 'PocketBase', 'Stripe', 'ATH Móvil', 'Docker'],
+    status: 'Live',
+    color: '#4a6cf7',
+    year: '2025',
   },
   {
     name: 'PLAKITA',
-    desc: 'Servicio de identificación QR para mascotas. Plaquitas con código QR que permiten reunir mascotas perdidas con sus dueños al instante.',
+    tagline: 'Identificación QR para mascotas',
+    desc: 'Plaquitas con código QR que permiten reunir mascotas perdidas con sus dueños al instante desde cualquier teléfono.',
     href: 'https://plakita.com',
-    tags: ['QR', 'Mascotas', 'SaaS'],
+    tags: ['React', 'Supabase', 'QR', 'Netlify'],
+    status: 'Live',
+    color: '#f97316',
+    year: '2025',
   },
   {
     name: 'FLASHEALO',
-    desc: 'Plataforma de fotos para eventos. Los asistentes suben, organizan y comparten sus fotos en un espacio centralizado para cada evento.',
+    tagline: 'Fotos colaborativas para eventos',
+    desc: 'Los asistentes suben y comparten sus fotos en un espacio centralizado por evento. Sin apps, sin cuentas, solo escanear y subir.',
     href: 'https://flashealo.com',
-    tags: ['Eventos', 'Fotografía', 'SaaS'],
+    tags: ['React', 'Supabase', 'Storage', 'QR'],
+    status: 'Beta',
+    color: '#a855f7',
+    year: '2025',
   },
+];
+
+const otherProjects = [
   {
     name: 'CORILLO',
-    desc: 'Plataforma de streaming independiente para Puerto Rico.',
+    desc: 'Plataforma de streaming en vivo independiente para Puerto Rico.',
     href: 'https://corillo.live',
     tags: ['HTML', 'JS', 'MediaMTX', 'HLS'],
+    year: '2024',
   },
   {
     name: 'STREAMER PRO',
     desc: 'App de escritorio para streaming RTMP multi-plataforma con FFmpeg.',
     href: 'https://corillo.live/streamer-pro/',
     tags: ['C#', 'WPF', 'FFmpeg'],
+    year: '2024',
+  },
+  {
+    name: 'STREAMER LITE',
+    desc: 'Versión ligera de Streamer Pro. Pipeline ddagrab+NVENC optimizado para bajo consumo de CPU.',
+    href: 'https://corillo.live',
+    tags: ['C#', 'WPF', 'NVENC', 'ddagrab'],
+    year: '2025',
+  },
+  {
+    name: 'NATCHECK',
+    desc: 'Diagnóstico de NAT type, MTU y puertos para gaming. 10 perfiles de juego, fix UPnP automático.',
+    href: 'https://corillo.live/natcheck/',
+    tags: ['C#', 'WinForms', 'STUN', 'UPnP'],
+    year: '2025',
   },
   {
     name: 'ANTI-BUFFERBLOAT PRO',
-    desc: 'Optimizador de red para Windows: reduce latencia y bufferbloat.',
+    desc: 'Optimizador de red para Windows: reduce latencia y bufferbloat en tiempo real.',
     href: 'https://corillo.live/antibufferbloat-pro/',
     tags: ['C#', 'WPF', 'Windows'],
+    year: '2024',
   },
 ];
 ---
@@ -145,11 +177,38 @@ const devProjects = [
     <div class="container">
       <p class="section-label">Desarrollo</p>
       <h2 class="section-title">Proyectos destacados</h2>
+
+      <!-- Featured -->
+      <div class="featured-grid">
+        {featuredProjects.map(p => (
+          <a href={p.href} target="_blank" rel="noopener" class="featured-card" style={`--c:${p.color}`}>
+            <div class="featured-top">
+              <div class="featured-meta">
+                <span class="featured-year">{p.year}</span>
+                <span class:list={['featured-status', p.status.toLowerCase()]}>{p.status}</span>
+              </div>
+              <span class="featured-arrow">↗</span>
+            </div>
+            <h3 class="featured-name">{p.name}</h3>
+            <p class="featured-tagline">{p.tagline}</p>
+            <p class="featured-desc">{p.desc}</p>
+            <div class="dev-tags">
+              {p.tags.map(t => <span class="tag">{t}</span>)}
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Other projects -->
+      <p class="other-label">Más proyectos</p>
       <div class="dev-list">
-        {devProjects.map(p => (
+        {otherProjects.map(p => (
           <a href={p.href} target="_blank" rel="noopener" class="dev-row">
             <div>
-              <div class="dev-name">{p.name}</div>
+              <div class="dev-row-top">
+                <span class="dev-name">{p.name}</span>
+                <span class="dev-year">{p.year}</span>
+              </div>
               <div class="dev-desc">{p.desc}</div>
               <div class="dev-tags">
                 {p.tags.map(t => <span class="tag">{t}</span>)}
@@ -159,6 +218,7 @@ const devProjects = [
           </a>
         ))}
       </div>
+
       <div style="margin-top:32px">
         <a href="/portafolio/dev/" class="btn ghost">Ver todos los proyectos</a>
       </div>
@@ -334,30 +394,107 @@ const devProjects = [
 
 /* ── DEV ── */
 .dev-section { background: var(--surface) }
-.dev-list { display: flex; flex-direction: column; margin-top: 40px }
+
+/* Featured cards */
+.featured-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 40px;
+}
+@media (max-width: 900px) { .featured-grid { grid-template-columns: 1fr } }
+
+.featured-card {
+  position: relative;
+  background: color-mix(in srgb, var(--c) 6%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--c) 22%, var(--border));
+  border-radius: 16px; padding: 24px;
+  display: flex; flex-direction: column; gap: 10px;
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+  overflow: hidden;
+}
+.featured-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--c); opacity: .7;
+}
+.featured-card:hover {
+  border-color: color-mix(in srgb, var(--c) 50%, transparent);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--c) 12%, transparent);
+}
+.featured-top {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 4px;
+}
+.featured-meta { display: flex; align-items: center; gap: 8px }
+.featured-year {
+  font-family: var(--mono); font-size: .6rem;
+  letter-spacing: 2px; color: var(--muted);
+}
+.featured-status {
+  font-family: var(--mono); font-size: .58rem;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 999px;
+  font-weight: 600;
+}
+.featured-status.live { background: color-mix(in srgb, #22c55e 15%, transparent); color: #4ade80 }
+.featured-status.beta { background: color-mix(in srgb, #f59e0b 15%, transparent); color: #fbbf24 }
+.featured-arrow {
+  font-size: 1rem; color: var(--muted);
+  transition: transform .2s, color .2s;
+}
+.featured-card:hover .featured-arrow {
+  transform: translate(3px,-3px);
+  color: var(--c);
+}
+.featured-name {
+  font-family: var(--display); font-size: 1.9rem;
+  letter-spacing: 3px; color: var(--white);
+}
+.featured-tagline {
+  font-size: .78rem; font-weight: 600;
+  color: color-mix(in srgb, var(--c) 80%, var(--white));
+  letter-spacing: .3px;
+}
+.featured-desc {
+  font-size: .82rem; color: var(--muted);
+  line-height: 1.6; flex: 1;
+}
+
+/* Other projects list */
+.other-label {
+  font-family: var(--mono); font-size: .62rem;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--muted); margin-top: 48px; margin-bottom: 0;
+}
+.dev-list { display: flex; flex-direction: column }
 .dev-row {
   display: flex; align-items: center;
   justify-content: space-between; gap: 24px;
-  padding: 24px 0; border-bottom: 1px solid var(--border);
+  padding: 20px 0; border-bottom: 1px solid var(--border);
   transition: .2s;
 }
 .dev-row:first-child { border-top: 1px solid var(--border) }
 .dev-row:hover .dev-name { color: var(--accent) }
 .dev-row:hover .dev-arrow { transform: translate(4px,-4px) }
+.dev-row-top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px }
 .dev-name {
-  font-family: var(--display); font-size: 1.6rem;
-  letter-spacing: 3px; transition: color .2s;
+  font-family: var(--display); font-size: 1.25rem;
+  letter-spacing: 2px; transition: color .2s;
 }
-.dev-desc { font-size: .84rem; color: var(--muted); margin-top: 4px }
-.dev-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px }
+.dev-year {
+  font-family: var(--mono); font-size: .6rem;
+  letter-spacing: 1.5px; color: var(--muted);
+}
+.dev-desc { font-size: .83rem; color: var(--muted); line-height: 1.5 }
+.dev-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px }
 .tag {
   font-family: var(--mono); font-size: .62rem;
   letter-spacing: 1.5px; text-transform: uppercase;
   padding: 3px 8px; border-radius: 4px;
-  background: color-mix(in srgb, var(--white) 4%, transparent); border: 1px solid var(--border);
-  color: var(--muted);
+  background: color-mix(in srgb, var(--white) 4%, transparent);
+  border: 1px solid var(--border); color: var(--muted);
 }
-.dev-arrow { font-size: 1.2rem; color: var(--muted); flex-shrink: 0; transition: transform .2s }
+.dev-arrow { font-size: 1rem; color: var(--muted); flex-shrink: 0; transition: transform .2s }
 
 /* ── BLOG CTA ── */
 .blog-cta {
