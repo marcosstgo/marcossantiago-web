@@ -2,50 +2,54 @@
 layout: ../../layouts/BlogPost.astro
 title: "Qué puertos usa Battlefield 6 en PC"
 date: "2025-11-13"
-desc: "Battlefield 6 todavía no tiene documentación oficial de EA sobre qué puertos hay que abrir en el router. Utilicé TCPView para monitorear las conexiones del proceso bf6.exe y compartir los resultados."
+desc: "Guía práctica de los puertos que hay que abrir en el router para jugar Battlefield 6 en PC sin problemas de NAT."
 tags: ["Games"]
 slug: "que-puertos-usa-battlefield-6-en-pc"
 ---
 
-<p><strong>Por:</strong> Marcos J. Santiago Santos<br /><strong>Fecha:</strong> 12 de noviembre de 2025</p>
+<p><strong>Por:</strong> Marcos J. Santiago Santos<br /><strong>Actualizado:</strong> marzo 2026</p>
 
 <hr />
 
-<h2>Introducción</h2>
+<h2>Los puertos que tienes que abrir</h2>
 
-<p>Battlefield 6 todavía no tiene documentación oficial de EA sobre qué puertos hay que abrir en el router para tener una conexión estable o NAT abierta.<br />Por eso decidí investigarlo yo mismo y compartir los resultados.</p>
+<p>EA no publica documentación oficial de puertos para BF6, así que los obtuve monitoreando el proceso <code>bf6.exe</code> con TCPView y verificándolos con <a href="https://corillo.live/natcheck/">NATCheck</a> mientras el juego estaba activo en partidas reales.</p>
 
-<p>Utilicé <strong>TCPView</strong> para monitorear las conexiones del proceso <code>bf6.exe</code> mientras el juego estaba corriendo, tanto en el menú principal como dentro de partidas reales.</p>
+<p>Estos son los puertos que afectan directamente el juego y el tipo de NAT:</p>
+
+<table>
+<thead>
+<tr><th>Puerto</th><th>Protocolo</th><th>Para qué sirve</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>3659</strong></td><td>UDP</td><td>Conexión principal de juego (EA)</td></tr>
+<tr><td><strong>9999</strong></td><td>UDP</td><td>Tráfico de partida BF6</td></tr>
+<tr><td><strong>3478</strong></td><td>UDP</td><td>STUN — negociación de NAT</td></tr>
+<tr><td><strong>3479</strong></td><td>UDP</td><td>STUN — negociación de NAT</td></tr>
+<tr><td><strong>14000</strong></td><td>UDP</td><td>Datos de partida (EA)</td></tr>
+<tr><td><strong>22990</strong></td><td>UDP</td><td>Voz y datos de partida (EA)</td></tr>
+<tr><td><strong>25200</strong></td><td>UDP</td><td>Datos de partida (EA)</td></tr>
+<tr><td><strong>443</strong></td><td>TCP</td><td>Autenticación / HTTPS — normalmente ya está abierto</td></tr>
+<tr><td><strong>8085 / 8095</strong></td><td>TCP</td><td>Servicios EA (backend)</td></tr>
+<tr><td><strong>15079 / 15085</strong></td><td>TCP</td><td>Matchmaking EA</td></tr>
+</tbody>
+</table>
 
 <hr />
 
-<h2>Qué encontré</h2>
+<h2>Cómo configurarlo en el router</h2>
 
-<p>Durante las pruebas, el juego estableció conexiones constantes hacia servidores de <strong>EA, Amazon (AWS)</strong> y <strong>Cloudflare</strong>, usando los siguientes rangos de puertos:</p>
+<p>Ve a la sección de <strong>Port Forwarding</strong> de tu router y crea una regla apuntando a la IP de tu PC con estos puertos:</p>
 
 <ul>
-<li><strong>TCP:</strong> 443, 8085, 8095, 9000–10010, 15001–15051</li>
-<li><strong>UDP:</strong> 3659, 9999, 14000–14016, 22990–23006, 25200–25300, 49152–65535</li>
+<li><strong>UDP:</strong> <code>3478-3479, 3659, 9999, 14000, 22990, 25200</code></li>
+<li><strong>TCP:</strong> <code>443, 8085, 8095, 15079, 15085</code></li>
 </ul>
 
-<p>Los puertos TCP se usan principalmente para autenticación, estadísticas y control del juego.<br />Los UDP son los que manejan el tráfico en tiempo real, como movimiento, disparos y voz.</p>
+<p>Si tu router tiene <strong>UPnP</strong>, activarlo es suficiente — el juego abre los puertos UDP automáticamente al conectarse.</p>
 
 <hr />
 
-<h2>Cómo configurarlo</h2>
+<h2>¿Cuáles son los más importantes?</h2>
 
-<p>Si tienes un router <strong>OpenWRT</strong> o <strong>GL.iNet</strong>, puedes redirigir esos puertos hacia la IP de tu PC.<br />Por ejemplo:</p>
-
-<ul>
-<li>IP interna: <code>192.168.x.xxx</code></li>
-<li>Protocolo: TCP/UDP</li>
-<li>Puertos: <code>443,8085,8095,9000-10010,15001-15051 3659,9999,14000-14016,22990-23006,25200-25300,49152-65535</code></li>
-</ul>
-
-<p>También puedes activar <strong>UPnP</strong> si tu router es de confianza, para que el juego abra los puertos automáticamente.</p>
-
-<hr />
-
-<h2>Conclusión</h2>
-
-<p>Esta lista cubre todos los puertos que Battlefield 6 usa actualmente en PC.<br />Hasta que EA publique su documentación oficial, esta guía puede ayudarte a mejorar tu conexión o resolver problemas de NAT.</p>
+<p>Si no quieres configurar todo, los críticos son los <strong>UDP</strong>. Son los que determinan tu tipo de NAT y la calidad de conexión en partida. Los TCP son tráfico de backend que generalmente funciona sin forwarding porque son conexiones salientes.</p>
