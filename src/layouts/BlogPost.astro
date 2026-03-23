@@ -84,7 +84,7 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
   max-width: 72ch; margin-bottom: 56px;
 }
 .back-link {
-  font-family: var(--mono); font-size: .72rem;
+  font-family: var(--mono); font-size: var(--text-2xs);
   letter-spacing: 2px; text-transform: uppercase;
   color: var(--muted); display: inline-block; margin-bottom: 24px;
   transition: color .15s;
@@ -96,13 +96,13 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
   margin-bottom: 16px;
 }
 .post-meta-date, .post-meta-read {
-  font-family: var(--mono); font-size: .72rem;
+  font-family: var(--mono); font-size: var(--text-2xs);
   letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
 }
-.meta-sep { color: var(--dim); font-size: .72rem }
+.meta-sep { color: var(--dim); font-size: var(--text-2xs) }
 .post-tags { display: flex; gap: 6px; flex-wrap: wrap }
 .tag {
-  font-family: var(--mono); font-size: .7rem;
+  font-family: var(--mono); font-size: var(--text-2xs);
   letter-spacing: 1.5px; text-transform: uppercase;
   padding: 3px 8px; border-radius: 4px;
   background: color-mix(in srgb, var(--white) 4%, transparent); border: 1px solid var(--border);
@@ -158,16 +158,16 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 }
 .post-body pre code {
   background: none; border: none; padding: 0;
-  font-size: .95rem; color: var(--white);
+  font-size: var(--text-base); color: var(--white);
 }
 
 /* Tables */
 .post-body table {
   width: 100%; border-collapse: collapse;
-  margin-bottom: 24px; font-size: .95rem;
+  margin-bottom: 24px; font-size: var(--text-base);
 }
 .post-body th {
-  font-family: var(--mono); font-size: .75rem;
+  font-family: var(--mono); font-size: var(--text-xs);
   letter-spacing: 1.5px; text-transform: uppercase;
   text-align: left; padding: 10px 14px;
   border-bottom: 1px solid var(--border);
@@ -201,7 +201,7 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 .nav-post:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--surface)) }
 .nav-next { text-align: right }
 .nav-label {
-  font-family: var(--mono); font-size: .72rem;
+  font-family: var(--mono); font-size: var(--text-2xs);
   letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
 }
 .nav-title {

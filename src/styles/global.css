@@ -17,6 +17,13 @@
 
   --radius:  12px;
   --max:     1140px;
+
+  /* ── Type scale ── */
+  --text-2xs: .7rem;    /* badges mínimos */
+  --text-xs:  .75rem;   /* tags, mono labels */
+  --text-sm:  .85rem;   /* meta, captions */
+  --text-base: 1rem;    /* body */
+  --text-lg:  1.1rem;   /* subtítulos */
 }
 
 /* ── Light mode ── */
@@ -71,13 +78,13 @@ body::after {
 }
 .mono {
   font-family: var(--mono);
-  font-size: .8rem;
+  font-size: var(--text-sm);
   letter-spacing: 2.5px;
   text-transform: uppercase;
 }
 .label {
   font-family: var(--mono);
-  font-size: .75rem;
+  font-size: var(--text-xs);
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--muted);
@@ -86,7 +93,7 @@ body::after {
 /* ── Buttons ── */
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: .78rem;
+  font-family: var(--mono); font-size: var(--text-xs);
   letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
   padding: 11px 20px; border-radius: 8px;
   border: 1px solid var(--border);
@@ -112,7 +119,7 @@ body::after {
 
 .section-label {
   font-family: var(--mono);
-  font-size: .75rem;
+  font-size: var(--text-xs);
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--accent);
@@ -126,7 +133,7 @@ body::after {
 }
 .section-sub {
   color: var(--muted);
-  font-size: .95rem;
+  font-size: var(--text-base);
   line-height: 1.75;
   max-width: 56ch;
 }

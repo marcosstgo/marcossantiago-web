@@ -93,7 +93,7 @@ const posts = Object.entries(modules)
   font-size: clamp(2rem, 4vw, 3.5rem);
   letter-spacing: 2px; color: var(--white); margin-bottom: 12px;
 }
-.empty-sub { color: var(--muted); font-size: .9rem }
+.empty-sub { color: var(--muted); font-size: var(--text-base) }
 
 /* Post list — used when posts exist */
 .posts-list { display: flex; flex-direction: column; margin-top: 56px }
@@ -110,11 +110,11 @@ const posts = Object.entries(modules)
 }
 .post-meta { display: flex; flex-direction: column; gap: 8px; padding-top: 4px }
 .post-date {
-  font-family: var(--mono); font-size: .72rem;
+  font-family: var(--mono); font-size: var(--text-2xs);
   letter-spacing: 2px; color: var(--dim);
 }
 .post-read {
-  font-family: var(--mono); font-size: .72rem;
+  font-family: var(--mono); font-size: var(--text-2xs);
   letter-spacing: 1.5px; color: var(--dim);
   opacity: .6;
 }
@@ -133,7 +133,7 @@ const posts = Object.entries(modules)
   transition: color .2s; margin-bottom: 6px;
 }
 .post-row:hover .post-title { color: var(--accent) }
-.post-desc { font-size: .95rem; color: var(--muted); line-height: 1.6 }
+.post-desc { font-size: var(--text-base); color: var(--muted); line-height: 1.6 }
 .post-arrow { font-size: 1.1rem; color: var(--muted); padding-top: 4px; transition: transform .2s }
 .post-row:hover .post-arrow { transform: translateX(4px); color: var(--white) }
 </style>
