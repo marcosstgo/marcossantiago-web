@@ -36,6 +36,16 @@ const disciplines = [
 
 const featuredProjects = [
   {
+    name: 'CORILLO',
+    tagline: 'Streaming en vivo para Puerto Rico',
+    desc: 'Plataforma independiente de streaming con canal grid en vivo, player HLS, chat en tiempo real y panel de administración.',
+    href: 'https://corillo.live',
+    tags: ['HTML', 'JS', 'MediaMTX', 'HLS', 'Nginx'],
+    status: 'Live',
+    color: '#e8c84a',
+    year: '2024',
+  },
+  {
     name: 'KIOSKKO',
     tagline: 'E-commerce para negocios en Puerto Rico',
     desc: 'Plataforma SaaS con tienda online, carrito, pagos con Stripe y ATH Móvil, panel admin completo y configuración sin código.',
@@ -340,10 +350,10 @@ const featuredProjects = [
 
 /* Featured cards */
 .featured-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-template-columns: repeat(2, 1fr);
   gap: 16px; margin-top: 40px;
 }
-@media (max-width: 900px) { .featured-grid { grid-template-columns: 1fr } }
+@media (max-width: 700px) { .featured-grid { grid-template-columns: 1fr } }
 
 .featured-card {
   position: relative;
