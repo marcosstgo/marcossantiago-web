@@ -3,30 +3,74 @@ import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 
-const projects = [
+const featuredProjects = [
+  {
+    name: 'KIOSKKO',
+    tagline: 'E-commerce para negocios en Puerto Rico',
+    desc: 'Plataforma SaaS con tienda online, carrito, pagos con Stripe y ATH Móvil, panel admin completo y configuración sin código.',
+    href: 'https://kioskko.com',
+    tags: ['Astro', 'PocketBase', 'Stripe', 'ATH Móvil', 'Docker'],
+    status: 'Live',
+    color: '#4a6cf7',
+    year: '2025',
+  },
+  {
+    name: 'PLAKITA',
+    tagline: 'Identificación QR para mascotas',
+    desc: 'Plaquitas con código QR que permiten reunir mascotas perdidas con sus dueños al instante desde cualquier teléfono.',
+    href: 'https://plakita.com',
+    tags: ['React', 'Supabase', 'QR', 'Netlify'],
+    status: 'Live',
+    color: '#f97316',
+    year: '2025',
+  },
+  {
+    name: 'FLASHEALO',
+    tagline: 'Fotos colaborativas para eventos',
+    desc: 'Los asistentes suben y comparten sus fotos en un espacio centralizado por evento. Sin apps, sin cuentas, solo escanear y subir.',
+    href: 'https://flashealo.com',
+    tags: ['React', 'Supabase', 'Storage', 'QR'],
+    status: 'Beta',
+    color: '#a855f7',
+    year: '2025',
+  },
+];
+
+const otherProjects = [
   {
     name: 'CORILLO',
-    desc: 'Plataforma de streaming independiente para Puerto Rico. Canal grid en vivo, player HLS, chat en tiempo real, notificaciones Discord/Telegram y panel de administración.',
+    desc: 'Plataforma de streaming independiente para Puerto Rico. Canal grid en vivo, player HLS, chat en tiempo real y panel de administración.',
     href: 'https://corillo.live',
-    tags: ['HTML', 'JS', 'MediaMTX', 'HLS', 'Nginx', 'Raspberry Pi'],
+    tags: ['HTML', 'JS', 'MediaMTX', 'HLS', 'Nginx'],
     year: '2024',
-    status: 'live',
   },
   {
     name: 'STREAMER PRO',
-    desc: 'App de escritorio para streaming RTMP multi-plataforma. Soporte NVENC, modos de captura y highlights, logo overlay, watchdog con auto-recovery y auto-update.',
+    desc: 'App de escritorio para streaming RTMP multi-plataforma. Soporte NVENC, highlights, logo overlay, watchdog con auto-recovery y auto-update.',
     href: 'https://corillo.live/streamer-pro/',
     tags: ['C#', 'WPF', 'FFmpeg', '.NET'],
     year: '2025',
-    status: 'live',
+  },
+  {
+    name: 'STREAMER LITE',
+    desc: 'Versión ligera de Streamer Pro. Pipeline ddagrab+NVENC optimizado para bajo consumo de CPU.',
+    href: 'https://corillo.live',
+    tags: ['C#', 'WPF', 'NVENC', 'ddagrab'],
+    year: '2025',
+  },
+  {
+    name: 'NATCHECK',
+    desc: 'Diagnóstico de NAT type, MTU y puertos para gaming. 10 perfiles de juego, fix UPnP automático.',
+    href: 'https://corillo.live/natcheck/',
+    tags: ['C#', 'WinForms', 'STUN', 'UPnP'],
+    year: '2025',
   },
   {
     name: 'ANTI-BUFFERBLOAT PRO',
-    desc: 'Optimizador de red para Windows: reduce latencia y bufferbloat con perfiles Gaming/Reset, 8 acciones TCP, PC Gaming Boost y monitoreo en tiempo real.',
+    desc: 'Optimizador de red para Windows: reduce latencia y bufferbloat con perfiles Gaming/Reset y monitoreo en tiempo real.',
     href: 'https://corillo.live/antibufferbloat-pro/',
     tags: ['C#', 'WPF', 'Windows', '.NET'],
-    year: '2025',
-    status: 'live',
+    year: '2024',
   },
 ];
 ---
@@ -38,21 +82,41 @@ const projects = [
       <h1 class="section-title">Proyectos</h1>
       <p class="section-sub">Plataformas web, aplicaciones de escritorio y herramientas que la gente realmente usa — desde streaming en vivo hasta optimización de redes en Windows.</p>
 
-      <div class="projects-list">
-        {projects.map(p => (
-          <a href={p.href} target="_blank" rel="noopener" class="project-card">
-            <div class="project-top">
-              <div>
-                <span class="project-year">{p.year}</span>
-                {p.status === 'live' && <span class="project-live">● LIVE</span>}
+      <div class="featured-grid">
+        {featuredProjects.map(p => (
+          <a href={p.href} target="_blank" rel="noopener" class="featured-card" style={`--c:${p.color}`}>
+            <div class="featured-top">
+              <div class="featured-meta">
+                <span class="featured-year">{p.year}</span>
+                <span class:list={['featured-status', p.status.toLowerCase()]}>{p.status}</span>
               </div>
-              <span class="project-arrow">↗</span>
+              <span class="featured-arrow">↗</span>
             </div>
-            <h2 class="project-name">{p.name}</h2>
-            <p class="project-desc">{p.desc}</p>
-            <div class="project-tags">
+            <h2 class="featured-name">{p.name}</h2>
+            <p class="featured-tagline">{p.tagline}</p>
+            <p class="featured-desc">{p.desc}</p>
+            <div class="dev-tags">
               {p.tags.map(t => <span class="tag">{t}</span>)}
             </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="other-label">Más proyectos</p>
+      <div class="dev-list">
+        {otherProjects.map(p => (
+          <a href={p.href} target="_blank" rel="noopener" class="dev-row">
+            <div>
+              <div class="dev-row-top">
+                <span class="dev-name">{p.name}</span>
+                <span class="dev-year">{p.year}</span>
+              </div>
+              <div class="dev-desc">{p.desc}</div>
+              <div class="dev-tags">
+                {p.tags.map(t => <span class="tag">{t}</span>)}
+              </div>
+            </div>
+            <span class="dev-arrow">↗</span>
           </a>
         ))}
       </div>
@@ -99,45 +163,102 @@ const projects = [
 </Base>
 
 <style>
-.projects-list {
-  display: grid; grid-template-columns: repeat(2,1fr);
-  gap: 12px; margin-top: 56px;
+/* Featured cards */
+.featured-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 16px; margin-top: 56px; margin-bottom: 48px;
 }
-@media (max-width: 700px) { .projects-list { grid-template-columns: 1fr } }
+@media (max-width: 900px) { .featured-grid { grid-template-columns: 1fr } }
 
-.project-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 16px; padding: 32px;
-  display: flex; flex-direction: column; gap: 14px;
-  position: relative; overflow: hidden;
-  transition: border-color .2s, transform .2s;
+.featured-card {
+  display: flex; flex-direction: column;
+  background: color-mix(in srgb, var(--c) 6%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--c) 20%, var(--border));
+  border-top: 3px solid var(--c);
+  border-radius: 14px; padding: 24px;
+  transition: transform .2s, box-shadow .2s;
 }
-.project-card:hover { border-color: color-mix(in srgb, var(--white) 20%, transparent); transform: translateY(-3px) }
-.project-top { display: flex; align-items: center; justify-content: space-between }
-.project-year {
-  font-family: var(--mono); font-size: .5rem;
+.featured-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--c) 15%, transparent);
+}
+.featured-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 20px;
+}
+.featured-meta { display: flex; align-items: center; gap: 8px }
+.featured-year {
+  font-family: var(--mono); font-size: .48rem;
   letter-spacing: 2px; color: var(--dim);
 }
-:root { --page-c: var(--page-c) }
-.project-live {
-  font-family: var(--mono); font-size: .62rem;
-  letter-spacing: 2px; color: var(--page-c); margin-left: 10px;
-}
-.project-arrow { font-size: 1.1rem; color: var(--muted); transition: transform .2s }
-.project-card:hover .project-arrow { transform: translate(3px,-3px); color: var(--white) }
-.project-name {
-  font-family: var(--display);
-  font-size: clamp(2rem, 4vw, 3rem);
-  letter-spacing: 3px; color: var(--white);
-}
-.project-desc { font-size: .85rem; color: var(--muted); line-height: 1.7 }
-.project-tags { display: flex; gap: 6px; flex-wrap: wrap }
-.tag {
-  font-family: var(--mono); font-size: .62rem;
+.featured-status {
+  font-family: var(--mono); font-size: .44rem;
   letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 4px;
-  background: color-mix(in srgb, var(--white) 4%, transparent); border: 1px solid var(--border);
-  color: var(--muted);
+  padding: 2px 7px; border-radius: 20px;
+}
+.featured-status.live {
+  background: color-mix(in srgb, #4ade80 12%, transparent);
+  border: 1px solid color-mix(in srgb, #4ade80 30%, transparent);
+  color: #4ade80;
+}
+.featured-status.beta {
+  background: color-mix(in srgb, #facc15 10%, transparent);
+  border: 1px solid color-mix(in srgb, #facc15 30%, transparent);
+  color: #facc15;
+}
+.featured-arrow { font-size: 1.1rem; color: var(--muted); transition: color .2s }
+.featured-card:hover .featured-arrow { color: var(--c) }
+.featured-name {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: 2px; color: var(--white); margin-bottom: 4px;
+}
+.featured-tagline {
+  font-family: var(--mono); font-size: .5rem;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--c); margin-bottom: 12px;
+}
+.featured-desc {
+  font-size: .82rem; color: var(--muted); line-height: 1.6;
+  flex: 1; margin-bottom: 16px;
+}
+
+/* Other projects */
+.other-label {
+  font-family: var(--mono); font-size: .5rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 8px;
+}
+.dev-list { display: flex; flex-direction: column }
+.dev-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 16px; padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  transition: .2s;
+}
+.dev-row:first-child { border-top: 1px solid var(--border) }
+.dev-row-top { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px }
+.dev-name {
+  font-family: var(--display);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  letter-spacing: 2px; color: var(--white); transition: color .2s;
+}
+.dev-row:hover .dev-name { color: var(--accent) }
+.dev-year {
+  font-family: var(--mono); font-size: .46rem;
+  letter-spacing: 1.5px; color: var(--dim);
+}
+.dev-desc { font-size: .8rem; color: var(--muted); line-height: 1.5; margin-bottom: 8px }
+.dev-arrow { font-size: 1rem; color: var(--muted); padding-top: 4px; flex-shrink: 0; transition: transform .2s, color .2s }
+.dev-row:hover .dev-arrow { transform: translate(3px,-3px); color: var(--white) }
+
+.dev-tags { display: flex; flex-wrap: wrap; gap: 6px }
+.tag {
+  font-family: var(--mono); font-size: .44rem;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 4px;
+  background: color-mix(in srgb, var(--white) 4%, transparent);
+  border: 1px solid var(--border); color: var(--dim);
 }
 
 .github-cta {
