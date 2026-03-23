@@ -67,43 +67,6 @@ const featuredProjects = [
   },
 ];
 
-const otherProjects = [
-  {
-    name: 'CORILLO',
-    desc: 'Plataforma de streaming en vivo independiente para Puerto Rico.',
-    href: 'https://corillo.live',
-    tags: ['HTML', 'JS', 'MediaMTX', 'HLS'],
-    year: '2024',
-  },
-  {
-    name: 'STREAMER PRO',
-    desc: 'App de escritorio para streaming RTMP multi-plataforma con FFmpeg.',
-    href: 'https://corillo.live/streamer-pro/',
-    tags: ['C#', 'WPF', 'FFmpeg'],
-    year: '2024',
-  },
-  {
-    name: 'STREAMER LITE',
-    desc: 'Versión ligera de Streamer Pro. Pipeline ddagrab+NVENC optimizado para bajo consumo de CPU.',
-    href: 'https://corillo.live',
-    tags: ['C#', 'WPF', 'NVENC', 'ddagrab'],
-    year: '2025',
-  },
-  {
-    name: 'NATCHECK',
-    desc: 'Diagnóstico de NAT type, MTU y puertos para gaming. 10 perfiles de juego, fix UPnP automático.',
-    href: 'https://corillo.live/natcheck/',
-    tags: ['C#', 'WinForms', 'STUN', 'UPnP'],
-    year: '2025',
-  },
-  {
-    name: 'ANTI-BUFFERBLOAT PRO',
-    desc: 'Optimizador de red para Windows: reduce latencia y bufferbloat en tiempo real.',
-    href: 'https://corillo.live/antibufferbloat-pro/',
-    tags: ['C#', 'WPF', 'Windows'],
-    year: '2024',
-  },
-];
 ---
 <Base title="Marcos Santiago — Graphic Artist, Developer · Aibonito PR">
   <Nav />
@@ -199,28 +162,8 @@ const otherProjects = [
         ))}
       </div>
 
-      <!-- Other projects -->
-      <p class="other-label">Más proyectos</p>
-      <div class="dev-list">
-        {otherProjects.map(p => (
-          <a href={p.href} target="_blank" rel="noopener" class="dev-row">
-            <div>
-              <div class="dev-row-top">
-                <span class="dev-name">{p.name}</span>
-                <span class="dev-year">{p.year}</span>
-              </div>
-              <div class="dev-desc">{p.desc}</div>
-              <div class="dev-tags">
-                {p.tags.map(t => <span class="tag">{t}</span>)}
-              </div>
-            </div>
-            <span class="dev-arrow">↗</span>
-          </a>
-        ))}
-      </div>
-
       <div style="margin-top:32px">
-        <a href="/portafolio/dev/" class="btn ghost">Ver todos los proyectos</a>
+        <a href="/portafolio/dev/" class="btn ghost">Ver todos los proyectos →</a>
       </div>
     </div>
   </section>
