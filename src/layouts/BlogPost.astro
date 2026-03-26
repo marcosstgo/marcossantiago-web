@@ -141,8 +141,23 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 .post-body p  { margin-bottom: 20px }
 .post-body strong { color: var(--white) }
 .post-body a  { color: var(--accent); text-decoration: underline; text-underline-offset: 3px }
-.post-body ul, .post-body ol { padding-left: 24px; margin-bottom: 20px }
-.post-body li { margin-bottom: 8px }
+.post-body ul, .post-body ol { list-style: none; padding-left: 0; margin-bottom: 24px }
+.post-body li {
+  position: relative; padding-left: 20px;
+  margin-bottom: 12px;
+  color: color-mix(in srgb, var(--white) 80%, transparent);
+  line-height: 1.7;
+}
+.post-body ul li::before {
+  content: '—'; position: absolute; left: 0;
+  color: var(--accent); font-weight: 700;
+}
+.post-body ol { counter-reset: ol-counter }
+.post-body ol li { counter-increment: ol-counter }
+.post-body ol li::before {
+  content: counter(ol-counter) '.'; position: absolute; left: 0;
+  color: var(--accent); font-family: var(--mono); font-size: var(--text-xs);
+}
 .post-body blockquote {
   border-left: 2px solid var(--accent);
   padding-left: 20px; margin: 24px 0;
