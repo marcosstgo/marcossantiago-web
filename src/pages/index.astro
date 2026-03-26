@@ -3,6 +3,13 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
+const allPosts = await Promise.all(
+  Object.values(import.meta.glob('./blog/*.mdx', { eager: true })) as any[]
+);
+const latestPost = allPosts
+  .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime())[0]
+  ?.frontmatter;
+
 const disciplines = [
   {
     label: 'Diseño Gráfico',
@@ -232,13 +239,21 @@ const featuredProjects = [
   <!-- ═══ BLOG CTA ═══ -->
   <section class="section">
     <div class="container">
-      <div class="blog-cta">
-        <div>
+      <div class="blog-row">
+        <div class="blog-row-copy">
           <p class="section-label">Blog</p>
           <h2 class="blog-cta-title">Escribo sobre lo que hago</h2>
           <p class="blog-cta-sub">Programación, diseño, fotografía, video y lo que me pase por la cabeza.</p>
+          <a href="/blog/" class="btn ghost" style="margin-top:24px">Ver todos los artículos →</a>
         </div>
-        <a href="/blog/" class="btn primary">Leer el blog</a>
+        {latestPost && (
+          <a href={`/blog/${latestPost.slug}/`} class="blog-latest-card">
+            <span class="blog-latest-label">Último artículo</span>
+            <h3 class="blog-latest-title">{latestPost.title}</h3>
+            <p class="blog-latest-desc">{latestPost.desc}</p>
+            <span class="blog-latest-link">Leer →</span>
+          </a>
+        )}
       </div>
     </div>
   </section>
@@ -586,16 +601,42 @@ const featuredProjects = [
 .dev-arrow { font-size: 1rem; color: var(--muted); flex-shrink: 0; transition: transform .2s }
 
 /* ── BLOG CTA ── */
-.blog-cta {
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 32px; flex-wrap: wrap;
-  padding: 48px; background: var(--surface);
-  border: 1px solid var(--border); border-radius: 20px;
+.blog-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px; align-items: start;
 }
+@media (max-width: 768px) { .blog-row { grid-template-columns: 1fr } }
 .blog-cta-title {
   font-family: var(--display);
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   letter-spacing: 2px; margin-bottom: 8px;
 }
 .blog-cta-sub { color: var(--muted); font-size: var(--text-base) }
+.blog-latest-card {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 32px; border-radius: 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  transition: border-color .2s, transform .2s;
+}
+.blog-latest-card:hover { border-color: var(--accent); transform: translateY(-2px) }
+.blog-latest-label {
+  font-family: var(--mono); font-size: var(--text-2xs);
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent);
+}
+.blog-latest-title {
+  font-family: var(--display);
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  letter-spacing: 1.5px; line-height: 1.1;
+  color: var(--white);
+}
+.blog-latest-desc {
+  font-size: var(--text-sm); color: var(--muted);
+  line-height: 1.7; flex: 1;
+}
+.blog-latest-link {
+  font-family: var(--mono); font-size: var(--text-xs);
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); margin-top: 4px;
+}
 </style>
