@@ -7,7 +7,7 @@ services:
     container_name: marcossantiago-web
     restart: unless-stopped
     ports:
-      - "3010:80"
+      - "127.0.0.1:3010:80"
 
   marcossantiago-bot:
     build:
@@ -17,7 +17,7 @@ services:
     container_name: marcossantiago-bot
     restart: unless-stopped
     ports:
-      - "3005:3005"
+      - "127.0.0.1:3005:3005"
     environment:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
       - MS_TELEGRAM_TOKEN=8678023585:AAGTHcOfN4a8FofaJIwdxXEyPSFEqjwoIE4
