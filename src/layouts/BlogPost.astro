@@ -28,7 +28,17 @@ const idx  = allPosts.findIndex(p => p.slug === slug);
 const next = idx > 0                    ? allPosts[idx - 1] : null; // newer
 const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 ---
-<Base title={`${title} — Marcos Santiago`} description={desc}>
+<Base title={`${title} — Marcos Santiago`} description={desc} image="/marcos-photo.jpg">
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "description": desc,
+    "datePublished": date,
+    "author": { "@type": "Person", "name": "Marcos Santiago", "url": "https://marcossantiago.com" },
+    "publisher": { "@type": "Person", "name": "Marcos Santiago", "url": "https://marcossantiago.com" },
+    "url": `https://marcossantiago.com/blog/${slug}/`
+  })} />
   <Nav />
   <main style="padding-top:120px">
     <div class="container">

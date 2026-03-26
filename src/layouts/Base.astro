@@ -25,14 +25,34 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
   <!-- OG -->
   <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content={image} />
+  <meta property="og:image" content={`https://marcossantiago.com${image}`} />
   <meta property="og:site_name" content="Marcos Santiago" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Marcos Santiago",
+    "url": "https://marcossantiago.com",
+    "jobTitle": "Diseñador Gráfico, Fotógrafo, Videógrafo y Desarrollador",
+    "address": { "@type": "PostalAddress", "addressLocality": "Aibonito", "addressRegion": "Puerto Rico" },
+    "sameAs": [
+      "https://github.com/marcosstgo",
+      "https://www.behance.net/marcossantiago",
+      "https://www.instagram.com/marcossantiago.pr"
+    ]
+  })} />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
