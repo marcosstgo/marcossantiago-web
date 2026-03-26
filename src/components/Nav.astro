@@ -22,10 +22,13 @@ const current = Astro.url.pathname;
           >{l.label}</a>
         ))}
       </div>
-      <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
-        <i class="fa-solid fa-sun"  id="iconSun"></i>
-        <i class="fa-solid fa-moon" id="iconMoon"></i>
-      </button>
+      <div class="nav-right">
+        <a href="/contacto/" class="nav-cta">Hablemos <span class="nav-cta-arrow">→</span></a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
+          <i class="fa-solid fa-sun"  id="iconSun"></i>
+          <i class="fa-solid fa-moon" id="iconMoon"></i>
+        </button>
+      </div>
       <button class="nav-hamburger" id="navToggle" aria-label="Menú">
         <span></span><span></span><span></span>
       </button>
@@ -64,6 +67,8 @@ const current = Astro.url.pathname;
   }
   .nav-brand {
     display: flex; flex-direction: column; gap: 1px;
+    padding-left: 10px;
+    border-left: 2px solid var(--accent);
   }
   .nav-name {
     font-family: var(--display);
@@ -90,12 +95,46 @@ const current = Astro.url.pathname;
     color: var(--muted);
     padding: 8px 14px;
     border-radius: 6px;
-    transition: .15s;
+    position: relative;
+    transition: color .15s;
   }
-  .nav-link:hover, .nav-link.active { color: var(--white) }
+  .nav-link::after {
+    content: '';
+    position: absolute; bottom: 2px; left: 14px; right: 14px;
+    height: 1.5px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .2s ease;
+    border-radius: 2px;
+  }
+  .nav-link:hover { color: var(--white) }
+  .nav-link:hover::after { transform: scaleX(1) }
   .nav-link.active {
-    background: color-mix(in srgb, var(--white) 6%, transparent);
+    color: var(--white);
   }
+  .nav-link.active::after { transform: scaleX(1) }
+
+  .nav-right {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-cta {
+    font-family: var(--mono); font-size: .58rem;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 8px 16px; border-radius: 8px;
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    transition: .2s ease; white-space: nowrap;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .nav-cta:hover {
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+  .nav-cta-arrow { transition: transform .2s ease }
+  .nav-cta:hover .nav-cta-arrow { transform: translateX(3px) }
   .nav-hamburger {
     display: none;
     flex-direction: column; gap: 5px;
@@ -151,6 +190,7 @@ const current = Astro.url.pathname;
 
   @media (max-width: 768px) {
     .nav-links { display: none }
+    .nav-cta { display: none }
     .nav-hamburger { display: flex }
     .mobile-nav { display: block }
   }
