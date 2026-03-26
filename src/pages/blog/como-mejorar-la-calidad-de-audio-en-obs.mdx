@@ -1,0 +1,111 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Cómo Mejorar la Calidad de Audio en OBS"
+date: "2026-03-26"
+desc: "Guía práctica para mejorar el audio en OBS Studio: filtros de ruido, compresión, ganancia, configuración del micrófono y los mejores ajustes para que tu voz suene profesional."
+tags: ["Audio", "OBS"]
+slug: "como-mejorar-la-calidad-de-audio-en-obs"
+---
+
+<p>El audio es lo primero que hace que un stream o video suene amateur o profesional. Puedes tener una cámara 4K y un setup impresionante, pero si el audio suena con ruido de fondo, reverb o volumen inconsistente, la audiencia se va. OBS incluye filtros de audio poderosos y todos son gratis.</p>
+
+<h2>1. Configuración Base del Audio</h2>
+
+<p>Antes de agregar filtros, asegúrate de que OBS esté configurado correctamente.</p>
+
+<ol>
+<li>Ve a <strong>Configuración &gt; Audio</strong>.</li>
+<li>Establece la <strong>tasa de muestreo en 48 kHz</strong> — es el estándar para video. No uses 44.1 kHz, puede causar problemas de sincronización.</li>
+<li>Canales: <strong>Estéreo</strong>.</li>
+<li>Asegúrate de que tu micrófono aparece en "Dispositivo de captura de audio 1".</li>
+</ol>
+
+<h2>2. Cómo Agregar Filtros al Micrófono</h2>
+
+<ol>
+<li>En el mezclador de audio (parte inferior de OBS), haz clic en el ícono de engranaje junto a tu micrófono.</li>
+<li>Selecciona <strong>Filtros</strong>.</li>
+<li>Haz clic en el <strong>botón "+"</strong> para agregar cada filtro.</li>
+</ol>
+
+<p>El orden de los filtros importa — OBS los aplica de arriba hacia abajo. El orden recomendado es el que te explico a continuación.</p>
+
+<h2>3. Filtro 1: Supresión de Ruido</h2>
+
+<p>Elimina el ruido de fondo: ventiladores, aire acondicionado, teclado, ruido ambiental.</p>
+
+<ol>
+<li>Agrega el filtro <strong>Supresión de ruido</strong>.</li>
+<li>Selecciona el método <strong>NVIDIA RTX Voice</strong> si tienes una GPU NVIDIA compatible — es el mejor resultado.</li>
+<li>Si no tienes NVIDIA, usa <strong>RNNoise</strong> — funciona muy bien para ruido constante.</li>
+<li>Como último recurso: <strong>Speex</strong>, con valor entre <code>-30</code> y <code>-20 dB</code>.</li>
+</ol>
+
+<h2>4. Filtro 2: Puerta de Ruido (Noise Gate)</h2>
+
+<p>La puerta de ruido silencia el micrófono automáticamente cuando no estás hablando, evitando que pase ruido de fondo en los silencios.</p>
+
+<ol>
+<li>Agrega el filtro <strong>Puerta de ruido</strong>.</li>
+<li><strong>Umbral de cierre (Close Threshold):</strong> <code>-50 dB</code> — punto donde el micrófono se cierra.</li>
+<li><strong>Umbral de apertura (Open Threshold):</strong> <code>-40 dB</code> — punto donde el micrófono se abre al hablar.</li>
+<li>Para micrófonos más sensibles o ambientes ruidosos, sube ambos valores (por ejemplo, <code>-40</code> y <code>-30 dB</code>).</li>
+<li>Prueba hablando y luego quedándote en silencio — el indicador del mezclador debe caer a cero cuando no hablas.</li>
+</ol>
+
+<h2>5. Filtro 3: Compresión</h2>
+
+<p>El compresor iguala el volumen de tu voz — reduce los picos altos y sube los momentos más bajos, haciendo que suenes consistente sin importar si gritas o hablas suave.</p>
+
+<ol>
+<li>Agrega el filtro <strong>Compresor</strong>.</li>
+<li><strong>Ratio:</strong> <code>4:1</code> para streaming normal. <code>6:1</code> si tu voz varía mucho.</li>
+<li><strong>Umbral (Threshold):</strong> <code>-18 dB</code>. Ajusta según donde llega tu voz en el medidor.</li>
+<li><strong>Attack:</strong> <code>6 ms</code>.</li>
+<li><strong>Release:</strong> <code>60 ms</code>.</li>
+<li><strong>Ganancia de salida (Output Gain):</strong> sube entre <code>3</code> y <code>6 dB</code> para compensar el volumen perdido al comprimir.</li>
+</ol>
+
+<h2>6. Filtro 4: Ganancia (Gain)</h2>
+
+<p>Si tu micrófono llega bajo al mezclador (el indicador se queda en verde claro aunque hables fuerte), agrega el filtro <strong>Ganancia</strong> y súbelo en <code>5</code> a <code>10 dB</code> hasta que tu voz llegue entre <code>-12</code> y <code>-6 dB</code> en el mezclador. Ese es el rango ideal — con headroom suficiente para no distorsionar.</p>
+
+<p>Si tu micrófono ya llega fuerte, no necesitas este filtro.</p>
+
+<h2>7. Filtro 5: Ecualizador (Opcional pero Recomendado)</h2>
+
+<p>El ecualizador ajusta las frecuencias de tu voz. Los ajustes más comunes para voz en streaming:</p>
+
+<ol>
+<li>Agrega el filtro <strong>Ecualizador paramétrico de 3 bandas</strong> o instala el plugin <strong>ReaPlugs</strong> para un EQ más preciso.</li>
+<li><strong>Bajos (80-120 Hz):</strong> Corta un poco si hay "boomy" o resonancia en la voz.</li>
+<li><strong>Frecuencias medias (200-400 Hz):</strong> Corta si suena "embarrado" o con mucho cuerpo.</li>
+<li><strong>Presencia (2-5 kHz):</strong> Sube ligeramente para que la voz sea más clara y se entienda bien.</li>
+<li><strong>Air (10-12 kHz):</strong> Sube un poco para dar brillantez natural.</li>
+</ol>
+
+<h2>8. Niveles Correctos en el Mezclador</h2>
+
+<p>El objetivo final en el mezclador de OBS:</p>
+
+<ol>
+<li>Tu voz hablando normalmente debe llegar entre <strong>-12 dB y -6 dB</strong> (zona amarilla).</li>
+<li>Nunca debe tocar el rojo (<code>0 dB</code>) — eso es distorsión.</li>
+<li>El audio del juego o música de fondo debe estar entre <strong>-20 dB y -15 dB</strong> — más bajo que tu voz para no taparla.</li>
+</ol>
+
+<h2>9. Monitoreo: Escúchate Antes de Transmitir</h2>
+
+<ol>
+<li>Haz clic en el engranaje del micrófono en el mezclador.</li>
+<li>Selecciona <strong>Propiedades avanzadas de audio</strong>.</li>
+<li>Cambia "Monitoreo de audio" a <strong>Monitor y salida</strong>.</li>
+<li>Con audífonos conectados, escucha exactamente lo que va al stream mientras pruebas los filtros.</li>
+<li>Cuando termines de configurar, vuelve a <strong>Solo salida</strong> para no escucharte a ti mismo durante el stream.</li>
+</ol>
+
+<h2>Conclusión</h2>
+
+<p>Con estos cinco filtros en orden — supresión de ruido, puerta, compresor, ganancia y EQ — tu audio va a sonar considerablemente mejor que el promedio. No necesitas un micrófono de $300 para lograrlo. Un micrófono decente con una buena cadena de filtros supera a un micrófono caro mal configurado.</p>
+
+<p>La diferencia se escucha desde el primer mensaje en el chat.</p>

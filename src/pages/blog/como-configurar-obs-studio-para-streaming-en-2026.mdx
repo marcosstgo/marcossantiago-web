@@ -1,0 +1,114 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Cómo Configurar OBS Studio para Streaming en 2026"
+date: "2026-03-26"
+desc: "Guía completa para configurar OBS Studio correctamente en 2026: resolución, bitrate, encoder, audio y ajustes avanzados para streaming profesional en Twitch, YouTube y más."
+tags: ["Video", "OBS"]
+slug: "como-configurar-obs-studio-para-streaming-en-2026"
+---
+
+<p><strong>OBS Studio</strong> es el software de streaming más usado del mundo — y es gratis. Pero abrirlo por primera vez puede ser confuso. En esta guía te explico exactamente qué configurar y por qué, para que tu stream se vea profesional desde el primer día.</p>
+
+<h2>1. Descarga e Instalación</h2>
+
+<p>Descarga OBS Studio desde <strong>obsproject.com</strong>. Está disponible para Windows, macOS y Linux. Instala la versión más reciente — en 2026 ya incluye soporte nativo para encoders de última generación (NVIDIA NVENC, AMD AV1, Apple Silicon).</p>
+
+<p>Al abrir OBS por primera vez, el asistente de configuración automática te preguntará si quieres optimizar para streaming o grabación. Selecciona <strong>Optimizar para streaming</strong> y sigue los pasos — pero después ajusta manualmente los valores que te explico a continuación.</p>
+
+<h2>2. Configuración de Video</h2>
+
+<p>Ve a <strong>Configuración &gt; Video</strong>.</p>
+
+<h3>Resolución Base y de Salida</h3>
+
+<ol>
+<li><strong>Resolución base (Canvas):</strong> Ponla igual a la resolución de tu monitor, normalmente <code>1920x1080</code>.</li>
+<li><strong>Resolución de salida (Scaled):</strong> <code>1920x1080</code> si tu internet aguanta, <code>1280x720</code> si tu conexión es limitada.</li>
+<li><strong>Filtro de escala:</strong> Usa <strong>Lanczos</strong> para la mejor calidad visual.</li>
+</ol>
+
+<h3>FPS</h3>
+
+<ol>
+<li>Para gaming o contenido dinámico: <strong>60 FPS</strong>.</li>
+<li>Para streams más tranquilos (talk show, arte, música): <strong>30 FPS</strong> — gasta menos bitrate y se ve igual de bien.</li>
+</ol>
+
+<h2>3. Configuración de Output (Bitrate y Encoder)</h2>
+
+<p>Ve a <strong>Configuración &gt; Output</strong> y cambia el modo a <strong>Avanzado</strong>.</p>
+
+<h3>Encoder</h3>
+
+<ol>
+<li>Si tienes GPU NVIDIA: usa <strong>NVENC H.264</strong> o <strong>NVENC AV1</strong> — no carga la CPU.</li>
+<li>Si tienes GPU AMD: usa <strong>AMF H.264</strong> o <strong>AMF AV1</strong>.</li>
+<li>Si no tienes GPU dedicada o quieres máxima compatibilidad: usa <strong>x264</strong> (software), preset <code>veryfast</code> o <code>fast</code>.</li>
+</ol>
+
+<h3>Bitrate recomendado</h3>
+
+<ol>
+<li><strong>1080p 60fps:</strong> 6,000 – 8,000 Kbps</li>
+<li><strong>1080p 30fps:</strong> 4,500 – 6,000 Kbps</li>
+<li><strong>720p 60fps:</strong> 3,500 – 5,000 Kbps</li>
+<li><strong>720p 30fps:</strong> 2,500 – 3,500 Kbps</li>
+</ol>
+
+<p>Regla práctica: tu bitrate no debe superar el <strong>80% de tu velocidad de subida</strong>. Si subes a 10 Mbps, no uses más de 8,000 Kbps.</p>
+
+<h3>Otros ajustes de Output</h3>
+
+<ol>
+<li><strong>Intervalo de keyframe:</strong> <code>2</code> segundos — requerido por Twitch y YouTube.</li>
+<li><strong>Perfil:</strong> <code>high</code> para H.264.</li>
+<li><strong>Tune:</strong> <code>zerolatency</code> si usas x264 y quieres baja latencia.</li>
+</ol>
+
+<h2>4. Configuración de Audio</h2>
+
+<p>Ve a <strong>Configuración &gt; Audio</strong>.</p>
+
+<ol>
+<li><strong>Tasa de muestreo:</strong> <code>48 kHz</code> — estándar para video y streaming.</li>
+<li><strong>Canales:</strong> <code>Estéreo</code>.</li>
+<li>En <strong>Dispositivos de audio global</strong>, asigna tu micrófono en "Dispositivo de captura de audio 1".</li>
+<li>El audio del escritorio (juego, música) lo captura OBS automáticamente — verifica que aparece en el mezclador de la pantalla principal.</li>
+</ol>
+
+<h2>5. Escenas y Fuentes</h2>
+
+<p>OBS trabaja con <strong>Escenas</strong> (pantallas) y <strong>Fuentes</strong> (elementos dentro de cada escena). Un setup básico:</p>
+
+<ol>
+<li>Crea una escena llamada <strong>"En vivo"</strong>.</li>
+<li>Agrega una fuente <strong>Captura de juego</strong> o <strong>Captura de pantalla</strong> para el contenido principal.</li>
+<li>Agrega una fuente <strong>Dispositivo de captura de video</strong> si usas webcam.</li>
+<li>Agrega una fuente <strong>Texto (GDI+)</strong> para tu nombre o alertas.</li>
+<li>Crea una segunda escena llamada <strong>"BRB"</strong> (Be Right Back) con una imagen de fondo para cuando salgas del stream.</li>
+</ol>
+
+<h2>6. Conectar con Twitch, YouTube o tu Plataforma</h2>
+
+<p>Ve a <strong>Configuración &gt; Stream</strong>.</p>
+
+<ol>
+<li>Selecciona el servicio (Twitch, YouTube, etc.) o usa <strong>Personalizado</strong> si tu plataforma lo requiere.</li>
+<li>Pega tu <strong>Stream Key</strong> — la encuentras en el dashboard de tu plataforma.</li>
+<li>Para Twitch: activa <strong>"Usar autenticación de transmisión"</strong> para conectar tu cuenta directamente y que OBS suba el título automáticamente.</li>
+</ol>
+
+<h2>7. Test Antes de Salir en Vivo</h2>
+
+<ol>
+<li>Haz clic en <strong>Iniciar grabación</strong> (no transmisión) y graba 2 minutos de prueba.</li>
+<li>Revisa que el video y audio se ven correctamente.</li>
+<li>Verifica en la barra inferior de OBS que la CPU esté por debajo del 80% y que no haya frames perdidos (la cifra debe estar en 0% o muy cerca).</li>
+<li>Cuando todo esté bien, haz clic en <strong>Iniciar transmisión</strong>.</li>
+</ol>
+
+<h2>Conclusión</h2>
+
+<p>Con esta configuración tienes una base sólida para empezar a hacer streaming de manera profesional. OBS tiene muchas más opciones avanzadas — filtros de video, transitions, virtual camera, plugin de captions — pero con lo que cubrimos aquí ya estás por encima del 90% de los streamers que empiezan.</p>
+
+<p>El siguiente paso es afinar el audio, que es lo primero que la gente nota en un stream. Te lo explico en detalle en la guía de cómo mejorar la calidad de audio en OBS.</p>
