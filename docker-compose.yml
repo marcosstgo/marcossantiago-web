@@ -22,3 +22,19 @@ services:
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
       - MS_TELEGRAM_TOKEN=8678023585:AAGTHcOfN4a8FofaJIwdxXEyPSFEqjwoIE4
       - MS_TELEGRAM_CHAT_ID=46377544
+
+  marcossantiago-blog-bot:
+    build:
+      context: ./blog-bot
+      dockerfile: Dockerfile
+    image: marcossantiago-blog-bot:latest
+    container_name: marcossantiago-blog-bot
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3006:3006"
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - BLOG_BOT_TOKEN=${BLOG_BOT_TOKEN}
+      - BLOG_ADMIN_ID=${BLOG_ADMIN_ID}
+      - BLOG_GITHUB_TOKEN=${BLOG_GITHUB_TOKEN}
+      - BLOG_GITHUB_REPO=marcosstgo/marcossantiago-web
