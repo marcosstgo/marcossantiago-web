@@ -54,6 +54,16 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
         <slot />
       </article>
 
+      <!-- Author card + CTA -->
+      <div class="author-card">
+        <div class="author-avatar">MS</div>
+        <div class="author-info">
+          <span class="author-name">Marcos Santiago</span>
+          <span class="author-bio">Diseñador, fotógrafo y desarrollador desde Aibonito, PR. Creando cosas visuales que comunican.</span>
+        </div>
+        <a href="/contacto/" class="author-cta">¿Trabajamos juntos? <span>→</span></a>
+      </div>
+
       <!-- Prev / Next -->
       {(prev || next) && (
         <nav class="post-nav">
@@ -180,6 +190,47 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 }
 .post-body tr:last-child td { border-bottom: none }
 .post-body tr:hover td { background: color-mix(in srgb, var(--white) 3%, transparent) }
+
+/* ── Author card ── */
+.author-card {
+  max-width: 72ch;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  margin-top: 56px; padding: 28px;
+  border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--border);
+}
+.author-avatar {
+  width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 1.1rem; letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 60%, #7c3aed));
+  color: #fff;
+}
+.author-info {
+  display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0;
+}
+.author-name {
+  font-family: var(--mono); font-size: var(--text-xs);
+  letter-spacing: 2px; text-transform: uppercase; color: var(--white);
+}
+.author-bio {
+  font-size: var(--text-sm); color: var(--muted); line-height: 1.6;
+}
+.author-cta {
+  font-family: var(--mono); font-size: var(--text-xs);
+  letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+  padding: 10px 20px; border-radius: 8px;
+  background: var(--accent); color: #080808;
+  white-space: nowrap; flex-shrink: 0;
+  transition: opacity .2s;
+}
+.author-cta:hover { opacity: .85 }
+.author-cta span { transition: transform .2s ease; display: inline-block }
+.author-cta:hover span { transform: translateX(3px) }
+@media (max-width: 600px) {
+  .author-card { flex-direction: column; align-items: flex-start }
+  .author-cta { width: 100%; text-align: center; justify-content: center }
+}
 
 /* ── Prev / Next ── */
 .post-nav {
