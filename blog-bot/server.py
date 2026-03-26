@@ -42,7 +42,8 @@ Reglas estrictas:
 - Tags disponibles (usa solo estos): Artículo, Colores, Creatividad, Diseño Web, Diseño, Fotografía, Games, LUTS, Landscape, Técnicas, Video
 - El slug debe ser kebab-case, sin tildes, sin caracteres especiales, máximo 60 chars
 - Contenido en español, estilo Marcos Santiago: directo, profesional, con perspectiva de Puerto Rico cuando aplique
-- Usa solo HTML básico: <h3>, <p>, <strong>, <em>, <ul>, <li> — nada de markdown
+- Usa solo HTML básico: <h3>, <p>, <strong>, <em>, <ul>, <li> — nada de markdown ni <br/>
+- Cada oración o idea separada debe ir en su propio <p>, nunca uses <br/> para separar texto
 - 4-6 secciones, entre 400-600 palabras de contenido total
 - NO añadas texto antes ni después del MDX — responde SOLO con el contenido MDX
 """
