@@ -7,6 +7,26 @@ tags: ["Recursos", "Desarrollo Web"]
 slug: "codigos-postales-de-puerto-rico-por-municipio"
 ---
 
+export const exampleCode = `// Obtener todos los ZIPs de PR como array plano
+const todosLosZips = Object.values(zipsPR).flat();
+
+// Validar si un ZIP pertenece a Puerto Rico
+function esZipDePR(zip) {
+  return todosLosZips.includes(zip);
+}
+
+// Encontrar el municipio de un ZIP
+function municipioPorZip(zip) {
+  return Object.entries(zipsPR).find(([, zips]) => zips.includes(zip))?.[0] ?? null;
+}
+
+// Ejemplos
+esZipDePR("00901");        // true  — San Juan
+esZipDePR("10001");        // false — Nueva York
+municipioPorZip("00956");  // "Bayamón"
+municipioPorZip("00716");  // "Ponce"`;
+
+
 <p>Los códigos postales de Puerto Rico comienzan con <strong>006</strong>, <strong>007</strong> u <strong>009</strong>. Muchos municipios tienen más de un ZIP — las ciudades grandes como San Juan, Bayamón, Carolina y Ponce pueden tener más de cinco.</p>
 
 <p>Esta guía lista los códigos postales de los <strong>78 municipios</strong> de Puerto Rico, con el código principal y todos los adicionales conocidos. Al final encontrarás los formatos listos para copiar.</p>
@@ -284,24 +304,7 @@ Yauco — 00698</code></pre>
 
 <div style="position:relative;margin:16px 0 32px;">
   <button id="btn-example" style="position:absolute;top:12px;right:12px;z-index:1;font-family:var(--mono);font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:6px;background:var(--accent);color:#080808;border:none;cursor:pointer;font-weight:700;transition:opacity .2s;">Copiar</button>
-  <pre id="pre-example" style="margin:0;padding:20px 24px;background:color-mix(in srgb,var(--white) 4%,transparent);border:1px solid var(--border);border-radius:10px;overflow-x:auto;font-size:.82rem;line-height:1.7;"><code style="background:none;border:none;padding:0;color:var(--white);">// Obtener todos los ZIPs de PR como array plano
-const todosLosZips = Object.values(zipsPR).flat();
-
-// Validar si un ZIP pertenece a Puerto Rico
-function esZipDePR(zip) &#123;
-  return todosLosZips.includes(zip);
-&#125;
-
-// Encontrar el municipio de un ZIP
-function municipioPorZip(zip) &#123;
-  return Object.entries(zipsPR).find(([, zips]) => zips.includes(zip))?.[0] ?? null;
-&#125;
-
-// Ejemplos
-esZipDePR("00901");        // true  — San Juan
-esZipDePR("10001");        // false — Nueva York
-municipioPorZip("00956");  // "Bayamón"
-municipioPorZip("00716");  // "Ponce"</code></pre>
+  <pre id="pre-example" style="margin:0;padding:20px 24px;background:color-mix(in srgb,var(--white) 4%,transparent);border:1px solid var(--border);border-radius:10px;overflow-x:auto;font-size:.82rem;line-height:1.7;"><code style="background:none;border:none;padding:0;color:var(--white);">{exampleCode}</code></pre>
 </div>
 
 <p>Los códigos postales de Puerto Rico siempre tienen 5 dígitos y comienzan con <strong>006</strong>, <strong>007</strong> u <strong>009</strong>. Puedes usar ese patrón como validación rápida antes de buscar en el objeto: <code>/^00[679]\d&#123;2&#125;$/.test(zip)</code>.</p>
