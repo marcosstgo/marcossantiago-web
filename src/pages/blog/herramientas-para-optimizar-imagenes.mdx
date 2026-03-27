@@ -1,0 +1,117 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Las Mejores Herramientas para Optimizar Imágenes en 2026"
+date: "2026-03-26"
+desc: "Guía completa de herramientas para reducir el peso de tus fotos sin perder calidad: opciones online, apps de escritorio, plugins y herramientas para developers. Gratis y de pago."
+tags: ["Fotografía", "Recursos", "Diseño", "Desarrollo"]
+slug: "herramientas-para-optimizar-imagenes"
+---
+
+<p>Una imagen sin optimizar puede pesar 3 MB. La misma imagen optimizada correctamente: 150 KB. Calidad casi idéntica, carga 20 veces más rápida. Si tus fotos están frenando tu web, tu tienda o tu portafolio, estas son las herramientas que necesitas conocer.</p>
+
+<p>Las organicé por categoría: <strong>online</strong> (sin instalar nada), <strong>desktop</strong> y <strong>para developers</strong>. Indico si son gratis, de pago, o freemium.</p>
+
+<h2>¿Por qué optimizar imágenes?</h2>
+
+<p>Google penaliza páginas lentas en los resultados de búsqueda. Los usuarios en móvil abandonan si una página tarda más de 3 segundos. Y el 60–70% del peso de una página web típica son las imágenes. Optimizar no es opcional — es parte de publicar bien.</p>
+
+<p>Los formatos modernos como <strong>WebP</strong> y <strong>AVIF</strong> reducen el tamaño entre un 25% y 50% comparado con JPEG, con la misma calidad visual. Todos los navegadores modernos los soportan.</p>
+
+<h2>Herramientas online — sin instalar nada</h2>
+
+<h3>Squoosh — <em>Gratis</em></h3>
+<p>Desarrollado por Google. Funciona en el navegador usando WebAssembly — la imagen nunca sale de tu computadora. Soporta WebP, AVIF, MozJPEG, OxiPNG y más. Tienes control total sobre la calidad, el resize y el formato. Ideal para optimizar una imagen a la vez con precisión.</p>
+<p><strong>Mejor para:</strong> cuando quieres control fino sobre calidad y formato. <strong>Limitación:</strong> una imagen a la vez, sin batch.</p>
+
+<h3>TinyPNG / TinyJPG — <em>Gratis con límites / API de pago</em></h3>
+<p>El más popular entre diseñadores. Compresión inteligente con pérdida mínima visible. Arrastra hasta 20 imágenes a la vez, gratis. Los archivos no superan los 5 MB por imagen en la versión gratuita. Tiene plugin para Photoshop, Figma y WordPress.</p>
+<p><strong>Mejor para:</strong> comprimir rápido sin pensar. <strong>Pago:</strong> API desde $0.009 por imagen para automatización.</p>
+
+<h3>Compressor.io — <em>Gratis / Pro $7/mes</em></h3>
+<p>Soporta JPEG, PNG, GIF, WebP y SVG. Ofrece modo lossy y lossless. La versión gratuita tiene un límite de 10 MB por imagen. El plan Pro permite batch processing y mayor tamaño de archivo.</p>
+<p><strong>Mejor para:</strong> SVGs y GIFs además de fotos.</p>
+
+<h3>Convertio / iLoveIMG — <em>Freemium</em></h3>
+<p>Útiles para convertir entre formatos (HEIC → JPG, PNG → WebP, etc.) además de comprimir. Tienen límites en la versión gratuita y son lentos comparado con herramientas locales. Funcionan bien para conversiones ocasionales.</p>
+
+<h2>Apps de escritorio — procesamiento local</h2>
+
+<h3>ImageOptim — <em>Gratis (macOS)</em></h3>
+<p>La mejor opción gratuita para Mac. Arrastra una carpeta entera y optimiza todo en batch. Usa múltiples motores internamente: MozJPEG, pngquant, SVGO, Gifsicle. Compresión sin pérdida por defecto, con opción lossy. Los resultados son excelentes y el proceso es completamente silencioso.</p>
+<p><strong>Mejor para:</strong> fotógrafos y diseñadores en Mac que quieren optimizar carpetas completas.</p>
+
+<h3>RIOT (Radical Image Optimization Tool) — <em>Gratis (Windows)</em></h3>
+<p>El equivalente de ImageOptim para Windows. Interfaz sencilla con preview antes/después. Soporta JPEG, PNG y GIF. Tiene modo batch para procesar múltiples imágenes. No tan potente como alternativas modernas, pero sólido y gratuito.</p>
+
+<h3>XnConvert — <em>Gratis</em></h3>
+<p>Disponible para Windows, Mac y Linux. Especializado en batch processing con acciones encadenadas: redimensionar, convertir formato, comprimir, renombrar — todo en una sola pasada. Soporta más de 500 formatos. Ideal si manejas volúmenes grandes de imágenes regularmente.</p>
+<p><strong>Mejor para:</strong> workflows repetitivos y conversiones masivas.</p>
+
+<h2>Software de edición con exportación optimizada</h2>
+
+<h3>Adobe Photoshop — <em>De pago (CC ~$22/mes)</em></h3>
+<p>La función <strong>Export As</strong> (no "Save As") genera WebP, JPEG, PNG y GIF con control detallado de calidad y metadatos. También tiene el clásico <strong>Save for Web</strong> que lleva 20 años siendo referencia. Si ya tienes CC, es la opción más completa para imágenes individuales con edición simultánea.</p>
+
+<h3>Adobe Lightroom — <em>De pago (CC ~$10/mes)</em></h3>
+<p>Para fotógrafos, Lightroom es la mejor opción: exporta en batch con presets de exportación (resolución, calidad, formato, watermark) guardados. Un click para exportar 500 fotos con la configuración que tú definas. Soporta WebP desde la versión 2022.</p>
+
+<h3>Affinity Photo — <em>Pago único ~$70</em></h3>
+<p>Alternativa directa a Photoshop sin suscripción. Tiene la misma función "Export Persona" con soporte para WebP, JPEG, PNG y AVIF. La relación calidad-precio es excelente si no quieres comprometerte con una suscripción mensual.</p>
+
+<h2>Para developers y automatización</h2>
+
+<h3>Sharp (Node.js) — <em>Gratis / Open Source</em></h3>
+<p>La librería más rápida para procesar imágenes en Node.js. Convierte a WebP, AVIF, JPEG y PNG con alta performance usando libvips. Si tienes un sitio en Astro, Next.js o cualquier framework JavaScript, Sharp es el motor que probablemente ya estás usando internamente.</p>
+
+<h3>Cloudinary — <em>Freemium (25 créditos gratis/mes)</em></h3>
+<p>CDN de imágenes con transformaciones en tiempo real. Sube una imagen y Cloudinary genera automáticamente versiones en el formato correcto para cada navegador (WebP, AVIF, JPEG) y el tamaño correcto para cada dispositivo. Simplemente añades parámetros a la URL: <code>?w=800&q=auto&f=auto</code>. Potente para proyectos con muchas imágenes o e-commerce.</p>
+<p><strong>Pago:</strong> plans desde $89/mes para uso intensivo.</p>
+
+<h3>ImageKit — <em>Freemium (20 GB gratis/mes)</em></h3>
+<p>Similar a Cloudinary pero con mejor plan gratuito para proyectos pequeños. Optimización automática, CDN global y transformaciones por URL. Buena opción para portafolios y sitios medianos.</p>
+
+<h3>cwebp / avifenc — <em>Gratis / CLI</em></h3>
+<p>Herramientas de línea de comandos oficiales de Google y AOMedia para convertir a WebP y AVIF. Si sabes usar la terminal, son la forma más directa de convertir sin overhead. Se pueden integrar en scripts de bash para automatización.</p>
+
+<h2>Tabla comparativa rápida</h2>
+
+<table>
+<thead>
+<tr><th>Herramienta</th><th>Precio</th><th>Plataforma</th><th>Batch</th><th>WebP / AVIF</th><th>Mejor para</th></tr>
+</thead>
+<tbody>
+<tr><td>Squoosh</td><td>Gratis</td><td>Web</td><td>No</td><td>✓ / ✓</td><td>Control fino, 1 imagen</td></tr>
+<tr><td>TinyPNG</td><td>Gratis / API pago</td><td>Web</td><td>Hasta 20</td><td>✓ / No</td><td>Rápido y fácil</td></tr>
+<tr><td>Compressor.io</td><td>Gratis / $7 mes</td><td>Web</td><td>Pro</td><td>✓ / No</td><td>SVG + GIF + fotos</td></tr>
+<tr><td>ImageOptim</td><td>Gratis</td><td>macOS</td><td>✓</td><td>No</td><td>Mac, carpetas completas</td></tr>
+<tr><td>RIOT</td><td>Gratis</td><td>Windows</td><td>✓</td><td>No</td><td>Windows, batch básico</td></tr>
+<tr><td>XnConvert</td><td>Gratis</td><td>Win/Mac/Linux</td><td>✓</td><td>✓ / No</td><td>Workflows complejos</td></tr>
+<tr><td>Photoshop</td><td>~$22/mes</td><td>Win/Mac</td><td>Con scripts</td><td>✓ / ✓</td><td>Edición + exportación</td></tr>
+<tr><td>Lightroom</td><td>~$10/mes</td><td>Win/Mac</td><td>✓</td><td>✓ / No</td><td>Fotógrafos, batch pro</td></tr>
+<tr><td>Affinity Photo</td><td>~$70 único</td><td>Win/Mac</td><td>✓</td><td>✓ / ✓</td><td>Sin suscripción</td></tr>
+<tr><td>Sharp</td><td>Gratis</td><td>Node.js</td><td>✓</td><td>✓ / ✓</td><td>Developers, automatización</td></tr>
+<tr><td>Cloudinary</td><td>Freemium</td><td>CDN/API</td><td>✓</td><td>✓ auto / ✓ auto</td><td>E-commerce, apps</td></tr>
+<tr><td>ImageKit</td><td>Freemium</td><td>CDN/API</td><td>✓</td><td>✓ auto / ✓ auto</td><td>Portafolios, sitios medianos</td></tr>
+</tbody>
+</table>
+
+<h2>¿Cuál usar según tu caso?</h2>
+
+<ul>
+<li><strong>Fotógrafo con Mac:</strong> ImageOptim para el día a día, Lightroom si ya lo usas para editar.</li>
+<li><strong>Diseñador gráfico:</strong> TinyPNG con el plugin de Figma o Photoshop, Affinity Photo si quieres alternativa sin suscripción.</li>
+<li><strong>Developer web:</strong> Sharp en el build process, Cloudinary o ImageKit si necesitas CDN y transformaciones dinámicas.</li>
+<li><strong>Uso ocasional:</strong> Squoosh para máximo control, TinyPNG para velocidad.</li>
+<li><strong>Windows sin Adobe:</strong> XnConvert para batch, RIOT para algo simple.</li>
+</ul>
+
+<h2>Formatos: ¿JPEG, PNG, WebP o AVIF?</h2>
+
+<ul>
+<li><strong>JPEG:</strong> fotos con muchos colores y gradientes. Compresión lossy. El estándar universal.</li>
+<li><strong>PNG:</strong> gráficos con texto, logos, imágenes con transparencia. Sin pérdida de calidad.</li>
+<li><strong>WebP:</strong> reemplaza a JPEG y PNG en la web. 25–34% más ligero que JPEG a igual calidad. Soportado por todos los navegadores modernos desde 2020.</li>
+<li><strong>AVIF:</strong> el más eficiente disponible hoy. 50% más ligero que JPEG. Soporte casi universal en 2026. Ideal para webs nuevas que no necesitan soporte de IE o Safari antiguo.</li>
+</ul>
+
+<p>Si estás publicando en web hoy, <strong>WebP es el mínimo recomendado</strong>. Si puedes, ofrece AVIF con fallback a WebP usando el elemento <code>&lt;picture&gt;</code>.</p>
