@@ -6,8 +6,8 @@
   --border:     rgba(255,255,255,.07);
   --border-h:   rgba(255,255,255,.14);
   --white:      #f0ede8;
-  --muted:      rgba(240,237,232,.4);
-  --dim:        rgba(240,237,232,.25);
+  --muted:      rgba(240,237,232,.6);
+  --dim:        rgba(240,237,232,.35);
   --accent:     #4a6cf7;
   --accent-dim: rgba(74,108,247,.15);
 
@@ -34,8 +34,8 @@
   --border:     rgba(0,0,0,.09);
   --border-h:   rgba(0,0,0,.18);
   --white:      #0d0f14;
-  --muted:      rgba(13,15,20,.45);
-  --dim:        rgba(13,15,20,.28);
+  --muted:      rgba(13,15,20,.65);
+  --dim:        rgba(13,15,20,.42);
   --accent:     #3558e8;
   --accent-dim: rgba(53,88,232,.12);
 }
