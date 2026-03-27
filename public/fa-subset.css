@@ -1,0 +1,32 @@
+/* Font Awesome 6 Free — subset: only icons used on this site */
+@font-face {
+  font-family: "Font Awesome 6 Free";
+  font-style: normal; font-weight: 900; font-display: block;
+  src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/webfonts/fa-solid-900.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Font Awesome 6 Brands";
+  font-style: normal; font-weight: 400; font-display: block;
+  src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/webfonts/fa-brands-400.woff2") format("woff2");
+}
+.fa-solid, .fas, .fab, .fa-brands {
+  font-style: normal; font-variant: normal; text-rendering: auto;
+  line-height: 1; display: inline-block;
+  -webkit-font-smoothing: antialiased;
+}
+.fa-solid, .fas { font-family: "Font Awesome 6 Free"; font-weight: 900 }
+.fab, .fa-brands { font-family: "Font Awesome 6 Brands"; font-weight: 400 }
+/* Solid */
+.fa-comment-dots::before { content: "\f4ad" }
+.fa-xmark::before        { content: "\f00d" }
+.fa-paper-plane::before  { content: "\f1d8" }
+.fa-sun::before          { content: "\f185" }
+.fa-moon::before         { content: "\f186" }
+/* Brands */
+.fa-github::before    { content: "\f09b" }
+.fa-vimeo-v::before   { content: "\f27d" }
+.fa-behance::before   { content: "\f1b4" }
+.fa-instagram::before { content: "\f16d" }
+.fa-x-twitter::before { content: "\e61b" }
+.fa-whatsapp::before  { content: "\f232" }
+.fa-telegram::before  { content: "\f2c6" }
