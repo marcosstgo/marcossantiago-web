@@ -6,7 +6,7 @@ import Footer from '../../components/Footer.astro';
 const logos = [
   { name: 'Candi',             file: 'candi.svg' },
   { name: 'Celebrate Dogs',    file: 'celebrate-dogs.svg' },
-  { name: 'EduActivo',         file: 'eduactivo.svg' },
+  { name: 'EduActivo',         file: 'eduactivo.svg',    dark: true },
   { name: 'Jappening',         file: 'jappening.svg' },
   { name: 'Karuna',            file: 'karuna.svg' },
   { name: 'Milo',              file: 'milo.svg' },
@@ -16,7 +16,7 @@ const logos = [
   { name: 'RutaSmart PR',      file: 'rutasmart.svg' },
   { name: 'SDKALM',            file: 'sdkalm.svg' },
   { name: "Salud Pa' Educar",  file: 'salud-pa-educar.svg' },
-  { name: 'Sentidos',          file: 'sentidos.svg' },
+  { name: 'Sentidos',          file: 'sentidos.svg',     dark: true },
   { name: 'Zorzal',            file: 'zorzal.svg' },
   { name: 'Zutto',             file: 'zutto.svg' },
   { name: 'myChefMD',          file: 'mychefmd.svg' },
@@ -79,7 +79,7 @@ const services = [
 
       <div class="logos-grid">
         {logos.map(logo => (
-          <div class="logo-card">
+          <div class={`logo-card${logo.dark ? ' logo-card--dark' : ''}`}>
             <div class="logo-img-wrap">
               <img src={`/logos/${logo.file}`} alt={`Logo ${logo.name}`} loading="lazy" />
             </div>
@@ -245,6 +245,12 @@ const services = [
   max-width: 100%; max-height: 100%;
   width: auto; height: auto;
   object-fit: contain;
+}
+.logo-card--dark {
+  background: #111820;
+}
+.logo-card--dark .logo-name {
+  color: #6a8a9a;
 }
 .logo-name {
   font-family: var(--mono);
