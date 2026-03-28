@@ -1,0 +1,133 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Formatos de Video y Sus Usos"
+date: "2026-03-28"
+desc: "Guía de referencia sobre los formatos de video más comunes: MP4, MOV, MKV, WebM, ProRes y más. Cuándo usar cada uno, compatibilidad, peso y recomendaciones prácticas."
+tags: ["Video", "Recursos"]
+slug: "formatos-de-video-y-sus-usos"
+---
+
+<p>Guarda esta página. Cada vez que exportas un video o recibes un archivo que no abre, la duda es siempre la misma: ¿qué formato uso? Esta guía cubre los formatos más comunes, cuándo usar cada uno y por qué.</p>
+
+<h2>Tabla de referencia rápida</h2>
+
+<table>
+<thead>
+<tr><th>Formato</th><th>Extensión</th><th>Contenedor</th><th>Mejor para</th><th>Peso</th></tr>
+</thead>
+<tbody>
+<tr><td>MP4</td><td>.mp4</td><td>MPEG-4</td><td>Distribución universal — web, redes sociales, streaming</td><td>Bajo</td></tr>
+<tr><td>MOV</td><td>.mov</td><td>QuickTime</td><td>Edición en Mac, exportación de cámara, intercambio con clientes</td><td>Medio–Alto</td></tr>
+<tr><td>MKV</td><td>.mkv</td><td>Matroska</td><td>Archivado, múltiples pistas de audio/subtítulos</td><td>Variable</td></tr>
+<tr><td>WebM</td><td>.webm</td><td>WebM</td><td>Video en navegadores — web embeds sin plugin</td><td>Bajo</td></tr>
+<tr><td>ProRes</td><td>.mov</td><td>QuickTime</td><td>Post-producción profesional — edición sin pérdida de calidad</td><td>Muy alto</td></tr>
+<tr><td>AVI</td><td>.avi</td><td>AVI</td><td>Compatibilidad legacy — Windows antiguo</td><td>Alto</td></tr>
+<tr><td>HEVC / H.265</td><td>.mp4 / .mov</td><td>MPEG-4 / QT</td><td>4K con menos peso que H.264</td><td>Muy bajo</td></tr>
+<tr><td>DNxHD / DNxHR</td><td>.mxf / .mov</td><td>MXF / QT</td><td>Edición profesional en Avid y DaVinci</td><td>Muy alto</td></tr>
+</tbody>
+</table>
+
+<h2>MP4 (H.264)</h2>
+
+<p>El formato universal. Compatible con cualquier dispositivo, plataforma y reproductor. Si alguien te pide "un video" sin especificar formato, entrega MP4.</p>
+
+<p><strong>Cuándo usarlo:</strong> YouTube, Instagram, TikTok, Facebook, web, presentaciones, entrega a clientes, WhatsApp.</p>
+
+<p><strong>Cuándo NO usarlo:</strong> Cuando vas a editar el archivo — el H.264 es lossy, cada vez que re-exportas pierdes calidad.</p>
+
+<table>
+<thead>
+<tr><th>Parámetro</th><th>Valor recomendado</th></tr>
+</thead>
+<tbody>
+<tr><td>Códec de video</td><td>H.264</td></tr>
+<tr><td>Perfil</td><td>High, nivel 4.1 o 4.2</td></tr>
+<tr><td>Bitrate (1080p)</td><td>8–12 Mbps para entrega, 4–6 Mbps para web</td></tr>
+<tr><td>Códec de audio</td><td>AAC, 192–320 kbps, estéreo</td></tr>
+<tr><td>Frame rate</td><td>Mismo que el original — no convertir</td></tr>
+</tbody>
+</table>
+
+<h2>MOV (QuickTime)</h2>
+
+<p>El formato nativo de Apple. Funciona igual que MP4 en términos de calidad, pero tiene mejor compatibilidad con el ecosistema Mac (Final Cut Pro, Motion). Las cámaras Sony, Canon y GoPro también graban en MOV.</p>
+
+<p><strong>Cuándo usarlo:</strong> Cuando recibes material de cámara, trabajas en Mac, o el cliente usa Final Cut Pro.</p>
+
+<p><strong>Nota:</strong> Un .mov con H.264 adentro pesa casi igual que un .mp4 con H.264. El contenedor no determina el peso — el códec sí.</p>
+
+<h2>MKV (Matroska)</h2>
+
+<p>Contenedor de código abierto que puede guardar múltiples pistas de video, audio y subtítulos en un solo archivo. Muy usado para distribuir películas y series con subtítulos incrustados.</p>
+
+<p><strong>Cuándo usarlo:</strong> Archivado local, descarga de contenido con subtítulos, streaming en Plex o Jellyfin.</p>
+
+<p><strong>Cuándo NO usarlo:</strong> Redes sociales, entrega a clientes — poca compatibilidad fuera del PC.</p>
+
+<h2>WebM</h2>
+
+<p>Formato de código abierto creado para la web. Usa los códecs VP8, VP9 o AV1. Compatible de forma nativa con Chrome y Firefox sin necesidad de plugin.</p>
+
+<p><strong>Cuándo usarlo:</strong> Videos embebidos en páginas web con <code>&lt;video&gt;</code>, animaciones en loop, fondos de video.</p>
+
+<p><strong>Regla práctica:</strong> Ofrece el video en <code>.webm</code> primero y <code>.mp4</code> como fallback — el navegador usa el primero que soporta.</p>
+
+<h2>ProRes</h2>
+
+<p>Formato de edición de Apple. No es un códec de distribución — es para trabajar. Alta calidad, alta fidelidad de color, pensado para sobrevivir múltiples rounds de corrección de color y efectos sin degradarse.</p>
+
+<table>
+<thead>
+<tr><th>Variante</th><th>Uso</th><th>Bitrate aprox. 1080p@30fps</th></tr>
+</thead>
+<tbody>
+<tr><td>ProRes 422 Proxy</td><td>Edición offline con proxies</td><td>~45 Mbps</td></tr>
+<tr><td>ProRes 422 LT</td><td>Edición general</td><td>~102 Mbps</td></tr>
+<tr><td>ProRes 422</td><td>Post-producción estándar</td><td>~147 Mbps</td></tr>
+<tr><td>ProRes 422 HQ</td><td>Máxima calidad, archivo máster</td><td>~220 Mbps</td></tr>
+<tr><td>ProRes 4444</td><td>Compositing, canal alfa</td><td>~330 Mbps</td></tr>
+</tbody>
+</table>
+
+<p><strong>Cuándo usarlo:</strong> Grabar desde cámaras iPhone Pro, exportar másters de DaVinci Resolve o Final Cut Pro, archivar proyectos terminados.</p>
+
+<h2>HEVC / H.265</h2>
+
+<p>El sucesor de H.264. Misma calidad visual con aproximadamente la mitad del peso. Las cámaras modernas graban en H.265 y los iPhones desde el 7 también.</p>
+
+<p><strong>Ventaja:</strong> Un video 4K en H.265 pesa lo que un 1080p en H.264.<br/>
+<strong>Desventaja:</strong> Requiere más CPU para decodificar — hardware antiguo puede tener problemas.</p>
+
+<p><strong>Cuándo usarlo:</strong> 4K para YouTube o almacenamiento, grabaciones de cámara en tiempo real, cuando el tamaño del archivo importa.</p>
+
+<h2>¿Qué formato acepta cada plataforma?</h2>
+
+<table>
+<thead>
+<tr><th>Plataforma</th><th>Formato recomendado</th><th>Resolución máx.</th><th>Bitrate máx.</th></tr>
+</thead>
+<tbody>
+<tr><td>YouTube</td><td>MP4 (H.264 o H.265)</td><td>8K</td><td>Sin límite oficial</td></tr>
+<tr><td>Instagram / Reels</td><td>MP4 (H.264)</td><td>1080p</td><td>3.5 Mbps recomendado</td></tr>
+<tr><td>TikTok</td><td>MP4 o MOV</td><td>4K</td><td>~50 Mbps</td></tr>
+<tr><td>Facebook</td><td>MP4 (H.264)</td><td>1080p</td><td>4 Mbps recomendado</td></tr>
+<tr><td>X (Twitter)</td><td>MP4 (H.264)</td><td>1080p</td><td>25 Mbps</td></tr>
+<tr><td>Vimeo</td><td>MP4 o MOV (H.264/H.265)</td><td>8K</td><td>Sin límite</td></tr>
+<tr><td>Web embed</td><td>WebM + MP4 fallback</td><td>—</td><td>—</td></tr>
+</tbody>
+</table>
+
+<h2>Flujo de trabajo recomendado</h2>
+
+<ol>
+<li><strong>Graba</strong> en el formato nativo de tu cámara (H.265, ProRes, o el RAW que soporte).</li>
+<li><strong>Edita</strong> con proxies si el material es pesado — ProRes 422 Proxy o DNxHD LB.</li>
+<li><strong>Exporta el máster</strong> en ProRes 422 HQ o H.265 alta calidad — este es tu archivo de archivo.</li>
+<li><strong>Exporta para distribución</strong> en MP4 H.264 con los ajustes de cada plataforma.</li>
+</ol>
+
+<p>Nunca uses el archivo de distribución como fuente para otra edición. El H.264 es lossy — exportar de un MP4 comprimido baja la calidad en cada generación.</p>
+
+<h2>Conclusión</h2>
+
+<p>Para el 90% de los casos: <strong>graba en lo que da tu cámara, edita en ProRes o con proxies, entrega en MP4 H.264</strong>. El resto de los formatos entran cuando tienes requerimientos específicos — web embeds, archivado a largo plazo, o post-producción de alto nivel.</p>
