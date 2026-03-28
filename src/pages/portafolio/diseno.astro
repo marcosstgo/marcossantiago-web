@@ -77,16 +77,85 @@ const services = [
         <p class="section-sub" style="margin-bottom:0">Una selección de logos diseñados para negocios y proyectos en Puerto Rico.</p>
       </div>
 
-      <div class="logos-grid">
-        {logos.map(logo => (
-          <div class="logo-card">
-            <div class="logo-img-wrap">
-              <img src={`/logos/${logo.file}`} alt={`Logo ${logo.name}`} loading="lazy" />
+      <div class="carousel-wrap">
+        <button class="carr-btn carr-prev" aria-label="Anterior">&#8249;</button>
+        <div class="carousel-track" id="logoTrack">
+          {logos.map(logo => (
+            <div class="logo-card">
+              <div class="logo-img-wrap">
+                <img src={`/logos/${logo.file}`} alt={`Logo ${logo.name}`} loading="lazy" />
+              </div>
+              <span class="logo-name">{logo.name}</span>
             </div>
-            <span class="logo-name">{logo.name}</span>
-          </div>
-        ))}
+          ))}
+        </div>
+        <button class="carr-btn carr-next" aria-label="Siguiente">&#8250;</button>
       </div>
+
+      <script>{`
+        (function() {
+          var track = document.getElementById('logoTrack');
+          if (!track) return;
+
+          var CARD_W = 200 + 16; // card width + gap
+          var AUTO_SPEED = 0.6;  // px per frame
+          var paused = false;
+          var dragging = false;
+          var dragStartX = 0;
+          var dragScrollLeft = 0;
+          var raf;
+
+          function autoScroll() {
+            if (!paused && !dragging) {
+              track.scrollLeft += AUTO_SPEED;
+              // infinite loop: when we reach the end, jump back to start
+              if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 1) {
+                track.scrollLeft = 0;
+              }
+            }
+            raf = requestAnimationFrame(autoScroll);
+          }
+          raf = requestAnimationFrame(autoScroll);
+
+          // pause on hover
+          track.addEventListener('mouseenter', function() { paused = true; });
+          track.addEventListener('mouseleave', function() { paused = false; });
+
+          // arrow buttons
+          document.querySelector('.carr-prev').addEventListener('click', function() {
+            paused = true;
+            track.scrollBy({ left: -CARD_W * 2, behavior: 'smooth' });
+            setTimeout(function() { paused = false; }, 600);
+          });
+          document.querySelector('.carr-next').addEventListener('click', function() {
+            paused = true;
+            track.scrollBy({ left: CARD_W * 2, behavior: 'smooth' });
+            setTimeout(function() { paused = false; }, 600);
+          });
+
+          // drag to scroll
+          track.addEventListener('mousedown', function(e) {
+            dragging = true;
+            dragStartX = e.pageX - track.offsetLeft;
+            dragScrollLeft = track.scrollLeft;
+            track.style.cursor = 'grabbing';
+          });
+          track.addEventListener('mousemove', function(e) {
+            if (!dragging) return;
+            e.preventDefault();
+            var x = e.pageX - track.offsetLeft;
+            track.scrollLeft = dragScrollLeft - (x - dragStartX);
+          });
+          track.addEventListener('mouseup', function() {
+            dragging = false;
+            track.style.cursor = '';
+          });
+          track.addEventListener('mouseleave', function() {
+            dragging = false;
+            track.style.cursor = '';
+          });
+        })();
+      `}</script>
 
       <div class="behance-cta" style="margin-top:64px">
         <div class="cta-icon">
@@ -215,16 +284,49 @@ const services = [
   justify-content: space-between; gap: 32px; flex-wrap: wrap;
 }
 
-.logos-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+.carousel-wrap {
+  position: relative;
   margin-top: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-@media (max-width: 900px) { .logos-grid { grid-template-columns: repeat(3, 1fr) } }
-@media (max-width: 600px) { .logos-grid { grid-template-columns: repeat(2, 1fr) } }
+.carousel-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  cursor: grab;
+  flex: 1;
+  /* hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+
+.carr-btn {
+  flex-shrink: 0;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-h);
+  background: var(--surface);
+  color: var(--white);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, border-color .15s;
+  user-select: none;
+}
+.carr-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #000;
+}
 
 .logo-card {
+  flex-shrink: 0;
+  width: 200px;
   background: #111820;
   border-radius: 14px;
   padding: 28px 20px 20px;
@@ -234,7 +336,7 @@ const services = [
 }
 .logo-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,.25);
+  box-shadow: 0 12px 32px rgba(0,0,0,.3);
 }
 .logo-img-wrap {
   width: 100%; aspect-ratio: 1;
