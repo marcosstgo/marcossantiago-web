@@ -3,6 +3,25 @@ import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 
+const logos = [
+  { name: 'Candi',             file: 'candi.svg' },
+  { name: 'Celebrate Dogs',    file: 'celebrate-dogs.svg' },
+  { name: 'EduActivo',         file: 'eduactivo.svg' },
+  { name: 'Jappening',         file: 'jappening.svg' },
+  { name: 'Karuna',            file: 'karuna.svg' },
+  { name: 'Milo',              file: 'milo.svg' },
+  { name: 'Olimpolab',         file: 'olimpolab.svg' },
+  { name: 'Power Refresh',     file: 'power-refresh.svg' },
+  { name: 'PromoVer',          file: 'promover.svg' },
+  { name: 'RutaSmart PR',      file: 'rutasmart.svg' },
+  { name: 'SDKALM',            file: 'sdkalm.svg' },
+  { name: "Salud Pa' Educar",  file: 'salud-pa-educar.svg' },
+  { name: 'Sentidos',          file: 'sentidos.svg' },
+  { name: 'Zorzal',            file: 'zorzal.svg' },
+  { name: 'Zutto',             file: 'zutto.svg' },
+  { name: 'myChefMD',          file: 'mychefmd.svg' },
+];
+
 const services = [
   {
     label: 'Logotipos',
@@ -52,7 +71,24 @@ const services = [
         Identidades visuales, branding y experiencias digitales para negocios y proyectos en Puerto Rico. El diseño bien hecho no solo se ve bien — comunica, convierte y se recuerda.
       </p>
 
-      <div class="behance-cta">
+      <div style="margin-top:56px">
+        <p class="section-label">Logotipos</p>
+        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">Identidades visuales</h2>
+        <p class="section-sub" style="margin-bottom:0">Una selección de logos diseñados para negocios y proyectos en Puerto Rico.</p>
+      </div>
+
+      <div class="logos-grid">
+        {logos.map(logo => (
+          <div class="logo-card">
+            <div class="logo-img-wrap">
+              <img src={`/logos/${logo.file}`} alt={`Logo ${logo.name}`} loading="lazy" />
+            </div>
+            <span class="logo-name">{logo.name}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="behance-cta" style="margin-top:64px">
         <div class="cta-icon">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
@@ -177,5 +213,45 @@ const services = [
   border-radius: 20px;
   display: flex; align-items: center;
   justify-content: space-between; gap: 32px; flex-wrap: wrap;
+}
+
+.logos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 40px;
+}
+@media (max-width: 900px) { .logos-grid { grid-template-columns: repeat(3, 1fr) } }
+@media (max-width: 600px) { .logos-grid { grid-template-columns: repeat(2, 1fr) } }
+
+.logo-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 28px 20px 20px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 14px;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.logo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.25);
+}
+.logo-img-wrap {
+  width: 100%; aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.logo-img-wrap img {
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;
+  object-fit: contain;
+}
+.logo-name {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #444;
+  text-align: center;
 }
 </style>
