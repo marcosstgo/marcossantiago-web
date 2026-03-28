@@ -92,70 +92,6 @@ const services = [
         <button class="carr-btn carr-next" aria-label="Siguiente">&#8250;</button>
       </div>
 
-      <script>{`
-        (function() {
-          var track = document.getElementById('logoTrack');
-          if (!track) return;
-
-          var CARD_W = 200 + 16; // card width + gap
-          var AUTO_SPEED = 0.6;  // px per frame
-          var paused = false;
-          var dragging = false;
-          var dragStartX = 0;
-          var dragScrollLeft = 0;
-          var raf;
-
-          function autoScroll() {
-            if (!paused && !dragging) {
-              track.scrollLeft += AUTO_SPEED;
-              // infinite loop: when we reach the end, jump back to start
-              if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 1) {
-                track.scrollLeft = 0;
-              }
-            }
-            raf = requestAnimationFrame(autoScroll);
-          }
-          raf = requestAnimationFrame(autoScroll);
-
-          // pause on hover
-          track.addEventListener('mouseenter', function() { paused = true; });
-          track.addEventListener('mouseleave', function() { paused = false; });
-
-          // arrow buttons
-          document.querySelector('.carr-prev').addEventListener('click', function() {
-            paused = true;
-            track.scrollBy({ left: -CARD_W * 2, behavior: 'smooth' });
-            setTimeout(function() { paused = false; }, 600);
-          });
-          document.querySelector('.carr-next').addEventListener('click', function() {
-            paused = true;
-            track.scrollBy({ left: CARD_W * 2, behavior: 'smooth' });
-            setTimeout(function() { paused = false; }, 600);
-          });
-
-          // drag to scroll
-          track.addEventListener('mousedown', function(e) {
-            dragging = true;
-            dragStartX = e.pageX - track.offsetLeft;
-            dragScrollLeft = track.scrollLeft;
-            track.style.cursor = 'grabbing';
-          });
-          track.addEventListener('mousemove', function(e) {
-            if (!dragging) return;
-            e.preventDefault();
-            var x = e.pageX - track.offsetLeft;
-            track.scrollLeft = dragScrollLeft - (x - dragStartX);
-          });
-          track.addEventListener('mouseup', function() {
-            dragging = false;
-            track.style.cursor = '';
-          });
-          track.addEventListener('mouseleave', function() {
-            dragging = false;
-            track.style.cursor = '';
-          });
-        })();
-      `}</script>
 
       <div class="behance-cta" style="margin-top:64px">
         <div class="cta-icon">
@@ -222,6 +158,59 @@ const services = [
   </main>
   <Footer />
 </Base>
+
+<script>
+  const track = document.getElementById('logoTrack') as HTMLElement;
+  const prevBtn = document.querySelector('.carr-prev') as HTMLElement;
+  const nextBtn = document.querySelector('.carr-next') as HTMLElement;
+
+  if (track && prevBtn && nextBtn) {
+    const CARD_W = 200 + 16;
+    const SPEED = 0.6;
+    let paused = false;
+    let dragging = false;
+    let dragStartX = 0;
+    let dragScrollLeft = 0;
+
+    function tick() {
+      if (!paused && !dragging) {
+        track.scrollLeft += SPEED;
+        if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 1) {
+          track.scrollLeft = 0;
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    track.addEventListener('mouseenter', () => { paused = true; });
+    track.addEventListener('mouseleave', () => { paused = false; dragging = false; track.style.cursor = ''; });
+
+    prevBtn.addEventListener('click', () => {
+      paused = true;
+      track.scrollBy({ left: -CARD_W * 2, behavior: 'smooth' });
+      setTimeout(() => { paused = false; }, 600);
+    });
+    nextBtn.addEventListener('click', () => {
+      paused = true;
+      track.scrollBy({ left: CARD_W * 2, behavior: 'smooth' });
+      setTimeout(() => { paused = false; }, 600);
+    });
+
+    track.addEventListener('mousedown', (e) => {
+      dragging = true;
+      dragStartX = e.pageX - track.offsetLeft;
+      dragScrollLeft = track.scrollLeft;
+      track.style.cursor = 'grabbing';
+    });
+    track.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      e.preventDefault();
+      track.scrollLeft = dragScrollLeft - (e.pageX - track.offsetLeft - dragStartX);
+    });
+    track.addEventListener('mouseup', () => { dragging = false; track.style.cursor = ''; });
+  }
+</script>
 
 <style>
 .behance-cta {
