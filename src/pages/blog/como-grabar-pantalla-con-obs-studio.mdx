@@ -1,0 +1,143 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Cómo Grabar Pantalla con OBS Studio"
+date: "2026-03-28"
+desc: "Guía paso a paso para grabar tu pantalla con OBS Studio: escenas, fuentes, formato de salida, carpeta de destino y ajustes recomendados para grabación local en 2026."
+tags: ["Video", "OBS"]
+slug: "como-grabar-pantalla-con-obs-studio"
+---
+
+<p><strong>OBS Studio</strong> no es solo para hacer streaming — es también uno de los mejores grabadores de pantalla gratuitos. Sin marcas de agua, sin límite de tiempo, sin restricciones de resolución. En esta guía te explico cómo configurarlo específicamente para grabación local.</p>
+
+<p>Si ya usas OBS para streaming, la configuración de grabación es independiente — puedes tener ajustes distintos para cada uno sin que se afecten.</p>
+
+<h2>1. Configura el Output de Grabación</h2>
+
+<p>Ve a <strong>Configuración &gt; Output</strong> y cambia el modo a <strong>Avanzado</strong>. Selecciona la pestaña <strong>Grabación</strong>.</p>
+
+<h3>Formato de contenedor</h3>
+
+<p>Para grabación local usa <strong>MKV</strong>, no MP4. Razón: si OBS se cierra de golpe mientras grabas (crash, corte de luz), el archivo MKV sigue siendo recuperable. Un MP4 interrumpido a la mitad queda corrupto y no se puede abrir.</p>
+
+<p>Cuando termines de grabar, OBS puede remuxear el MKV a MP4 automáticamente. Actívalo en <strong>Configuración &gt; Avanzado &gt; Grabación &gt; Remuxear automáticamente a MP4</strong>.</p>
+
+<h3>Encoder recomendado</h3>
+
+<ol>
+<li>GPU NVIDIA → <strong>NVENC H.264</strong> o <strong>NVENC HEVC</strong> — no afecta el rendimiento mientras grabas.</li>
+<li>GPU AMD → <strong>AMF H.264</strong> o <strong>AMF HEVC</strong>.</li>
+<li>Sin GPU dedicada → <strong>x264</strong>, preset <code>ultrafast</code> o <code>superfast</code> para no cargar la CPU.</li>
+</ol>
+
+<h3>Calidad</h3>
+
+<p>Para grabación local no uses bitrate fijo — usa <strong>CRF (Calidad constante)</strong>. El archivo pesa lo que necesita según la complejidad del video.</p>
+
+<table>
+<thead>
+<tr><th>Uso</th><th>CRF recomendado</th><th>Resultado</th></tr>
+</thead>
+<tbody>
+<tr><td>Archivo de máster / edición posterior</td><td>CRF 16–18</td><td>Alta calidad, archivo grande</td></tr>
+<tr><td>Tutorial, gameplay, uso general</td><td>CRF 20–23</td><td>Buen balance calidad/peso</td></tr>
+<tr><td>Solo para referencia interna</td><td>CRF 26–28</td><td>Archivo pequeño, calidad reducida</td></tr>
+</tbody>
+</table>
+
+<p>En NVENC, el equivalente al CRF se llama <strong>CQ</strong> — mismos valores aplican.</p>
+
+<h3>Carpeta de destino</h3>
+
+<p>En <strong>Ruta de grabación</strong> elige una carpeta con espacio suficiente. Una hora de gameplay en 1080p con CRF 20 ocupa entre 4 y 10 GB dependiendo del contenido. Configura una unidad secundaria si tienes una — libera presión del disco donde corre el sistema.</p>
+
+<h2>2. Configura el Video</h2>
+
+<p>Ve a <strong>Configuración &gt; Video</strong>.</p>
+
+<ol>
+<li><strong>Resolución base:</strong> igual a tu monitor — generalmente <code>1920×1080</code>.</li>
+<li><strong>Resolución de salida:</strong> <code>1920×1080</code> para grabación local — no hay razón para bajarla como en streaming.</li>
+<li><strong>FPS:</strong> <code>60</code> para gaming o contenido con movimiento rápido. <code>30</code> para tutoriales, screen recordings de trabajo, o presentaciones.</li>
+<li><strong>Filtro de escala:</strong> <strong>Lanczos</strong>.</li>
+</ol>
+
+<h2>3. Crea tus Escenas</h2>
+
+<p>OBS organiza todo en <strong>Escenas</strong>. Para grabación, necesitas al menos una. Haz clic en <strong>+</strong> en el panel de Escenas y dale un nombre descriptivo.</p>
+
+<p>Setup típico para grabación:</p>
+
+<table>
+<thead>
+<tr><th>Escena</th><th>Cuándo usarla</th></tr>
+</thead>
+<tbody>
+<tr><td>Pantalla completa</td><td>Grabar todo el escritorio</td></tr>
+<tr><td>Juego</td><td>Solo la ventana del juego + webcam encima</td></tr>
+<tr><td>Tutorial</td><td>Pantalla + micrófono activo, sin webcam</td></tr>
+<tr><td>Cámara sola</td><td>Solo la webcam, sin pantalla</td></tr>
+</tbody>
+</table>
+
+<h2>4. Agrega las Fuentes</h2>
+
+<p>Dentro de cada escena agregas <strong>Fuentes</strong> — los elementos que se capturan. Haz clic en <strong>+</strong> en el panel de Fuentes.</p>
+
+<h3>Para grabar la pantalla</h3>
+
+<ol>
+<li><strong>Captura de pantalla</strong> — captura un monitor completo. La opción más simple si quieres grabar todo.</li>
+<li><strong>Captura de ventana</strong> — captura solo una app específica. Útil para tutoriales: si minimizas la ventana o cambias de aplicación, OBS sigue grabando solo esa ventana.</li>
+<li><strong>Captura de juego</strong> — captura juegos con menor impacto en el rendimiento que "Captura de pantalla". En modo <em>Captura de juego específico</em> no captura otras ventanas.</li>
+</ol>
+
+<h3>Para agregar webcam</h3>
+
+<ol>
+<li>Agrega una fuente <strong>Dispositivo de captura de video</strong>.</li>
+<li>Selecciona tu cámara en el desplegable.</li>
+<li>Redimensiona y coloca en la esquina que prefieras — arrastra las esquinas del recuadro rojo.</li>
+<li>Clic derecho sobre la fuente → <strong>Filtros</strong> → agrega <strong>Máscara de imagen</strong> para recortarla en círculo si quieres.</li>
+</ol>
+
+<h3>Para capturar audio</h3>
+
+<p>OBS captura el audio del escritorio automáticamente. En el <strong>Mezclador de audio</strong> de la pantalla principal verifica que:</p>
+
+<ol>
+<li><strong>Audio del escritorio</strong> — aparece el nivel del sistema (juego, música, notificaciones).</li>
+<li><strong>Mic/Aux</strong> — aparece el nivel de tu micrófono.</li>
+</ol>
+
+<p>Si alguno no aparece, ve a <strong>Configuración &gt; Audio</strong> y asigna los dispositivos manualmente.</p>
+
+<h2>5. Graba</h2>
+
+<ol>
+<li>Haz clic en <strong>Iniciar grabación</strong> en el panel inferior derecho.</li>
+<li>El botón cambia a <strong>Detener grabación</strong> — OBS muestra el tiempo transcurrido.</li>
+<li>Cuando termines, haz clic en <strong>Detener grabación</strong>.</li>
+<li>El archivo aparece en la carpeta de destino. Si activaste el remux automático, tendrás tanto el MKV como el MP4.</li>
+</ol>
+
+<p>Puedes pausar la grabación con <strong>Pausar grabación</strong> — útil si necesitas interrumpir sin crear un archivo nuevo.</p>
+
+<h2>6. Ajustes de Audio para Grabación</h2>
+
+<p>A diferencia del streaming, en grabación local puedes grabar pistas de audio separadas. Esto te permite en edición subir o bajar el micrófono independientemente del juego.</p>
+
+<p>Ve a <strong>Configuración &gt; Output &gt; Grabación</strong> y activa <strong>Pistas de audio</strong>. Asigna:</p>
+
+<ol>
+<li><strong>Pista 1</strong> — mix completo (para previsualización rápida).</li>
+<li><strong>Pista 2</strong> — solo micrófono.</li>
+<li><strong>Pista 3</strong> — solo audio del escritorio.</li>
+</ol>
+
+<p>En el mezclador, haz clic en el ícono de engranaje de cada fuente de audio → <strong>Propiedades avanzadas de audio</strong> y asigna cada fuente a su pista correspondiente.</p>
+
+<h2>Conclusión</h2>
+
+<p>Con esto tienes todo lo que necesitas para grabar pantalla de forma profesional con OBS. La combinación MKV + CRF + NVENC da archivos seguros, de calidad alta y con mínimo impacto en el rendimiento del sistema.</p>
+
+<p>Si después quieres exportar el archivo para YouTube o redes sociales, el siguiente paso es importarlo en DaVinci Resolve o un editor de tu preferencia y exportar en MP4 H.264 con los ajustes de la plataforma.</p>
