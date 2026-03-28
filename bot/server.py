@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
-import anthropic
 import httpx
 import os
 from system_prompt import SYSTEM_PROMPT
@@ -16,7 +15,8 @@ app.add_middleware(
     allow_headers=["Content-Type"],
 )
 
-client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+GROQ_MODEL   = os.environ.get("GROQ_MODEL",   "llama-3.3-70b-versatile")
 
 TELEGRAM_TOKEN   = os.environ.get("MS_TELEGRAM_TOKEN", "")
 TELEGRAM_CHAT_ID = os.environ.get("MS_TELEGRAM_CHAT_ID", "")
@@ -62,14 +62,17 @@ class LeadRequest(BaseModel):
 async def chat(req: ChatRequest):
     messages = [{"role": m.role, "content": m.content} for m in req.messages]
 
-    response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=512,
-        system=SYSTEM_PROMPT,
-        messages=messages,
-    )
-
-    reply = response.content[0].text
+    async with httpx.AsyncClient(timeout=30) as c:
+        r = await c.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            json={
+                "model": GROQ_MODEL,
+                "max_tokens": 512,
+                "messages": [{"role": "system", "content": SYSTEM_PROMPT}] + messages,
+            },
+            headers={"Authorization": f"Bearer {GROQ_API_KEY}"},
+        )
+    reply = r.json()["choices"][0]["message"]["content"].strip()
     messages.append({"role": "assistant", "content": reply})
     await notify_telegram(messages)
 

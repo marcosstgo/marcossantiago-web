@@ -19,7 +19,7 @@ services:
     ports:
       - "127.0.0.1:3005:3005"
     environment:
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
       - MS_TELEGRAM_TOKEN=8678023585:AAGTHcOfN4a8FofaJIwdxXEyPSFEqjwoIE4
       - MS_TELEGRAM_CHAT_ID=46377544
 
