@@ -166,15 +166,20 @@ const services = [
 
   if (track && prevBtn && nextBtn) {
     const CARD_W = 200 + 16;
-    const SPEED = 0.3;
+    const SPEED = 0.4;
     let paused = false;
     let dragging = false;
     let dragStartX = 0;
     let dragScrollLeft = 0;
+    let acc = 0;
 
     function tick() {
       if (!paused && !dragging) {
-        track.scrollLeft += SPEED;
+        acc += SPEED;
+        if (acc >= 1) {
+          track.scrollLeft += Math.floor(acc);
+          acc -= Math.floor(acc);
+        }
         if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 1) {
           track.scrollLeft = 0;
         }
