@@ -91,11 +91,10 @@ const featuredProjects = [
   <!-- ═══ HERO ═══ -->
   <section class="hero">
     <div class="hero-bg" aria-hidden="true">
-      <div class="hero-grid"></div>
-      <div class="blob blob-1"></div>
-      <div class="blob blob-2"></div>
-      <div class="blob blob-3"></div>
-      <div class="hero-spotlight"></div>
+      <video class="hero-video-bg" autoplay muted loop playsinline
+             poster="/marcos-photo.webp"
+             src="/hero-bg.mp4"></video>
+      <div class="hero-video-overlay"></div>
     </div>
     <div class="container">
       <div class="hero-inner">
@@ -274,68 +273,20 @@ const featuredProjects = [
   position: absolute; inset: 0; z-index: 0;
   overflow: hidden;
 }
-
-/* Dot grid */
-.hero-grid {
+.hero-video-bg {
   position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,.07) 1px, transparent 1px);
-  background-size: 28px 28px;
-  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 30%, transparent 100%);
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: blur(7px) brightness(.32) saturate(1.1);
+  transform: scale(1.06);
 }
-
-/* Spotlight */
-.hero-spotlight {
-  position: absolute;
-  top: -25%; right: -5%;
-  width: 900px; height: 900px;
-  background: radial-gradient(circle at center, rgba(74,108,247,.2) 0%, transparent 65%);
-  pointer-events: none;
-}
-
-.blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  will-change: transform;
-}
-.blob-1 {
-  width: 750px; height: 750px;
-  top: -15%; right: -5%;
-  background: radial-gradient(circle, rgba(74,108,247,.42), transparent 70%);
-  animation: float1 18s ease-in-out infinite;
-}
-.blob-2 {
-  width: 600px; height: 600px;
-  bottom: -20%; left: 0%;
-  background: radial-gradient(circle, rgba(53,88,232,.32), transparent 70%);
-  animation: float2 22s ease-in-out infinite;
-}
-.blob-3 {
-  width: 500px; height: 500px;
-  top: 25%; left: 30%;
-  background: radial-gradient(circle, rgba(168,85,247,.22), transparent 70%);
-  animation: float3 26s ease-in-out infinite;
-}
-
-@keyframes float1 {
-  0%, 100% { transform: translate(0, 0) scale(1) }
-  33%       { transform: translate(-40px, 30px) scale(1.08) }
-  66%       { transform: translate(30px, -20px) scale(.95) }
-}
-@keyframes float2 {
-  0%, 100% { transform: translate(0, 0) scale(1) }
-  33%       { transform: translate(50px, -40px) scale(1.1) }
-  66%       { transform: translate(-30px, 25px) scale(.92) }
-}
-@keyframes float3 {
-  0%, 100% { transform: translate(0, 0) scale(1) }
-  25%       { transform: translate(-30px, 40px) scale(1.05) }
-  50%       { transform: translate(40px, -30px) scale(.96) }
-  75%       { transform: translate(-20px, -20px) scale(1.08) }
-}
-@media (prefers-reduced-motion: reduce) {
-  .blob { animation: none }
+.hero-video-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(8,8,12,.2) 0%,
+    rgba(8,8,12,.05) 35%,
+    rgba(8,8,12,.7) 75%,
+    rgba(8,8,12,1) 100%);
 }
 
 .hero-inner {
