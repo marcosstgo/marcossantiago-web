@@ -1,0 +1,649 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+
+const categories = [
+  {
+    id: 'fotografia',
+    label: 'Fotografía',
+    color: '#a0c4ff',
+    icon: 'fa-camera',
+    tagline: 'Cada momento, eterno.',
+    desc: 'Cobertura profesional de eventos con ojo artístico y entrega rápida. Trabajo en toda Puerto Rico.',
+    services: [
+      {
+        name: 'Fotografía de Boda',
+        desc: 'Cobertura completa del día — desde la preparación hasta la recepción. Estilo documental + retratos artísticos.',
+        includes: ['Cobertura completa', 'Galería digital privada', 'Selección editada', 'Derechos de impresión'],
+        wa: 'Hola, me interesa cotizar fotografía para mi boda.',
+      },
+      {
+        name: 'Quinceañeros',
+        desc: 'Sesiones íntimas y cobertura completa del evento. Documentamos cada emoción del día más especial.',
+        includes: ['Sesión de retratos', 'Cobertura del evento', 'Galería digital', 'Entrega 4–6 semanas'],
+        wa: 'Hola, me interesa cotizar fotografía para un quinceañero.',
+      },
+      {
+        name: 'Eventos Sociales',
+        desc: 'Cumpleaños, graduaciones, fiestas privadas y todo tipo de celebración. Cobertura dinámica y discreta.',
+        includes: ['Cobertura del evento', 'Galería digital', 'Entrega rápida', 'Edición profesional'],
+        wa: 'Hola, me interesa cotizar fotografía para un evento social.',
+      },
+      {
+        name: 'Corporativo & Marca',
+        desc: 'Headshots, eventos corporativos, productos y contenido para redes sociales que eleva tu marca.',
+        includes: ['Retratos profesionales', 'Fotografía de producto', 'Licencia comercial', 'Entrega express'],
+        wa: 'Hola, me interesa cotizar fotografía corporativa.',
+      },
+      {
+        name: 'Retratos',
+        desc: 'Sesiones personales, familiares, artísticas. Locaciones en Aibonito y alrededores o tu locación preferida.',
+        includes: ['Sesión 1–2 horas', 'Selección editada', 'Galería digital', 'Guía de outfit'],
+        wa: 'Hola, me interesa cotizar una sesión de retratos.',
+      },
+    ],
+  },
+  {
+    id: 'videografia',
+    label: 'Videografía',
+    color: '#ff9f7f',
+    icon: 'fa-video',
+    tagline: 'Tu historia, en movimiento.',
+    desc: 'Producción de video para eventos, marcas y contenido digital. Desde documentales emocionales hasta reels virales.',
+    services: [
+      {
+        name: 'Video de Boda',
+        desc: 'Cinematografía de boda completa — desde la preparación hasta la última canción. Storytelling emocional y auténtico.',
+        includes: ['Film completo (4–8 min)', 'Highlights (90s)', 'Teaser para redes', 'Audio profesional'],
+        wa: 'Hola, me interesa cotizar video para mi boda.',
+      },
+      {
+        name: 'Quinceañeros',
+        desc: 'Capturamos cada momento del día en un video cinematográfico que se convierte en un tesoro familiar.',
+        includes: ['Film completo', 'Highlights para RRSS', 'Cobertura del evento', 'Música licenciada'],
+        wa: 'Hola, me interesa cotizar video para un quinceañero.',
+      },
+      {
+        name: 'Reels & Contenido',
+        desc: 'Reels profesionales para Instagram, TikTok y YouTube. Contenido que conecta y convierte seguidores en clientes.',
+        includes: ['Hasta 3 reels por sesión', 'Edición con trending audio', 'Formato vertical y horizontal', 'Entrega 48–72h'],
+        wa: 'Hola, me interesa cotizar reels y contenido para redes sociales.',
+      },
+      {
+        name: 'Corporativo & Marca',
+        desc: 'Videos institucionales, testimoniales, demos de producto y campañas publicitarias para tu negocio.',
+        includes: ['Guión y dirección', 'Múltiples tomas', 'Post-producción completa', 'Licencia comercial'],
+        wa: 'Hola, me interesa cotizar video corporativo.',
+      },
+      {
+        name: 'Documental',
+        desc: 'Proyectos documentales de largo aliento — cultura, comunidad, arte. Contamos historias que importan.',
+        includes: ['Pre-producción incluida', 'Producción multicámara', 'Post-producción completa', 'Color grading'],
+        wa: 'Hola, me interesa cotizar un documental.',
+      },
+    ],
+  },
+  {
+    id: 'diseno',
+    label: 'Diseño Gráfico',
+    color: '#e8c84a',
+    icon: 'fa-pen-nib',
+    tagline: 'Identidad que impacta.',
+    desc: 'Diseño gráfico estratégico para marcas que quieren verse profesionales y destacar en Puerto Rico y más allá.',
+    services: [
+      {
+        name: 'Branding & Identidad',
+        desc: 'Creación completa de identidad de marca — logo, paleta de colores, tipografía, voz y guía de estilo.',
+        includes: ['Logo principal + variantes', 'Paleta de color', 'Tipografía de marca', 'Brand guide PDF'],
+        wa: 'Hola, me interesa cotizar branding e identidad visual.',
+      },
+      {
+        name: 'Diseño Digital',
+        desc: 'Posts para redes sociales, stories, banners, presentaciones y assets digitales con consistencia de marca.',
+        includes: ['Templates editables', 'Formatos para RRSS', 'Entrega en PNG/PDF/SVG', 'Revisiones incluidas'],
+        wa: 'Hola, me interesa cotizar diseño digital para redes sociales.',
+      },
+      {
+        name: 'Print & Impresión',
+        desc: 'Tarjetas de presentación, flyers, menús, señalización y todo material impreso listo para producción.',
+        includes: ['Diseño listo para imprenta', 'Archivos CMYK', 'Alta resolución', 'Múltiples formatos'],
+        wa: 'Hola, me interesa cotizar diseño para imprimir.',
+      },
+      {
+        name: 'Diseño Editorial',
+        desc: 'Revistas, catálogos, booklets, anuarios. Diseño editorial con jerarquía visual clara y elegante.',
+        includes: ['Maquetación completa', 'Revisiones incluidas', 'Archivo InDesign/PDF', 'Corrección de color'],
+        wa: 'Hola, me interesa cotizar diseño editorial.',
+      },
+    ],
+  },
+  {
+    id: 'booth360',
+    label: '360 Booth',
+    color: '#d946ef',
+    icon: 'fa-rotate',
+    tagline: 'La experiencia viral.',
+    desc: 'El Air-39 Automatic 360 Pro — la plataforma giratoria que crea clips cinematográficos al instante para cada invitado.',
+    services: [
+      {
+        name: '360 Video Booth — Eventos',
+        desc: 'La plataforma Air-39 gira automáticamente 360° alrededor de tus invitados y genera clips con efectos, slow motion y overlay del evento.',
+        includes: ['Setup y operación incluidos', 'Ring light profesional', 'Entrega por QR al instante', 'Galería digital del evento'],
+        wa: 'Hola, me interesa cotizar el 360 Video Booth para mi evento.',
+      },
+      {
+        name: '360 Booth — Bodas',
+        desc: 'El momento más viral de tu recepción. Todos tus invitados se llevan un clip 360° con el branding de tu boda.',
+        includes: ['Overlay personalizado', 'Música de fondo del evento', 'Tomas ilimitadas', 'Galería privada'],
+        wa: 'Hola, me interesa el 360 Video Booth para mi boda.',
+      },
+      {
+        name: '360 Booth — Corporativo',
+        desc: 'Activaciones de marca, lanzamientos y eventos corporativos con experiencia 360° branded para tu empresa.',
+        includes: ['Overlay con logo de empresa', 'Entrega inmediata por QR', 'Informe post-evento', 'Opciones de personalización'],
+        wa: 'Hola, me interesa el 360 Video Booth para un evento corporativo.',
+      },
+    ],
+  },
+  {
+    id: 'desarrollo',
+    label: 'Desarrollo',
+    color: '#88e0b0',
+    icon: 'fa-code',
+    tagline: 'Software que funciona.',
+    desc: 'Plataformas web, apps y herramientas digitales diseñadas y desarrolladas de principio a fin. Desde la idea hasta el launch.',
+    services: [
+      {
+        name: 'Plataformas Web',
+        desc: 'Sitios web y plataformas completas — desde portfolios hasta e-commerce y SaaS. Stack moderno, rápido y mantenible.',
+        includes: ['Diseño UI/UX incluido', 'CMS o admin panel', 'SEO técnico', 'Deployment y hosting'],
+        wa: 'Hola, me interesa cotizar el desarrollo de una plataforma web.',
+      },
+      {
+        name: 'Apps & Herramientas',
+        desc: 'Aplicaciones web, dashboards internos y herramientas a la medida para optimizar procesos de tu negocio.',
+        includes: ['Análisis de requerimientos', 'UI/UX incluido', 'APIs e integraciones', 'Soporte post-lanzamiento'],
+        wa: 'Hola, me interesa cotizar el desarrollo de una app o herramienta.',
+      },
+      {
+        name: 'E-Commerce',
+        desc: 'Tiendas online con carrito, pagos (Stripe, ATH Móvil), inventario y panel admin para negocios en Puerto Rico.',
+        includes: ['Tienda completa', 'Pagos locales', 'Panel de administración', 'Training incluido'],
+        wa: 'Hola, me interesa cotizar una tienda en línea (e-commerce).',
+      },
+    ],
+  },
+];
+---
+<Base
+  title="Servicios — Marcos Santiago · Puerto Rico"
+  description="Fotografía, videografía, diseño gráfico, 360 Video Booth y desarrollo web en Puerto Rico. Cotiza tu proyecto con Marcos Santiago — Aibonito, PR."
+>
+  <Nav />
+  <main style="padding-top:100px">
+
+    <!-- ── Hero ── -->
+    <section class="hero-section">
+      <div class="container">
+        <p class="section-label">Lo que hago</p>
+        <h1 class="hero-title">Servicios</h1>
+        <p class="hero-sub">
+          Fotografía, video, diseño y desarrollo — todo bajo un mismo techo.
+          Trabajo en Puerto Rico y hago realidad proyectos que impactan.
+        </p>
+        <div class="hero-meta">
+          <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> Puerto Rico</span>
+          <span class="meta-pill"><i class="fa-solid fa-circle-check"></i> Disponible para reservas</span>
+          <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20conocer%20tus%20servicios." target="_blank" rel="noopener" class="meta-pill meta-pill-wa">
+            <i class="fab fa-whatsapp"></i> (787) 243-9670
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Sticky tabs ── -->
+    <div class="tabs-outer" id="tabsOuter">
+      <div class="container">
+        <nav class="tabs-nav" id="tabsNav" role="tablist">
+          {categories.map(cat => (
+            <button
+              class="tab-btn"
+              data-target={cat.id}
+              style={`--cat-c: ${cat.color}`}
+              role="tab"
+            >
+              <i class={`fa-solid ${cat.icon}`}></i>
+              {cat.label}
+            </button>
+          ))}
+        </nav>
+      </div>
+    </div>
+
+    <!-- ── Category sections ── -->
+    {categories.map(cat => (
+      <section
+        id={cat.id}
+        class="cat-section"
+        style={`--cat-c: ${cat.color}`}
+      >
+        <div class="container">
+
+          <!-- Category header -->
+          <div class="cat-header">
+            <div class="cat-icon-wrap">
+              <i class={`fa-solid ${cat.icon}`}></i>
+            </div>
+            <div>
+              <p class="cat-label">{cat.label}</p>
+              <h2 class="cat-title">{cat.tagline}</h2>
+              <p class="cat-desc">{cat.desc}</p>
+            </div>
+          </div>
+
+          <!-- Service cards -->
+          <div class="services-grid">
+            {cat.services.map(svc => (
+              <div class="svc-card">
+                <div class="svc-card-top">
+                  <h3 class="svc-name">{svc.name}</h3>
+                  <p class="svc-desc">{svc.desc}</p>
+                </div>
+                <ul class="svc-includes">
+                  {svc.includes.map(item => (
+                    <li><i class="fa-solid fa-check"></i> {item}</li>
+                  ))}
+                </ul>
+                <div class="svc-footer">
+                  <span class="svc-price">Cotización personalizada</span>
+                  <a
+                    href={`https://wa.me/17872439670?text=${encodeURIComponent(svc.wa)}`}
+                    target="_blank" rel="noopener"
+                    class="btn whatsapp svc-btn"
+                  >
+                    <i class="fab fa-whatsapp"></i> Cotizar
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* 360 booth — link to dedicated page */}
+          {cat.id === 'booth360' && (
+            <div class="booth-callout">
+              <div class="booth-callout-text">
+                <p class="booth-callout-label">Página completa</p>
+                <p class="booth-callout-desc">Mira el recap en video, fotos en acción y todos los detalles del Air-39 Automatic 360 Pro.</p>
+              </div>
+              <a href="/video-booth-360/" class="btn booth-more-btn">
+                Ver más sobre el 360 Booth <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          )}
+
+        </div>
+      </section>
+    ))}
+
+    <!-- ── Final CTA ── -->
+    <section class="final-cta-section">
+      <div class="container">
+        <div class="final-cta">
+          <div class="cta-glow"></div>
+          <p class="section-label">¿Listo para tu proyecto?</p>
+          <h2 class="cta-big-title">Hablemos.</h2>
+          <p class="cta-big-sub">
+            Escríbeme por WhatsApp o al correo — te respondo rápido con disponibilidad y cotización.
+          </p>
+          <div class="cta-actions">
+            <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto." target="_blank" rel="noopener" class="btn whatsapp cta-wa-btn">
+              <i class="fab fa-whatsapp"></i> (787) 243-9670
+            </a>
+            <a href="/contacto/" class="btn">
+              Formulario de contacto <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
+</Base>
+
+<style is:global>
+/* ── Hero ── */
+.hero-section {
+  padding: 56px 0 72px;
+  border-bottom: 1px solid var(--border);
+}
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(4rem, 10vw, 8rem);
+  letter-spacing: 4px;
+  line-height: .92;
+  margin-bottom: 20px;
+}
+.hero-sub {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  max-width: 52ch;
+  margin-bottom: 32px;
+}
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+}
+.meta-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: .65rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 8px 14px; border-radius: 100px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.meta-pill-wa {
+  border-color: color-mix(in srgb, #22c55e 35%, transparent);
+  color: #4ade80;
+  background: color-mix(in srgb, #22c55e 8%, transparent);
+  transition: .2s;
+}
+.meta-pill-wa:hover {
+  background: color-mix(in srgb, #22c55e 16%, transparent);
+  box-shadow: 0 0 20px color-mix(in srgb, #22c55e 14%, transparent);
+}
+
+/* ── Sticky tabs ── */
+.tabs-outer {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--ink) 90%, transparent);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow .2s;
+}
+.tabs-outer.elevated {
+  box-shadow: 0 4px 32px rgba(0,0,0,.35);
+}
+.tabs-nav {
+  display: flex; gap: 0; overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.tabs-nav::-webkit-scrollbar { display: none }
+.tab-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: .62rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted);
+  padding: 16px 18px;
+  background: none; border: none; cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+  white-space: nowrap; flex-shrink: 0;
+}
+.tab-btn i { font-size: .75rem; opacity: .7 }
+.tab-btn:hover { color: var(--white) }
+.tab-btn.active {
+  color: var(--cat-c);
+  border-bottom-color: var(--cat-c);
+}
+.tab-btn.active i { opacity: 1 }
+
+/* ── Category sections ── */
+.cat-section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cat-header {
+  display: flex; gap: 32px; align-items: flex-start;
+  margin-bottom: 48px;
+}
+.cat-icon-wrap {
+  width: 56px; height: 56px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--cat-c) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cat-c) 30%, transparent);
+  color: var(--cat-c);
+  font-size: 1.3rem;
+  margin-top: 4px;
+}
+.cat-label {
+  font-family: var(--mono); font-size: .62rem;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--cat-c);
+  margin-bottom: 6px;
+}
+.cat-title {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.cat-desc {
+  color: var(--muted);
+  font-size: .92rem;
+  line-height: 1.7;
+  max-width: 56ch;
+}
+
+/* ── Service cards ── */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+.svc-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  display: flex; flex-direction: column;
+  gap: 20px;
+  transition: border-color .2s, transform .25s;
+  position: relative;
+  overflow: hidden;
+}
+.svc-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--cat-c);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.svc-card:hover {
+  border-color: color-mix(in srgb, var(--cat-c) 30%, transparent);
+  transform: translateY(-3px);
+}
+.svc-card:hover::before { opacity: 1 }
+.svc-card-top { flex: 1 }
+.svc-name {
+  font-family: var(--display);
+  font-size: 1.45rem;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  line-height: 1.1;
+}
+.svc-desc {
+  color: var(--muted);
+  font-size: .875rem;
+  line-height: 1.7;
+}
+.svc-includes {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 7px;
+}
+.svc-includes li {
+  display: flex; align-items: center; gap: 9px;
+  font-size: .8rem;
+  color: color-mix(in srgb, var(--white) 70%, transparent);
+}
+.svc-includes li .fa-check {
+  color: var(--cat-c);
+  font-size: .65rem;
+  flex-shrink: 0;
+}
+.svc-footer {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.svc-price {
+  font-family: var(--mono); font-size: .58rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--dim);
+}
+.svc-btn {
+  padding: 8px 14px;
+  font-size: .6rem;
+}
+
+/* ── 360 Callout ── */
+.booth-callout {
+  margin-top: 32px;
+  padding: 28px 32px;
+  background: color-mix(in srgb, var(--cat-c) 6%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--cat-c) 25%, transparent);
+  border-radius: 16px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 24px;
+  flex-wrap: wrap;
+}
+.booth-callout-label {
+  font-family: var(--mono); font-size: .6rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--cat-c);
+  margin-bottom: 6px;
+}
+.booth-callout-desc {
+  font-size: .88rem; color: var(--muted); line-height: 1.6;
+}
+.booth-more-btn {
+  border-color: color-mix(in srgb, var(--cat-c) 35%, transparent);
+  color: var(--cat-c);
+  flex-shrink: 0;
+}
+.booth-more-btn:hover {
+  background: color-mix(in srgb, var(--cat-c) 10%, transparent);
+  border-color: color-mix(in srgb, var(--cat-c) 60%, transparent);
+}
+
+/* ── Final CTA ── */
+.final-cta-section {
+  padding: 100px 0 80px;
+}
+.final-cta {
+  position: relative;
+  text-align: center;
+  padding: 80px 40px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.cta-glow {
+  position: absolute; inset: -40%;
+  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 65%);
+  pointer-events: none;
+}
+.cta-big-title {
+  font-family: var(--display);
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+  line-height: .92;
+}
+.cta-big-sub {
+  color: var(--muted);
+  font-size: .95rem;
+  line-height: 1.75;
+  max-width: 44ch;
+  margin: 0 auto 40px;
+}
+.cta-actions {
+  display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: center; gap: 14px;
+}
+.cta-wa-btn {
+  font-size: .72rem;
+  padding: 13px 24px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .cat-header { flex-direction: column; gap: 20px }
+  .hero-title { letter-spacing: 2px }
+  .tab-btn { padding: 14px 14px; font-size: .58rem }
+  .final-cta { padding: 56px 24px }
+}
+@media (max-width: 500px) {
+  .services-grid { grid-template-columns: 1fr }
+}
+
+/* ── Scroll-reveal ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px) }
+  to   { opacity: 1; transform: translateY(0) }
+}
+.svc-card.visible {
+  animation: fadeUp .4s ease both;
+}
+</style>
+
+<script is:inline>
+(function () {
+  /* ── Tab highlight via IntersectionObserver ── */
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const sections = document.querySelectorAll('.cat-section');
+  const tabsOuter = document.getElementById('tabsOuter');
+
+  // Click tab → scroll to section
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      if (!target) return;
+      const offset = tabsOuter.offsetHeight + 8;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  // Active tab on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        tabBtns.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+        // scroll tab into view
+        const activeBtn = document.querySelector(`.tab-btn[data-target="${id}"]`);
+        activeBtn?.scrollIntoView({ inline: 'nearest', behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+  sections.forEach(s => io.observe(s));
+
+  // Tabs shadow when scrolled past hero
+  const scrollObs = new IntersectionObserver(([e]) => {
+    tabsOuter.classList.toggle('elevated', !e.isIntersecting);
+  }, { threshold: 0 });
+  const heroSection = document.querySelector('.hero-section');
+  if (heroSection) scrollObs.observe(heroSection);
+
+  /* ── Card reveal ── */
+  const cardObs = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationDelay = (i * 0.07) + 's';
+        entry.target.classList.add('visible');
+        cardObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.svc-card').forEach(card => cardObs.observe(card));
+})();
+</script>
