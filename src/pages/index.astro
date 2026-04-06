@@ -193,7 +193,8 @@ const featuredProjects = [
         <img src="/logos-home/buoyant.svg"   alt="Buoyant"    class="client-logo" />
         <img src="/logos-home/corillo-logo.svg" alt="Corillo" class="client-logo" />
         <img src="/logos-home/gameboxpr.svg" alt="GameBox PR" class="client-logo" />
-        <img src="/logos-home/jalda.svg"     alt="Jalda"      class="client-logo" />
+        <img src="/logos-home/jalda.svg"      alt="Jalda"      class="client-logo" />
+        <img src="/logos-home/logo_pomelo.svg" alt="Pomelo"   class="client-logo" />
       </div>
     </div>
   </section>
@@ -454,15 +455,20 @@ const featuredProjects = [
 }
 .client-logo {
   height: 55px; width: auto;
-  opacity: .45; filter: grayscale(1);
-  transition: opacity .2s, filter .2s;
+  filter: brightness(0) invert(1); opacity: .6;
+  transition: opacity .2s;
 }
-.client-logo:hover { opacity: .85; filter: grayscale(0) }
-.client-logo { filter: invert(1) grayscale(1); opacity: .6; }
-.client-logo:hover { filter: invert(1) grayscale(1); opacity: 1; }
+.client-logo:hover { opacity: 1; }
+@media (max-width: 600px) {
+  .clients-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 36px 24px; place-items: center;
+  }
+  .client-logo { height: 42px; }
+}
 
-[data-theme="light"] .client-logo { filter: none; opacity: .55; }
-[data-theme="light"] .client-logo:hover { filter: none; opacity: 1; }
+[data-theme="light"] .client-logo { filter: brightness(0); opacity: .55; }
+[data-theme="light"] .client-logo:hover { opacity: 1; }
 
 /* ── DISCIPLINES ── */
 .disciplines-grid {
