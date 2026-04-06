@@ -1,5 +1,6 @@
 ---
 const links = [
+  { href: '/servicios/',  label: 'Servicios' },
   { href: '/portafolio/', label: 'Portafolio' },
   { href: '/blog/',       label: 'Blog' },
   { href: '/sobre-mi/',   label: 'Sobre mí' },
@@ -14,7 +15,8 @@ const current = Astro.url.pathname;
         <span class="nav-name">MARCOS SANTIAGO</span>
         <span class="nav-loc">Aibonito, PR</span>
       </a>
-      <div class="nav-links">
+      <div class="nav-links" id="navLinks">
+        <span class="nav-badge" id="navBadge"></span>
         {links.map(l => (
           <a
             href={l.href}
@@ -86,7 +88,22 @@ const current = Astro.url.pathname;
   }
   .nav-links {
     display: flex; gap: 4px; align-items: center;
+    position: relative;
   }
+  .nav-badge {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    height: 32px; border-radius: 8px;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+    pointer-events: none;
+    opacity: 0;
+    transition: left .25s cubic-bezier(.4,0,.2,1),
+                width .25s cubic-bezier(.4,0,.2,1),
+                opacity .15s ease;
+    z-index: 0;
+  }
+  .nav-badge.visible { opacity: 1 }
   .nav-link {
     font-family: var(--mono);
     font-size: .68rem;
@@ -96,24 +113,11 @@ const current = Astro.url.pathname;
     padding: 8px 14px;
     border-radius: 6px;
     position: relative;
+    z-index: 1;
     transition: color .15s;
   }
-  .nav-link::after {
-    content: '';
-    position: absolute; bottom: 2px; left: 14px; right: 14px;
-    height: 1.5px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform .2s ease;
-    border-radius: 2px;
-  }
   .nav-link:hover { color: var(--white) }
-  .nav-link:hover::after { transform: scaleX(1) }
-  .nav-link.active {
-    color: var(--white);
-  }
-  .nav-link.active::after { transform: scaleX(1) }
+  .nav-link.active { color: var(--white) }
 
   .nav-right {
     display: flex; align-items: center; gap: 10px;
@@ -197,6 +201,27 @@ const current = Astro.url.pathname;
 </style>
 
 <script>
+  // Sliding badge
+  const navLinks = document.getElementById('navLinks');
+  const badge = document.getElementById('navBadge');
+  const linkEls = navLinks?.querySelectorAll('.nav-link');
+
+  function moveBadge(el: Element) {
+    if (!navLinks || !badge) return;
+    const navRect = navLinks.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
+    (badge as HTMLElement).style.left = (rect.left - navRect.left) + 'px';
+    (badge as HTMLElement).style.width = rect.width + 'px';
+    badge.classList.add('visible');
+  }
+
+  linkEls?.forEach(link => {
+    link.addEventListener('mouseenter', () => moveBadge(link));
+  });
+  navLinks?.addEventListener('mouseleave', () => {
+    badge?.classList.remove('visible');
+  });
+
   // Theme toggle
   const themeBtn = document.getElementById('themeToggle');
   themeBtn?.addEventListener('click', () => {

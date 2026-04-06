@@ -52,6 +52,16 @@ const services = [
         Producción audiovisual para eventos, marcas y proyectos en Puerto Rico. Desde el concepto hasta la entrega final — con la narrativa y el cuidado visual que cada historia merece.
       </p>
 
+      <!-- Showreel -->
+      <div class="showreel-wrap">
+        <video
+          class="showreel-video"
+          src="/short-videografy.mp4"
+          autoplay muted loop playsinline
+          controls
+        ></video>
+      </div>
+
       <div class="vimeo-cta">
         <div class="cta-icon">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
@@ -178,5 +188,17 @@ const services = [
   border-radius: 20px;
   display: flex; align-items: center;
   justify-content: space-between; gap: 32px; flex-wrap: wrap;
+}
+
+.showreel-wrap {
+  margin-top: 48px;
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+  aspect-ratio: 16/9;
+}
+.showreel-video {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
 }
 </style>

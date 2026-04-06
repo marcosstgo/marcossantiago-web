@@ -146,6 +146,13 @@ body::after {
 /* ── Divider ── */
 hr { border: none; border-top: 1px solid var(--border) }
 
+/* ── Light mode: header always white ── */
+[data-theme="light"] header {
+  background: rgba(242,241,239,.96) !important;
+  border-color: rgba(0,0,0,.09) !important;
+  backdrop-filter: blur(12px);
+}
+
 /* ── Card ── */
 .card {
   background: var(--surface);

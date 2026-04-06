@@ -11,6 +11,7 @@ const skills = [
 ];
 ---
 <Base title="Sobre mí — Marcos Santiago" description="Artista Gráfico, Fotógrafo, Videógrafo y Desarrollador desde Aibonito, Puerto Rico.">
+  <script is:inline>document.body.classList.add('dark-video-page')</script>
   <Nav />
   <main>
     <!-- Video hero wrapper -->
@@ -88,6 +89,9 @@ const skills = [
 </Base>
 
 <style>
+/* Video bg always dark — force light text regardless of theme */
+main { color: #f0ede8 }
+
 /* ── VIDEO BG ── */
 .about-video-hero {
   position: fixed; inset: 0; z-index: -1;
@@ -136,7 +140,7 @@ const skills = [
   color: var(--accent); margin-bottom: 28px;
 }
 .about-bio p {
-  color: var(--muted); font-size: .95rem;
+  color: rgba(240,237,232,.6); font-size: .95rem;
   line-height: 1.8; margin-bottom: 14px; max-width: 52ch;
 }
 .about-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px }
@@ -163,7 +167,7 @@ const skills = [
 }
 .skill-list { list-style: none; display: flex; flex-direction: column; gap: 8px }
 .skill-list li {
-  font-size: .85rem; color: var(--muted);
+  font-size: .85rem; color: rgba(240,237,232,.6);
   padding-left: 12px; position: relative;
 }
 .skill-list li::before {
@@ -184,4 +188,25 @@ const skills = [
   letter-spacing: 2px; margin: 8px 0;
 }
 .location-sub { color: var(--muted); font-size: .9rem; max-width: 48ch }
+
+/* ── Light mode: keep outlined text visible over dark video ── */
+:global([data-theme="light"]) .about-title .last {
+  -webkit-text-stroke-color: rgba(240,237,232,.45);
+}
+
+/* ── Light mode: keep cards dark over video bg ── */
+:global([data-theme="light"]) .skill-block,
+:global([data-theme="light"]) .location-card {
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.12);
+}
+:global([data-theme="light"]) .skill-list li {
+  color: rgba(240,237,232,.6);
+}
+:global([data-theme="light"]) .location-sub {
+  color: rgba(240,237,232,.6);
+}
+:global([data-theme="light"]) .location-title {
+  color: #f0ede8;
+}
 </style>

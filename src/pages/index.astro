@@ -85,7 +85,10 @@ const featuredProjects = [
 ];
 
 ---
-<Base title="Marcos Santiago — Graphic Artist, Developer · Aibonito PR">
+<Base
+  title="Marcos Santiago — Artista Gráfico, Fotógrafo & Videógrafo · Aibonito, Puerto Rico"
+  description="Artista gráfico, fotógrafo y videógrafo profesional en Aibonito, Puerto Rico. Fotografía de bodas, quinceañeros, eventos, diseño gráfico, 360 Video Booth y desarrollo web."
+>
   <Nav />
 
   <!-- ═══ HERO ═══ -->
@@ -111,7 +114,7 @@ const featuredProjects = [
             <span class="cursor">_</span>
           </p>
           <p class="hero-desc">
-            Diseño marcas e identidades visuales, capturo momentos, produzco video y construyo productos digitales. Todo desde Aibonito, Puerto Rico.
+            Artista gráfico, fotógrafo de bodas y eventos, videógrafo y desarrollador web. Diseño marcas, capturo momentos y construyo productos digitales — todo desde Aibonito, Puerto Rico.
           </p>
           <div class="hero-actions">
             <a href="/portafolio/" class="btn primary">Ver portafolio</a>
@@ -137,7 +140,7 @@ const featuredProjects = [
         <div class="hero-visual">
           <div class="hero-deco-num" aria-hidden="true">01</div>
           <div class="hero-photo">
-            <img src="/marcos-photo.webp" alt="Marcos Santiago — Fotógrafo, Diseñador y Desarrollador" />
+            <img src="/marcos-photo.webp" alt="Marcos Santiago — Artista Gráfico, Fotógrafo y Videógrafo en Puerto Rico" />
           </div>
         </div>
 
@@ -299,10 +302,12 @@ const featuredProjects = [
   .hero-visual { order: -1; max-width: 72%; margin: 0 auto }
 }
 
+/* Hero siempre tiene video oscuro — forzar texto claro en cualquier tema */
+.hero-copy { color: #f0ede8 }
 .hero-from {
   font-family: var(--mono); font-size: .65rem;
   letter-spacing: 3px; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 16px;
+  color: rgba(240,237,232,.55); margin-bottom: 16px;
 }
 .hero-title {
   font-family: var(--display);
@@ -336,7 +341,7 @@ const featuredProjects = [
 }
 
 .hero-desc {
-  color: var(--muted); font-size: var(--text-base);
+  color: rgba(240,237,232,.6); font-size: var(--text-base);
   line-height: 1.75; max-width: 48ch; margin-bottom: 32px;
 }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }

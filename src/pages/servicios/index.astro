@@ -16,30 +16,35 @@ const categories = [
         name: 'Fotografía de Boda',
         desc: 'Cobertura completa del día — desde la preparación hasta la recepción. Estilo documental + retratos artísticos.',
         includes: ['Cobertura completa', 'Galería digital privada', 'Selección editada', 'Derechos de impresión'],
+        price: 'Desde $1,500',
         wa: 'Hola, me interesa cotizar fotografía para mi boda.',
       },
       {
         name: 'Quinceañeros',
         desc: 'Sesiones íntimas y cobertura completa del evento. Documentamos cada emoción del día más especial.',
         includes: ['Sesión de retratos', 'Cobertura del evento', 'Galería digital', 'Entrega 4–6 semanas'],
+        price: 'Desde $800',
         wa: 'Hola, me interesa cotizar fotografía para un quinceañero.',
       },
       {
         name: 'Eventos Sociales',
         desc: 'Cumpleaños, graduaciones, fiestas privadas y todo tipo de celebración. Cobertura dinámica y discreta.',
         includes: ['Cobertura del evento', 'Galería digital', 'Entrega rápida', 'Edición profesional'],
+        price: 'Desde $300',
         wa: 'Hola, me interesa cotizar fotografía para un evento social.',
       },
       {
         name: 'Corporativo & Marca',
         desc: 'Headshots, eventos corporativos, productos y contenido para redes sociales que eleva tu marca.',
         includes: ['Retratos profesionales', 'Fotografía de producto', 'Licencia comercial', 'Entrega express'],
+        price: 'Desde $300',
         wa: 'Hola, me interesa cotizar fotografía corporativa.',
       },
       {
         name: 'Retratos',
         desc: 'Sesiones personales, familiares, artísticas. Locaciones en Aibonito y alrededores o tu locación preferida.',
         includes: ['Sesión 1–2 horas', 'Selección editada', 'Galería digital', 'Guía de outfit'],
+        price: 'Desde $150',
         wa: 'Hola, me interesa cotizar una sesión de retratos.',
       },
     ],
@@ -56,30 +61,35 @@ const categories = [
         name: 'Video de Boda',
         desc: 'Cinematografía de boda completa — desde la preparación hasta la última canción. Storytelling emocional y auténtico.',
         includes: ['Film completo (4–8 min)', 'Highlights (90s)', 'Teaser para redes', 'Audio profesional'],
+        price: 'Desde $1,500',
         wa: 'Hola, me interesa cotizar video para mi boda.',
       },
       {
         name: 'Quinceañeros',
         desc: 'Capturamos cada momento del día en un video cinematográfico que se convierte en un tesoro familiar.',
         includes: ['Film completo', 'Highlights para RRSS', 'Cobertura del evento', 'Música licenciada'],
+        price: 'Desde $800',
         wa: 'Hola, me interesa cotizar video para un quinceañero.',
       },
       {
         name: 'Reels & Contenido',
         desc: 'Reels profesionales para Instagram, TikTok y YouTube. Contenido que conecta y convierte seguidores en clientes.',
         includes: ['Hasta 3 reels por sesión', 'Edición con trending audio', 'Formato vertical y horizontal', 'Entrega 48–72h'],
+        price: 'Desde $150 por reel',
         wa: 'Hola, me interesa cotizar reels y contenido para redes sociales.',
       },
       {
         name: 'Corporativo & Marca',
         desc: 'Videos institucionales, testimoniales, demos de producto y campañas publicitarias para tu negocio.',
         includes: ['Guión y dirección', 'Múltiples tomas', 'Post-producción completa', 'Licencia comercial'],
+        price: 'Desde $1,000',
         wa: 'Hola, me interesa cotizar video corporativo.',
       },
       {
         name: 'Documental',
         desc: 'Proyectos documentales de largo aliento — cultura, comunidad, arte. Contamos historias que importan.',
         includes: ['Pre-producción incluida', 'Producción multicámara', 'Post-producción completa', 'Color grading'],
+        price: 'Desde $2,500',
         wa: 'Hola, me interesa cotizar un documental.',
       },
     ],
@@ -96,24 +106,28 @@ const categories = [
         name: 'Branding & Identidad',
         desc: 'Creación completa de identidad de marca — logo, paleta de colores, tipografía, voz y guía de estilo.',
         includes: ['Logo principal + variantes', 'Paleta de color', 'Tipografía de marca', 'Brand guide PDF'],
+        price: 'Desde $500',
         wa: 'Hola, me interesa cotizar branding e identidad visual.',
       },
       {
         name: 'Diseño Digital',
         desc: 'Posts para redes sociales, stories, banners, presentaciones y assets digitales con consistencia de marca.',
         includes: ['Templates editables', 'Formatos para RRSS', 'Entrega en PNG/PDF/SVG', 'Revisiones incluidas'],
+        price: 'Desde $50 por pieza',
         wa: 'Hola, me interesa cotizar diseño digital para redes sociales.',
       },
       {
         name: 'Print & Impresión',
         desc: 'Tarjetas de presentación, flyers, menús, señalización y todo material impreso listo para producción.',
         includes: ['Diseño listo para imprenta', 'Archivos CMYK', 'Alta resolución', 'Múltiples formatos'],
+        price: 'Desde $50 por pieza',
         wa: 'Hola, me interesa cotizar diseño para imprimir.',
       },
       {
         name: 'Diseño Editorial',
         desc: 'Revistas, catálogos, booklets, anuarios. Diseño editorial con jerarquía visual clara y elegante.',
         includes: ['Maquetación completa', 'Revisiones incluidas', 'Archivo InDesign/PDF', 'Corrección de color'],
+        price: 'Desde $250',
         wa: 'Hola, me interesa cotizar diseño editorial.',
       },
     ],
@@ -130,18 +144,21 @@ const categories = [
         name: '360 Video Booth — Eventos',
         desc: 'La plataforma Air-39 gira automáticamente 360° alrededor de tus invitados y genera clips con efectos, slow motion y overlay del evento.',
         includes: ['Setup y operación incluidos', 'Ring light profesional', 'Entrega por QR al instante', 'Galería digital del evento'],
+        price: 'Desde $350 (2 hrs)',
         wa: 'Hola, me interesa cotizar el 360 Video Booth para mi evento.',
       },
       {
         name: '360 Booth — Bodas',
         desc: 'El momento más viral de tu recepción. Todos tus invitados se llevan un clip 360° con el branding de tu boda.',
         includes: ['Overlay personalizado', 'Música de fondo del evento', 'Tomas ilimitadas', 'Galería privada'],
+        price: 'Desde $499 (4 hrs)',
         wa: 'Hola, me interesa el 360 Video Booth para mi boda.',
       },
       {
         name: '360 Booth — Corporativo',
         desc: 'Activaciones de marca, lanzamientos y eventos corporativos con experiencia 360° branded para tu empresa.',
         includes: ['Overlay con logo de empresa', 'Entrega inmediata por QR', 'Informe post-evento', 'Opciones de personalización'],
+        price: 'Desde $499',
         wa: 'Hola, me interesa el 360 Video Booth para un evento corporativo.',
       },
     ],
@@ -158,18 +175,21 @@ const categories = [
         name: 'Plataformas Web',
         desc: 'Sitios web y plataformas completas — desde portfolios hasta e-commerce y SaaS. Stack moderno, rápido y mantenible.',
         includes: ['Diseño UI/UX incluido', 'CMS o admin panel', 'SEO técnico', 'Deployment y hosting'],
+        price: 'Desde $800',
         wa: 'Hola, me interesa cotizar el desarrollo de una plataforma web.',
       },
       {
         name: 'Apps & Herramientas',
         desc: 'Aplicaciones web, dashboards internos y herramientas a la medida para optimizar procesos de tu negocio.',
         includes: ['Análisis de requerimientos', 'UI/UX incluido', 'APIs e integraciones', 'Soporte post-lanzamiento'],
+        price: 'Desde $1,500',
         wa: 'Hola, me interesa cotizar el desarrollo de una app o herramienta.',
       },
       {
         name: 'E-Commerce',
         desc: 'Tiendas online con carrito, pagos (Stripe, ATH Móvil), inventario y panel admin para negocios en Puerto Rico.',
         includes: ['Tienda completa', 'Pagos locales', 'Panel de administración', 'Training incluido'],
+        price: 'Desde $1,500',
         wa: 'Hola, me interesa cotizar una tienda en línea (e-commerce).',
       },
     ],
@@ -177,20 +197,85 @@ const categories = [
 ];
 ---
 <Base
-  title="Servicios — Marcos Santiago · Puerto Rico"
-  description="Fotografía, videografía, diseño gráfico, 360 Video Booth y desarrollo web en Puerto Rico. Cotiza tu proyecto con Marcos Santiago — Aibonito, PR."
+  title="Fotógrafo, Videógrafo & Artista Gráfico en Puerto Rico | Marcos Santiago"
+  description="Fotografía de bodas, quinceañeros y eventos · Videografía · Artista gráfico · 360 Video Booth · Desarrollo web. Cobertura en toda Puerto Rico. Cotiza gratis por WhatsApp."
 >
+  <!-- JSON-LD LocalBusiness + Services -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "name": "Marcos Santiago",
+        "url": "https://marcossantiago.com/servicios/",
+        "telephone": "+17872439670",
+        "image": "https://marcossantiago.com/marcos-photo.jpg",
+        "description": "Fotógrafo, videógrafo, artista gráfico y desarrollador web profesional en Puerto Rico.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Aibonito",
+          "addressRegion": "PR",
+          "addressCountry": "US"
+        },
+        "areaServed": "Puerto Rico",
+        "priceRange": "$$",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Servicios creativos Puerto Rico",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Fotografía de Bodas Puerto Rico" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Fotografía de Quinceañeros Puerto Rico" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Videografía de Bodas Puerto Rico" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reels para Redes Sociales Puerto Rico" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "360 Video Booth Puerto Rico" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Artista Gráfico y Branding Puerto Rico" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Desarrollo Web Puerto Rico" } }
+          ]
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Cuánto cuesta un fotógrafo de bodas en Puerto Rico?",
+            "acceptedAnswer": { "@type": "Answer", "text": "El costo varía según la cobertura y duración del evento. Contáctame por WhatsApp para una cotización personalizada gratis." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Trabajan en toda Puerto Rico?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí, cubro eventos en toda la isla — desde Aibonito hasta San Juan, Ponce, Mayagüez y cualquier municipio." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué es el 360 Video Booth?",
+            "acceptedAnswer": { "@type": "Answer", "text": "El Air-39 Automatic 360 Pro es una plataforma giratoria que graba clips 360° de tus invitados con efectos y entrega instantánea por QR. Ideal para bodas, quinceañeros y eventos corporativos." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cuánto tiempo tarda la entrega de fotos?",
+            "acceptedAnswer": { "@type": "Answer", "text": "La galería digital se entrega entre 4 y 6 semanas después del evento, dependiendo del tipo de cobertura." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Ofrecen paquetes combinados de foto y video?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí, ofrezco paquetes combinados de fotografía y videografía para bodas y eventos. Escríbeme por WhatsApp para ver opciones." }
+          }
+        ]
+      }
+    ]
+  })} />
+
   <Nav />
   <main style="padding-top:100px">
 
     <!-- ── Hero ── -->
     <section class="hero-section">
       <div class="container">
-        <p class="section-label">Lo que hago</p>
-        <h1 class="hero-title">Servicios</h1>
+        <p class="section-label">Fotógrafo · Videógrafo · Artista Gráfico · Puerto Rico</p>
+        <h1 class="hero-title">Servicios<br><span class="hero-title-sub">en Puerto Rico</span></h1>
         <p class="hero-sub">
-          Fotografía, video, diseño y desarrollo — todo bajo un mismo techo.
-          Trabajo en Puerto Rico y hago realidad proyectos que impactan.
+          Fotografía de bodas y eventos, videografía, diseño gráfico, 360 Video Booth y desarrollo web — todo bajo un mismo techo en Puerto Rico. Cotiza tu proyecto gratis por WhatsApp.
         </p>
         <div class="hero-meta">
           <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> Puerto Rico</span>
@@ -201,6 +286,13 @@ const categories = [
         </div>
       </div>
     </section>
+
+    <!-- ── Pricing note ── -->
+    <div class="pricing-note">
+      <div class="container">
+        <p><i class="fa-solid fa-circle-info"></i> Los precios mostrados son por servicio individual. Para paquetes combinados (foto + video, etc.) contáctame por WhatsApp.</p>
+      </div>
+    </div>
 
     <!-- ── Sticky tabs ── -->
     <div class="tabs-outer" id="tabsOuter">
@@ -256,7 +348,7 @@ const categories = [
                   ))}
                 </ul>
                 <div class="svc-footer">
-                  <span class="svc-price">Cotización personalizada</span>
+                  <span class="svc-price">{svc.price}</span>
                   <a
                     href={`https://wa.me/17872439670?text=${encodeURIComponent(svc.wa)}`}
                     target="_blank" rel="noopener"
@@ -285,6 +377,29 @@ const categories = [
         </div>
       </section>
     ))}
+
+    <!-- ── FAQ ── -->
+    <section class="faq-section">
+      <div class="container">
+        <p class="section-label">Preguntas frecuentes</p>
+        <h2 class="faq-title">FAQ</h2>
+        <div class="faq-list">
+          {[
+            { q: '¿Trabajan en toda Puerto Rico?', a: 'Sí, cubro eventos en toda la isla — desde Aibonito hasta San Juan, Ponce, Mayagüez y cualquier municipio.' },
+            { q: '¿Cuánto cuesta un fotógrafo de bodas en Puerto Rico?', a: 'El precio varía según la cobertura y duración. Escríbeme por WhatsApp y te envío cotización personalizada gratis.' },
+            { q: '¿Ofrecen paquetes combinados de foto y video?', a: 'Sí, tengo paquetes que combinan fotografía y videografía para bodas y eventos. Más económico que contratar dos personas por separado.' },
+            { q: '¿Cuánto tiempo tarda la entrega de fotos?', a: 'La galería digital se entrega en 4 a 6 semanas según el tipo de cobertura.' },
+            { q: '¿Qué es el 360 Video Booth?', a: 'Una plataforma giratoria (Air-39 Automatic) que graba clips 360° de tus invitados con efectos, slow motion y entrega instantánea por QR. El momento más viral de cualquier evento.' },
+            { q: '¿Cómo reservo una fecha?', a: 'Escríbeme por WhatsApp al (787) 243-9670 con la fecha y tipo de evento. Confirmamos disponibilidad y te envío cotización el mismo día.' },
+          ].map(item => (
+            <details class="faq-item">
+              <summary class="faq-q">{item.q} <i class="fa-solid fa-plus faq-icon"></i></summary>
+              <p class="faq-a">{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
 
     <!-- ── Final CTA ── -->
     <section class="final-cta-section">
@@ -353,6 +468,70 @@ const categories = [
   background: color-mix(in srgb, #22c55e 16%, transparent);
   box-shadow: 0 0 20px color-mix(in srgb, #22c55e 14%, transparent);
 }
+
+.hero-title-sub {
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  color: var(--accent);
+  display: block;
+  line-height: 1;
+}
+
+/* ── FAQ ── */
+.faq-section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--border);
+}
+.faq-title {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+}
+.faq-list { display: flex; flex-direction: column; gap: 0; }
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  padding: 4px 0;
+}
+.faq-item:first-child { border-top: 1px solid var(--border); }
+.faq-q {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+  padding: 20px 4px;
+  font-size: .95rem; font-weight: 500;
+  color: var(--white);
+  cursor: pointer; list-style: none;
+  transition: color .15s;
+}
+.faq-q::-webkit-details-marker { display: none }
+.faq-q:hover { color: var(--accent) }
+.faq-icon {
+  font-size: .7rem; color: var(--muted); flex-shrink: 0;
+  transition: transform .25s;
+}
+.faq-item[open] .faq-icon { transform: rotate(45deg); color: var(--accent) }
+.faq-item[open] .faq-q { color: var(--accent) }
+.faq-a {
+  padding: 0 4px 20px;
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.75;
+  max-width: 68ch;
+}
+
+/* ── Pricing note ── */
+.pricing-note {
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  padding: 12px 0;
+}
+.pricing-note p {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  display: flex; align-items: center; gap: 8px;
+}
+.pricing-note .fa-circle-info { color: var(--accent); font-size: .7rem; flex-shrink: 0; }
 
 /* ── Sticky tabs ── */
 .tabs-outer {
@@ -492,9 +671,10 @@ const categories = [
   border-top: 1px solid var(--border);
 }
 .svc-price {
-  font-family: var(--mono); font-size: .58rem;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--dim);
+  font-family: var(--mono); font-size: .65rem;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--cat-c);
+  font-weight: 700;
 }
 .svc-btn {
   padding: 8px 14px;
@@ -591,6 +771,20 @@ const categories = [
 .svc-card.visible {
   animation: fadeUp .4s ease both;
 }
+
+/* ── Light mode overrides ── */
+[data-theme="light"] .svc-price,
+[data-theme="light"] .svc-includes li .fa-check,
+[data-theme="light"] .cat-label,
+[data-theme="light"] .cat-icon-wrap,
+[data-theme="light"] .booth-callout-label,
+[data-theme="light"] .booth-more-btn,
+[data-theme="light"] .tab-btn.active {
+  filter: brightness(0.65);
+}
+[data-theme="light"] .tabs-outer {
+  background: color-mix(in srgb, var(--ink) 95%, transparent);
+}
 </style>
 
 <script is:inline>
@@ -617,9 +811,17 @@ const categories = [
       if (entry.isIntersecting) {
         const id = entry.target.id;
         tabBtns.forEach(b => b.classList.toggle('active', b.dataset.target === id));
-        // scroll tab into view
+        // scroll tabs nav horizontally to show active tab
         const activeBtn = document.querySelector(`.tab-btn[data-target="${id}"]`);
-        activeBtn?.scrollIntoView({ inline: 'nearest', behavior: 'smooth', block: 'nearest' });
+        if (activeBtn) {
+          const nav = document.getElementById('tabsNav');
+          const btnLeft = activeBtn.offsetLeft;
+          const btnRight = btnLeft + activeBtn.offsetWidth;
+          const navScroll = nav.scrollLeft;
+          const navWidth = nav.offsetWidth;
+          if (btnLeft < navScroll) nav.scrollTo({ left: btnLeft - 16, behavior: 'smooth' });
+          else if (btnRight > navScroll + navWidth) nav.scrollTo({ left: btnRight - navWidth + 16, behavior: 'smooth' });
+        }
       }
     });
   }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
