@@ -8,6 +8,9 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:3010:80"
+    volumes:
+      - ./public/logos-home:/usr/share/nginx/html/logos-home
+      - ./public/videos:/usr/share/nginx/html/videos
 
   marcossantiago-bot:
     build:

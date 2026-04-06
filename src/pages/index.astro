@@ -182,6 +182,22 @@ const featuredProjects = [
     setInterval(cycleRole, 2800);
   </script>
 
+  <!-- ═══ CLIENTES ═══ -->
+  <section class="clients-section">
+    <div class="container">
+      <p class="clients-label">Logos que he diseñado</p>
+      <div class="clients-grid">
+        <img src="/logos-home/bambu.svg"      alt="Bambu"      class="client-logo" />
+        <img src="/logos-home/bayuu.svg"     alt="Bayuu"      class="client-logo" />
+        <img src="/logos-home/brava.svg"     alt="Brava"      class="client-logo" />
+        <img src="/logos-home/buoyant.svg"   alt="Buoyant"    class="client-logo" />
+        <img src="/logos-home/corillo-logo.svg" alt="Corillo" class="client-logo" />
+        <img src="/logos-home/gameboxpr.svg" alt="GameBox PR" class="client-logo" />
+        <img src="/logos-home/jalda.svg"     alt="Jalda"      class="client-logo" />
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ DISCIPLINAS ═══ -->
   <section class="section">
     <div class="container">
@@ -421,6 +437,32 @@ const featuredProjects = [
   50%       { opacity: 1;  transform: scaleY(1.1) }
 }
 @media (max-width: 768px) { .hero-scroll { display: none } }
+
+/* ── CLIENTS ── */
+.clients-section {
+  padding: 48px 0;
+  border-bottom: 1px solid var(--border);
+}
+.clients-label {
+  font-family: var(--mono); font-size: var(--text-xs);
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--accent); text-align: center; margin-bottom: 32px;
+}
+.clients-grid {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 40px 56px;
+}
+.client-logo {
+  height: 55px; width: auto;
+  opacity: .45; filter: grayscale(1);
+  transition: opacity .2s, filter .2s;
+}
+.client-logo:hover { opacity: .85; filter: grayscale(0) }
+.client-logo { filter: invert(1) grayscale(1); opacity: .6; }
+.client-logo:hover { filter: invert(1) grayscale(1); opacity: 1; }
+
+[data-theme="light"] .client-logo { filter: none; opacity: .55; }
+[data-theme="light"] .client-logo:hover { filter: none; opacity: 1; }
 
 /* ── DISCIPLINES ── */
 .disciplines-grid {

@@ -12,8 +12,7 @@ const current = Astro.url.pathname;
   <div class="container">
     <nav>
       <a href="/" class="nav-brand" aria-label="Marcos Santiago">
-        <span class="nav-name">MARCOS SANTIAGO</span>
-        <span class="nav-loc">Aibonito, PR</span>
+        <img src="/logos-home/logo-marcos.svg" alt="Marcos Santiago" class="nav-logo-img" />
       </a>
       <div class="nav-links" id="navLinks">
         <span class="nav-badge" id="navBadge"></span>
@@ -68,24 +67,15 @@ const current = Astro.url.pathname;
     gap: 24px;
   }
   .nav-brand {
-    display: flex; flex-direction: column; gap: 1px;
-    padding-left: 10px;
-    border-left: 2px solid var(--accent);
+    display: flex; align-items: center;
   }
-  .nav-name {
-    font-family: var(--display);
-    font-size: 1.15rem;
-    letter-spacing: 4px;
-    line-height: 1;
-    color: var(--white);
+  .nav-logo-img {
+    height: 36px; width: auto;
+    display: block;
+    transition: opacity .2s;
   }
-  .nav-loc {
-    font-family: var(--mono);
-    font-size: .48rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
+  .nav-brand:hover .nav-logo-img { opacity: .8 }
+  :global([data-theme="light"]) .nav-logo-img { filter: invert(1) }
   .nav-links {
     display: flex; gap: 4px; align-items: center;
     position: relative;
