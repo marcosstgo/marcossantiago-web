@@ -271,7 +271,10 @@ const categories = [
 
     <!-- ── Hero ── -->
     <section class="hero-section">
-      <div class="container">
+      <img class="servicios-video-bg servicios-poster" src="/videos/marcos-video-poster.webp" alt="" aria-hidden="true" fetchpriority="high" />
+      <video class="servicios-video-bg servicios-video" muted loop playsinline preload="none" data-src-webm="/videos/marcos-video-web.webm" data-src-mp4="/videos/marcos-video-web.mp4"></video>
+      <div class="servicios-video-overlay"></div>
+      <div class="container hero-content">
         <p class="section-label">Fotógrafo · Videógrafo · Artista Gráfico · Puerto Rico</p>
         <h1 class="hero-title">Servicios<br><span class="hero-title-sub">en Puerto Rico</span></h1>
         <p class="hero-sub">
@@ -286,13 +289,6 @@ const categories = [
         </div>
       </div>
     </section>
-
-    <!-- ── Pricing note ── -->
-    <div class="pricing-note">
-      <div class="container">
-        <p><i class="fa-solid fa-circle-info"></i> Los precios mostrados son por servicio individual. Para paquetes combinados (foto + video, etc.) contáctame por WhatsApp.</p>
-      </div>
-    </div>
 
     <!-- ── Sticky tabs ── -->
     <div class="tabs-outer" id="tabsOuter">
@@ -378,6 +374,22 @@ const categories = [
       </section>
     ))}
 
+    <!-- ── Pricing note ── -->
+    <section class="pricing-note-section">
+      <div class="container">
+        <div class="pricing-note-card">
+          <div class="pricing-note-icon"><i class="fa-solid fa-tags"></i></div>
+          <div class="pricing-note-body">
+            <p class="pricing-note-title">Precios por servicio individual</p>
+            <p class="pricing-note-sub">¿Necesitas foto + video, diseño + web, o cualquier combinación? Los paquetes combinados tienen mejor precio. Escríbeme y armamos algo a tu medida.</p>
+          </div>
+          <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20un%20paquete%20combinado." target="_blank" rel="noopener" class="btn whatsapp pricing-note-btn">
+            <i class="fab fa-whatsapp"></i> Ver paquetes
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- ── FAQ ── -->
     <section class="faq-section">
       <div class="container">
@@ -430,8 +442,32 @@ const categories = [
 <style is:global>
 /* ── Hero ── */
 .hero-section {
-  padding: 56px 0 72px;
+  position: relative;
+  padding: 120px 0 96px;
   border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.servicios-video-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: blur(6px) brightness(.38) saturate(1.1);
+  transform: scale(1.06);
+}
+.servicios-video { opacity: 0; transition: opacity .6s ease }
+.servicios-video.loaded { opacity: 1 }
+.servicios-poster { transition: opacity .6s ease }
+.servicios-poster.hidden { opacity: 0 }
+.servicios-video-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(8,8,12,.3) 0%,
+    rgba(8,8,12,.1) 40%,
+    rgba(8,8,12,.85) 100%);
+}
+.hero-content {
+  position: relative; z-index: 1;
+  color: #f0ede8;
 }
 .hero-title {
   font-family: var(--display);
@@ -519,19 +555,36 @@ const categories = [
 }
 
 /* ── Pricing note ── */
-.pricing-note {
-  background: color-mix(in srgb, var(--accent) 6%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
-  padding: 12px 0;
+.pricing-note-section {
+  padding: 48px 0;
+  border-bottom: 1px solid var(--border);
 }
-.pricing-note p {
-  font-family: var(--mono);
-  font-size: .62rem;
-  letter-spacing: 1.5px;
+.pricing-note-card {
+  display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+  padding: 40px 48px;
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 20px;
+}
+.pricing-note-icon {
+  font-size: 2rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.pricing-note-body { flex: 1; min-width: 200px; }
+.pricing-note-title {
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.pricing-note-sub {
   color: var(--muted);
-  display: flex; align-items: center; gap: 8px;
+  font-size: .95rem;
+  line-height: 1.7;
+  max-width: 52ch;
 }
-.pricing-note .fa-circle-info { color: var(--accent); font-size: .7rem; flex-shrink: 0; }
+.pricing-note-btn { flex-shrink: 0 }
 
 /* ── Sticky tabs ── */
 .tabs-outer {
@@ -772,6 +825,16 @@ const categories = [
   animation: fadeUp .4s ease both;
 }
 
+/* ── Light mode: keep hero text light over video ── */
+[data-theme="light"] .hero-content .section-label { color: var(--accent) }
+[data-theme="light"] .hero-content .hero-title { color: #f0ede8 }
+[data-theme="light"] .hero-content .hero-title-sub { color: var(--accent); filter: brightness(1.3) }
+[data-theme="light"] .hero-content .hero-sub { color: rgba(240,237,232,.75) }
+[data-theme="light"] .hero-content .meta-pill {
+  color: rgba(240,237,232,.75);
+  border-color: rgba(255,255,255,.2);
+}
+
 /* ── Light mode overrides ── */
 [data-theme="light"] .svc-price,
 [data-theme="light"] .svc-includes li .fa-check,
@@ -847,5 +910,22 @@ const categories = [
   }, { threshold: 0.1 });
 
   document.querySelectorAll('.svc-card').forEach(card => cardObs.observe(card));
+
+  /* ── Lazy video: load after page ready ── */
+  window.addEventListener('load', () => {
+    const video = document.querySelector('.servicios-video');
+    const poster = document.querySelector('.servicios-poster');
+    if (!video) return;
+    const webm = video.dataset.srcWebm;
+    const mp4  = video.dataset.srcMp4;
+    if (webm) { const s = document.createElement('source'); s.src = webm; s.type = 'video/webm'; video.appendChild(s); }
+    if (mp4)  { const s = document.createElement('source'); s.src = mp4;  s.type = 'video/mp4';  video.appendChild(s); }
+    video.load();
+    video.play().catch(() => {});
+    video.addEventListener('canplay', () => {
+      video.classList.add('loaded');
+      if (poster) poster.classList.add('hidden');
+    }, { once: true });
+  });
 })();
 </script>
