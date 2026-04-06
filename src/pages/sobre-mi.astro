@@ -189,6 +189,16 @@ main { color: #f0ede8 }
 }
 .location-sub { color: var(--muted); font-size: .9rem; max-width: 48ch }
 
+/* ── Light mode: keep hero buttons visible over dark video ── */
+:global([data-theme="light"]) .about-actions .btn {
+  color: rgba(240,237,232,.85);
+  border-color: rgba(255,255,255,.25);
+}
+:global([data-theme="light"]) .about-actions .btn:hover {
+  color: #f0ede8;
+  border-color: rgba(255,255,255,.5);
+}
+
 /* ── Light mode: keep outlined text visible over dark video ── */
 :global([data-theme="light"]) .about-title .last {
   -webkit-text-stroke-color: rgba(240,237,232,.45);
