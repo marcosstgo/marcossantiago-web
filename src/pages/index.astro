@@ -255,6 +255,24 @@ const featuredProjects = [
     </div>
   </section>
 
+  <!-- ═══ 360 BOOTH ═══ -->
+  <section class="section booth-section">
+    <div class="container">
+      <a href="/video-booth-360/" class="booth-card">
+        <div class="booth-video-bg">
+          <video autoplay muted loop playsinline src="/booth-360/360-Recap.mp4"></video>
+          <div class="booth-overlay"></div>
+        </div>
+        <div class="booth-content">
+          <span class="booth-label">Servicio Destacado</span>
+          <h2 class="booth-title">360 Video Booth</h2>
+          <p class="booth-desc">La plataforma giratoria que crea clips cinematográficos al instante para bodas, eventos corporativos y activaciones.</p>
+          <span class="booth-cta">Conocer más →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
   <!-- ═══ BLOG CTA ═══ -->
   <section class="section">
     <div class="container">
@@ -642,5 +660,65 @@ const featuredProjects = [
   font-family: var(--mono); font-size: var(--text-xs);
   letter-spacing: 2px; text-transform: uppercase;
   color: color-mix(in srgb, var(--accent) 70%, var(--white)); margin-top: 4px;
+}
+
+/* ── 360 BOOTH ── */
+.booth-section { background: var(--bg) }
+
+.booth-card {
+  position: relative;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 32px; align-items: center;
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--border);
+  transition: .3s ease;
+  background: var(--surface);
+}
+.booth-card:hover { border-color: color-mix(in srgb, var(--accent) 40%, transparent); transform: translateY(-2px) }
+
+.booth-video-bg {
+  position: relative;
+  aspect-ratio: 16/9; overflow: hidden;
+}
+.booth-video-bg video {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.booth-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(8,8,12,.4), rgba(8,8,12,.1));
+}
+
+.booth-content {
+  padding: 32px; display: flex;
+  flex-direction: column; gap: 12px;
+}
+.booth-label {
+  font-family: var(--mono); font-size: var(--text-2xs);
+  letter-spacing: 2px; text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 70%, var(--white));
+}
+.booth-title {
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  letter-spacing: 2px; line-height: 1.1;
+  color: var(--white);
+}
+.booth-desc {
+  font-size: var(--text-base); color: var(--muted);
+  line-height: 1.7; flex: 1;
+}
+.booth-cta {
+  font-family: var(--mono); font-size: var(--text-sm);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--accent); margin-top: 8px;
+  transition: transform .2s;
+}
+.booth-card:hover .booth-cta { transform: translateX(4px) }
+
+@media (max-width: 768px) {
+  .booth-card { grid-template-columns: 1fr; gap: 0 }
+  .booth-video-bg { order: -1 }
+  .booth-content { padding: 24px }
 }
 </style>
