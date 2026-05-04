@@ -1,0 +1,385 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Shorts — Marcos Santiago" description="Clips y momentos del trabajo de Marcos Santiago en fotografía, video y diseño desde Puerto Rico." image="/shorts-og.jpg">
+<style is:global>
+  html, body {
+    margin: 0; padding: 0;
+    height: 100%; height: 100dvh;
+    overflow: hidden;
+    background: #08080c;
+    color: #e8f6ff;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ── Nav ── */
+  .shorts-nav {
+    position: fixed; top: 0; left: 0; right: 0; height: 52px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px;
+    background: linear-gradient(to bottom, rgba(8,8,12,.95), transparent);
+    z-index: 100;
+  }
+  .shorts-nav-logo { display: flex; align-items: center; text-decoration: none }
+  .shorts-nav-logo img { height: 28px; width: auto; filter: invert(0) }
+  .shorts-nav-back {
+    font-family: var(--mono); font-size: .65rem; letter-spacing: 2px;
+    text-transform: uppercase; color: rgba(255,255,255,.5);
+    text-decoration: none; transition: color .15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .shorts-nav-back:hover { color: #fff }
+
+  /* ── States ── */
+  .state-screen {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 16px; color: rgba(255,255,255,.4);
+    font-family: var(--mono); font-size: .7rem;
+    letter-spacing: 1.5px; text-transform: uppercase; z-index: 50;
+  }
+  .state-screen i { font-size: 2rem; opacity: .3 }
+  .spinner-ring {
+    width: 28px; height: 28px;
+    border: 3px solid rgba(0,191,255,.2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg) } }
+
+  /* ── Scroll hint ── */
+  .scroll-hint {
+    position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px;
+    text-transform: uppercase; color: rgba(255,255,255,.4);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    animation: fadeHint 3s ease forwards; z-index: 200; pointer-events: none;
+  }
+  @keyframes fadeHint { 0%, 70% { opacity: .6 } 100% { opacity: 0 } }
+
+  /* ── Unmute btn ── */
+  #unmuteBtn {
+    position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%);
+    z-index: 150; background: rgba(8,8,12,.82); backdrop-filter: blur(10px);
+    border: 1px solid rgba(0,191,255,.35); border-radius: 999px;
+    color: #e8f6ff; font-family: var(--mono); font-size: .7rem;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 7px 18px; cursor: pointer; gap: 8px; align-items: center; display: none;
+  }
+
+  /* ── Reels container ── */
+  .ms-reels {
+    height: 100dvh; overflow-y: scroll;
+    scroll-snap-type: y mandatory; scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .ms-reels::-webkit-scrollbar { display: none }
+
+  /* ── Single reel ── */
+  .ms-reel {
+    height: 100dvh; scroll-snap-align: start;
+    position: relative; display: flex;
+    align-items: center; justify-content: center;
+    background: #000; overflow: hidden;
+  }
+  .ms-reel-media { position: absolute; inset: 0 }
+  .ms-reel-bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    filter: blur(22px) brightness(.35) saturate(1.2);
+    transform: scale(1.12); pointer-events: none;
+  }
+  .ms-reel-video {
+    position: relative; z-index: 1;
+    height: 100%; width: auto; max-width: 100%;
+    object-fit: contain;
+  }
+  .ms-reel-placeholder {
+    position: absolute; inset: 0; z-index: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px;
+    color: rgba(255,255,255,.4);
+  }
+  .ms-reel-placeholder i { font-size: 2.5rem; opacity: .35 }
+
+  /* ── Overlay gradient ── */
+  .ms-reel-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+    padding: 32px 20px 90px;
+    background: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.3) 60%, transparent 100%);
+    display: flex; align-items: flex-end; gap: 12px;
+  }
+  .ms-reel-info { flex: 1; min-width: 0 }
+  .ms-reel-title {
+    font-family: var(--display); font-size: 1.1rem; letter-spacing: 1px;
+    color: #fff; margin-bottom: 6px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .ms-reel-meta {
+    font-family: var(--mono); font-size: .6rem; letter-spacing: 1px;
+    text-transform: uppercase; color: rgba(255,255,255,.35);
+  }
+
+  /* ── Action buttons ── */
+  .ms-reel-actions {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 20px; padding-bottom: 4px; flex-shrink: 0;
+  }
+  .ms-reel-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    cursor: pointer; background: none; border: none; color: inherit; padding: 0;
+    text-decoration: none;
+  }
+  .ms-reel-btn-icon {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(255,255,255,.1); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: #fff;
+    transition: background .2s, transform .15s, border-color .2s;
+  }
+  .ms-reel-btn:hover .ms-reel-btn-icon {
+    background: rgba(0,191,255,.18); border-color: rgba(0,191,255,.35); transform: scale(1.08);
+  }
+  .ms-reel-btn span {
+    font-family: var(--mono); font-size: .6rem; letter-spacing: 1px;
+    text-transform: uppercase; color: rgba(255,255,255,.45);
+  }
+
+  /* ── Progress bar ── */
+  .ms-reel-progress {
+    position: absolute; bottom: 0; left: 0; height: 2px;
+    background: var(--accent); opacity: .55; transition: width .1s linear;
+    z-index: 11; border-radius: 0 2px 2px 0;
+  }
+
+  /* ── Dots ── */
+  .ms-reel-dots {
+    position: fixed; right: 16px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 6px; z-index: 50; pointer-events: none;
+  }
+  .ms-reel-dot {
+    width: 3px; height: 3px; border-radius: 999px;
+    background: rgba(255,255,255,.25); transition: all .3s ease;
+  }
+  .ms-reel-dot.active {
+    background: var(--accent); height: 18px; border-radius: 2px;
+    box-shadow: 0 0 6px rgba(0,191,255,.5);
+  }
+
+  /* ── Desktop: YouTube Shorts style ── */
+  @media (min-width: 600px) {
+    .ms-reels {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 0; gap: 0; background: #08080c;
+    }
+    .ms-reel {
+      height: 100dvh; width: 100vw;
+      display: flex; flex-direction: row;
+      align-items: center; justify-content: center;
+      gap: 16px; overflow: visible;
+      background: transparent; box-shadow: none; border-radius: 0; flex-shrink: 0;
+    }
+    .ms-reel-media {
+      position: relative; flex-shrink: 0;
+      height: 90dvh; width: calc(90dvh * 9 / 16); max-width: 90vw;
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 8px 48px rgba(0,0,0,.7);
+    }
+    .ms-reel-overlay {
+      position: static; background: transparent; padding: 0;
+      width: 72px; flex-direction: column;
+      align-items: center; justify-content: flex-end;
+      gap: 20px; align-self: flex-end; padding-bottom: 80px;
+    }
+    .ms-reel-info { display: none }
+    .ms-reel-actions { flex-direction: column; padding-bottom: 0; gap: 20px; align-items: center }
+    .ms-reel-btn-icon { width: 52px; height: 52px; font-size: 1.2rem }
+    .ms-reel-dots { display: none }
+  }
+</style>
+
+<nav class="shorts-nav">
+  <a href="/" class="shorts-nav-logo">
+    <img src="/logos-home/logo-marcos.svg" alt="Marcos Santiago" />
+  </a>
+  <a href="/" class="shorts-nav-back">
+    <i class="fa-solid fa-arrow-left"></i> Inicio
+  </a>
+</nav>
+
+<div class="state-screen" id="loadingState">
+  <div class="spinner-ring"></div>
+  <span>Cargando shorts</span>
+</div>
+
+<div class="state-screen" id="emptyState" style="display:none">
+  <i class="fa-solid fa-film"></i>
+  <span>No hay shorts aún</span>
+</div>
+
+<button id="unmuteBtn"><i class="fa-solid fa-volume-xmark"></i> Activar sonido</button>
+
+<div class="scroll-hint" id="scrollHint" style="display:none">
+  <i class="fa-solid fa-chevron-up"></i>
+  Desliza
+</div>
+
+<div class="ms-reel-dots" id="reelDots"></div>
+<div class="ms-reels" id="reelsContainer" style="display:none"></div>
+
+<script>
+let observer: IntersectionObserver | null = null;
+let globalMuted = true;
+
+async function loadShorts() {
+  const loading   = document.getElementById('loadingState')!;
+  const empty     = document.getElementById('emptyState')!;
+  const container = document.getElementById('reelsContainer')!;
+
+  try {
+    const res  = await fetch('/shorts-api/');
+    const data = await res.json() as { name: string; type: string }[];
+    const videos = data
+      .filter(f => f.type === 'file' && /\.(mp4|webm|mov)$/i.test(f.name))
+      .map(f => f.name)
+      .sort().reverse();
+
+    loading.style.display = 'none';
+
+    if (!videos.length) { empty.style.display = 'flex'; return; }
+
+    renderShorts(videos);
+  } catch {
+    loading.style.display = 'none';
+    empty.style.display = 'flex';
+  }
+}
+
+function renderShorts(videos: string[]) {
+  const container = document.getElementById('reelsContainer')!;
+  const dots      = document.getElementById('reelDots')!;
+  const hint      = document.getElementById('scrollHint')!;
+
+  container.innerHTML = '';
+  dots.innerHTML = '';
+  if (observer) observer.disconnect();
+
+  videos.forEach((filename, i) => {
+    const videoUrl = `/shorts-files/${filename}`;
+    const title    = filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+
+    const el = document.createElement('div');
+    el.className = 'ms-reel';
+    el.dataset.idx = String(i);
+    el.innerHTML = `
+      <div class="ms-reel-media">
+        <div class="ms-reel-bg"></div>
+        <video class="ms-reel-video" src="${videoUrl}"
+          playsinline muted loop preload="none"
+          style="opacity:0;transition:opacity .3s">
+        </video>
+        <div class="ms-reel-placeholder" id="rpl-${i}">
+          <i class="fa-solid fa-play"></i>
+        </div>
+      </div>
+      <div class="ms-reel-overlay">
+        <div class="ms-reel-info">
+          <div class="ms-reel-title">${title}</div>
+          <div class="ms-reel-meta">${i + 1} / ${videos.length}</div>
+        </div>
+        <div class="ms-reel-actions">
+          <button class="ms-reel-btn" data-share="${videoUrl}" title="Compartir">
+            <div class="ms-reel-btn-icon"><i class="fa-solid fa-share-nodes"></i></div>
+            <span>Share</span>
+          </button>
+        </div>
+      </div>
+      <div class="ms-reel-progress" id="prog-${i}" style="width:0%"></div>`;
+
+    el.addEventListener('click', (e: Event) => {
+      if ((e.target as Element).closest('a,button')) return;
+      const vid = el.querySelector('video') as HTMLVideoElement;
+      if (vid.paused) playReel(el); else pauseReel(el);
+    });
+
+    el.querySelector('[data-share]')?.addEventListener('click', async (e: Event) => {
+      const url = location.origin + '/shorts/';
+      if (navigator.share) { try { await navigator.share({ url }); return; } catch {} }
+      try { await navigator.clipboard.writeText(url); } catch {}
+    });
+
+    container.appendChild(el);
+
+    const dot = document.createElement('div');
+    dot.className = 'ms-reel-dot' + (i === 0 ? ' active' : '');
+    dots.appendChild(dot);
+  });
+
+  container.style.display = '';
+  hint.style.display = videos.length > 1 ? 'flex' : 'none';
+
+  observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const idx = parseInt((e.target as HTMLElement).dataset.idx || '0');
+      if (e.isIntersecting) {
+        document.querySelectorAll('.ms-reel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+        playReel(e.target as HTMLElement);
+      } else {
+        pauseReel(e.target as HTMLElement);
+      }
+    });
+  }, { threshold: 0.6 });
+
+  container.querySelectorAll('.ms-reel').forEach(r => observer!.observe(r));
+}
+
+function playReel(el: Element) {
+  const vid = el.querySelector('video') as HTMLVideoElement;
+  const pl  = el.querySelector('.ms-reel-placeholder') as HTMLElement;
+  const idx = (el as HTMLElement).dataset.idx!;
+  if (!vid) return;
+  vid.muted = globalMuted;
+  vid.style.opacity = '1';
+  if (pl) pl.style.display = 'none';
+  vid.play().catch(() => {});
+  document.getElementById('unmuteBtn')!.style.display = globalMuted ? 'inline-flex' : 'none';
+
+  // Progress bar
+  vid.ontimeupdate = () => {
+    const prog = document.getElementById(`prog-${idx}`) as HTMLElement;
+    if (prog && vid.duration) prog.style.width = (vid.currentTime / vid.duration * 100) + '%';
+  };
+
+  // Poster from first frame
+  const bg = el.querySelector('.ms-reel-bg') as HTMLElement;
+  if (bg && !bg.style.backgroundImage) {
+    const canvas = document.createElement('canvas');
+    vid.addEventListener('loadeddata', () => {
+      canvas.width = vid.videoWidth; canvas.height = vid.videoHeight;
+      canvas.getContext('2d')?.drawImage(vid, 0, 0);
+      bg.style.backgroundImage = `url(${canvas.toDataURL()})`;
+    }, { once: true });
+  }
+}
+
+function pauseReel(el: Element) {
+  const vid = el.querySelector('video') as HTMLVideoElement;
+  const pl  = el.querySelector('.ms-reel-placeholder') as HTMLElement;
+  if (!vid) return;
+  vid.pause();
+  vid.style.opacity = '0';
+  if (pl) pl.style.display = '';
+}
+
+document.getElementById('unmuteBtn')!.addEventListener('click', () => {
+  globalMuted = false;
+  document.querySelectorAll('.ms-reel video').forEach(v => { (v as HTMLVideoElement).muted = false; });
+  document.getElementById('unmuteBtn')!.style.display = 'none';
+});
+
+loadShorts();
+</script>
+</Base>

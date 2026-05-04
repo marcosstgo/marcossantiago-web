@@ -10,7 +10,7 @@ const skills = [
   { cat: 'Desarrollo', items: ['HTML/CSS/JS', 'C# / WPF', '.NET', 'Astro', 'Linux / Raspberry Pi'] },
 ];
 ---
-<Base title="Sobre mí — Marcos Santiago" description="Artista Gráfico, Fotógrafo, Videógrafo y Desarrollador desde Aibonito, Puerto Rico.">
+<Base title="Sobre mí — Marcos Santiago" description="Diseñador web, artista gráfico, fotógrafo y creador de video desde Aibonito, Puerto Rico. Más de 20 años de experiencia en diseño, tecnología y producción visual.">
   <script is:inline>document.body.classList.add('dark-video-page')</script>
   <Nav />
   <main>
@@ -31,15 +31,31 @@ const skills = [
             <span class="name">MARCOS</span>
             <span class="last">SANTIAGO</span>
           </h1>
-          <p class="about-loc">Aibonito, Puerto Rico</p>
+          <p class="about-loc">Artista Gráfico &amp; Desarrollador Web · Puerto Rico</p>
           <div class="about-bio">
             <p>
-              Diseño marcas e identidades visuales, capturo momentos, produzco video
-              y construyo productos digitales. Todo desde Aibonito, Puerto Rico.
+              Obtuve un Bachillerato en Ciencias de Computadoras con concentración en
+              Programación Comercial y una Maestría en Ciencias de Computadoras con
+              concentración en Comercio Electrónico. En el 2001 comencé a trabajar en
+              el campo de la informática en la Universidad Interamericana de Puerto Rico,
+              donde desempeñé varios roles — técnico en computadoras, programador analista,
+              diseñador web y artista gráfico. Fue ahí donde encontré mi verdadera pasión
+              en el diseño gráfico y en el desarrollo web para pequeños y medianos negocios.
             </p>
             <p>
-              Detrás de todo está la misma motivación: crear cosas que importen
-              y que duren.
+              La fotografía y el video llegaron después, como afición los fines de semana.
+              Una Sony NEX 3 en 2012, aprendiendo a ver. Con el tiempo el equipo creció —
+              Canon 6D, Canon R, Canon R6 para fotografía, y tres Lumix S5IIx para
+              producción de video. Lo que empezó los fines de semana se convirtió en
+              mi trabajo principal.
+            </p>
+            <p>
+              Hoy trabajo con negocios en Puerto Rico ayudándoles a construir su identidad
+              visual completa — desde el logo hasta el website. Creo en el aprendizaje
+              constante, en ser autodidacta y en seguir evolucionando.
+            </p>
+            <p class="about-quote">
+              Juntos podemos hacer de tu negocio una ventana abierta al mundo.
             </p>
           </div>
           <div class="about-actions">
@@ -142,6 +158,13 @@ main { color: #f0ede8 }
 .about-bio p {
   color: rgba(240,237,232,.6); font-size: .95rem;
   line-height: 1.8; margin-bottom: 14px; max-width: 52ch;
+}
+.about-quote {
+  font-style: italic;
+  color: var(--accent) !important;
+  border-left: 2px solid var(--accent);
+  padding-left: 16px;
+  margin-top: 8px;
 }
 .about-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px }
 

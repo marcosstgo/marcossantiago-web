@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84.75 28.75">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: -.05em;
+      }
+
+      .cls-2 {
+        font-size: 9.14px;
+      }
+
+      .cls-2, .cls-3 {
+        font-family: ConthraxSb-Regular, Conthrax;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        fill: #27aae1;
+      }
+
+      .cls-5 {
+        letter-spacing: -.09em;
+      }
+
+      .cls-6 {
+        letter-spacing: -.07em;
+      }
+
+      .cls-7 {
+        letter-spacing: -.15em;
+      }
+
+      .cls-3 {
+        font-size: 19.66px;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer_1">
+    <g>
+      <text class="cls-2" transform="translate(3.17 26.26)"><tspan x="0" y="0">Natalia Pujols</tspan></text>
+      <text class="cls-3" transform="translate(0 16.71)"><tspan class="cls-7" x="0" y="0">P</tspan><tspan class="cls-5" x="14.39" y="0">A</tspan><tspan class="cls-1" x="31.81" y="0">U</tspan><tspan class="cls-6" x="50.05" y="0">S</tspan><tspan class="cls-1" x="65.58" y="0">A</tspan></text>
+      <path class="cls-4" d="M39.08,4.23h1.07c.21,0,.38.17.38.38v6.6c0,.21-.17.38-.38.38h-1.07c-.77,0-1.4-.63-1.4-1.4v-4.57c0-.77.63-1.4,1.4-1.4Z"/>
+      <path class="cls-4" d="M43.58,4.23h1.29c.15,0,.27.12.27.27v6.81c0,.15-.12.27-.27.27h-1.29c-.71,0-1.29-.58-1.29-1.29v-4.79c0-.71.58-1.29,1.29-1.29Z" transform="translate(87.43 15.81) rotate(180)"/>
+    </g>
+  </g>
+</svg>

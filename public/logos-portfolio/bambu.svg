@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 86.67 187.28">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #00a651;
+      }
+
+      .cls-2 {
+        font-family: Labora, Labora;
+        font-size: 86.43px;
+        letter-spacing: -.03em;
+      }
+
+      .cls-3 {
+        fill: #e6e7e8;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer_1">
+    <g>
+      <circle class="cls-3" cx="43.33" cy="105.39" r="43.33"/>
+      <g>
+        <text class="cls-2" transform="translate(24.06 138.41)"><tspan x="0" y="0">b</tspan></text>
+        <path class="cls-1" d="M43.03,91.44c-1.25.06-2.1.11-2.61.11h-.4q-.06,0-.11.06h-.06c1.47-7.37,5.27-11.91,11.34-13.55-1.42,3.63-3.12,6.47-5.1,8.51,2.21-.96,4.37-1.42,6.52-1.42,1.3,0,2.67.17,3.97.51-5.05,4.08-10.21,5.5-13.56,5.78Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

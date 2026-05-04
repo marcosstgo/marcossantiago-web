@@ -187,14 +187,13 @@ const featuredProjects = [
     <div class="container">
       <p class="clients-label">Logos que he diseñado</p>
       <div class="clients-grid">
-        <img src="/logos-home/bambu.svg"      alt="Bambu"      class="client-logo" />
-        <img src="/logos-home/bayuu.svg"     alt="Bayuu"      class="client-logo" />
-        <img src="/logos-home/brava.svg"     alt="Brava"      class="client-logo" />
-        <img src="/logos-home/buoyant.svg"   alt="Buoyant"    class="client-logo" />
-        <img src="/logos-home/corillo-logo.svg" alt="Corillo" class="client-logo" />
-        <img src="/logos-home/gameboxpr.svg" alt="GameBox PR" class="client-logo" />
-        <img src="/logos-home/jalda.svg"      alt="Jalda"      class="client-logo" />
-        <img src="/logos-home/logo_pomelo.svg" alt="Pomelo"   class="client-logo" />
+        <img src="/logos-home/brava.svg"        alt="Brava"    class="client-logo" />
+        <img src="/logos-home/buoyant.svg"      alt="Buoyant"  class="client-logo" />
+        <img src="/logos-home/corillo-logo.svg" alt="Corillo"  class="client-logo" />
+        <img src="/logos-home/jalda.svg"        alt="Jalda"    class="client-logo" />
+      </div>
+      <div class="clients-more">
+        <a href="/portafolio/logos/" class="btn ghost">Ver todos los logos →</a>
       </div>
     </div>
   </section>
@@ -471,22 +470,24 @@ const featuredProjects = [
   display: flex; align-items: center; justify-content: center;
   flex-wrap: wrap; gap: 40px 56px;
 }
+/* Dark mode: normaliza todo a blanco */
 .client-logo {
-  height: 55px; width: auto;
-  filter: brightness(0) invert(1); opacity: .6;
-  transition: opacity .2s;
+  height: 44px; width: auto;
+  filter: brightness(0) invert(1);
 }
-.client-logo:hover { opacity: 1; }
+:global([data-theme="light"]) .client-logo {
+  filter: brightness(0);
+}
+.clients-more {
+  margin-top: 36px; text-align: center;
+}
 @media (max-width: 600px) {
   .clients-grid {
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 36px 24px; place-items: center;
   }
-  .client-logo { height: 42px; }
+  .client-logo { height: 36px }
 }
-
-[data-theme="light"] .client-logo { filter: brightness(0); opacity: .55; }
-[data-theme="light"] .client-logo:hover { opacity: 1; }
 
 /* ── DISCIPLINES ── */
 .disciplines-grid {

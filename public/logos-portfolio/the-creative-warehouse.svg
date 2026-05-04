@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 62.98 100.17">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f07f22;
+        font-size: 35.86px;
+      }
+
+      .cls-2 {
+        font-family: SansSerifCollection, 'Sans Serif Collection';
+      }
+
+      .cls-3 {
+        font-family: MyriadPro-Bold, 'Myriad Pro';
+        font-weight: 700;
+      }
+
+      .cls-4 {
+        fill: #053c57;
+        font-family: HandelGotD-Bol, 'Handel Gothic D';
+        font-size: 92.41px;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer_1">
+    <g>
+      <text class="cls-4" transform="translate(0 77.07)"><tspan x="0" y="0">C</tspan></text>
+      <text class="cls-1" transform="translate(21.81 59.34)"><tspan class="cls-3" x="0" y="0">W</tspan><tspan class="cls-2" x="31.84" y="0"> </tspan></text>
+    </g>
+  </g>
+</svg>

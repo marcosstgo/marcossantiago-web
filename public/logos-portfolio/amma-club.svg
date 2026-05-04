@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 74.19 74.73">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        font-size: 5.1px;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #662d91;
+        font-family: IchijiOne, Ichiji;
+      }
+
+      .cls-3 {
+        font-size: 70.36px;
+        letter-spacing: -.14em;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer_1">
+    <g>
+      <circle class="cls-1" cx="37.09" cy="37.63" r="37.09"/>
+      <text class="cls-3" transform="translate(11.43 58.93)"><tspan x="0" y="0">a</tspan></text>
+      <text class="cls-2" transform="translate(29.73 58.71)"><tspan x="0" y="0">CLUB</tspan></text>
+    </g>
+  </g>
+</svg>

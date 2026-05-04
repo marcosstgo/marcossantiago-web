@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# binarios pesados que no deben ir a git
+*.zip
+public/short-videografy.mp4
+public/shorts/*.mp4
+public/logos-home/Fase1/
+public/logos-home/Fase1 V2/

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 65.79 69.95">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient-4);
+      }
+
+      .cls-4 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-5 {
+        clip-rule: evenodd;
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-6 {
+        fill: url(#linear-gradient-2);
+        fill-rule: evenodd;
+      }
+
+      .cls-7 {
+        font-family: Rubik-Light, Rubik;
+        font-size: 4.41px;
+        font-variation-settings: 'wght' 300;
+        font-weight: 300;
+      }
+
+      .cls-7, .cls-8 {
+        fill: #231f20;
+      }
+
+      .cls-9 {
+        fill: #303088;
+      }
+
+      .cls-10 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-11 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-8 {
+        font-family: Rubik-Bold, Rubik;
+        font-size: 14.92px;
+        font-variation-settings: 'wght' 700;
+        font-weight: 700;
+      }
+
+      .cls-12 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="56.22" y1="23.33" x2="9.56" y2="23.33" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3787c7"/>
+      <stop offset=".04" stop-color="#3b7fc2"/>
+      <stop offset=".17" stop-color="#486eb6"/>
+      <stop offset=".33" stop-color="#5161ad"/>
+      <stop offset=".53" stop-color="#565aa8"/>
+      <stop offset="1" stop-color="#5858a7"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="35.45" y1="31.37" x2="47.09" y2="31.37" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="35.45" y1="31.37" x2="47.09" y2="31.37" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath">
+      <path class="cls-5" d="M41.91,29.95v2.06h-3.62v1.56h-2.84v-4.4h3.62v-3.62h4.4v2.88h-1.56v1.52ZM41.91,33.57h-2.06v2.84h2.84v-2.84h0v-4.4h4.4v4.4h-.39s-2.45,0-2.45,0v-.78h2.06v-2.84h-2.84v7.24h-4.4v-4.4h2.84v.78Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient-4" x1="41.29" y1="35.81" x2="41.24" y2="27" xlink:href="#linear-gradient"/>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <path class="cls-9" d="M45.41,42.89c.27-.1.54-.21.8-.33-.26.12-.53.23-.8.33Z"/>
+      <path class="cls-11" d="M9.57,32.21c.23,8.1,7.1,14.45,15.21,14.45h16.61c.24,0,.48,0,.73-.02.09,0,.18,0,.27-.02.13,0,.25-.02.38-.03.13-.01.25-.02.37-.04.13-.02.25-.03.37-.05,7.19-1.04,12.72-7.25,12.72-14.72,0-.04,0-.49-.02-.66-.35-7.9-6.88-14.21-14.86-14.21h-11.8s-.02-.01-.02-.02v-1.78c0-6.46,5.09-11.9,11.55-12.05,5.71-.13,10.54,3.82,11.78,9.13.18.78.62,1.45,1.21,1.93s1.32.75,2.11.75l.04-.04C56.2,6.51,49.3-.23,40.92,0c-8.1.23-14.44,7.1-14.44,15.2v1.68s-.01.02-.02.02h-2.02c-8.34,0-15.1,6.9-14.87,15.3ZM29.53,31.55v-11.56s.01-.02.02-.02h11.52c6.4,0,11.85,4.98,12.08,11.37.09,2.51-.6,4.85-1.86,6.81-.1.16-.54.78-.66.93-.17.22-.81.93-.94,1.06-1,1.01-2.18,1.83-3.49,2.42-.26.12-.53.23-.8.33h0c-.18.07-.36.13-.54.19-1.11.35-2.29.53-3.51.53h0c-.09,0-.18,0-.27,0-6.46-.15-11.55-5.59-11.55-12.05ZM12.63,31.35c.23-6.41,5.71-11.38,12.12-11.38h1.71s.02.01.02.02v11.79c0,4.79,2.28,9.06,5.8,11.78.02.01,0,.04-.01.04h-7.83c-6.66,0-12.05-5.54-11.81-12.25Z"/>
+      <text class="cls-8" transform="translate(0 61.5)"><tspan x="0" y="0">LifeSync</tspan></text>
+      <g>
+        <path class="cls-6" d="M41.91,29.95v2.06h-3.62v1.56h-2.84v-4.4h3.62v-3.62h4.4v2.88h-1.56v1.52ZM41.91,33.57h-2.06v2.84h2.84v-2.84h0v-4.4h4.4v4.4h-.39s-2.45,0-2.45,0v-.78h2.06v-2.84h-2.84v7.24h-4.4v-4.4h2.84v.78Z"/>
+        <g class="cls-12">
+          <rect class="cls-3" x="35.45" y="25.54" width="11.64" height="11.64"/>
+        </g>
+      </g>
+      <text class="cls-7" transform="translate(4.16 68.79)"><tspan x="0" y="0">Safe Medication</tspan><tspan class="cls-10" x="31.88" y="0"> </tspan><tspan x="32.93" y="0">fo</tspan><tspan class="cls-4" x="36.97" y="0">r</tspan><tspan x="38.4" y="0"> </tspan><tspan class="cls-2" x="39.54" y="0">Ev</tspan><tspan class="cls-1" x="44.35" y="0">eryone</tspan></text>
+    </g>
+  </g>
+</svg>

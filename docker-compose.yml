@@ -9,8 +9,22 @@ services:
     ports:
       - "127.0.0.1:3010:80"
     volumes:
-      - ./public/logos-home:/usr/share/nginx/html/logos-home
-      - ./public/videos:/usr/share/nginx/html/videos
+      - /home/corillo-adm/marcossantiago-web/public/logos-home:/usr/share/nginx/html/logos-home
+      - /home/corillo-adm/marcossantiago-web/public/logos-portfolio:/usr/share/nginx/html/logos-portfolio
+      - /home/corillo-adm/marcossantiago-web/public/videos:/usr/share/nginx/html/videos
+      - /home/corillo-adm/marcossantiago-web/public/shorts:/usr/share/nginx/html/shorts-files
+
+  telegram-bot-api:
+    image: aiogram/telegram-bot-api:latest
+    container_name: telegram-bot-api
+    restart: unless-stopped
+    environment:
+      - TELEGRAM_API_ID=${TELEGRAM_API_ID}
+      - TELEGRAM_API_HASH=${TELEGRAM_API_HASH}
+      - TELEGRAM_LOCAL=1
+      - TELEGRAM_HTTP_PORT=8081
+    volumes:
+      - telegram-bot-api-data:/var/lib/telegram-bot-api
 
   marcossantiago-bot:
     build:
@@ -23,8 +37,14 @@ services:
       - "127.0.0.1:3005:3005"
     environment:
       - GROQ_API_KEY=${GROQ_API_KEY}
-      - MS_TELEGRAM_TOKEN=8678023585:AAGTHcOfN4a8FofaJIwdxXEyPSFEqjwoIE4
+      - MS_TELEGRAM_TOKEN=${MS_TELEGRAM_TOKEN}
       - MS_TELEGRAM_CHAT_ID=46377544
+      - TELEGRAM_API_URL=http://telegram-bot-api:8081
+    volumes:
+      - /home/corillo-adm/marcossantiago-web/public/shorts:/shorts
+      - telegram-bot-api-data:/var/lib/telegram-bot-api:ro
+    depends_on:
+      - telegram-bot-api
 
   marcossantiago-blog-bot:
     build:
@@ -41,3 +61,20 @@ services:
       - BLOG_ADMIN_ID=${BLOG_ADMIN_ID}
       - BLOG_GITHUB_TOKEN=${BLOG_GITHUB_TOKEN}
       - BLOG_GITHUB_REPO=marcosstgo/marcossantiago-web
+
+  corillo-reel:
+    build:
+      context: /home/corillo-adm/corillo-reel
+      dockerfile: Dockerfile
+    image: corillo-reel:latest
+    container_name: corillo-reel
+    restart: unless-stopped
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - LOCAL_API_URL=http://telegram-bot-api:8081/bot
+      - ALLOWED_USERS=46377544
+    depends_on:
+      - telegram-bot-api
+
+volumes:
+  telegram-bot-api-data:
