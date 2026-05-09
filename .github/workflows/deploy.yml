@@ -16,7 +16,17 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 2222
           script: |
+            set -e
             cd /home/corillo-adm/marcossantiago-web
             git pull origin main
-            sudo docker compose up -d --build
+            sudo docker compose up -d --build --force-recreate
             sudo docker image prune -f
+            sleep 3
+            for path in /logos-portfolio/abogo.png /logos-home/bambu.svg /portafolio/logos/; do
+              code=$(curl -s -o /dev/null -w "%{http_code}" -L "https://marcossantiago.com${path}")
+              if [ "$code" != "200" ]; then
+                echo "Healthcheck FAILED: ${path} returned ${code}"
+                exit 1
+              fi
+              echo "OK ${path} -> ${code}"
+            done
