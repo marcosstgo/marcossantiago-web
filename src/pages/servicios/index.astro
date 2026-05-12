@@ -278,7 +278,7 @@ const categories = [
         <p class="section-label">Fotógrafo · Videógrafo · Artista Gráfico · Puerto Rico</p>
         <h1 class="hero-title">Servicios<br><span class="hero-title-sub">en Puerto Rico</span></h1>
         <p class="hero-sub">
-          Cotiza gratis y te respondo en menos de 1 hora. Escoge qué te interesa y baja directo a esa sección.
+          Foto, video, diseño gráfico y PhotoBooth 360 para tus eventos y tu negocio. <strong>Cotización gratis · Respondo en menos de 1 hora.</strong>
         </p>
 
         <!-- Chooser: 5 cards clickables que hacen scroll a la categoría -->
@@ -320,6 +320,9 @@ const categories = [
           >
             <i class="fab fa-whatsapp"></i> WhatsApp
           </a>
+          <a href="#cotizar" class="hero-cta hero-cta-form">
+            <i class="fa-solid fa-paper-plane"></i> Cotización rápida
+          </a>
         </div>
         <div class="hero-meta">
           <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> Puerto Rico</span>
@@ -327,6 +330,82 @@ const categories = [
           <a href="tel:+17872439670" class="meta-pill meta-pill-call" data-track="call">
             <i class="fa-solid fa-phone"></i> (787) 243-9670
           </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Lead form ── -->
+    <section class="lead-section" id="cotizar">
+      <div class="container">
+        <div class="lead-grid">
+          <div class="lead-intro">
+            <p class="section-label">Cotización Rápida</p>
+            <h2 class="lead-title">Te respondo en <span class="accent">menos de 1 hora</span></h2>
+            <p class="lead-sub">Tres campos. Sin spam. Sin compromiso. Te contesto directo yo, no un asistente.</p>
+            <ul class="lead-trust">
+              <li><i class="fa-solid fa-check"></i> Cotización gratis</li>
+              <li><i class="fa-solid fa-check"></i> Disponible para toda Puerto Rico</li>
+              <li><i class="fa-solid fa-check"></i> Respuesta personal de Marcos</li>
+            </ul>
+          </div>
+          <form class="lead-form" id="leadForm" novalidate>
+            <div class="lead-row">
+              <input type="text" required class="lead-field" name="nombre" placeholder="Tu nombre *" autocomplete="name" />
+              <input type="tel" required class="lead-field" name="contacto" placeholder="Teléfono o WhatsApp *" autocomplete="tel" />
+            </div>
+            <select required class="lead-field" name="servicio">
+              <option value="">Servicio que te interesa *</option>
+              <option>Fotografía</option>
+              <option>Videografía</option>
+              <option>Diseño Gráfico</option>
+              <option>360 Booth</option>
+              <option>Desarrollo Web</option>
+              <option>Paquete combinado</option>
+            </select>
+            <input type="text" class="lead-field" name="fecha" placeholder="Fecha aproximada (opcional)" />
+            <textarea class="lead-field" name="mensaje" rows="2" placeholder="Cuéntame brevemente (opcional)"></textarea>
+            <button type="submit" class="lead-submit" data-track="form">
+              <i class="fa-solid fa-paper-plane"></i> Enviar cotización
+            </button>
+            <p class="lead-note">¿Prefieres directo? <a href="tel:+17872439670" data-track="call"><i class="fa-solid fa-phone"></i> Llamar</a> o <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto." target="_blank" rel="noopener" data-track="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>.</p>
+            <p class="lead-success" id="leadSuccess" hidden>
+              <i class="fa-solid fa-circle-check"></i> Mensaje recibido. Te respondo en menos de 1 hora.
+            </p>
+            <p class="lead-error" id="leadError" hidden>
+              <i class="fa-solid fa-triangle-exclamation"></i> No pude enviar el mensaje. Escríbeme por WhatsApp al (787) 243-9670.
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Quién soy ── -->
+    <section class="meet-section">
+      <div class="container">
+        <div class="meet-grid">
+          <div class="meet-photo">
+            <img src="/marcos-photo.webp" alt="Marcos Santiago — fotógrafo, videógrafo y artista gráfico en Puerto Rico" loading="lazy" />
+            <div class="meet-photo-bg" aria-hidden="true"></div>
+          </div>
+          <div class="meet-text">
+            <p class="section-label">Quién va a contestar tu mensaje</p>
+            <h2 class="meet-title">Soy Marcos. <span class="accent">Hablemos como personas.</span></h2>
+            <p class="meet-bio">
+              Desde 2001 en diseño gráfico y desarrollo web, desde 2012 en fotografía y video. Trabajo desde Aibonito, Puerto Rico — donde nací — pero cubro toda la isla. No soy un equipo: soy yo el que te contesta el teléfono, el que llega al evento, el que edita tus fotos.
+            </p>
+            <p class="meet-promise">
+              <strong>Juntos podemos hacer de tu negocio una ventana abierta al mundo.</strong>
+            </p>
+            <div class="meet-facts">
+              <div class="meet-fact"><span class="meet-fact-num">+24</span><span class="meet-fact-label">años en diseño</span></div>
+              <div class="meet-fact"><span class="meet-fact-num">+13</span><span class="meet-fact-label">años en foto y video</span></div>
+              <div class="meet-fact"><span class="meet-fact-num">PR</span><span class="meet-fact-label">toda la isla</span></div>
+            </div>
+            <div class="meet-actions">
+              <a href="/sobre-mi/" class="meet-link">Conoce mi historia completa <i class="fa-solid fa-arrow-right"></i></a>
+              <a href="/portafolio/" class="meet-link">Ver portafolio <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -464,12 +543,21 @@ const categories = [
           <p class="cta-big-sub">
             Escríbeme por WhatsApp o al correo — te respondo rápido con disponibilidad y cotización.
           </p>
-          <div class="cta-actions">
-            <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto." target="_blank" rel="noopener" class="btn whatsapp cta-wa-btn">
-              <i class="fab fa-whatsapp"></i> (787) 243-9670
+          <div class="cta-actions cta-actions-three">
+            <a href="tel:+17872439670" class="cta-final cta-final-call" data-track="call">
+              <i class="fa-solid fa-phone"></i>
+              <span>Llamar</span>
+              <span class="cta-final-sub">(787) 243-9670</span>
             </a>
-            <a href="/contacto/" class="btn">
-              Formulario de contacto <i class="fa-solid fa-arrow-right"></i>
+            <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto." target="_blank" rel="noopener" class="cta-final cta-final-wa" data-track="whatsapp">
+              <i class="fab fa-whatsapp"></i>
+              <span>WhatsApp</span>
+              <span class="cta-final-sub">Respuesta directa</span>
+            </a>
+            <a href="#cotizar" class="cta-final cta-final-form">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Cotización</span>
+              <span class="cta-final-sub">3 campos · &lt;1h</span>
             </a>
           </div>
         </div>
@@ -687,6 +775,236 @@ const categories = [
 .hero-cta-wa:hover {
   box-shadow: 0 12px 40px rgba(34,197,94,.55);
 }
+.hero-cta-form {
+  background: rgba(255,255,255,.08); color: #f0ede8;
+  border-color: rgba(255,255,255,.18);
+}
+.hero-cta-form:hover {
+  background: rgba(255,255,255,.14);
+  box-shadow: 0 10px 32px rgba(0,0,0,.4);
+}
+
+/* ── Lead form section ── */
+.lead-section {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+  scroll-margin-top: 72px;
+}
+.lead-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 48px;
+  align-items: start;
+}
+@media (max-width: 820px) { .lead-grid { grid-template-columns: 1fr; gap: 32px } }
+.lead-intro .section-label { color: var(--accent); margin-bottom: 16px }
+.lead-title {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  line-height: 1; letter-spacing: 1.5px;
+  color: var(--white); margin-bottom: 14px;
+}
+.lead-title .accent { color: var(--accent) }
+.lead-sub {
+  color: var(--muted); font-size: 1rem; line-height: 1.6;
+  margin-bottom: 22px; max-width: 38ch;
+}
+.lead-trust {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.lead-trust li {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: .8rem;
+  color: rgba(232,246,255,.78);
+  letter-spacing: .5px;
+}
+.lead-trust li i { color: #22c55e; font-size: .9rem }
+[data-theme="light"] .lead-trust li { color: rgba(26,26,31,.7) }
+
+.lead-form {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 28px; border-radius: 18px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 48px rgba(0,0,0,.25);
+}
+.lead-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+@media (max-width: 540px) { .lead-row { grid-template-columns: 1fr } }
+.lead-field {
+  width: 100%;
+  font: inherit; font-family: var(--body);
+  padding: 14px 16px;
+  background: color-mix(in srgb, var(--white) 4%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--white);
+  transition: border-color .2s, background .2s;
+  resize: vertical;
+}
+.lead-field::placeholder { color: var(--muted) }
+.lead-field:focus {
+  outline: none; border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+.lead-field:invalid:not(:placeholder-shown) { border-color: #ef4444 }
+select.lead-field { appearance: none; -webkit-appearance: none; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%233a6070' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+.lead-submit {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 15px 24px; border-radius: 10px; border: 0;
+  background: var(--accent); color: #060608;
+  font-family: var(--mono); font-size: .9rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  cursor: pointer; transition: transform .15s, box-shadow .2s;
+  margin-top: 4px;
+}
+.lead-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 32px color-mix(in srgb, var(--accent) 40%, transparent) }
+.lead-submit:disabled { opacity: .6; cursor: wait }
+.lead-note {
+  font-size: .85rem; color: var(--muted); margin: 4px 0 0;
+}
+.lead-note a {
+  color: var(--accent); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.lead-note a:hover { text-decoration: underline }
+.lead-success, .lead-error {
+  margin: 6px 0 0; padding: 12px 14px; border-radius: 10px;
+  font-size: .9rem; display: inline-flex; align-items: center; gap: 8px;
+}
+.lead-success { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.3) }
+.lead-error { background: rgba(239,68,68,.12); color: #f87171; border: 1px solid rgba(239,68,68,.3) }
+[data-theme="light"] .lead-field { color: #1a1a1f; background: rgba(0,0,0,.04) }
+[data-theme="light"] .lead-form { background: #faf9f7; border-color: rgba(0,0,0,.08) }
+
+/* ── Meet section ── */
+.meet-section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--border);
+}
+.meet-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+@media (max-width: 820px) { .meet-grid { grid-template-columns: 1fr; gap: 32px } }
+.meet-photo {
+  position: relative;
+  aspect-ratio: 4/5;
+  max-width: 360px;
+  margin: 0 auto;
+}
+.meet-photo img {
+  position: relative; z-index: 1;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 22px;
+  filter: contrast(1.04) saturate(1.05);
+}
+.meet-photo-bg {
+  position: absolute; inset: -14px -14px auto auto;
+  width: 70%; height: 70%; z-index: 0;
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+  border-radius: 22px;
+  filter: blur(40px);
+}
+.meet-title {
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  line-height: 1; letter-spacing: 1.5px;
+  color: var(--white); margin: 14px 0 22px;
+}
+.meet-title .accent { color: var(--accent); display: block }
+.meet-bio, .meet-promise {
+  color: var(--muted); font-size: 1.02rem; line-height: 1.75;
+  margin-bottom: 18px; max-width: 56ch;
+}
+.meet-promise { color: var(--white); font-size: 1.08rem }
+.meet-promise strong { color: var(--accent); font-weight: 600 }
+[data-theme="light"] .meet-bio { color: rgba(26,26,31,.7) }
+[data-theme="light"] .meet-promise { color: #1a1a1f }
+
+.meet-facts {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 14px; margin: 28px 0;
+  max-width: 480px;
+}
+.meet-fact {
+  display: flex; flex-direction: column;
+  padding: 16px 14px; border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border: 1px solid var(--border);
+}
+.meet-fact-num {
+  font-family: var(--display); font-size: 2.2rem;
+  color: var(--accent); line-height: 1; letter-spacing: 1px;
+}
+.meet-fact-label {
+  font-family: var(--mono); font-size: .65rem;
+  color: var(--muted); letter-spacing: 1.2px;
+  text-transform: uppercase; margin-top: 4px;
+}
+.meet-actions {
+  display: flex; flex-wrap: wrap; gap: 18px;
+}
+.meet-link {
+  font-family: var(--mono); font-size: .82rem;
+  color: var(--accent); letter-spacing: 1.5px;
+  text-transform: uppercase; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: gap .2s;
+}
+.meet-link:hover { gap: 12px }
+
+/* ── Final CTA con 3 opciones ── */
+.cta-actions-three {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px; max-width: 720px; margin: 0 auto;
+}
+@media (max-width: 700px) { .cta-actions-three { grid-template-columns: 1fr } }
+.cta-final {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 22px 18px;
+  border-radius: 16px;
+  font-family: var(--mono); font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  text-decoration: none; min-height: 110px;
+  transition: transform .15s, box-shadow .2s;
+}
+.cta-final i { font-size: 1.3rem; margin-bottom: 2px }
+.cta-final span:nth-of-type(1) { font-size: .92rem }
+.cta-final .cta-final-sub {
+  font-size: .68rem; letter-spacing: 1px; opacity: .82;
+  font-weight: 400; text-transform: none;
+}
+.cta-final:hover { transform: translateY(-3px) }
+.cta-final-call {
+  background: var(--accent); color: #060608;
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.cta-final-call:hover { box-shadow: 0 14px 40px color-mix(in srgb, var(--accent) 50%, transparent) }
+.cta-final-wa {
+  background: #22c55e; color: #fff;
+  box-shadow: 0 8px 28px rgba(34,197,94,.3);
+}
+.cta-final-wa:hover { box-shadow: 0 14px 40px rgba(34,197,94,.5) }
+.cta-final-form {
+  background: color-mix(in srgb, var(--white) 6%, transparent);
+  color: var(--white);
+  border: 1px solid var(--border);
+}
+.cta-final-form:hover { background: color-mix(in srgb, var(--white) 10%, transparent) }
+[data-theme="light"] .cta-final-form { color: #1a1a1f }
 @media (max-width: 480px) {
   .hero-cta { flex: 1; justify-content: center; padding: 14px 20px }
 }
@@ -1089,6 +1407,54 @@ const categories = [
   document.querySelectorAll('.chooser-card').forEach(card => {
     card.addEventListener('click', () => scrollToCategory(card.dataset.target));
   });
+
+  /* ── Lead form: envío al endpoint /ms-chat/lead ── */
+  const leadForm = document.getElementById('leadForm');
+  if (leadForm) {
+    const successEl = document.getElementById('leadSuccess');
+    const errorEl   = document.getElementById('leadError');
+    const submitBtn = leadForm.querySelector('.lead-submit');
+
+    leadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      successEl.hidden = true; errorEl.hidden = true;
+      const fd = new FormData(leadForm);
+      const payload = {
+        nombre:   (fd.get('nombre')   || '').toString().trim(),
+        contacto: (fd.get('contacto') || '').toString().trim(),
+        servicio: (fd.get('servicio') || '').toString(),
+        fecha:    (fd.get('fecha')    || 'Por coordinar').toString().trim() || 'Por coordinar',
+        mensaje:  (fd.get('mensaje')  || '').toString().trim(),
+      };
+      if (!payload.nombre || !payload.contacto || !payload.servicio) {
+        errorEl.textContent = 'Faltan campos obligatorios.';
+        errorEl.hidden = false;
+        return;
+      }
+      submitBtn.disabled = true;
+      try {
+        const res = await fetch('/ms-chat/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('bad-response');
+        leadForm.reset();
+        successEl.hidden = false;
+        if (typeof gtag === 'function') {
+          gtag('event', 'form_submit', {
+            event_category: 'engagement',
+            event_label: payload.servicio || 'unknown',
+            transport_type: 'beacon',
+          });
+        }
+      } catch {
+        errorEl.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  }
 
   // Active tab on scroll
   const io = new IntersectionObserver(entries => {
