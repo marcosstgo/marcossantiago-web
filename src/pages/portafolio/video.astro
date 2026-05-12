@@ -62,20 +62,41 @@ const services = [
         ></video>
       </div>
 
-      <div class="vimeo-cta">
-        <div class="cta-icon">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
-          </svg>
-        </div>
-        <div>
+      <div class="portfolio-ctas">
+        <div class="portfolio-cta">
+          <div class="cta-icon">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+            </svg>
+          </div>
+          <p class="cta-tag">Producción profesional</p>
           <h2 class="cta-title">Ver en Vimeo</h2>
           <p class="cta-sub">
-            El portafolio completo de video está en <strong>vimeo.com/marcosstgo</strong> —
-            bodas, eventos, documentales y producción de marca.
+            Portafolio completo de bodas, eventos, documentales y producción de marca en <strong>vimeo.com/marcosstgo</strong>.
           </p>
-          <a href="https://vimeo.com/marcosstgo" target="_blank" rel="noopener" class="btn primary" style="margin-top:24px">
+          <a href="https://vimeo.com/marcosstgo" target="_blank" rel="noopener" class="btn primary">
             Abrir Vimeo →
+          </a>
+        </div>
+
+        <div class="portfolio-cta">
+          <div class="cta-icon">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
+              <line x1="12" y1="3" x2="12" y2="5"/>
+              <line x1="12" y1="19" x2="12" y2="21"/>
+              <line x1="3" y1="12" x2="5" y2="12"/>
+              <line x1="19" y1="12" x2="21" y2="12"/>
+            </svg>
+          </div>
+          <p class="cta-tag">Streams y contenido en vivo</p>
+          <h2 class="cta-title">Archivo CORILLO</h2>
+          <p class="cta-sub">
+            Transmisiones pasadas y videos del canal <strong>marcos</strong> en CORILLO — plataforma de streaming independiente desde Puerto Rico.
+          </p>
+          <a href="https://corillo.live/vods/?ch=marcos" target="_blank" rel="noopener" class="btn primary">
+            Ver transmisiones →
           </a>
         </div>
       </div>
@@ -129,22 +150,41 @@ const services = [
 </Base>
 
 <style>
-.vimeo-cta {
+.portfolio-ctas {
   margin-top: 56px;
-  display: flex; gap: 40px; align-items: flex-start;
-  padding: 48px; background: var(--surface);
-  border: 1px solid var(--border); border-radius: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
-@media (max-width: 600px) { .vimeo-cta { flex-direction: column; gap: 24px } }
+@media (max-width: 720px) { .portfolio-ctas { grid-template-columns: 1fr } }
+.portfolio-cta {
+  display: flex; flex-direction: column;
+  padding: 36px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 20px;
+  transition: border-color .2s, transform .2s;
+}
+.portfolio-cta:hover {
+  border-color: color-mix(in srgb, var(--page-c) 45%, transparent);
+  transform: translateY(-3px);
+}
 :root { --page-c: var(--page-c) }
-.cta-icon { color: var(--page-c); flex-shrink: 0; margin-top: 4px }
+.cta-icon { color: var(--page-c); margin-bottom: 22px }
+.cta-tag {
+  font-family: var(--mono); font-size: .62rem;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--page-c); margin-bottom: 10px;
+}
 .cta-title {
   font-family: var(--display);
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
   letter-spacing: 2px; margin-bottom: 12px;
 }
-.cta-sub { color: var(--muted); font-size: .9rem; line-height: 1.7 }
+.cta-sub {
+  color: var(--muted); font-size: .9rem; line-height: 1.7;
+  margin-bottom: 22px;
+}
 .cta-sub strong { color: var(--white) }
+.portfolio-cta .btn { align-self: flex-start; margin-top: auto }
 
 .services-grid {
   display: grid; grid-template-columns: repeat(2, 1fr);
