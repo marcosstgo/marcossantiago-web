@@ -1074,7 +1074,12 @@ body.page-servicios .nav-links { gap: 0 }
   object-fit: cover; display: block;
 }
 @media (max-width: 820px) {
-  .proof-video { max-width: 100%; margin: 0 auto }
+  .proof-video { max-width: 480px; margin: 0 auto }
+}
+@media (max-width: 540px) {
+  .proof-video { max-width: 360px; border-radius: 12px }
+  .proof-section { padding: 48px 0 }
+  .proof-overlay-link { padding: 8px 12px; font-size: .62rem }
 }
 .proof-overlay-link {
   position: absolute; bottom: 14px; right: 14px;
