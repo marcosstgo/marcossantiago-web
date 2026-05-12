@@ -1323,6 +1323,28 @@ body.page-servicios .nav-links { gap: 0 }
   color: var(--cat-c);
   font-size: 1.3rem;
   margin-top: 4px;
+  position: relative;
+}
+.cat-icon-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 1px dashed color-mix(in srgb, var(--cat-c) 55%, transparent);
+  animation: cat-ring-spin 12s linear infinite;
+  pointer-events: none;
+}
+.cat-icon-wrap i {
+  display: inline-block;
+  animation: cat-icon-pulse 2.6s ease-in-out infinite;
+}
+@keyframes cat-ring-spin { to { transform: rotate(360deg) } }
+@keyframes cat-icon-pulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 transparent) }
+  50%      { transform: scale(1.1); filter: drop-shadow(0 0 8px color-mix(in srgb, var(--cat-c) 50%, transparent)) }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cat-icon-wrap::before, .cat-icon-wrap i { animation: none }
 }
 .cat-label {
   font-family: var(--mono); font-size: .62rem;
