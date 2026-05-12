@@ -92,8 +92,9 @@ const services = [
           </div>
           <p class="cta-tag">Streams y contenido en vivo</p>
           <h2 class="cta-title">Archivo CORILLO</h2>
+          <span class="cta-badge"><i class="fa-solid fa-star"></i> Plataforma propia · Fundador</span>
           <p class="cta-sub">
-            Transmisiones pasadas y videos del canal <strong>marcos</strong> en CORILLO — plataforma de streaming independiente desde Puerto Rico.
+            Transmisiones del canal <strong>marcos</strong> en <strong>CORILLO</strong> — la plataforma de streaming independiente desde Puerto Rico que yo mismo diseñé y construí.
           </p>
           <a href="https://corillo.live/vods/?ch=marcos" target="_blank" rel="noopener" class="btn primary">
             Ver transmisiones →
@@ -185,6 +186,18 @@ const services = [
 }
 .cta-sub strong { color: var(--white) }
 .portfolio-cta .btn { align-self: flex-start; margin-top: auto }
+.cta-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  align-self: flex-start;
+  padding: 6px 12px; border-radius: 100px;
+  background: color-mix(in srgb, var(--page-c) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--page-c) 35%, transparent);
+  color: var(--page-c);
+  font-family: var(--mono); font-size: .65rem;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.cta-badge i { font-size: .65rem }
 
 .services-grid {
   display: grid; grid-template-columns: repeat(2, 1fr);
