@@ -280,11 +280,24 @@ const categories = [
         <p class="hero-sub">
           Fotografía de bodas y eventos, videografía, diseño gráfico, 360 Video Booth y desarrollo web — todo bajo un mismo techo en Puerto Rico. Cotiza tu proyecto gratis por WhatsApp.
         </p>
+        <div class="hero-actions">
+          <a href="tel:+17872439670" class="hero-cta hero-cta-call" data-track="call">
+            <i class="fa-solid fa-phone"></i> Llamar ahora
+          </a>
+          <a
+            href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20conocer%20tus%20servicios."
+            target="_blank" rel="noopener"
+            class="hero-cta hero-cta-wa"
+            data-track="whatsapp"
+          >
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+        </div>
         <div class="hero-meta">
           <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> Puerto Rico</span>
-          <span class="meta-pill"><i class="fa-solid fa-circle-check"></i> Disponible para reservas</span>
-          <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20conocer%20tus%20servicios." target="_blank" rel="noopener" class="meta-pill meta-pill-wa">
-            <i class="fab fa-whatsapp"></i> (787) 243-9670
+          <span class="meta-pill"><i class="fa-regular fa-clock"></i> Respondo en menos de 1 hora</span>
+          <a href="tel:+17872439670" class="meta-pill meta-pill-call" data-track="call">
+            <i class="fa-solid fa-phone"></i> (787) 243-9670
           </a>
         </div>
       </div>
@@ -435,6 +448,21 @@ const categories = [
       </div>
     </section>
 
+    <!-- ── Sticky mobile CTA bar (aparece al scrollear pasado el hero) ── -->
+    <div class="sticky-cta-bar" id="stickyCta" aria-label="Acciones rápidas">
+      <a href="tel:+17872439670" class="sticky-cta sticky-cta-call" data-track="call">
+        <i class="fa-solid fa-phone"></i><span>Llamar</span>
+      </a>
+      <a
+        href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20conocer%20tus%20servicios."
+        target="_blank" rel="noopener"
+        class="sticky-cta sticky-cta-wa"
+        data-track="whatsapp"
+      >
+        <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
+      </a>
+    </div>
+
   </main>
   <Footer />
 </Base>
@@ -503,6 +531,80 @@ const categories = [
 .meta-pill-wa:hover {
   background: color-mix(in srgb, #22c55e 16%, transparent);
   box-shadow: 0 0 20px color-mix(in srgb, #22c55e 14%, transparent);
+}
+.meta-pill-call {
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  transition: .2s;
+  text-decoration: none;
+}
+.meta-pill-call:hover {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+/* ── Hero CTAs (Llamar / WhatsApp) ── */
+.hero-actions {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  margin: 28px 0 22px;
+}
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 28px; border-radius: 100px;
+  font-family: var(--mono); font-size: .82rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  text-decoration: none; min-height: 52px;
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+.hero-cta i { font-size: 1rem }
+.hero-cta:hover { transform: translateY(-2px) }
+.hero-cta-call {
+  background: var(--accent); color: #060608;
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.hero-cta-call:hover {
+  box-shadow: 0 12px 40px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.hero-cta-wa {
+  background: #22c55e; color: #fff;
+  box-shadow: 0 8px 32px rgba(34,197,94,.35);
+}
+.hero-cta-wa:hover {
+  box-shadow: 0 12px 40px rgba(34,197,94,.55);
+}
+@media (max-width: 480px) {
+  .hero-cta { flex: 1; justify-content: center; padding: 14px 20px }
+}
+
+/* ── Sticky mobile CTA bar ── */
+.sticky-cta-bar {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  display: none; gap: 10px;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, #060608 92%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border);
+  z-index: 90;
+  transform: translateY(110%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+.sticky-cta-bar.visible { transform: translateY(0) }
+.sticky-cta {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center;
+  gap: 9px; padding: 14px 8px; border-radius: 12px;
+  font-family: var(--mono); font-size: .8rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  text-decoration: none; min-height: 50px;
+}
+.sticky-cta i { font-size: 1.05rem }
+.sticky-cta-call { background: var(--accent); color: #060608 }
+.sticky-cta-wa { background: #22c55e; color: #fff }
+@media (max-width: 768px) {
+  .sticky-cta-bar { display: flex }
+  /* Empuja el chat widget para que no se solape con la barra */
+  #ms-chat-widget { bottom: 78px !important }
 }
 
 .hero-title-sub {
@@ -897,6 +999,33 @@ const categories = [
   }, { threshold: 0 });
   const heroSection = document.querySelector('.hero-section');
   if (heroSection) scrollObs.observe(heroSection);
+
+  /* ── Sticky mobile CTA: visible al salir del hero ── */
+  const stickyCta = document.getElementById('stickyCta');
+  if (stickyCta && heroSection) {
+    const stickyObs = new IntersectionObserver(([e]) => {
+      stickyCta.classList.toggle('visible', !e.isIntersecting);
+    }, { threshold: 0 });
+    stickyObs.observe(heroSection);
+  }
+
+  /* ── GA4 tracking de clicks en CTAs (Llamar / WhatsApp) ── */
+  function trackClick(type) {
+    if (typeof gtag !== 'function') return;
+    const eventName = type === 'call' ? 'call_click' : 'whatsapp_click';
+    gtag('event', eventName, {
+      event_category: 'engagement',
+      event_label: location.pathname,
+      transport_type: 'beacon',
+    });
+  }
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('[data-track]');
+    if (a) { trackClick(a.dataset.track); return; }
+    // fallback para links tel: que no tengan data-track
+    const tel = e.target.closest('a[href^="tel:"]');
+    if (tel) trackClick('call');
+  });
 
   /* ── Card reveal ── */
   const cardObs = new IntersectionObserver(entries => {
