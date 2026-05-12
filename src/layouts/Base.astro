@@ -300,57 +300,61 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       if (isOpen) input.focus();
     });
 
+    // Wizard conversacional (mismo patrón que /contacto/): cuando el bot
+    // devuelve [SHOW_FORM] pedimos 3 datos uno a uno por mensaje y enviamos
+    // el lead al final. Nunca se inyecta un form estático en la burbuja.
+    let wizard = null; // null | { step, data: { servicio, nombre, fecha, contacto } }
+    const WIZARD_STEPS = [
+      { key: 'nombre',   q: '¿Cuál es tu nombre?' },
+      { key: 'fecha',    q: '¿Fecha del evento? (escribe "skip" si no aplica)' },
+      { key: 'contacto', q: '¿Teléfono o email para contactarte?' },
+    ];
+
     function addMsg(role, text) {
-      const clean = text.replace('[SHOW_FORM]', '').trim();
-      const showForm = text.includes('[SHOW_FORM]');
+      const clean = (text || '').replace('[SHOW_FORM]', '').trim();
       const div = document.createElement('div');
       div.className = 'ms-msg ms-msg-' + (role === 'user' ? 'user' : 'bot');
       const p = document.createElement('p');
       p.textContent = clean;
       div.appendChild(p);
       msgs.appendChild(div);
-      if (showForm) msgs.appendChild(buildLeadForm());
       msgs.scrollTop = msgs.scrollHeight;
       return div;
     }
 
-    function buildLeadForm() {
-      const wrap = document.createElement('div');
-      wrap.className = 'ms-lead-form';
-      wrap.innerHTML = `
-        <input type="text"   class="ms-field" id="ms-f-nombre"   placeholder="Tu nombre *" />
-        <select              class="ms-field" id="ms-f-servicio">
-          <option value="">Servicio *</option>
-          <option>Fotografía</option>
-          <option>Videografía</option>
-          <option>Diseño Gráfico</option>
-          <option>Desarrollo Web</option>
-        </select>
-        <input type="text"   class="ms-field" id="ms-f-fecha"    placeholder="Fecha del evento (ej: 15 de junio)" />
-        <input type="text"   class="ms-field" id="ms-f-contacto" placeholder="Teléfono o email *" />
-        <textarea            class="ms-field" id="ms-f-mensaje"  placeholder="Mensaje adicional (opcional)" rows="2"></textarea>
-        <button class="ms-form-submit"><i class="fab fa-whatsapp"></i> Enviar a Marcos</button>
-      `;
-      wrap.querySelector('.ms-form-submit').addEventListener('click', async () => {
-        const nombre   = wrap.querySelector('#ms-f-nombre').value.trim();
-        const servicio = wrap.querySelector('#ms-f-servicio').value;
-        const fecha    = wrap.querySelector('#ms-f-fecha').value.trim() || 'Por coordinar';
-        const contacto = wrap.querySelector('#ms-f-contacto').value.trim();
-        const mensaje  = wrap.querySelector('#ms-f-mensaje').value.trim();
-        if (!nombre || !servicio || !contacto) {
-          wrap.querySelector('#ms-f-nombre').style.borderColor = nombre   ? '' : 'var(--accent)';
-          wrap.querySelector('#ms-f-servicio').style.borderColor = servicio ? '' : 'var(--accent)';
-          wrap.querySelector('#ms-f-contacto').style.borderColor = contacto ? '' : 'var(--accent)';
-          return;
-        }
+    function startWizard(service) {
+      wizard = { step: 0, data: { servicio: service || 'Por definir' } };
+      setTimeout(() => addMsg('bot', WIZARD_STEPS[0].q), 380);
+    }
+
+    async function handleWizardInput(text) {
+      const step  = WIZARD_STEPS[wizard.step];
+      const value = (text || '').trim();
+      const skip  = value === '' || value.toLowerCase() === 'skip';
+      wizard.data[step.key] = skip ? (step.key === 'fecha' ? 'Por coordinar' : '') : value;
+      wizard.step++;
+
+      if (wizard.step < WIZARD_STEPS.length) {
+        setTimeout(() => addMsg('bot', WIZARD_STEPS[wizard.step].q), 320);
+        return;
+      }
+
+      // Todos los campos recolectados — enviar lead
+      const { nombre, servicio, fecha, contacto } = wizard.data;
+      wizard = null;
+      try {
         await fetch('/ms-chat/lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nombre, servicio, fecha, contacto, mensaje }),
+          body: JSON.stringify({ nombre, servicio, fecha: fecha || 'Por coordinar', contacto, mensaje: '' }),
         });
-        wrap.innerHTML = `<p class="ms-form-thanks">Mensaje enviado a Marcos Santiago. Te contactará pronto.</p>`;
-      });
-      return wrap;
+        addMsg('bot', `¡Listo, ${nombre}! Marcos te contactará pronto al ${contacto}.`);
+        if (typeof gtag === 'function') {
+          gtag('event', 'form_submit', { event_category: 'engagement', event_label: 'chat-wizard' });
+        }
+      } catch {
+        addMsg('bot', 'No pude enviar el mensaje. Escríbeme directo por WhatsApp al (787) 243-9670.');
+      }
     }
 
     async function sendMsg() {
@@ -360,21 +364,37 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       send.disabled = true;
 
       addMsg('user', text);
-      history.push({ role: 'user', content: text });
 
+      // Si hay wizard activo, las respuestas siguientes alimentan los pasos
+      if (wizard) {
+        await handleWizardInput(text);
+        send.disabled = false;
+        input.focus();
+        return;
+      }
+
+      history.push({ role: 'user', content: text });
       const typing = addMsg('bot', '...');
       typing.classList.add('ms-msg-typing');
 
       try {
-        const res = await fetch('/ms-chat/chat', {
+        const res  = await fetch('/ms-chat/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ messages: history }),
         });
         const data = await res.json();
         typing.remove();
-        addMsg('bot', data.reply);
-        history.push({ role: 'assistant', content: data.reply });
+        const reply = data.reply || '';
+        const triggerWizard = reply.includes('[SHOW_FORM]');
+        addMsg('bot', reply);
+        history.push({ role: 'assistant', content: reply });
+
+        if (triggerWizard) {
+          // El "servicio" se infiere de lo último que escribió el usuario
+          const lastUser = history.filter(m => m.role === 'user').slice(-1)[0]?.content || 'Por definir';
+          startWizard(lastUser);
+        }
       } catch {
         typing.remove();
         addMsg('bot', 'Hubo un error. Por favor contáctame directamente por WhatsApp: (787) 243-9670');
