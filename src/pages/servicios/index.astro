@@ -16,35 +16,35 @@ const categories = [
         name: 'Fotografía de Boda',
         desc: 'Cobertura completa del día — desde la preparación hasta la recepción. Estilo documental + retratos artísticos.',
         includes: ['Cobertura completa', 'Galería digital privada', 'Selección editada', 'Derechos de impresión'],
-        price: 'Desde $1,500',
+        price: 'Desde $750',
         wa: 'Hola, me interesa cotizar fotografía para mi boda.',
       },
       {
         name: 'Quinceañeros',
         desc: 'Sesiones íntimas y cobertura completa del evento. Documentamos cada emoción del día más especial.',
         includes: ['Sesión de retratos', 'Cobertura del evento', 'Galería digital', 'Entrega 4–6 semanas'],
-        price: 'Desde $800',
+        price: 'Desde $550',
         wa: 'Hola, me interesa cotizar fotografía para un quinceañero.',
       },
       {
         name: 'Eventos Sociales',
         desc: 'Cumpleaños, graduaciones, fiestas privadas y todo tipo de celebración. Cobertura dinámica y discreta.',
         includes: ['Cobertura del evento', 'Galería digital', 'Entrega rápida', 'Edición profesional'],
-        price: 'Desde $300',
+        price: 'Desde $450',
         wa: 'Hola, me interesa cotizar fotografía para un evento social.',
       },
       {
         name: 'Corporativo & Marca',
         desc: 'Headshots, eventos corporativos, productos y contenido para redes sociales que eleva tu marca.',
         includes: ['Retratos profesionales', 'Fotografía de producto', 'Licencia comercial', 'Entrega express'],
-        price: 'Desde $300',
+        price: 'Por cotización',
         wa: 'Hola, me interesa cotizar fotografía corporativa.',
       },
       {
         name: 'Retratos',
         desc: 'Sesiones personales, familiares, artísticas. Locaciones en Aibonito y alrededores o tu locación preferida.',
         includes: ['Sesión 1–2 horas', 'Selección editada', 'Galería digital', 'Guía de outfit'],
-        price: 'Desde $150',
+        price: 'Desde $175',
         wa: 'Hola, me interesa cotizar una sesión de retratos.',
       },
     ],
@@ -278,8 +278,36 @@ const categories = [
         <p class="section-label">Fotógrafo · Videógrafo · Artista Gráfico · Puerto Rico</p>
         <h1 class="hero-title">Servicios<br><span class="hero-title-sub">en Puerto Rico</span></h1>
         <p class="hero-sub">
-          Fotografía de bodas y eventos, videografía, diseño gráfico, 360 Video Booth y desarrollo web — todo bajo un mismo techo en Puerto Rico. Cotiza tu proyecto gratis por WhatsApp.
+          Cotiza gratis y te respondo en menos de 1 hora. Escoge qué te interesa y baja directo a esa sección.
         </p>
+
+        <!-- Chooser: 5 cards clickables que hacen scroll a la categoría -->
+        <div class="hero-chooser" role="tablist" aria-label="Elige un servicio">
+          {categories.map(cat => {
+            // Captura el primer $X o $X,XXX en cada price string; ignora "(2 hrs)" etc.
+            const minPrice = cat.services
+              .map(s => {
+                const m = (s.price || '').match(/\$([\d,]+)/);
+                return m ? parseFloat(m[1].replace(/,/g, '')) : NaN;
+              })
+              .filter(n => !isNaN(n) && n > 0);
+            const startsAt = minPrice.length ? `Desde $${Math.min(...minPrice).toLocaleString('en-US')}` : 'Por cotización';
+            return (
+              <button
+                class="chooser-card"
+                data-target={cat.id}
+                style={`--cat-c: ${cat.color}`}
+                role="tab"
+                aria-controls={cat.id}
+              >
+                <span class="chooser-icon"><i class={`fa-solid ${cat.icon}`}></i></span>
+                <span class="chooser-label">{cat.label}</span>
+                <span class="chooser-price">{startsAt}</span>
+              </button>
+            );
+          })}
+        </div>
+
         <div class="hero-actions">
           <a href="tel:+17872439670" class="hero-cta hero-cta-call" data-track="call">
             <i class="fa-solid fa-phone"></i> Llamar ahora
@@ -542,6 +570,92 @@ const categories = [
 .meta-pill-call:hover {
   background: color-mix(in srgb, var(--accent) 16%, transparent);
   box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+/* ── Chooser: ¿Qué te interesa? ── */
+.hero-chooser {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin: 32px 0 24px;
+}
+.chooser-card {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center;
+  gap: 8px; padding: 22px 14px;
+  background: color-mix(in srgb, #060608 70%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: #f0ede8;
+  font-family: var(--mono);
+  cursor: pointer;
+  transition: transform .18s ease, border-color .2s, background .2s, box-shadow .2s;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.chooser-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, color-mix(in srgb, var(--cat-c) 18%, transparent), transparent 70%);
+  opacity: 0; transition: opacity .25s;
+  pointer-events: none;
+}
+.chooser-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--cat-c) 55%, transparent);
+  background: color-mix(in srgb, #060608 60%, transparent);
+  box-shadow: 0 12px 36px color-mix(in srgb, var(--cat-c) 20%, transparent);
+}
+.chooser-card:hover::before { opacity: 1 }
+.chooser-card:active { transform: translateY(-1px) }
+.chooser-icon {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--cat-c) 14%, transparent);
+  color: var(--cat-c);
+  font-size: 1.05rem;
+  transition: background .2s, transform .2s;
+}
+.chooser-card:hover .chooser-icon {
+  background: color-mix(in srgb, var(--cat-c) 22%, transparent);
+  transform: scale(1.06);
+}
+.chooser-label {
+  font-size: .82rem; font-weight: 700;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  color: #f0ede8;
+}
+.chooser-price {
+  font-size: .68rem;
+  color: rgba(240,237,232,.65);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+.chooser-card:hover .chooser-price {
+  color: var(--cat-c);
+}
+@media (max-width: 900px) {
+  .hero-chooser { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+}
+@media (max-width: 540px) {
+  .hero-chooser { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px }
+  .chooser-card { padding: 18px 10px }
+  .chooser-icon { width: 38px; height: 38px; font-size: 1rem }
+  .chooser-label { font-size: .72rem }
+  .chooser-price { font-size: .62rem }
+}
+[data-theme="light"] .chooser-card {
+  background: color-mix(in srgb, #f0ede8 85%, transparent);
+  color: #1a1a1f;
+  border-color: rgba(0,0,0,.08);
+}
+[data-theme="light"] .chooser-label { color: #1a1a1f }
+[data-theme="light"] .chooser-price { color: rgba(26,26,31,.6) }
+[data-theme="light"] .chooser-card:hover {
+  background: color-mix(in srgb, #f0ede8 95%, transparent);
 }
 
 /* ── Hero CTAs (Llamar / WhatsApp) ── */
@@ -960,14 +1074,20 @@ const categories = [
   const tabsOuter = document.getElementById('tabsOuter');
 
   // Click tab → scroll to section
+  function scrollToCategory(id) {
+    const target = document.getElementById(id);
+    if (!target) return;
+    const offset = tabsOuter.offsetHeight + 8;
+    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
   tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = document.getElementById(btn.dataset.target);
-      if (!target) return;
-      const offset = tabsOuter.offsetHeight + 8;
-      const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    });
+    btn.addEventListener('click', () => scrollToCategory(btn.dataset.target));
+  });
+
+  // Hero chooser cards usan el mismo flujo que los tabs
+  document.querySelectorAll('.chooser-card').forEach(card => {
+    card.addEventListener('click', () => scrollToCategory(card.dataset.target));
   });
 
   // Active tab on scroll
