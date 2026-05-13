@@ -534,6 +534,19 @@ const categories = [
             ))}
           </div>
 
+          {/* Fotografía — callout a Pixieset (galerías de clientes reales) */}
+          {cat.id === 'fotografia' && (
+            <div class="booth-callout">
+              <div class="booth-callout-text">
+                <p class="booth-callout-label">Trabajo real de clientes</p>
+                <p class="booth-callout-desc">Cada boda, quinceañero y evento queda en una galería privada en <strong>fotos.marcossantiago.com</strong> — descargas, favoritos y compartir con familia.</p>
+              </div>
+              <a href="https://fotos.marcossantiago.com" target="_blank" rel="noopener" class="btn booth-more-btn">
+                Ver galerías <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+            </div>
+          )}
+
           {/* 360 booth — galería de trabajo real + link a página dedicada */}
           {cat.id === 'booth360' && (
             <>
