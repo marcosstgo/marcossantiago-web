@@ -1251,31 +1251,47 @@ body.page-servicios .nav-links { gap: 0 }
 
 .logos-marquee {
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  padding: 8px 0;
+  mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
 }
 .logos-track {
-  display: flex; gap: 36px; align-items: center;
+  display: flex; gap: 0;
   width: max-content;
-  animation: logos-scroll 80s linear infinite;
+  animation: logos-scroll 60s linear infinite;
 }
 .logos-marquee:hover .logos-track { animation-play-state: paused }
+/* Cada logo en celda fija — uniforma visualmente logos con aspect ratios distintos */
 .logo-item {
-  height: 36px; width: auto;
   flex: 0 0 auto;
-  opacity: .55;
-  filter: brightness(1.5) saturate(0);
-  transition: opacity .2s, filter .2s;
+  width: 140px; height: 64px;
+  padding: 8px 18px;
+  box-sizing: border-box;
+  object-fit: contain;
+  object-position: center;
+  opacity: .42;
+  filter: grayscale(1) brightness(1.6);
+  transition: opacity .25s ease, filter .25s ease;
 }
-.logo-item:hover { opacity: 1; filter: brightness(1.5) saturate(1) }
-[data-theme="light"] .logo-item { filter: brightness(.5) saturate(0) }
-[data-theme="light"] .logo-item:hover { filter: brightness(.5) saturate(1) }
+.logo-item:hover, .logo-item:focus-visible {
+  opacity: 1;
+  filter: grayscale(0) brightness(1);
+}
+[data-theme="light"] .logo-item { filter: grayscale(1) brightness(.45) }
+[data-theme="light"] .logo-item:hover { filter: grayscale(0) brightness(1) }
+@media (max-width: 600px) {
+  .logo-item { width: 110px; height: 56px; padding: 6px 14px }
+}
 @keyframes logos-scroll {
   from { transform: translateX(0) }
   to   { transform: translateX(-50%) }
 }
 @media (prefers-reduced-motion: reduce) {
-  .logos-track { animation: none; flex-wrap: wrap; width: 100%; justify-content: center }
+  .logos-track {
+    animation: none; flex-wrap: wrap;
+    width: 100%; justify-content: center;
+    gap: 8px;
+  }
 }
 
 /* ── Final CTA con 3 opciones ── */
