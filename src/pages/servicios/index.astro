@@ -277,7 +277,15 @@ const categories = [
       <div class="container hero-content">
         <p class="section-label">Fotógrafo · Videógrafo · Artista Gráfico · Puerto Rico</p>
         <h1 class="hero-title">
-          Captura tu<br><span class="hero-title-sub">momento.</span>
+          Captura tu<br>
+          <span class="hero-title-sub hero-cycle" aria-label="momento, diseño, código">
+            <span class="hero-cycle-track" aria-hidden="true">
+              <span>momento.</span>
+              <span>diseño.</span>
+              <span>código.</span>
+              <span>momento.</span>
+            </span>
+          </span>
         </h1>
         <ul class="hero-bullets" aria-label="Lo que ofrezco">
           <li><i class="fa-solid fa-bolt"></i> Cotización en menos de 1 hora</li>
@@ -1376,6 +1384,36 @@ body.page-servicios .nav-links { gap: 0 }
   color: var(--accent);
   display: block;
   line-height: 1;
+}
+
+/* Word cycle: momento → diseño → código → (loop) */
+.hero-cycle {
+  display: inline-block;
+  height: 1em;
+  line-height: 1;
+  overflow: hidden;
+  vertical-align: top;
+}
+.hero-cycle-track {
+  display: flex;
+  flex-direction: column;
+  animation: hero-cycle-anim 8.4s cubic-bezier(.77,0,.18,1) infinite;
+}
+.hero-cycle-track > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+@keyframes hero-cycle-anim {
+  0%, 28%   { transform: translateY(0) }
+  33%, 61%  { transform: translateY(-1em) }
+  66%, 94%  { transform: translateY(-2em) }
+  100%      { transform: translateY(-3em) }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-cycle-track { animation: none }
+  /* En reduced-motion mostramos solo la primera palabra */
+  .hero-cycle { height: 1em }
 }
 
 /* ── FAQ ── */
