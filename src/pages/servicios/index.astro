@@ -440,25 +440,28 @@ const categories = [
             </p>
             <div class="logos-marquee" aria-hidden="true">
               <div class="logos-track">
-                {[
-                  'abogo','amanda-forastieri','amma-club','babyabrazo','bambu','bayuu',
-                  'biz-solutions-studio','brava','buoyant-research','candi','celebrate-dogs',
-                  'cicloazul','clearhealth','click-cantina','dietmods','discite-3d','eduactivo',
-                  'encendia','eventhub','ez-lims','gamebox-pr','inflektion-labs','jappening',
-                  'karuna','kbl','leanpack-automation','lifesync','milo','olimpolab','pegao',
-                  'pivet','power-refresh','quantumh2o','retake-path','salud-pa-educar',
-                  'sentidos','talantos','tv-academia','verde-esencial','zorzal','zutto',
-                ].concat([
-                  'abogo','amanda-forastieri','amma-club','babyabrazo','bambu','bayuu',
-                  'biz-solutions-studio','brava','buoyant-research','candi','celebrate-dogs',
-                  'cicloazul','clearhealth','click-cantina','dietmods','discite-3d','eduactivo',
-                  'encendia','eventhub','ez-lims','gamebox-pr','inflektion-labs','jappening',
-                  'karuna','kbl','leanpack-automation','lifesync','milo','olimpolab','pegao',
-                  'pivet','power-refresh','quantumh2o','retake-path','salud-pa-educar',
-                  'sentidos','talantos','tv-academia','verde-esencial','zorzal','zutto',
-                ]).map(slug => (
-                  <img src={`/logos-portfolio/${slug}.svg`} alt="" loading="lazy" class="logo-item" />
-                ))}
+                {/* Mismo set que la galería /portafolio/logos/ — preserva el orden y los formatos PNG/SVG curados manualmente */}
+                {(() => {
+                  const logos = [
+                    'abogo.png','amanda-forastieri.png','amma-club.png','babyabrazo.png',
+                    'bambu.png','bayuu.png','ber.png','biz-solutions-studio.png',
+                    'brava.png','buoyant-research.png','candi.svg','celebrate-dogs.png',
+                    'cicloazul.png','clearhealth.png','click-cantina.png','college-access-unplugged.png',
+                    'dietmods.png','discite-3d.png','eduactivo.png','encendia.png',
+                    'eventhub.png','ez-lims.png','gamebox-pr.png','inflektion-labs.png',
+                    'jappening.png','karuna.svg','kbl.png','leanpack-automation.png',
+                    'lifesync.png','milo.svg',
+                  ];
+                  // Duplicar para loop sin corte
+                  return [...logos, ...logos].map((file, i) => (
+                    <img
+                      src={`/logos-portfolio/${file}`}
+                      alt=""
+                      loading="lazy"
+                      class="logo-item"
+                    />
+                  ));
+                })()}
               </div>
             </div>
             <a href="/portafolio/logos/" class="meet-link">Ver todos los logos <i class="fa-solid fa-arrow-right"></i></a>
