@@ -144,9 +144,9 @@ const events = [
       <div class="gallery-section">
         <p class="section-label">Galería</p>
         <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">En acción</h2>
-        <div class="gallery-grid">
+        <div class="gallery-carousel" role="region" aria-label="Galería 360 Booth — desliza para ver más">
           {[1,2,3,4,5,6,7,8,9].map(n => (
-            <div class="gallery-item">
+            <div class="gallery-carousel-item">
               <img src={`/booth-360/360photo${n}.jpg`} alt={`360 Video Booth evento ${n}`} loading="lazy" />
             </div>
           ))}
@@ -183,25 +183,56 @@ const events = [
   object-fit: cover; display: block;
 }
 
-/* ── Gallery ── */
+/* ── Gallery (carrusel 9:16 Stories-style) ── */
 .gallery-section { margin-top: 80px; padding-top: 56px; border-top: 1px solid var(--border); }
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px; margin-top: 28px;
+.gallery-carousel {
+  margin-top: 28px;
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 4px 14px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 50%, transparent) transparent;
 }
-@media (max-width: 600px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
-.gallery-item {
-  border-radius: 10px; overflow: hidden;
-  aspect-ratio: 1/1;
+.gallery-carousel::-webkit-scrollbar { height: 6px }
+.gallery-carousel::-webkit-scrollbar-track { background: transparent }
+.gallery-carousel::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 3px;
+}
+.gallery-carousel-item {
+  flex: 0 0 auto;
+  width: 220px;
+  aspect-ratio: 9 / 16;
+  border-radius: 16px;
+  overflow: hidden;
   background: var(--surface);
+  border: 1px solid var(--border);
+  scroll-snap-align: start;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
 }
-.gallery-item img {
+.gallery-carousel-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0,0,0,.4);
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.gallery-carousel-item img {
   width: 100%; height: 100%;
-  object-fit: cover; display: block;
-  transition: transform .3s ease;
+  object-fit: cover; object-position: center;
+  display: block;
+  transition: transform .35s ease;
 }
-.gallery-item:hover img { transform: scale(1.04); }
+.gallery-carousel-item:hover img { transform: scale(1.04) }
+@media (max-width: 600px) {
+  .gallery-carousel-item { width: 180px; border-radius: 14px }
+}
+@media (max-width: 400px) {
+  .gallery-carousel-item { width: 160px }
+}
 
 /* ── Hero ── */
 .booth-hero {
