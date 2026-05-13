@@ -561,11 +561,11 @@ const categories = [
           {/* 360 booth — galería de trabajo real + link a página dedicada */}
           {cat.id === 'booth360' && (
             <>
-              <div class="booth-gallery">
+              <div class="booth-carousel" role="region" aria-label="Galería 360 Booth — desliza para ver más">
                 {[1,2,3,4,5,6,7,8,9].map(n => (
                   <a
                     href="/video-booth-360/"
-                    class={`booth-gallery-item booth-gallery-item-${n}`}
+                    class="booth-carousel-item"
                     aria-label={`Foto ${n} del 360 Booth en evento`}
                   >
                     <img
@@ -1661,54 +1661,63 @@ body.page-servicios .nav-links { gap: 0 }
 }
 
 /* ── 360 Callout ── */
-.booth-gallery {
+/* Carrusel horizontal 9:16 (vertical Stories-style) con scroll-snap */
+.booth-carousel {
   margin-top: 40px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 140px;
-  gap: 10px;
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 4px 14px;
+  /* Sangrar visualmente hacia los bordes en mobile para mostrar que es scrollable */
+  margin-left: calc(-1 * var(--pad-x, 24px));
+  margin-right: calc(-1 * var(--pad-x, 24px));
+  padding-left: var(--pad-x, 24px);
+  padding-right: var(--pad-x, 24px);
+  scroll-padding-left: var(--pad-x, 24px);
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--page-c) 50%, transparent) transparent;
 }
-/* Bento: la primera y la quinta foto ocupan 2x2; el resto 1x1 */
-.booth-gallery-item-1 { grid-column: span 2; grid-row: span 2 }
-.booth-gallery-item-5 { grid-column: span 2; grid-row: span 2 }
-.booth-gallery-item {
-  position: relative;
-  border-radius: 12px;
+.booth-carousel::-webkit-scrollbar { height: 6px }
+.booth-carousel::-webkit-scrollbar-track { background: transparent }
+.booth-carousel::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--page-c) 40%, transparent);
+  border-radius: 3px;
+}
+.booth-carousel-item {
+  flex: 0 0 auto;
+  width: 220px;
+  aspect-ratio: 9 / 16;
+  border-radius: 16px;
   overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--border);
-  transition: transform .2s, box-shadow .2s;
+  scroll-snap-align: start;
   display: block;
   text-decoration: none;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  position: relative;
 }
-.booth-gallery-item:hover {
+.booth-carousel-item:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 36px rgba(0,0,0,.4);
-  z-index: 1;
+  box-shadow: 0 16px 40px rgba(0,0,0,.4);
+  border-color: color-mix(in srgb, var(--page-c) 50%, transparent);
 }
-.booth-gallery-item img {
+.booth-carousel-item img {
   width: 100%; height: 100%;
-  object-fit: cover; display: block;
+  object-fit: cover; object-position: center;
+  display: block;
   transition: transform .35s ease;
 }
-.booth-gallery-item:hover img { transform: scale(1.05) }
-@media (max-width: 720px) {
-  .booth-gallery {
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 110px;
-  }
-  .booth-gallery-item-1, .booth-gallery-item-5 {
-    grid-column: span 2; grid-row: span 2;
-  }
+.booth-carousel-item:hover img { transform: scale(1.04) }
+@media (max-width: 600px) {
+  .booth-carousel-item { width: 180px; border-radius: 14px }
 }
-@media (max-width: 480px) {
-  .booth-gallery {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 110px;
-  }
-  .booth-gallery-item-1, .booth-gallery-item-5 {
-    grid-column: span 2; grid-row: span 2;
-  }
+@media (max-width: 400px) {
+  .booth-carousel-item { width: 160px }
 }
 
 .booth-callout {
