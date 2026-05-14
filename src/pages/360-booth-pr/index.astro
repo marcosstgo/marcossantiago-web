@@ -121,12 +121,6 @@ import Footer from '../../components/Footer.astro';
         </div>
       </div>
 
-      <!-- Galería de fotos del 360 Booth como visual del hero -->
-      <div class="hero-gallery" aria-hidden="true">
-        {['360photo1.jpg','360photo2.jpg','360photo3.jpg','360photo4.jpg','360photo5.jpg','360photo6.jpg'].map((f, i) => (
-          <img src={`/booth-360/${f}`} alt="" loading={i < 2 ? 'eager' : 'lazy'} />
-        ))}
-      </div>
     </section>
 
     <!-- ── Paquetes ── -->
@@ -327,9 +321,8 @@ import Footer from '../../components/Footer.astro';
 
   .hero-section {
     position: relative; min-height: 100svh;
-    display: grid; grid-template-columns: 1fr 1fr;
-    align-items: center; gap: 0; padding: 120px 0 60px;
-    overflow: hidden;
+    display: flex; align-items: center;
+    padding: 140px 0 60px; overflow: hidden;
   }
   .hero-video-bg {
     position: absolute; inset: 0; width: 100%; height: 100%;
@@ -339,8 +332,7 @@ import Footer from '../../components/Footer.astro';
     position: absolute; inset: 0; z-index: 1;
     background: linear-gradient(160deg, rgba(4,13,22,.85) 40%, rgba(4,13,22,.55) 100%);
   }
-  .hero-content { position: relative; z-index: 2; padding: 0 var(--gutter) }
-  .hero-gallery { z-index: 2 }
+  .hero-content { position: relative; z-index: 2; max-width: 780px }
   .hero-title {
     font-family: var(--display);
     font-size: clamp(3rem, 8vw, 6.5rem);
@@ -530,9 +522,6 @@ import Footer from '../../components/Footer.astro';
 
   /* Responsive */
   @media (max-width: 900px) {
-    .hero-section { grid-template-columns: 1fr; padding-bottom: 40px }
-    .hero-gallery { grid-template-columns: repeat(3, 1fr); grid-template-rows: 140px 140px; padding: 0 var(--gutter) }
-    .hero-gallery img:first-child { grid-column: span 3; height: 200px }
     .packages-grid { grid-template-columns: 1fr }
   }
   @media (max-width: 768px) {
@@ -546,7 +535,6 @@ import Footer from '../../components/Footer.astro';
   @media (max-width: 480px) {
     .hero-actions { flex-direction: column }
     .hero-cta { justify-content: center }
-    .hero-gallery { display: none }
   }
   </style>
 
