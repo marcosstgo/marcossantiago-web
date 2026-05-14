@@ -2,6 +2,35 @@
 
 Cambios notables al sitio. Más reciente primero.
 
+## 2026-05-14 — Sub-landings PPC por servicio
+
+Tres landing pages dedicadas para campañas de Google Ads, una por servicio principal. Patrón compartido: header minimal sin nav de escape, hero full-width con video de fondo, precio visible above the fold, lead form con `servicio` pre-llenado, sección "Soy Marcos", FAQ con JSON-LD FAQPage + LocalBusiness, sticky CTA bar en mobile, GA4 tracking por landing. Todas en el sitemap automáticamente.
+
+### `/fotografo-bodas-pr/`
+- Headline: "Tu boda, recordada para siempre."
+- Hero: poster del video de fondo + overlay. Color accent: azul (`var(--accent)`).
+- Sección includes: Boda completa ($750), Quinceañeros ($550), Paquete Foto+Video.
+- Checklist con 6 entregables incluidos.
+- 5 FAQs (precio, cobertura PR, tiempo entrega, foto+video, anticipación de reserva).
+
+### `/360-booth-pr/`
+- Headline: "La experiencia viral de tu evento."
+- Hero: `360-Recap.mp4` de fondo (video real del equipo). Color accent: fuchsia `#d946ef`.
+- 3 paquetes: Eventos ($350/2hrs), Bodas ($499/4hrs), Corporativo ($499).
+- 5 FAQs (qué es, precio, app, overlay, espacio requerido).
+
+### `/videografia-corporativa-pr/`
+- Headline: "Video que vende tu marca."
+- Hero: `short-videografy.mp4` de fondo. Color accent: naranja `#ff9f7f`.
+- 6 tarjetas de servicio: Institucional ($1,000), Testimoniales ($500), Reels ($150), Demo ($800), Campaña ($1,500), CTA libre.
+- Callout de portafolio de video.
+- 5 FAQs (precio, tipos, guión, entrega, derechos comerciales).
+
+### Notas técnicas
+- `servicio` pre-llenado en cada form → los leads llegan etiquetados por origen.
+- Cada landing tiene su propio `event_label` en GA4 (`fotografo-bodas-pr`, `360-booth-pr`, `videografia-corporativa-pr`) para medir conversiones por separado.
+- No hay enlace interno desde el sitio — diseñadas para tráfico PPC directo. SEO orgánico vía sitemap.
+
 ## 2026-05-13 — Pasada A (investigación 2026) + integración Pixieset + refinamientos
 
 Sesión larga aplicando los hallazgos de investigación de mejores prácticas 2025-2026 para landing pages PPC de servicios creativos. Modelo de referencia: high-conversion PPC con bento layouts, oversized typography, message-match, single primary message, prueba social visual.
