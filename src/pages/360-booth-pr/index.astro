@@ -1,0 +1,590 @@
+---
+import Base from '../../layouts/Base.astro';
+import Footer from '../../components/Footer.astro';
+---
+<Base
+  title="360 Photo Booth en Puerto Rico | Marcos Santiago"
+  description="360 Video Booth para bodas, quinceañeros y eventos corporativos en Puerto Rico. Desde $350. Air-39 Automatic — entrega por QR al instante. Cotización gratis."
+>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "name": "Marcos Santiago — 360 Photo Booth Puerto Rico",
+        "url": "https://marcossantiago.com/360-booth-pr/",
+        "telephone": "+17872439670",
+        "image": "https://marcossantiago.com/marcos-photo.jpg",
+        "description": "360 Video Booth profesional para eventos en Puerto Rico. Air-39 Automatic 360 Pro. Desde $350.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Aibonito",
+          "addressRegion": "PR",
+          "addressCountry": "US"
+        },
+        "areaServed": "Puerto Rico",
+        "priceRange": "$$",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "360 Photo Booth Puerto Rico",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "360 Video Booth para Eventos Puerto Rico" }, "price": "350", "priceCurrency": "USD" },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "360 Booth para Bodas Puerto Rico" }, "price": "499", "priceCurrency": "USD" },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "360 Booth Corporativo Puerto Rico" }, "price": "499", "priceCurrency": "USD" }
+          ]
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Qué es el 360 Video Booth?",
+            "acceptedAnswer": { "@type": "Answer", "text": "El Air-39 Automatic 360 Pro es una plataforma giratoria que captura clips 360° de tus invitados con efectos, slow motion y overlay personalizado del evento. Los clips se comparten al instante por QR." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cuánto cuesta el 360 Booth en Puerto Rico?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Los paquetes comienzan desde $350 para eventos de 2 horas y $499 para bodas (4 horas). Contáctame para cotización personalizada según las necesidades de tu evento." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Para qué tipos de eventos está disponible el 360 Booth?",
+            "acceptedAnswer": { "@type": "Answer", "text": "El 360 Booth está disponible para bodas, quinceañeros, cumpleaños, eventos corporativos, lanzamientos de productos y cualquier tipo de celebración en Puerto Rico." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Los invitados reciben sus clips al instante?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Después de cada toma, el clip se procesa en segundos y se comparte por código QR directamente al teléfono de cada invitado. No necesitan instalar ninguna app." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Incluye overlay personalizado con el nombre del evento?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Los clips llevan overlay personalizado con el branding de tu evento — nombres, fecha, logo de empresa o diseño de boda. Incluido en todos los paquetes." }
+          }
+        ]
+      }
+    ]
+  })} />
+
+  <!-- Minimal PPC header -->
+  <header class="ppc-header">
+    <div class="container ppc-header-inner">
+      <a href="/" class="ppc-logo" aria-label="Marcos Santiago — inicio">MARCOS SANTIAGO</a>
+      <a href="tel:+17872439670" class="ppc-phone" data-track="call-header">
+        <i class="fa-solid fa-phone"></i> (787) 243-9670
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ── Hero ── -->
+    <section class="hero-section">
+      <div class="hero-bg-gradient" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <p class="section-label">360 Video Booth · Puerto Rico</p>
+        <h1 class="hero-title">La experiencia<br><span class="accent">viral de tu evento.</span></h1>
+        <ul class="hero-bullets">
+          <li><i class="fa-solid fa-rotate"></i> Air-39 Automatic 360 Pro — gira automáticamente</li>
+          <li><i class="fa-solid fa-qrcode"></i> Clips por QR al instante — sin app</li>
+          <li><i class="fa-solid fa-location-dot"></i> Toda Puerto Rico · setup incluido</li>
+        </ul>
+        <div class="hero-price-strip">
+          <span class="price-badge">Desde <strong>$350</strong></span>
+          <span class="price-note">· Overlay personalizado · Tomas ilimitadas</span>
+        </div>
+        <div class="hero-actions">
+          <a href="tel:+17872439670" class="hero-cta hero-cta-call" data-track="call">
+            <i class="fa-solid fa-phone"></i> Llamar ahora
+          </a>
+          <a
+            href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20el%20360%20Booth%20para%20mi%20evento."
+            target="_blank" rel="noopener"
+            class="hero-cta hero-cta-wa"
+            data-track="whatsapp"
+          >
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+          <a href="#cotizar" class="hero-cta hero-cta-form">
+            <i class="fa-solid fa-paper-plane"></i> Cotización rápida
+          </a>
+        </div>
+        <div class="hero-meta">
+          <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> Toda Puerto Rico</span>
+          <span class="meta-pill"><i class="fa-regular fa-clock"></i> Respondo en &lt;1 hora</span>
+          <a href="tel:+17872439670" class="meta-pill meta-pill-call" data-track="call">
+            <i class="fa-solid fa-phone"></i> (787) 243-9670
+          </a>
+        </div>
+      </div>
+
+      <!-- Galería de fotos del 360 Booth como visual del hero -->
+      <div class="hero-gallery" aria-hidden="true">
+        {Array.from({ length: 6 }, (_, i) => i + 1).map(n => {
+          const files = ['booth-001.jpg','booth-002.jpg','booth-003.jpg','booth-004.jpg','booth-005.jpg','booth-006.jpg'];
+          return <img src={`/booth-360/${files[n-1] ?? files[0]}`} alt="" loading={n <= 2 ? 'eager' : 'lazy'} />;
+        })}
+      </div>
+    </section>
+
+    <!-- ── Paquetes ── -->
+    <section class="packages-section">
+      <div class="container">
+        <p class="section-label">Paquetes disponibles</p>
+        <h2 class="section-title">Elige el que <span class="accent">va con tu evento</span></h2>
+        <div class="packages-grid">
+          <div class="package-card">
+            <div class="pkg-badge">Eventos</div>
+            <h3 class="pkg-name">360 Booth — Eventos</h3>
+            <p class="pkg-price">Desde <strong>$350</strong> <span>(2 hrs)</span></p>
+            <ul class="pkg-includes">
+              <li><i class="fa-solid fa-check"></i> Setup y operación incluidos</li>
+              <li><i class="fa-solid fa-check"></i> Ring light profesional</li>
+              <li><i class="fa-solid fa-check"></i> Entrega por QR al instante</li>
+              <li><i class="fa-solid fa-check"></i> Galería digital del evento</li>
+              <li><i class="fa-solid fa-check"></i> Overlay personalizado</li>
+            </ul>
+            <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20el%20360%20Booth%20para%20un%20evento." target="_blank" rel="noopener" class="pkg-cta" data-track="whatsapp">
+              <i class="fab fa-whatsapp"></i> Cotizar este paquete
+            </a>
+          </div>
+          <div class="package-card package-card-featured">
+            <div class="pkg-badge pkg-badge-featured">Bodas</div>
+            <h3 class="pkg-name">360 Booth — Bodas</h3>
+            <p class="pkg-price">Desde <strong>$499</strong> <span>(4 hrs)</span></p>
+            <ul class="pkg-includes">
+              <li><i class="fa-solid fa-check"></i> Overlay con diseño de boda</li>
+              <li><i class="fa-solid fa-check"></i> Música de fondo del evento</li>
+              <li><i class="fa-solid fa-check"></i> Tomas ilimitadas</li>
+              <li><i class="fa-solid fa-check"></i> Galería privada</li>
+              <li><i class="fa-solid fa-check"></i> QR branded para invitados</li>
+            </ul>
+            <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20el%20360%20Booth%20para%20mi%20boda." target="_blank" rel="noopener" class="pkg-cta" data-track="whatsapp">
+              <i class="fab fa-whatsapp"></i> Cotizar para mi boda
+            </a>
+          </div>
+          <div class="package-card">
+            <div class="pkg-badge">Corporativo</div>
+            <h3 class="pkg-name">360 Booth — Corporativo</h3>
+            <p class="pkg-price">Desde <strong>$499</strong></p>
+            <ul class="pkg-includes">
+              <li><i class="fa-solid fa-check"></i> Overlay con logo de empresa</li>
+              <li><i class="fa-solid fa-check"></i> Entrega inmediata por QR</li>
+              <li><i class="fa-solid fa-check"></i> Informe post-evento</li>
+              <li><i class="fa-solid fa-check"></i> Opciones de personalización</li>
+              <li><i class="fa-solid fa-check"></i> Ideal para lanzamientos</li>
+            </ul>
+            <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20el%20360%20Booth%20para%20un%20evento%20corporativo." target="_blank" rel="noopener" class="pkg-cta" data-track="whatsapp">
+              <i class="fab fa-whatsapp"></i> Cotizar corporativo
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Lead form ── -->
+    <section class="lead-section" id="cotizar">
+      <div class="container">
+        <div class="lead-grid">
+          <div class="lead-intro">
+            <p class="section-label">Reserva tu fecha</p>
+            <h2 class="lead-title">Te respondo en <span class="accent">menos de 1 hora</span></h2>
+            <p class="lead-sub">Sin spam. Sin compromiso. Te contesto directo yo, no un asistente.</p>
+            <ul class="lead-trust">
+              <li><i class="fa-solid fa-check"></i> Cotización gratis</li>
+              <li><i class="fa-solid fa-check"></i> Disponible en toda Puerto Rico</li>
+              <li><i class="fa-solid fa-check"></i> Respuesta personal de Marcos</li>
+            </ul>
+          </div>
+          <form class="lead-form" id="leadForm" novalidate>
+            <div class="lead-row">
+              <input type="text" required class="lead-field" name="nombre" placeholder="Tu nombre *" autocomplete="name" />
+              <input type="tel" required class="lead-field" name="contacto" placeholder="Teléfono o WhatsApp *" autocomplete="tel" />
+            </div>
+            <input type="hidden" name="servicio" value="360 Booth" />
+            <select class="lead-field" name="tipo_evento">
+              <option value="">Tipo de evento (opcional)</option>
+              <option>Boda</option>
+              <option>Quinceañero</option>
+              <option>Cumpleaños</option>
+              <option>Evento corporativo</option>
+              <option>Lanzamiento de producto</option>
+              <option>Otro</option>
+            </select>
+            <input type="text" class="lead-field" name="fecha" placeholder="Fecha aproximada del evento (opcional)" />
+            <textarea class="lead-field" name="mensaje" rows="2" placeholder="¿Dónde es el evento? (opcional)"></textarea>
+            <button type="submit" class="lead-submit" data-track="form">
+              <i class="fa-solid fa-paper-plane"></i> Reservar mi fecha
+            </button>
+            <p class="lead-note">¿Prefieres directo? <a href="tel:+17872439670" data-track="call"><i class="fa-solid fa-phone"></i> Llamar</a> o <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20el%20360%20Booth." target="_blank" rel="noopener" data-track="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>.</p>
+            <p class="lead-success" id="leadSuccess" hidden>
+              <i class="fa-solid fa-circle-check"></i> Mensaje recibido. Te respondo en menos de 1 hora.
+            </p>
+            <p class="lead-error" id="leadError" hidden>
+              <i class="fa-solid fa-triangle-exclamation"></i> No pude enviar el mensaje. Escríbeme por WhatsApp al (787) 243-9670.
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Quién soy ── -->
+    <section class="meet-section">
+      <div class="container">
+        <div class="meet-grid">
+          <div class="meet-photo">
+            <img src="/marcos-photo.webp" alt="Marcos Santiago — operador del 360 Booth en Puerto Rico" loading="lazy" />
+            <div class="meet-photo-bg" aria-hidden="true"></div>
+          </div>
+          <div class="meet-text">
+            <p class="section-label">Quién opera el equipo en tu evento</p>
+            <h2 class="meet-title">Soy Marcos.</h2>
+            <p class="meet-bio">
+              Opero el Air-39 Automatic 360 Pro en eventos por toda Puerto Rico. Llego temprano, configuro el equipo, opero durante el evento y me aseguro de que cada invitado tenga su clip. No mando a nadie — voy yo.
+            </p>
+            <div class="meet-facts">
+              <div class="meet-fact"><span class="meet-fact-num">360°</span><span class="meet-fact-label">cobertura total</span></div>
+              <div class="meet-fact"><span class="meet-fact-num">PR</span><span class="meet-fact-label">toda la isla</span></div>
+            </div>
+            <div class="meet-actions">
+              <a href="/video-booth-360/" class="meet-link">Ver galería del 360 Booth <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section class="faq-section">
+      <div class="container">
+        <p class="section-label">Preguntas frecuentes</p>
+        <h2 class="section-title">Lo que me preguntan <span class="accent">sobre el 360 Booth</span></h2>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>¿Qué es exactamente el 360 Video Booth?</summary>
+            <p>El Air-39 Automatic 360 Pro es una plataforma giratoria motorizada. Tus invitados se paran sobre la plataforma, el brazo con la cámara gira 360° automáticamente, y en segundos tienen un clip cinematográfico con efectos y slow motion. Se comparte por QR al instante.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Cuánto cuesta el 360 Booth en Puerto Rico?</summary>
+            <p>Los paquetes comienzan desde $350 para eventos de 2 horas (cumpleaños, fiestas privadas) y $499 para bodas con 4 horas de cobertura. Contáctame para cotización según las necesidades de tu evento.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Los invitados necesitan instalar alguna app?</summary>
+            <p>No. Después de cada toma, el clip se procesa en segundos y aparece un código QR en pantalla. El invitado lo escanea con la cámara de su teléfono y el clip se descarga directamente. Sin apps, sin cuentas.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Incluye overlay personalizado?</summary>
+            <p>Sí, todos los paquetes incluyen overlay personalizado — nombre y fecha del evento para bodas y quinceañeros, logo de la empresa para eventos corporativos. Lo diseñamos antes del evento.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Cuánto espacio necesita el equipo?</summary>
+            <p>El Air-39 necesita aproximadamente 3×3 metros de espacio libre. Si tienes dudas sobre el venue, compárteme las dimensiones por WhatsApp y te confirmo si hay espacio suficiente.</p>
+          </details>
+        </div>
+        <div class="faq-cta">
+          <a href="https://wa.me/17872439670?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20el%20360%20Booth." target="_blank" rel="noopener" class="faq-wa-btn" data-track="whatsapp">
+            <i class="fab fa-whatsapp"></i> ¿Otra pregunta? Escríbeme por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+
+  <!-- Sticky mobile bar -->
+  <div class="sticky-bar" id="stickyBar" aria-hidden="true">
+    <a href="tel:+17872439670" class="sticky-btn sticky-call" data-track="call-sticky">
+      <i class="fa-solid fa-phone"></i> Llamar
+    </a>
+    <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20el%20360%20Booth." target="_blank" rel="noopener" class="sticky-btn sticky-wa" data-track="whatsapp-sticky">
+      <i class="fab fa-whatsapp"></i> WhatsApp
+    </a>
+  </div>
+
+  <style>
+  .ppc-header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 800;
+    background: rgba(4,13,22,.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border); padding: 12px 0;
+  }
+  .ppc-header-inner {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .ppc-logo {
+    font-family: var(--display); font-size: .95rem;
+    letter-spacing: 4px; color: var(--white); text-decoration: none;
+  }
+  .ppc-phone {
+    font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px;
+    color: var(--accent); text-decoration: none; border: 1px solid var(--accent);
+    border-radius: 8px; padding: 6px 14px; transition: .15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ppc-phone:hover { background: var(--accent); color: #fff }
+
+  .hero-section {
+    position: relative; min-height: 100svh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; gap: 0; padding: 120px 0 60px;
+    overflow: hidden;
+  }
+  .hero-bg-gradient {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse at 30% 60%, rgba(217,70,239,.08) 0%, transparent 60%),
+                linear-gradient(160deg, #040d16 60%, #0a0515 100%);
+  }
+  .hero-content { position: relative; z-index: 2; padding: 0 var(--gutter) }
+  .hero-title {
+    font-family: var(--display);
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: .92; letter-spacing: 3px;
+    margin: 8px 0 24px; color: var(--white);
+  }
+  .hero-bullets {
+    list-style: none; padding: 0; margin: 0 0 24px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .hero-bullets li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: .95rem; color: color-mix(in srgb, var(--white) 85%, transparent);
+  }
+  .hero-bullets li i { color: #d946ef; width: 16px; flex-shrink: 0 }
+  .hero-price-strip {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .price-badge {
+    background: #d946ef; color: #fff;
+    padding: 6px 16px; border-radius: 20px;
+    font-family: var(--mono); font-size: .75rem; letter-spacing: 1px;
+  }
+  .price-badge strong { font-size: .95rem }
+  .price-note { font-size: .82rem; color: var(--muted); font-family: var(--mono); letter-spacing: .5px }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; border-radius: 10px;
+    font-family: var(--mono); font-size: .65rem;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    text-decoration: none; font-weight: 700; transition: .15s;
+  }
+  .hero-cta-call { background: var(--white); color: #040d16 }
+  .hero-cta-call:hover { background: #d946ef; color: #fff }
+  .hero-cta-wa { background: #25d366; color: #fff }
+  .hero-cta-wa:hover { opacity: .88 }
+  .hero-cta-form { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,.25) }
+  .hero-cta-form:hover { border-color: #d946ef; color: #d946ef }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+  .meta-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: .55rem; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px;
+    text-decoration: none; transition: .15s;
+  }
+  .meta-pill-call { color: var(--accent); border-color: var(--accent) }
+  .meta-pill-call:hover { background: var(--accent); color: #040d16 }
+
+  /* Hero gallery sidebar */
+  .hero-gallery {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 160px);
+    gap: 8px; padding: 0 var(--gutter) 0 0;
+  }
+  .hero-gallery img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 12px;
+    display: block;
+  }
+  .hero-gallery img:first-child { grid-column: span 2; height: 220px }
+
+  /* Packages */
+  .packages-section { padding: 80px 0 }
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin: 8px 0 32px; color: var(--white);
+  }
+  .packages-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  }
+  .package-card {
+    background: color-mix(in srgb, var(--white) 3%, transparent);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 28px 24px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .package-card-featured {
+    border-color: #d946ef;
+    background: color-mix(in srgb, #d946ef 6%, transparent);
+  }
+  .pkg-badge {
+    font-family: var(--mono); font-size: .55rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 4px 12px; align-self: flex-start;
+  }
+  .pkg-badge-featured { color: #d946ef; border-color: #d946ef }
+  .pkg-name {
+    font-family: var(--display); font-size: 1.5rem; color: var(--white); margin: 0;
+  }
+  .pkg-price {
+    font-family: var(--mono); font-size: .75rem; color: var(--white); margin: 0;
+  }
+  .pkg-price strong { font-size: 1.3rem; color: #d946ef }
+  .pkg-price span { color: var(--muted) }
+  .pkg-includes {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 8px; flex: 1;
+  }
+  .pkg-includes li {
+    display: flex; align-items: center; gap: 8px;
+    font-size: .85rem; color: color-mix(in srgb, var(--white) 80%, transparent);
+  }
+  .pkg-includes li i { color: #25d366; flex-shrink: 0 }
+  .pkg-cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: #25d366; color: #fff; text-decoration: none;
+    padding: 11px; border-radius: 10px;
+    font-family: var(--mono); font-size: .6rem; letter-spacing: 1.5px;
+    text-transform: uppercase; font-weight: 700; transition: opacity .15s;
+    margin-top: auto;
+  }
+  .pkg-cta:hover { opacity: .88 }
+
+  /* Lead form */
+  .lead-section { padding: 80px 0; background: color-mix(in srgb, var(--white) 1.5%, transparent) }
+  .lead-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start }
+  .lead-title { font-family: var(--display); font-size: clamp(1.8rem, 4vw, 2.8rem); margin: 8px 0 12px; color: var(--white) }
+  .lead-sub { font-size: .9rem; color: var(--muted); margin: 0 0 20px }
+  .lead-trust { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px }
+  .lead-trust li { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: color-mix(in srgb, var(--white) 75%, transparent) }
+  .lead-trust li i { color: #25d366 }
+  .lead-form {
+    background: color-mix(in srgb, var(--white) 3%, transparent);
+    border: 1px solid var(--border); border-radius: 20px; padding: 32px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .lead-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+  .lead-field {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px; font-size: .88rem;
+    color: var(--white); font-family: var(--body); outline: none;
+    transition: border-color .15s; box-sizing: border-box; resize: none;
+  }
+  .lead-field:focus { border-color: #d946ef }
+  .lead-field::placeholder { color: var(--muted) }
+  select.lead-field option { background: var(--surface); color: var(--white) }
+  .lead-submit {
+    background: #d946ef; color: #fff; border: none; border-radius: 10px; padding: 14px;
+    cursor: pointer; font-family: var(--mono); font-size: .65rem;
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity .15s;
+  }
+  .lead-submit:hover { opacity: .88 }
+  .lead-note { font-size: .78rem; color: var(--muted); text-align: center; margin: 0 }
+  .lead-note a { color: var(--accent); text-decoration: none }
+  .lead-success { color: #25d366; font-size: .85rem; text-align: center; margin: 0 }
+  .lead-error { color: #ff6b6b; font-size: .85rem; text-align: center; margin: 0 }
+
+  /* Meet */
+  .meet-section { padding: 80px 0 }
+  .meet-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: center }
+  .meet-photo { position: relative }
+  .meet-photo img { width: 100%; border-radius: 20px; display: block; aspect-ratio: 4/5; object-fit: cover; position: relative; z-index: 1 }
+  .meet-photo-bg { position: absolute; inset: 12px -12px -12px 12px; background: #d946ef; border-radius: 20px; z-index: 0; opacity: .1 }
+  .meet-title { font-family: var(--display); font-size: clamp(2.5rem, 6vw, 5rem); margin: 8px 0 16px; color: var(--white) }
+  .meet-bio { font-size: .95rem; color: var(--muted); line-height: 1.7; margin: 0 0 20px }
+  .meet-facts { display: flex; gap: 24px; margin: 20px 0 }
+  .meet-fact { display: flex; flex-direction: column }
+  .meet-fact-num { font-family: var(--display); font-size: 2.2rem; color: #d946ef; line-height: 1 }
+  .meet-fact-label { font-family: var(--mono); font-size: .55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted) }
+  .meet-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px }
+  .meet-link { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: .6rem; letter-spacing: 1.5px; text-transform: uppercase; color: #d946ef; text-decoration: none; transition: gap .15s }
+  .meet-link:hover { gap: 12px }
+
+  /* FAQ */
+  .faq-section { padding: 80px 0 }
+  .faq-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 32px }
+  .faq-item { border: 1px solid var(--border); border-radius: 12px; background: color-mix(in srgb, var(--white) 2%, transparent); overflow: hidden }
+  .faq-item summary { padding: 18px 24px; cursor: pointer; font-size: .95rem; color: var(--white); list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; transition: color .15s }
+  .faq-item summary:hover { color: #d946ef }
+  .faq-item summary::after { content: '+'; font-family: var(--mono); font-size: 1rem; color: var(--muted); flex-shrink: 0; transition: transform .2s }
+  .faq-item[open] summary::after { transform: rotate(45deg) }
+  .faq-item p { padding: 0 24px 18px; font-size: .88rem; color: var(--muted); line-height: 1.65; margin: 0 }
+  .faq-cta { text-align: center }
+  .faq-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #25d366; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 10px; font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: opacity .15s }
+  .faq-wa-btn:hover { opacity: .88 }
+
+  /* Sticky bar */
+  .sticky-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 700; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: rgba(4,13,22,.96); backdrop-filter: blur(8px); border-top: 1px solid var(--border); gap: 10px }
+  .sticky-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px; border-radius: 10px; text-decoration: none; font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: opacity .15s }
+  .sticky-call { background: var(--white); color: #040d16 }
+  .sticky-wa { background: #25d366; color: #fff }
+  .sticky-call:hover, .sticky-wa:hover { opacity: .88 }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero-section { grid-template-columns: 1fr; padding-bottom: 40px }
+    .hero-gallery { grid-template-columns: repeat(3, 1fr); grid-template-rows: 140px 140px; padding: 0 var(--gutter) }
+    .hero-gallery img:first-child { grid-column: span 3; height: 200px }
+    .packages-grid { grid-template-columns: 1fr }
+  }
+  @media (max-width: 768px) {
+    .lead-grid { grid-template-columns: 1fr }
+    .lead-row { grid-template-columns: 1fr }
+    .meet-grid { grid-template-columns: 1fr }
+    .meet-photo { max-width: 320px; margin: 0 auto }
+    .sticky-bar { display: flex }
+    main { padding-bottom: 80px }
+  }
+  @media (max-width: 480px) {
+    .hero-actions { flex-direction: column }
+    .hero-cta { justify-content: center }
+    .hero-gallery { display: none }
+  }
+  </style>
+
+  <script is:inline>
+  (function() {
+    const form    = document.getElementById('leadForm');
+    const success = document.getElementById('leadSuccess');
+    const error   = document.getElementById('leadError');
+    if (!form) return;
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      try {
+        const r = await fetch('/ms-chat/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (!r.ok) throw new Error();
+        form.reset();
+        success.hidden = false;
+        error.hidden   = true;
+        if (typeof gtag === 'function') gtag('event', 'form_submit', { event_category: 'engagement', event_label: '360-booth-pr' });
+      } catch {
+        error.hidden   = false;
+        success.hidden = true;
+      }
+    });
+  })();
+
+  (function() {
+    const bar = document.getElementById('stickyBar');
+    if (!bar) return;
+    let shown = false;
+    window.addEventListener('scroll', function() {
+      const past = window.scrollY > 300;
+      if (past !== shown) { shown = past; bar.style.display = past ? 'flex' : 'none'; }
+    }, { passive: true });
+  })();
+
+  document.querySelectorAll('[data-track]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      if (typeof gtag === 'function') gtag('event', 'cta_click', { event_category: 'engagement', event_label: el.dataset.track });
+    });
+  });
+  </script>
+</Base>

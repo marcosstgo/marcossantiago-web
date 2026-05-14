@@ -1,0 +1,506 @@
+---
+import Base from '../../layouts/Base.astro';
+import Footer from '../../components/Footer.astro';
+---
+<Base
+  title="Videografía Corporativa en Puerto Rico | Marcos Santiago"
+  description="Video corporativo profesional en Puerto Rico. Institucionales, testimoniales, reels y campañas desde $1,000. Toda la isla. Cotización gratis en menos de 1 hora."
+>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "name": "Marcos Santiago — Videografía Corporativa Puerto Rico",
+        "url": "https://marcossantiago.com/videografia-corporativa-pr/",
+        "telephone": "+17872439670",
+        "image": "https://marcossantiago.com/marcos-photo.jpg",
+        "description": "Videografía corporativa profesional en Puerto Rico. Videos institucionales, testimoniales, reels y campañas desde $1,000.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Aibonito",
+          "addressRegion": "PR",
+          "addressCountry": "US"
+        },
+        "areaServed": "Puerto Rico",
+        "priceRange": "$$$",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Videografía Corporativa Puerto Rico",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Video Corporativo Puerto Rico" }, "price": "1000", "priceCurrency": "USD" },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reels para Redes Sociales Puerto Rico" }, "price": "150", "priceCurrency": "USD" },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Video Institucional Puerto Rico" } }
+          ]
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Cuánto cuesta un video corporativo en Puerto Rico?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Los videos corporativos comienzan desde $1,000 para producción completa. Los reels para redes sociales comienzan desde $150 por video. El precio varía según duración, locaciones y complejidad. Contáctame para cotización personalizada." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué tipos de video corporativo producen?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Produzco videos institucionales, testimoniales de clientes, demos de producto, videos de lanzamiento, reels para Instagram y TikTok, y campañas publicitarias para negocios en Puerto Rico." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Incluye el guión y la dirección?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Los paquetes corporativos incluyen guión, dirección en set, post-producción completa y color grading. Si ya tienes guión, lo adaptamos al formato video." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cubren toda Puerto Rico?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí, produzco video corporativo en toda la isla — San Juan, Ponce, Mayagüez, Bayamón, Carolina y cualquier municipio. No hay cargo adicional de desplazamiento dentro de PR." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cuánto tiempo tarda la entrega?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Los reels se entregan en 48-72 horas. Los videos corporativos completos entre 1 y 3 semanas, dependiendo de la complejidad de post-producción. Podemos coordinar plazos según tus necesidades." }
+          }
+        ]
+      }
+    ]
+  })} />
+
+  <!-- Minimal PPC header -->
+  <header class="ppc-header">
+    <div class="container ppc-header-inner">
+      <a href="/" class="ppc-logo" aria-label="Marcos Santiago — inicio">MARCOS SANTIAGO</a>
+      <a href="tel:+17872439670" class="ppc-phone" data-track="call-header">
+        <i class="fa-solid fa-phone"></i> (787) 243-9670
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ── Hero ── -->
+    <section class="hero-section">
+      <video class="hero-video-bg" autoplay muted loop playsinline preload="metadata" poster="/videos/marcos-video-poster.webp" aria-hidden="true">
+        <source src="/short-videografy.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <p class="section-label">Videografía Corporativa · Puerto Rico</p>
+        <h1 class="hero-title">Video que<br><span class="accent">vende tu marca.</span></h1>
+        <ul class="hero-bullets">
+          <li><i class="fa-solid fa-video"></i> Institucionales, testimoniales, reels y campañas</li>
+          <li><i class="fa-solid fa-location-dot"></i> Toda Puerto Rico — un solo profesional</li>
+          <li><i class="fa-solid fa-bolt"></i> Cotización gratis en menos de 1 hora</li>
+        </ul>
+        <div class="hero-price-strip">
+          <span class="price-badge">Reels desde <strong>$150</strong></span>
+          <span class="price-divider">·</span>
+          <span class="price-badge price-badge-alt">Corporativo desde <strong>$1,000</strong></span>
+        </div>
+        <div class="hero-actions">
+          <a href="tel:+17872439670" class="hero-cta hero-cta-call" data-track="call">
+            <i class="fa-solid fa-phone"></i> Llamar ahora
+          </a>
+          <a
+            href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20video%20corporativo%20para%20mi%20empresa."
+            target="_blank" rel="noopener"
+            class="hero-cta hero-cta-wa"
+            data-track="whatsapp"
+          >
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+          <a href="#cotizar" class="hero-cta hero-cta-form">
+            <i class="fa-solid fa-paper-plane"></i> Cotización rápida
+          </a>
+        </div>
+        <div class="hero-meta">
+          <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> Toda Puerto Rico</span>
+          <span class="meta-pill"><i class="fa-regular fa-clock"></i> Respondo en &lt;1 hora</span>
+          <a href="tel:+17872439670" class="meta-pill meta-pill-call" data-track="call">
+            <i class="fa-solid fa-phone"></i> (787) 243-9670
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Servicios ── -->
+    <section class="services-section">
+      <div class="container">
+        <p class="section-label">Lo que produzco</p>
+        <h2 class="section-title">Video profesional para <span class="accent">tu negocio</span></h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <i class="fa-solid fa-building service-icon"></i>
+            <h3>Video Institucional</h3>
+            <p>Presenta tu empresa, equipo y cultura con un video que genera confianza antes de que el cliente llame.</p>
+            <span class="service-price">Desde $1,000</span>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-quote-left service-icon"></i>
+            <h3>Testimoniales</h3>
+            <p>Clientes reales hablando de tu servicio. El formato que más convierte en landing pages y redes sociales.</p>
+            <span class="service-price">Desde $500</span>
+          </div>
+          <div class="service-card">
+            <i class="fa-brands fa-instagram service-icon"></i>
+            <h3>Reels & Contenido</h3>
+            <p>Reels profesionales para Instagram, TikTok y YouTube. Hasta 3 reels por sesión con edición y trending audio.</p>
+            <span class="service-price">Desde $150 por reel</span>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-box service-icon"></i>
+            <h3>Demo de Producto</h3>
+            <p>Muestra tu producto o servicio en acción. Video optimizado para tu sitio web y campañas de Google/Meta Ads.</p>
+            <span class="service-price">Desde $800</span>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-bullhorn service-icon"></i>
+            <h3>Campaña Publicitaria</h3>
+            <p>Video ad completo: guión, producción y 3 cortes para A/B testing en Google Ads, Meta y YouTube.</p>
+            <span class="service-price">Desde $1,500</span>
+          </div>
+          <div class="service-card service-card-cta">
+            <i class="fa-solid fa-comments service-icon"></i>
+            <h3>¿No ves lo que necesitas?</h3>
+            <p>Escríbeme — si tiene que ver con video para tu empresa, lo producimos.</p>
+            <a href="https://wa.me/17872439670?text=Hola%2C%20necesito%20video%20para%20mi%20empresa%20y%20quiero%20cotizar." target="_blank" rel="noopener" class="service-wa-btn" data-track="whatsapp">
+              <i class="fab fa-whatsapp"></i> Hablar con Marcos
+            </a>
+          </div>
+        </div>
+
+        <!-- Lo que incluye todo paquete -->
+        <div class="includes-strip">
+          <span class="includes-label">Todo paquete incluye:</span>
+          <span><i class="fa-solid fa-check"></i> Guión y dirección</span>
+          <span><i class="fa-solid fa-check"></i> Post-producción completa</span>
+          <span><i class="fa-solid fa-check"></i> Color grading</span>
+          <span><i class="fa-solid fa-check"></i> Licencia comercial</span>
+          <span><i class="fa-solid fa-check"></i> Formatos para web y RRSS</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Portafolio callout ── -->
+    <section class="portfolio-callout">
+      <div class="container">
+        <div class="callout-inner">
+          <div>
+            <p class="section-label">Trabajo real</p>
+            <h2 class="callout-title">Ve lo que he producido en Puerto Rico</h2>
+            <p class="callout-sub">Más de 13 años de video en la isla — bodas, corporativos, documentales y contenido digital.</p>
+          </div>
+          <div class="callout-actions">
+            <a href="/portafolio/video/" class="callout-btn">
+              <i class="fa-solid fa-play"></i> Ver portafolio de video
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Lead form ── -->
+    <section class="lead-section" id="cotizar">
+      <div class="container">
+        <div class="lead-grid">
+          <div class="lead-intro">
+            <p class="section-label">Cotización de Video Corporativo</p>
+            <h2 class="lead-title">Te respondo en <span class="accent">menos de 1 hora</span></h2>
+            <p class="lead-sub">Sin spam. Sin compromiso. Te contesto directo yo, no un asistente.</p>
+            <ul class="lead-trust">
+              <li><i class="fa-solid fa-check"></i> Cotización gratis</li>
+              <li><i class="fa-solid fa-check"></i> Disponible en toda Puerto Rico</li>
+              <li><i class="fa-solid fa-check"></i> Respuesta personal de Marcos</li>
+            </ul>
+          </div>
+          <form class="lead-form" id="leadForm" novalidate>
+            <div class="lead-row">
+              <input type="text" required class="lead-field" name="nombre" placeholder="Tu nombre *" autocomplete="name" />
+              <input type="tel" required class="lead-field" name="contacto" placeholder="Teléfono o WhatsApp *" autocomplete="tel" />
+            </div>
+            <input type="hidden" name="servicio" value="Videografía Corporativa" />
+            <select class="lead-field" name="tipo_video">
+              <option value="">Tipo de video (opcional)</option>
+              <option>Video institucional</option>
+              <option>Testimonial de cliente</option>
+              <option>Reels para redes sociales</option>
+              <option>Demo de producto</option>
+              <option>Campaña publicitaria</option>
+              <option>Otro</option>
+            </select>
+            <input type="text" name="empresa" class="lead-field" placeholder="Nombre de tu empresa (opcional)" />
+            <textarea class="lead-field" name="mensaje" rows="2" placeholder="Cuéntame brevemente qué necesitas (opcional)"></textarea>
+            <button type="submit" class="lead-submit" data-track="form">
+              <i class="fa-solid fa-paper-plane"></i> Pedir cotización gratis
+            </button>
+            <p class="lead-note">¿Prefieres directo? <a href="tel:+17872439670" data-track="call"><i class="fa-solid fa-phone"></i> Llamar</a> o <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20video%20corporativo." target="_blank" rel="noopener" data-track="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>.</p>
+            <p class="lead-success" id="leadSuccess" hidden>
+              <i class="fa-solid fa-circle-check"></i> Mensaje recibido. Te respondo en menos de 1 hora.
+            </p>
+            <p class="lead-error" id="leadError" hidden>
+              <i class="fa-solid fa-triangle-exclamation"></i> No pude enviar el mensaje. Escríbeme por WhatsApp al (787) 243-9670.
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Quién soy ── -->
+    <section class="meet-section">
+      <div class="container">
+        <div class="meet-grid">
+          <div class="meet-photo">
+            <img src="/marcos-photo.webp" alt="Marcos Santiago — videógrafo corporativo en Puerto Rico" loading="lazy" />
+            <div class="meet-photo-bg" aria-hidden="true"></div>
+          </div>
+          <div class="meet-text">
+            <p class="section-label">Quién produce tu video</p>
+            <h2 class="meet-title">Soy Marcos.</h2>
+            <p class="meet-bio">
+              Más de 13 años produciendo video en Puerto Rico — desde documentales hasta campañas corporativas. Trabajo desde Aibonito pero cubro toda la isla. Dirijo, grabo, edito y entrego. Un solo punto de contacto, sin intermediarios.
+            </p>
+            <div class="meet-facts">
+              <div class="meet-fact"><span class="meet-fact-num">+13</span><span class="meet-fact-label">años en video</span></div>
+              <div class="meet-fact"><span class="meet-fact-num">+24</span><span class="meet-fact-label">en diseño</span></div>
+              <div class="meet-fact"><span class="meet-fact-num">PR</span><span class="meet-fact-label">toda la isla</span></div>
+            </div>
+            <div class="meet-actions">
+              <a href="/portafolio/video/" class="meet-link">Ver portafolio de video <i class="fa-solid fa-arrow-right"></i></a>
+              <a href="/sobre-mi/" class="meet-link">Sobre Marcos <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section class="faq-section">
+      <div class="container">
+        <p class="section-label">Preguntas frecuentes</p>
+        <h2 class="section-title">Lo que me preguntan <span class="accent">sobre video corporativo</span></h2>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>¿Cuánto cuesta un video corporativo en Puerto Rico?</summary>
+            <p>Los videos corporativos completos comienzan desde $1,000 e incluyen guión, producción y post-producción. Los reels para redes sociales comienzan desde $150 por video. El precio final depende de la duración, número de locaciones y complejidad. Contáctame para cotización exacta.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Qué tipos de video producen?</summary>
+            <p>Produzco videos institucionales (quiénes somos), testimoniales de clientes, demos de producto, reels para Instagram y TikTok, videos de lanzamiento, campañas publicitarias para Google/Meta Ads, y más. Si lo necesitas, lo hacemos.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Necesito tener un guión listo?</summary>
+            <p>No. El guión y la dirección están incluidos en los paquetes. Si ya tienes un concepto o guión, perfecto — lo trabajamos juntos. Si partes de cero, te ayudo a definir el mensaje y el formato.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Cuánto tiempo tarda la entrega?</summary>
+            <p>Los reels se entregan en 48-72 horas. Los videos corporativos completos entre 1 y 3 semanas según complejidad. Si tienes fecha límite (evento, campaña, lanzamiento), coordínalo conmigo al cotizar.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Los videos incluyen derechos para uso comercial?</summary>
+            <p>Sí. Todos los videos corporativos incluyen licencia comercial completa — puedes usarlos en tu sitio web, redes sociales, anuncios pagados y cualquier material de marketing.</p>
+          </details>
+        </div>
+        <div class="faq-cta">
+          <a href="https://wa.me/17872439670?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20video%20corporativo." target="_blank" rel="noopener" class="faq-wa-btn" data-track="whatsapp">
+            <i class="fab fa-whatsapp"></i> ¿Otra pregunta? Escríbeme por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+
+  <!-- Sticky mobile bar -->
+  <div class="sticky-bar" id="stickyBar" aria-hidden="true">
+    <a href="tel:+17872439670" class="sticky-btn sticky-call" data-track="call-sticky">
+      <i class="fa-solid fa-phone"></i> Llamar
+    </a>
+    <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20video%20corporativo." target="_blank" rel="noopener" class="sticky-btn sticky-wa" data-track="whatsapp-sticky">
+      <i class="fab fa-whatsapp"></i> WhatsApp
+    </a>
+  </div>
+
+  <style>
+  .ppc-header { position: fixed; top: 0; left: 0; right: 0; z-index: 800; background: rgba(4,13,22,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 12px 0 }
+  .ppc-header-inner { display: flex; align-items: center; justify-content: space-between }
+  .ppc-logo { font-family: var(--display); font-size: .95rem; letter-spacing: 4px; color: var(--white); text-decoration: none }
+  .ppc-phone { font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); border-radius: 8px; padding: 6px 14px; transition: .15s; display: flex; align-items: center; gap: 6px }
+  .ppc-phone:hover { background: var(--accent); color: #fff }
+
+  .hero-section { position: relative; min-height: 100svh; display: flex; align-items: center; padding: 120px 0 60px; overflow: hidden }
+  .hero-video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0 }
+  .hero-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(160deg, rgba(4,13,22,.88) 45%, rgba(4,13,22,.65) 100%) }
+  .hero-content { position: relative; z-index: 2; max-width: 780px }
+  .hero-title { font-family: var(--display); font-size: clamp(3rem, 10vw, 7.5rem); line-height: .92; letter-spacing: 3px; margin: 8px 0 24px; color: var(--white) }
+  .hero-bullets { list-style: none; padding: 0; margin: 0 0 24px; display: flex; flex-direction: column; gap: 10px }
+  .hero-bullets li { display: flex; align-items: center; gap: 10px; font-size: .95rem; color: color-mix(in srgb, var(--white) 85%, transparent) }
+  .hero-bullets li i { color: #ff9f7f; width: 16px; flex-shrink: 0 }
+  .hero-price-strip { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; flex-wrap: wrap }
+  .price-badge { background: var(--accent); color: #040d16; padding: 6px 16px; border-radius: 20px; font-family: var(--mono); font-size: .72rem; letter-spacing: 1px }
+  .price-badge strong { font-size: .9rem }
+  .price-badge-alt { background: #ff9f7f }
+  .price-divider { color: var(--muted) }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px }
+  .hero-cta { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 10px; font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; font-weight: 700; transition: .15s }
+  .hero-cta-call { background: var(--white); color: #040d16 }
+  .hero-cta-call:hover { background: #ff9f7f }
+  .hero-cta-wa { background: #25d366; color: #fff }
+  .hero-cta-wa:hover { opacity: .88 }
+  .hero-cta-form { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,.25) }
+  .hero-cta-form:hover { border-color: #ff9f7f; color: #ff9f7f }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+  .meta-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: .55rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; text-decoration: none; transition: .15s }
+  .meta-pill-call { color: var(--accent); border-color: var(--accent) }
+  .meta-pill-call:hover { background: var(--accent); color: #040d16 }
+
+  /* Services */
+  .services-section { padding: 80px 0 }
+  .section-title { font-family: var(--display); font-size: clamp(1.8rem, 4vw, 3rem); margin: 8px 0 32px; color: var(--white) }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px }
+  .service-card { background: color-mix(in srgb, var(--white) 3%, transparent); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px; display: flex; flex-direction: column; gap: 8px }
+  .service-card-cta { border-color: #ff9f7f; background: color-mix(in srgb, #ff9f7f 5%, transparent) }
+  .service-icon { font-size: 1.4rem; color: #ff9f7f; margin-bottom: 4px }
+  .service-card h3 { font-family: var(--mono); font-size: .72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--white); margin: 0 }
+  .service-card p { font-size: .88rem; color: var(--muted); margin: 0; line-height: 1.55 }
+  .service-price { font-family: var(--mono); font-size: .68rem; letter-spacing: 1px; color: #ff9f7f; margin-top: auto; padding-top: 8px }
+  .service-wa-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #25d366; color: #fff; text-decoration: none; padding: 10px 16px; border-radius: 8px; font-family: var(--mono); font-size: .6rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; transition: opacity .15s; margin-top: auto }
+  .service-wa-btn:hover { opacity: .88 }
+  .includes-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 20px 24px; border-radius: 12px; background: color-mix(in srgb, var(--white) 2%, transparent); border: 1px solid var(--border) }
+  .includes-label { font-family: var(--mono); font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--white) }
+  .includes-strip span:not(.includes-label) { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: .58rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted) }
+  .includes-strip span:not(.includes-label) i { color: #25d366 }
+
+  /* Portfolio callout */
+  .portfolio-callout { padding: 40px 0 }
+  .callout-inner { background: color-mix(in srgb, #ff9f7f 6%, transparent); border: 1px solid color-mix(in srgb, #ff9f7f 30%, transparent); border-radius: 20px; padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap }
+  .callout-title { font-family: var(--display); font-size: clamp(1.5rem, 3vw, 2.5rem); margin: 8px 0 8px; color: var(--white) }
+  .callout-sub { font-size: .88rem; color: var(--muted); margin: 0 }
+  .callout-actions { flex-shrink: 0 }
+  .callout-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--white); color: #040d16; text-decoration: none; padding: 12px 24px; border-radius: 10px; font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: .15s; white-space: nowrap }
+  .callout-btn:hover { background: #ff9f7f }
+
+  /* Lead form */
+  .lead-section { padding: 80px 0; background: color-mix(in srgb, var(--white) 1.5%, transparent) }
+  .lead-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start }
+  .lead-title { font-family: var(--display); font-size: clamp(1.8rem, 4vw, 2.8rem); margin: 8px 0 12px; color: var(--white) }
+  .lead-sub { font-size: .9rem; color: var(--muted); margin: 0 0 20px }
+  .lead-trust { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px }
+  .lead-trust li { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: color-mix(in srgb, var(--white) 75%, transparent) }
+  .lead-trust li i { color: #25d366 }
+  .lead-form { background: color-mix(in srgb, var(--white) 3%, transparent); border: 1px solid var(--border); border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 12px }
+  .lead-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+  .lead-field { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: .88rem; color: var(--white); font-family: var(--body); outline: none; transition: border-color .15s; box-sizing: border-box; resize: none }
+  .lead-field:focus { border-color: #ff9f7f }
+  .lead-field::placeholder { color: var(--muted) }
+  select.lead-field option { background: var(--surface); color: var(--white) }
+  .lead-submit { background: #ff9f7f; color: #040d16; border: none; border-radius: 10px; padding: 14px; cursor: pointer; font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity .15s }
+  .lead-submit:hover { opacity: .88 }
+  .lead-note { font-size: .78rem; color: var(--muted); text-align: center; margin: 0 }
+  .lead-note a { color: var(--accent); text-decoration: none }
+  .lead-success { color: #25d366; font-size: .85rem; text-align: center; margin: 0 }
+  .lead-error { color: #ff6b6b; font-size: .85rem; text-align: center; margin: 0 }
+
+  /* Meet */
+  .meet-section { padding: 80px 0 }
+  .meet-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: center }
+  .meet-photo { position: relative }
+  .meet-photo img { width: 100%; border-radius: 20px; display: block; aspect-ratio: 4/5; object-fit: cover; position: relative; z-index: 1 }
+  .meet-photo-bg { position: absolute; inset: 12px -12px -12px 12px; background: #ff9f7f; border-radius: 20px; z-index: 0; opacity: .1 }
+  .meet-title { font-family: var(--display); font-size: clamp(2.5rem, 6vw, 5rem); margin: 8px 0 16px; color: var(--white) }
+  .meet-bio { font-size: .95rem; color: var(--muted); line-height: 1.7; margin: 0 0 20px }
+  .meet-facts { display: flex; gap: 24px; margin: 20px 0 }
+  .meet-fact { display: flex; flex-direction: column }
+  .meet-fact-num { font-family: var(--display); font-size: 2.2rem; color: #ff9f7f; line-height: 1 }
+  .meet-fact-label { font-family: var(--mono); font-size: .55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted) }
+  .meet-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px }
+  .meet-link { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: .6rem; letter-spacing: 1.5px; text-transform: uppercase; color: #ff9f7f; text-decoration: none; transition: gap .15s }
+  .meet-link:hover { gap: 12px }
+
+  /* FAQ */
+  .faq-section { padding: 80px 0 }
+  .faq-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 32px }
+  .faq-item { border: 1px solid var(--border); border-radius: 12px; background: color-mix(in srgb, var(--white) 2%, transparent); overflow: hidden }
+  .faq-item summary { padding: 18px 24px; cursor: pointer; font-size: .95rem; color: var(--white); list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; transition: color .15s }
+  .faq-item summary:hover { color: #ff9f7f }
+  .faq-item summary::after { content: '+'; font-family: var(--mono); font-size: 1rem; color: var(--muted); flex-shrink: 0; transition: transform .2s }
+  .faq-item[open] summary::after { transform: rotate(45deg) }
+  .faq-item p { padding: 0 24px 18px; font-size: .88rem; color: var(--muted); line-height: 1.65; margin: 0 }
+  .faq-cta { text-align: center }
+  .faq-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #25d366; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 10px; font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: opacity .15s }
+  .faq-wa-btn:hover { opacity: .88 }
+
+  /* Sticky bar */
+  .sticky-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 700; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: rgba(4,13,22,.96); backdrop-filter: blur(8px); border-top: 1px solid var(--border); gap: 10px }
+  .sticky-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px; border-radius: 10px; text-decoration: none; font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: opacity .15s }
+  .sticky-call { background: var(--white); color: #040d16 }
+  .sticky-wa { background: #25d366; color: #fff }
+  .sticky-call:hover, .sticky-wa:hover { opacity: .88 }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .services-grid { grid-template-columns: 1fr 1fr }
+    .callout-inner { padding: 32px }
+  }
+  @media (max-width: 768px) {
+    .services-grid { grid-template-columns: 1fr }
+    .lead-grid { grid-template-columns: 1fr }
+    .lead-row { grid-template-columns: 1fr }
+    .meet-grid { grid-template-columns: 1fr }
+    .meet-photo { max-width: 320px; margin: 0 auto }
+    .sticky-bar { display: flex }
+    main { padding-bottom: 80px }
+    .callout-inner { flex-direction: column; align-items: flex-start }
+  }
+  @media (max-width: 480px) {
+    .hero-actions { flex-direction: column }
+    .hero-cta { justify-content: center }
+    .hero-price-strip { flex-direction: column; align-items: flex-start; gap: 6px }
+    .price-divider { display: none }
+  }
+  </style>
+
+  <script is:inline>
+  (function() {
+    const form    = document.getElementById('leadForm');
+    const success = document.getElementById('leadSuccess');
+    const error   = document.getElementById('leadError');
+    if (!form) return;
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      try {
+        const r = await fetch('/ms-chat/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (!r.ok) throw new Error();
+        form.reset();
+        success.hidden = false;
+        error.hidden   = true;
+        if (typeof gtag === 'function') gtag('event', 'form_submit', { event_category: 'engagement', event_label: 'videografia-corporativa-pr' });
+      } catch {
+        error.hidden   = false;
+        success.hidden = true;
+      }
+    });
+  })();
+
+  (function() {
+    const bar = document.getElementById('stickyBar');
+    if (!bar) return;
+    let shown = false;
+    window.addEventListener('scroll', function() {
+      const past = window.scrollY > 300;
+      if (past !== shown) { shown = past; bar.style.display = past ? 'flex' : 'none'; }
+    }, { passive: true });
+  })();
+
+  document.querySelectorAll('[data-track]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      if (typeof gtag === 'function') gtag('event', 'cta_click', { event_category: 'engagement', event_label: el.dataset.track });
+    });
+  });
+  </script>
+</Base>
