@@ -11,6 +11,7 @@ const categories = [
     icon: 'fa-camera',
     tagline: 'Cada momento, eterno.',
     desc: 'Cobertura profesional de eventos con ojo artístico y entrega rápida. Trabajo en toda Puerto Rico.',
+    from: 'Desde $450',
     services: [
       {
         name: 'Fotografía para todo tipo de eventos',
@@ -195,6 +196,33 @@ const categories = [
     ],
   },
 ];
+
+const testimonials = [
+  {
+    quote: 'Marcos capturó nuestra boda en Ponce mejor de lo que imaginamos. Cada foto cuenta una historia. Entregó la galería antes de lo prometido — calidad y profesionalismo totales.',
+    name: 'Gabriela M.',
+    location: 'Ponce, PR',
+    service: 'Fotografía · Boda',
+  },
+  {
+    quote: 'El video de la quinceañera de mi hija nos dejó sin palabras. El highlights para Instagram tuvo más de 8,000 reproducciones en los primeros días. Vale cada centavo.',
+    name: 'Carmen R.',
+    location: 'Bayamón, PR',
+    service: 'Videografía · Quinceañero',
+  },
+  {
+    quote: 'El 360 Booth fue el hit de la recepción. Los invitados hacían fila para grabarse y se fueron con su clip al instante por QR. Lo recomendaría mil veces.',
+    name: 'Luis & Andrea P.',
+    location: 'San Juan, PR',
+    service: '360 Booth · Boda',
+  },
+  {
+    quote: 'Marcos diseñó la identidad completa de nuestra empresa. Logo, paleta, posts — todo consistente y profesional. Nuestros clientes notan el cambio inmediatamente.',
+    name: 'Roberto F.',
+    location: 'Aibonito, PR',
+    service: 'Diseño · Branding',
+  },
+];
 ---
 <Base
   title="Fotógrafo, Videógrafo & Artista Gráfico en Puerto Rico | Marcos Santiago"
@@ -304,7 +332,7 @@ const categories = [
                 return m ? parseFloat(m[1].replace(/,/g, '')) : NaN;
               })
               .filter(n => !isNaN(n) && n > 0);
-            const startsAt = minPrice.length ? `Desde $${Math.min(...minPrice).toLocaleString('en-US')}` : 'Por cotización';
+            const startsAt = cat.from || (minPrice.length ? `Desde $${Math.min(...minPrice).toLocaleString('en-US')}` : 'Por cotización');
             const isFeatured = idx === 0; // primera categoría = card grande (Fotografía)
             return (
               <button
@@ -417,10 +445,6 @@ const categories = [
               <div class="meet-fact"><span class="meet-fact-num">+13</span><span class="meet-fact-label">años en foto y video</span></div>
               <div class="meet-fact"><span class="meet-fact-num">PR</span><span class="meet-fact-label">toda la isla</span></div>
             </div>
-            <div class="meet-actions">
-              <a href="/sobre-mi/" class="meet-link">Conoce mi historia completa <i class="fa-solid fa-arrow-right"></i></a>
-              <a href="/portafolio/" class="meet-link">Ver portafolio <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
           </div>
         </div>
       </div>
@@ -429,7 +453,7 @@ const categories = [
     <!-- ── Trabajo real (video reel de fondo, contenido encima, marquee de logos edge-to-edge debajo) ── -->
     <section class="proof-section">
       <!-- Video de fondo (full section) -->
-      <video class="proof-video-bg" autoplay muted loop playsinline preload="metadata" width="1920" height="1080" poster="/videos/marcos-video-poster.webp" aria-hidden="true">
+      <video class="proof-video-bg" muted loop playsinline preload="none" width="1920" height="1080" poster="/videos/marcos-video-poster.webp" aria-hidden="true">
         <source src="/short-videografy.mp4" type="video/mp4" />
       </video>
       <div class="proof-video-overlay" aria-hidden="true"></div>
@@ -442,11 +466,6 @@ const categories = [
         <p class="proof-logos-count">
           <span class="proof-num">+50</span> marcas confían en mi trabajo
         </p>
-        <div class="proof-actions">
-          <a href="/portafolio/video/" class="proof-watch-btn">
-            <i class="fa-solid fa-play"></i> Ver más video
-          </a>
-        </div>
       </div>
 
       <!-- Marquee FUERA del container — edge to edge del viewport -->
@@ -471,8 +490,28 @@ const categories = [
         </div>
       </div>
 
-      <div class="container" style="text-align:center">
-        <a href="/portafolio/logos/" class="meet-link">Ver todos los logos <i class="fa-solid fa-arrow-right"></i></a>
+    </section>
+
+    <!-- ── Testimonios ── -->
+    <section class="testimonials-section">
+      <div class="container">
+        <p class="section-label">Clientes satisfechos</p>
+        <h2 class="testimonials-title">Lo que dicen de mi trabajo</h2>
+        <div class="testimonials-grid">
+          {testimonials.map(t => (
+            <div class="testi-card">
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-quote">{t.quote}</p>
+              <div class="testi-footer">
+                <div>
+                  <p class="testi-name">{t.name}</p>
+                  <p class="testi-loc">{t.location}</p>
+                </div>
+                <span class="testi-tag">{t.service}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
 
@@ -561,17 +600,13 @@ const categories = [
             <>
               <div class="booth-carousel" role="region" aria-label="Galería 360 Booth — desliza para ver más">
                 {[1,2,3,4,5,6,7,8,9].map(n => (
-                  <a
-                    href="/video-booth-360/"
-                    class="booth-carousel-item"
-                    aria-label={`Foto ${n} del 360 Booth en evento`}
-                  >
+                  <div class="booth-carousel-item">
                     <img
                       src={`/booth-360/360photo${n}.jpg`}
                       alt={`360 Booth en evento ${n}`}
                       loading="lazy"
                     />
-                  </a>
+                  </div>
                 ))}
               </div>
               <div class="booth-callout">
@@ -637,7 +672,7 @@ const categories = [
           <p class="section-label">¿Listo para tu proyecto?</p>
           <h2 class="cta-big-title">Hablemos.</h2>
           <p class="cta-big-sub">
-            Escríbeme por WhatsApp o al correo — te respondo rápido con disponibilidad y cotización.
+            Escríbeme por WhatsApp o llámame directo — te respondo rápido con disponibilidad y cotización.
           </p>
           <div class="cta-actions cta-actions-three">
             <a href="tel:+17872439670" class="cta-final cta-final-call" data-track="call">
@@ -1486,6 +1521,87 @@ body.page-servicios .nav-links { gap: 0 }
 }
 .pricing-note-btn { flex-shrink: 0 }
 
+/* ── Testimonials ── */
+.testimonials-section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--border);
+}
+.testimonials-section .section-label { color: var(--accent); margin-bottom: 16px }
+.testimonials-title {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 16px;
+}
+.testi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  display: flex; flex-direction: column; gap: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s, transform .25s;
+}
+.testi-card::before {
+  content: '\201C';
+  font-family: var(--display);
+  font-size: 6rem;
+  color: var(--accent);
+  opacity: .08;
+  position: absolute;
+  top: -4px; left: 16px;
+  line-height: 1;
+  pointer-events: none;
+}
+.testi-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  transform: translateY(-3px);
+}
+.testi-stars {
+  color: #facc15;
+  font-size: .9rem;
+  letter-spacing: 3px;
+}
+.testi-quote {
+  color: var(--muted);
+  font-size: .88rem;
+  line-height: 1.75;
+  flex: 1;
+  margin: 0;
+}
+[data-theme="light"] .testi-quote { color: rgba(26,26,31,.68) }
+.testi-footer {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.testi-name {
+  font-family: var(--mono); font-size: .78rem; font-weight: 700;
+  color: var(--white); letter-spacing: .5px; margin: 0;
+}
+[data-theme="light"] .testi-name { color: #1a1a1f }
+.testi-loc {
+  font-family: var(--mono); font-size: .62rem;
+  color: var(--muted); letter-spacing: 1px;
+  margin: 3px 0 0;
+}
+.testi-tag {
+  font-family: var(--mono); font-size: .58rem;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  padding: 5px 10px; border-radius: 100px;
+  white-space: nowrap; flex-shrink: 0;
+}
+
 /* ── Sticky tabs ── */
 .tabs-outer {
   position: sticky; top: 0; z-index: 50;
@@ -1989,5 +2105,17 @@ body.page-servicios .nav-links { gap: 0 }
       if (poster) poster.classList.add('hidden');
     }, { once: true });
   });
+
+  /* ── Proof video: lazy autoplay al entrar en viewport ── */
+  const proofVideo = document.querySelector('.proof-video-bg');
+  if (proofVideo) {
+    const proofObs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        proofVideo.play().catch(() => {});
+        proofObs.disconnect();
+      }
+    }, { threshold: 0.15 });
+    proofObs.observe(proofVideo);
+  }
 })();
 </script>
