@@ -48,16 +48,17 @@
       position: fixed; inset: 0; z-index: 1;
       display: flex; align-items: center; justify-content: center;
       padding: 24px;
+      overflow-y: auto;
     }
     .video-bg {
-      position: absolute; inset: 0;
+      position: fixed; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
       filter: brightness(0.28) saturate(1.3);
       z-index: 0;
     }
     .video-overlay {
-      position: absolute; inset: 0; z-index: 1;
+      position: fixed; inset: 0; z-index: 1;
       background: linear-gradient(to bottom,
         rgba(0,0,0,0.55) 0%,
         rgba(0,0,0,0.15) 50%,
@@ -69,13 +70,14 @@
       position: relative; z-index: 10;
       display: flex; flex-direction: column; align-items: center;
       gap: 16px;
-      padding: 44px 36px;
+      padding: 44px 32px;
       width: 100%; max-width: 400px;
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
+      border-radius: 22px;
       background: rgba(0,0,0,0);
       transform-style: preserve-3d;
       opacity: 0;
+      margin: auto;
     }
     #card.visible {
       animation: card-unfold 0.75s cubic-bezier(.16,1,.3,1) forwards;
@@ -87,10 +89,10 @@
 
     /* ── Avatar ── */
     .avatar-ring {
-      width: 96px; height: 96px;
+      width: 116px; height: 116px;
       border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: 0 0 32px rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 0 40px rgba(255,255,255,0.12), 0 0 80px rgba(255,255,255,0.05);
       overflow: hidden;
       flex-shrink: 0;
     }
@@ -106,7 +108,9 @@
       font-weight: 400;
       letter-spacing: 4px;
       text-align: center;
-      text-shadow: 0 0 20px rgba(255,255,255,0.35);
+      text-shadow:
+        0 0 20px rgba(255,255,255,0.6),
+        0 0 60px rgba(255,255,255,0.2);
       min-height: 1.5em;
     }
     .cursor {
@@ -129,11 +133,21 @@
       text-align: center;
     }
 
+    /* ── Description ── */
+    .desc {
+      font-size: 0.7rem;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.32);
+      text-align: center;
+      line-height: 1.7;
+      max-width: 28ch;
+    }
+
     /* ── Location ── */
     .location {
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.28);
+      color: rgba(255,255,255,0.25);
       display: flex; align-items: center; gap: 7px;
     }
 
@@ -144,38 +158,77 @@
       background: rgba(255,255,255,0.08);
     }
 
-    /* ── Socials ── */
-    .socials {
-      display: flex; gap: 14px;
-      flex-wrap: wrap; justify-content: center;
-    }
-    .soc {
-      width: 54px; height: 54px;
+    /* ── CTA WhatsApp principal ── */
+    .cta-wa {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%;
+      padding: 17px 24px;
       border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #fff;
-      font-size: 1.2rem;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      color: #4ade80;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
       text-decoration: none;
-      filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
+      filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.18));
       transition: transform 0.2s ease, filter 0.2s ease,
                   background 0.2s ease, border-color 0.2s ease;
     }
-    .soc:hover {
-      transform: translateY(-5px) scale(1.08);
-      background: rgba(255,255,255,0.12);
-      border-color: rgba(255,255,255,0.22);
-      filter: drop-shadow(0 0 16px rgba(255,255,255,0.65));
+    .cta-wa i { font-size: 1.1rem; }
+    .cta-wa:hover {
+      transform: translateY(-3px);
+      background: rgba(34, 197, 94, 0.2);
+      border-color: rgba(34, 197, 94, 0.5);
+      filter: drop-shadow(0 0 22px rgba(34, 197, 94, 0.45));
     }
-    .soc:active { transform: translateY(-2px) scale(1.03); }
+    .cta-wa:active { transform: translateY(-1px); }
+
+    /* ── Social grid 2×2 con labels ── */
+    .socials {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+    }
+    .soc {
+      border-radius: 14px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 8px;
+      padding: 20px 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 1.25rem;
+      text-decoration: none;
+      filter: drop-shadow(0 0 4px rgba(255,255,255,0.15));
+      transition: transform 0.2s ease, filter 0.2s ease,
+                  background 0.2s ease, border-color 0.2s ease;
+    }
+    .soc span {
+      font-size: 0.55rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      transition: color 0.2s ease;
+    }
+    .soc:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+      filter: drop-shadow(0 0 18px rgba(255,255,255,0.6));
+    }
+    .soc:hover span { color: rgba(255,255,255,0.85); }
+    .soc:active { transform: translateY(-1px); }
 
     /* ── Footer label ── */
     .page-label {
-      font-size: 0.56rem;
+      font-size: 0.54rem;
       letter-spacing: 2.5px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.15);
     }
 
     /* ── Particles canvas ── */
@@ -184,9 +237,15 @@
       pointer-events: none; z-index: 150;
     }
 
-    /* Touch devices: disable parallax transition */
+    /* Touch: disable parallax */
     @media (hover: none) {
       #card { transition: none !important; }
+    }
+
+    /* Scroll en mobile si el card es más alto que la pantalla */
+    @media (max-height: 700px) {
+      #page { align-items: flex-start; padding: 16px; }
+      #card { margin: 16px auto; }
     }
   </style>
 </head>
@@ -199,7 +258,7 @@
 
   <!-- Page -->
   <div id="page">
-    <video class="video-bg" autoplay muted loop playsinline preload="auto">
+    <video class="video-bg" id="videoBg" muted loop playsinline preload="none">
       <source src="/short-videografy.mp4" type="video/mp4" />
     </video>
     <div class="video-overlay"></div>
@@ -212,25 +271,36 @@
       <h1 class="name" id="nameEl"><span class="cursor" id="cursor"></span></h1>
 
       <p class="tagline">Fotógrafo · Videógrafo · Diseñador</p>
+      <p class="desc">Disponible para tu próximo proyecto.</p>
       <p class="location"><i class="fa-solid fa-location-dot"></i> Aibonito, Puerto Rico</p>
 
       <div class="divider"></div>
+
+      <a class="cta-wa"
+         href="https://wa.me/17872439670?text=Hola%2C+me+interesa+cotizar+un+proyecto."
+         target="_blank" rel="noopener">
+        <i class="fab fa-whatsapp"></i> Cotiza tu proyecto
+      </a>
 
       <div class="socials">
         <a class="soc" href="https://wa.me/17872439670?text=Hola%2C+me+interesa+cotizar+un+proyecto."
            target="_blank" rel="noopener" aria-label="WhatsApp">
           <i class="fab fa-whatsapp"></i>
+          <span>WhatsApp</span>
         </a>
         <a class="soc" href="https://instagram.com/marcosstgo"
            target="_blank" rel="noopener" aria-label="Instagram">
           <i class="fab fa-instagram"></i>
+          <span>Instagram</span>
         </a>
         <a class="soc" href="https://youtube.com/marcosstgo"
            target="_blank" rel="noopener" aria-label="YouTube">
           <i class="fab fa-youtube"></i>
+          <span>YouTube</span>
         </a>
         <a class="soc" href="/portafolio/" aria-label="Portafolio">
           <i class="fa-solid fa-briefcase"></i>
+          <span>Portafolio</span>
         </a>
       </div>
 
@@ -243,15 +313,18 @@
 
   <script is:inline>
   (function () {
-    const intro  = document.getElementById('intro');
-    const card   = document.getElementById('card');
-    const nameEl = document.getElementById('nameEl');
-    const cursor = document.getElementById('cursor');
+    const intro   = document.getElementById('intro');
+    const card    = document.getElementById('card');
+    const nameEl  = document.getElementById('nameEl');
+    const cursor  = document.getElementById('cursor');
+    const videoBg = document.getElementById('videoBg');
 
-    /* ── Intro dismiss ── */
+    /* ── Intro dismiss + lazy video ── */
     function dismiss() {
       intro.classList.add('out');
       card.classList.add('visible');
+      videoBg.load();
+      videoBg.play().catch(() => {});
       setTimeout(startTypewriter, 400);
     }
     intro.addEventListener('click',      dismiss);
