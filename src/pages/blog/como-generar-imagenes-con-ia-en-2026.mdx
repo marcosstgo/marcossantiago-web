@@ -1,0 +1,98 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Cómo Generar Imágenes con IA en 2026"
+date: "2026-06-23"
+desc: "Guía práctica para generar imágenes con inteligencia artificial en 2026: qué modelos existen, modelos dedicados vs multimodales, parámetros de tamaño y calidad, costos y consejos para mejores resultados."
+tags: ["IA", "Diseño"]
+slug: "como-generar-imagenes-con-ia-en-2026"
+---
+
+<p><strong>Por:</strong> Marcos J. Santiago Santos<br /><strong>Actualizado:</strong> junio 2026</p>
+
+<hr />
+
+<p>En 2026 generar una imagen con IA dejó de ser un truco y se volvió una herramienta de trabajo. La uso a diario en proyectos reales —desde conceptos visuales hasta cartas generadas dinámicamente en una app— y la diferencia entre un resultado mediocre y uno usable casi nunca es "el modelo": es entender cómo funciona y darle el contexto correcto.</p>
+
+<p>Esta es una guía directa, sin humo, de cómo está el panorama hoy y cómo sacarle provecho.</p>
+
+<hr />
+
+<h2>Primero: la imagen no se genera en tu computadora</h2>
+
+<p>Un error común es pensar que necesitas una PC con un GPU monstruoso. Cuando usas un servicio como OpenAI, Google o Midjourney, <strong>todo el cómputo pesado ocurre en la nube</strong>. Tu máquina solo manda el texto (el <em>prompt</em>) y recibe la imagen ya terminada.</p>
+
+<p>Esto tiene dos implicaciones prácticas:</p>
+
+<ul>
+<li>No pagas hardware: pagas <strong>por uso</strong> (por imagen generada).</li>
+<li>Puedes generar desde un celular, un servidor liviano o dentro de tu propia app sin GPU local.</li>
+</ul>
+
+<p>Solo si corres modelos <strong>open source</strong> en tu propio equipo (más abajo) entra a jugar tu GPU.</p>
+
+<hr />
+
+<h2>Modelos dedicados vs. modelos multimodales</h2>
+
+<p>Hoy hay dos formas de generar una imagen y conviene saber la diferencia:</p>
+
+<table>
+<thead>
+<tr><th>Tipo</th><th>Qué es</th><th>Cuándo usarlo</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Modelo dedicado de imagen</strong></td><td>Modelos hechos solo para generar imágenes (la familia <code>gpt-image</code> de OpenAI, Imagen de Google, etc.)</td><td>Cuando quieres la mejor calidad visual pura y control de estilo.</td></tr>
+<tr><td><strong>Modelo multimodal con herramienta de imagen</strong></td><td>Un modelo de texto avanzado (como <code>gpt-5</code> y sus versiones) que llama a una herramienta de generación de imágenes dentro de la misma petición.</td><td>Cuando necesitas que la IA <em>razone</em> con datos o referencias y luego produzca la imagen en un solo paso.</td></tr>
+</tbody>
+</table>
+
+<p>En aplicaciones, el enfoque multimodal es muy potente: le pasas texto <strong>y fotos de referencia</strong> en la misma llamada, el modelo entiende el contexto y devuelve la imagen final. Es exactamente lo que uso para generar imágenes que dependen de datos variables.</p>
+
+<hr />
+
+<h2>Los dos parámetros que más importan</h2>
+
+<p>Casi todas las APIs te dejan controlar dos cosas que afectan directamente el resultado, el tiempo y el costo:</p>
+
+<ul>
+<li><strong>Tamaño (resolución):</strong> típicamente cuadrado (<code>1024x1024</code>) o formatos vertical/horizontal. Más resolución = más detalle, pero más caro y más lento.</li>
+<li><strong>Calidad:</strong> niveles como <em>low</em>, <em>medium</em> o <em>high</em>. Para pruebas y borradores, <em>low</em> es rapidísimo y barato; sube a <em>high</em> solo para la versión final.</li>
+</ul>
+
+<p>Consejo de flujo: <strong>itera en baja calidad</strong> hasta que el prompt esté afinado, y solo entonces genera la versión final en alta. Te ahorra tiempo y dinero.</p>
+
+<hr />
+
+<h2>¿Cuánto cuesta?</h2>
+
+<p>El modelo de cobro es <strong>por imagen</strong>, y el precio sube con la resolución y la calidad. No es una suscripción de hardware: es consumo, parecido a una factura de electricidad. Para un negocio pequeño esto es ideal porque pagas solo lo que generas.</p>
+
+<p>Como los precios cambian seguido, revisa siempre el <em>pricing</em> oficial del proveedor antes de planificar un volumen alto. Una regla simple: estima cuántas imágenes finales necesitas al mes y multiplica por el costo de la calidad alta; las pruebas en baja apenas suman.</p>
+
+<hr />
+
+<h2>Cómo lograr mejores resultados</h2>
+
+<p>El modelo es bueno; lo que falla casi siempre es el prompt. Lo que me funciona:</p>
+
+<ul>
+<li><strong>Sé específico con el estilo:</strong> "foto de producto, luz suave de estudio, fondo neutro" rinde mucho más que "una foto bonita".</li>
+<li><strong>Da referencias visuales</strong> cuando el modelo lo permita: una o dos imágenes de ejemplo orientan el resultado mejor que tres párrafos de texto.</li>
+<li><strong>Describe lo que SÍ quieres,</strong> no lo que no quieres. Las negaciones ("sin texto", "sin manos raras") funcionan peor que afirmaciones claras.</li>
+<li><strong>Controla el encuadre:</strong> menciona el formato (vertical para historias, horizontal para web) desde el prompt.</li>
+<li><strong>Itera:</strong> la primera imagen casi nunca es la final. Ajusta una variable a la vez.</li>
+</ul>
+
+<hr />
+
+<h2>¿Y los modelos open source?</h2>
+
+<p>Si tienes un GPU decente y quieres control total (sin costo por imagen y sin enviar nada a la nube), existen modelos open source como <strong>Stable Diffusion</strong> y <strong>Flux</strong> que corren localmente. A cambio de la libertad, pones tú el hardware, la configuración y el mantenimiento. Para la mayoría de los proyectos, una API en la nube sale más práctica; el open source brilla cuando generas a gran volumen o necesitas privacidad total.</p>
+
+<hr />
+
+<h2>En resumen</h2>
+
+<p>Generar imágenes con IA en 2026 es accesible, barato por uso y lo suficientemente bueno para trabajo real. Lo importante no es perseguir el último modelo, sino entender el flujo: <strong>la nube hace el trabajo pesado, tú controlas tamaño y calidad, e iteras el prompt hasta que sirva.</strong> Con eso, la herramienta deja de ser un juguete y se convierte en parte de tu proceso creativo.</p>
+
+<p>¿Tienes un proyecto donde la IA visual podría ayudar? <a href="/contacto/">Hablemos</a>.</p>
