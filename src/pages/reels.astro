@@ -1,0 +1,485 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const WA = 'https://wa.me/17872439670';
+
+const packages = [
+  {
+    name: 'Reel Individual',
+    price: '175',
+    unit: 'por reel',
+    featured: false,
+    features: [
+      '1 reel de 30–60 segundos',
+      '1 locación (hasta 1.5 hrs)',
+      'Edición completa: música, subtítulos y color',
+      '1 ronda de revisión',
+      'Entrega en 3–5 días',
+    ],
+    wa: 'Hola Marcos, me interesa el Reel Individual ($175).',
+  },
+  {
+    name: 'Sesión de Contenido',
+    price: '400',
+    unit: '3 reels · $133 c/u',
+    featured: true,
+    features: [
+      'Sesión de hasta 3 horas',
+      '1 locación',
+      'Shot list incluido',
+      '3 reels editados',
+      '1 revisión por reel',
+      'Entrega en 5–7 días',
+    ],
+    wa: 'Hola Marcos, me interesa la Sesión de Contenido ($400, 3 reels).',
+  },
+  {
+    name: 'Sesión Premium',
+    price: '600',
+    unit: '5 reels · $120 c/u',
+    featured: false,
+    features: [
+      'Media jornada (hasta 4 hrs)',
+      'Hasta 2 locaciones cercanas',
+      'Mini-estrategia de contenido',
+      '5 reels editados',
+      '1 revisión por reel',
+      'Entrega en 7–10 días',
+    ],
+    wa: 'Hola Marcos, me interesa la Sesión Premium ($600, 5 reels).',
+  },
+];
+
+const plans = [
+  {
+    name: 'Plan Básico',
+    price: '500',
+    features: [
+      '4 reels mensuales (1 sesión de grabación)',
+      'Calendario de publicación',
+      'Entrega semanal',
+    ],
+    wa: 'Hola Marcos, me interesa el Plan Básico ($500/mes).',
+  },
+  {
+    name: 'Plan Pro',
+    price: '850',
+    features: [
+      '8 reels mensuales (2 sesiones de grabación)',
+      'Estrategia de contenido + adaptaciones TikTok/FB',
+      'Prioridad de entrega',
+    ],
+    wa: 'Hola Marcos, me interesa el Plan Pro ($850/mes).',
+  },
+];
+
+const addons = [
+  { label: 'Toma aérea con dron', price: '+$75' },
+  { label: 'Locación adicional', price: '+$50' },
+  { label: 'Guion elaborado', price: '+$50' },
+  { label: 'Entrega express (48 hrs)', price: '+25%' },
+  { label: 'Revisión adicional', price: '$35' },
+  { label: 'Viaje fuera de 25 millas', price: '$0.70/milla' },
+];
+---
+<Base
+  title="Tarifario de Reels en Puerto Rico — Marcos Santiago"
+  description="Precios de producción de reels profesionales para Instagram, TikTok y Facebook en Puerto Rico. Paquetes desde $175, sesiones de contenido y planes mensuales.">
+  <Nav />
+  <main>
+    <div class="container">
+
+      <!-- ── Hero ── -->
+      <section class="reels-hero">
+        <p class="section-label">Producción de Reels · Puerto Rico</p>
+        <h1 class="reels-title">TARIFARIO<br/><span class="accent">DE REELS</span></h1>
+        <p class="reels-lead">
+          Contenido vertical profesional para Instagram, TikTok y Facebook.
+          Clips de 30–60 segundos con grabación, edición, música, subtítulos y color.
+        </p>
+        <div class="reels-hero-cta">
+          <a href={`${WA}?text=${encodeURIComponent('Hola Marcos, quiero cotizar producción de reels.')}`}
+             target="_blank" rel="noopener" class="btn whatsapp">
+            <i class="fab fa-whatsapp"></i> Cotizar por WhatsApp
+          </a>
+          <a href="#planes" class="btn ghost">Ver planes mensuales</a>
+        </div>
+      </section>
+
+      <!-- ── Paquetes ── -->
+      <section class="reels-section">
+        <div class="pkg-grid">
+          {packages.map(p => (
+            <div class:list={['pkg-card', { featured: p.featured }]}>
+              {p.featured && <span class="pkg-badge">Más popular</span>}
+              <p class="pkg-name">{p.name}</p>
+              <div class="pkg-price">
+                <span class="pkg-currency">$</span>{p.price}
+              </div>
+              <p class="pkg-unit">{p.unit}</p>
+              <ul class="pkg-features">
+                {p.features.map(f => (
+                  <li><i class="fa-solid fa-check"></i><span>{f}</span></li>
+                ))}
+              </ul>
+              <a href={`${WA}?text=${encodeURIComponent(p.wa)}`}
+                 target="_blank" rel="noopener"
+                 class:list={['btn', 'pkg-btn', { primary: p.featured }]}>
+                Reservar
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ── Planes mensuales ── -->
+      <section class="reels-section" id="planes">
+        <div class="reels-head">
+          <p class="section-label">Planes Mensuales</p>
+          <h2 class="reels-h2">Contenido constante para tu marca</h2>
+          <p class="section-sub">Publicaciones cada semana con un ritmo fijo. Contrato mínimo de 3 meses.</p>
+        </div>
+        <div class="plan-grid">
+          {plans.map(pl => (
+            <div class="plan-card">
+              <div class="plan-top">
+                <p class="plan-name">{pl.name}</p>
+                <div class="plan-price"><span class="pkg-currency">$</span>{pl.price}<span class="plan-per">/mes</span></div>
+              </div>
+              <ul class="pkg-features">
+                {pl.features.map(f => (
+                  <li><i class="fa-solid fa-check"></i><span>{f}</span></li>
+                ))}
+              </ul>
+              <a href={`${WA}?text=${encodeURIComponent(pl.wa)}`}
+                 target="_blank" rel="noopener" class="btn plan-btn">
+                Empezar plan
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ── Servicios adicionales ── -->
+      <section class="reels-section">
+        <div class="reels-head">
+          <p class="section-label">Servicios Adicionales</p>
+          <h2 class="reels-h2">Añade lo que necesites</h2>
+        </div>
+        <div class="addon-grid">
+          {addons.map(a => (
+            <div class="addon-row">
+              <span class="addon-label">{a.label}</span>
+              <span class="addon-price">{a.price}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- ── Condiciones ── -->
+      <section class="reels-section">
+        <div class="reels-terms">
+          <p class="terms-title"><i class="fa-solid fa-circle-info"></i> Condiciones</p>
+          <ul class="terms-list">
+            <li>Depósito de 50% para reservar fecha · balance contra entrega del material final.</li>
+            <li>Los precios no incluyen IVU donde aplique. Cotizaciones válidas por 30 días.</li>
+            <li>Proyectos municipales y corporativos se cotizan por propuesta personalizada.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ── CTA final ── -->
+      <section class="reels-section">
+        <div class="reels-cta">
+          <div class="cta-glow"></div>
+          <p class="section-label">¿Listo para crear?</p>
+          <h2 class="reels-cta-title">Hablemos de tu contenido</h2>
+          <p class="section-sub" style="margin:0 auto 28px">
+            Cuéntame de tu marca y armamos el plan de reels que mejor te sirva.
+          </p>
+          <div class="reels-hero-cta" style="justify-content:center">
+            <a href={`${WA}?text=${encodeURIComponent('Hola Marcos, quiero cotizar producción de reels.')}`}
+               target="_blank" rel="noopener" class="btn whatsapp">
+              <i class="fab fa-whatsapp"></i> WhatsApp · 787-243-9670
+            </a>
+            <a href="mailto:hello@marcossantiago.com" class="btn ghost">
+              <i class="fa-solid fa-envelope"></i> hello@marcossantiago.com
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  main { padding-top: 76px }
+
+  /* ── Hero ── */
+  .reels-hero {
+    padding: 72px 0 48px;
+    max-width: 720px;
+  }
+  .reels-title {
+    font-family: var(--display);
+    font-size: clamp(3.2rem, 10vw, 6rem);
+    letter-spacing: 2px;
+    line-height: .9;
+    margin: 6px 0 20px;
+  }
+  .reels-title .accent { color: var(--accent) }
+  .reels-lead {
+    color: var(--muted);
+    font-size: var(--text-lg);
+    line-height: 1.7;
+    max-width: 56ch;
+    margin-bottom: 28px;
+  }
+  .reels-hero-cta { display: flex; flex-wrap: wrap; gap: 12px }
+
+  /* ── Section rhythm ── */
+  .reels-section { padding: 40px 0 }
+  .reels-head { margin-bottom: 32px; max-width: 620px }
+  .reels-h2 {
+    font-family: var(--display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  /* ── Package cards ── */
+  .pkg-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+  .pkg-card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px 26px;
+    display: flex;
+    flex-direction: column;
+    transition: transform .25s ease, border-color .25s ease;
+  }
+  .pkg-card:hover { transform: translateY(-4px); border-color: var(--border-h) }
+  .pkg-card.featured {
+    border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--accent) 8%, var(--surface)),
+      var(--surface));
+    box-shadow: 0 0 48px color-mix(in srgb, var(--accent) 14%, transparent);
+  }
+  .pkg-badge {
+    position: absolute;
+    top: -12px; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: var(--accent);
+    color: #080808;
+    padding: 5px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .pkg-name {
+    font-family: var(--mono);
+    font-size: var(--text-xs);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .pkg-price {
+    font-family: var(--display);
+    font-size: 4rem;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+  .pkg-currency {
+    font-size: 1.8rem;
+    color: var(--muted);
+    vertical-align: super;
+    margin-right: 2px;
+  }
+  .featured .pkg-price { color: var(--accent) }
+  .pkg-unit {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: var(--text-sm);
+    letter-spacing: .5px;
+    margin: 8px 0 22px;
+  }
+  .pkg-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 26px;
+    flex: 1;
+  }
+  .pkg-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--white) 85%, transparent);
+  }
+  .pkg-features i {
+    color: var(--accent);
+    font-size: .72rem;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+  .pkg-btn { justify-content: center; width: 100% }
+
+  /* ── Monthly plans ── */
+  .plan-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .plan-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 30px 28px;
+    display: flex;
+    flex-direction: column;
+  }
+  .plan-card:hover { border-color: var(--border-h) }
+  .plan-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 18px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .plan-name {
+    font-family: var(--mono);
+    font-size: var(--text-sm);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .plan-price {
+    font-family: var(--display);
+    font-size: 2.8rem;
+    line-height: 1;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .plan-per {
+    font-family: var(--mono);
+    font-size: .8rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+  .plan-btn { justify-content: center; width: 100%; margin-top: auto }
+
+  /* ── Add-ons ── */
+  .addon-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 40px;
+  }
+  .addon-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--border);
+  }
+  .addon-label { font-size: var(--text-base); color: color-mix(in srgb, var(--white) 88%, transparent) }
+  .addon-price {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: .5px;
+    white-space: nowrap;
+  }
+
+  /* ── Terms ── */
+  .reels-terms {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 26px 28px;
+  }
+  .terms-title {
+    font-family: var(--mono);
+    font-size: var(--text-xs);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .terms-title i { color: var(--accent) }
+  .terms-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .terms-list li {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    line-height: 1.6;
+    padding-left: 16px;
+    position: relative;
+  }
+  .terms-list li::before {
+    content: '·';
+    position: absolute; left: 4px;
+    color: var(--accent);
+  }
+
+  /* ── Final CTA ── */
+  .reels-cta {
+    position: relative;
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 64px 32px;
+    overflow: hidden;
+  }
+  .cta-glow {
+    position: absolute;
+    top: -40%; left: 50%; transform: translateX(-50%);
+    width: 460px; height: 460px;
+    background: radial-gradient(circle, color-mix(in srgb, var(--accent) 22%, transparent), transparent 65%);
+    pointer-events: none;
+  }
+  .reels-cta > * { position: relative }
+  .reels-cta-title {
+    font-family: var(--display);
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .pkg-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto }
+    .pkg-card.featured { order: -1 }
+  }
+  @media (max-width: 720px) {
+    .plan-grid { grid-template-columns: 1fr }
+    .addon-grid { grid-template-columns: 1fr; gap: 0 }
+    .reels-hero { padding-top: 48px }
+  }
+</style>
