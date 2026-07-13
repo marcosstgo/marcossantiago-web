@@ -287,11 +287,11 @@ const featuredProjects = [
 </Base>
 
 <style>
-/* ══ Acento cinematográfico — scoped SOLO al home ══ */
+/* ══ Acento cinematográfico monocromático — scoped SOLO al home ══ */
 .home {
-  --accent:     #f4a83a;   /* ámbar cálido */
-  --accent-2:   #ff6a3d;   /* brasa */
-  --accent-dim: rgba(244,168,58,.14);
+  --accent:     #ece7dd;   /* hueso — monocromático */
+  --accent-2:   #ece7dd;
+  --accent-dim: rgba(236,231,221,.12);
   --film:       #08080b;   /* negro de cine */
 }
 
@@ -319,11 +319,11 @@ const featuredProjects = [
     radial-gradient(120% 90% at 70% 30%, transparent 30%, rgba(8,8,11,.55) 100%),
     linear-gradient(to bottom, rgba(8,8,11,.55) 0%, rgba(8,8,11,.15) 40%, rgba(8,8,11,.85) 88%, var(--film) 100%);
 }
-/* Light leak ámbar en una esquina — el detalle de firma */
+/* Light leak neutro en una esquina — el detalle de firma */
 .hero-leak {
   position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(60% 55% at 100% 0%, color-mix(in srgb, var(--accent) 34%, transparent) 0%, transparent 60%);
-  mix-blend-mode: screen; opacity: .7;
+  background: radial-gradient(60% 55% at 100% 0%, rgba(255,255,255,.16) 0%, transparent 60%);
+  mix-blend-mode: screen; opacity: .55;
 }
 /* Barras de letterbox (widescreen) */
 .hero-bar {
@@ -348,16 +348,15 @@ const featuredProjects = [
 .hero-title {
   font-family: var(--display);
   font-size: clamp(4rem, 13vw, 11rem);
-  letter-spacing: 1px; line-height: .82;
+  letter-spacing: 1px; line-height: .88;
   margin-bottom: 26px;
   text-transform: uppercase;
 }
 .hero-title .verb {
   display: block;
-  background: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  color: #f4f1ea;
+  padding-top: .08em;               /* aire para tildes/virgulillas (Ñ, acentos) */
   transition: opacity .32s ease, transform .32s ease;
-  will-change: opacity, transform;
 }
 .hero-title .obj { display: block; color: #f4f1ea }
 .hero-desc {
@@ -568,7 +567,7 @@ const featuredProjects = [
 .contact-band {
   padding: 88px 0;
   background:
-    radial-gradient(90% 140% at 100% 0%, color-mix(in srgb, var(--accent) 12%, transparent) 0%, transparent 55%),
+    radial-gradient(90% 140% at 100% 0%, rgba(255,255,255,.05) 0%, transparent 55%),
     var(--surface);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
