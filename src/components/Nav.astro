@@ -153,12 +153,14 @@ const current = Astro.url.pathname;
   .mobile-nav {
     display: none;
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: color-mix(in srgb, var(--ink) 97%, transparent);
+    background: var(--ink);
     z-index: 99;
     visibility: hidden;
     opacity: 0;
     transition: opacity .2s, visibility .2s;
   }
+  /* Ocultar el chat flotante mientras el menú móvil está abierto */
+  :global(body.nav-open #ms-chat-widget) { display: none }
   .mobile-nav.open { visibility: visible; opacity: 1 }
   .mobile-nav-inner {
     display: flex; flex-direction: column; gap: 8px;
@@ -250,12 +252,14 @@ const current = Astro.url.pathname;
   toggle?.addEventListener('click', () => {
     const open = toggle.classList.toggle('open');
     mobileNav?.classList.toggle('open', open);
+    document.body.classList.toggle('nav-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
   });
   mobileNav?.querySelectorAll('a').forEach(a =>
     a.addEventListener('click', () => {
       toggle?.classList.remove('open');
       mobileNav.classList.remove('open');
+      document.body.classList.remove('nav-open');
       document.body.style.overflow = '';
     })
   );
