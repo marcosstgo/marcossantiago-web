@@ -47,12 +47,14 @@ const current = Astro.url.pathname;
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobileNav">
   <div class="mobile-nav-inner">
-    {links.map(l => (
-      <a href={l.href} class="mobile-nav-link">{l.icon ? <i class={l.icon}></i> : ''} {l.label}</a>
+    {links.map((l, i) => (
+      <a href={l.href} class="mobile-nav-link" style={`--i:${i}`}>
+        <span class="mnl-index">{String(i + 1).padStart(2, '0')}</span>
+        <span class="mnl-label">{l.icon ? <i class={l.icon}></i> : ''} {l.label}</span>
+        <span class="mnl-arrow">→</span>
+      </a>
     ))}
-    <a href="/contacto/" class="btn primary" style="margin-top:8px;justify-content:center">
-      Hablemos
-    </a>
+    <a href="/contacto/" class="mobile-nav-cta" style={`--i:${links.length}`}>Hablemos <span aria-hidden="true">→</span></a>
   </div>
 </div>
 
@@ -155,27 +157,72 @@ const current = Astro.url.pathname;
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background: var(--ink);
     z-index: 99;
+    overflow-y: auto;
     visibility: hidden;
     opacity: 0;
-    transition: opacity .2s, visibility .2s;
+    transition: opacity .28s ease, visibility .28s ease;
   }
   /* Ocultar el chat flotante mientras el menú móvil está abierto */
   :global(body.nav-open #ms-chat-widget) { display: none }
   .mobile-nav.open { visibility: visible; opacity: 1 }
   .mobile-nav-inner {
-    display: flex; flex-direction: column; gap: 8px;
-    padding: 100px 24px 40px;
+    display: flex; flex-direction: column;
+    padding: 92px 24px 40px;
+    min-height: 100%;
   }
+  /* Filas numeradas gigantes con entrada escalonada */
   .mobile-nav-link {
-    font-family: var(--display);
-    font-size: 2.5rem;
-    letter-spacing: 3px;
-    color: color-mix(in srgb, var(--white) 60%, transparent);
-    padding: 8px 0;
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 0;
     border-bottom: 1px solid var(--border);
-    transition: color .15s;
+    color: inherit;
+    opacity: 0; transform: translateX(-26px);
+    transition: opacity .5s cubic-bezier(.16,.8,.3,1),
+                transform .5s cubic-bezier(.16,.8,.3,1);
   }
-  .mobile-nav-link:hover { color: var(--white) }
+  .mobile-nav.open .mobile-nav-link {
+    opacity: 1; transform: none;
+    transition-delay: calc(.055s * var(--i) + .1s);
+  }
+  .mnl-index {
+    font-family: var(--mono); font-size: .7rem;
+    letter-spacing: 1px; color: var(--accent);
+    opacity: .55; width: 26px; flex-shrink: 0;
+    padding-top: .5em;
+  }
+  .mnl-label {
+    font-family: var(--display);
+    font-size: clamp(2.1rem, 9.5vw, 3rem);
+    letter-spacing: 2px; line-height: 1;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--white) 68%, transparent);
+    flex: 1; transition: color .18s, transform .18s;
+  }
+  .mnl-label i { font-size: .7em; margin-right: 6px }
+  .mnl-arrow {
+    font-size: 1.15rem; color: var(--accent);
+    opacity: 0; transform: translateX(-8px);
+    transition: opacity .2s, transform .2s;
+  }
+  .mobile-nav-link:hover .mnl-label,
+  .mobile-nav-link:active .mnl-label { color: var(--white); transform: translateX(6px) }
+  .mobile-nav-link:hover .mnl-arrow,
+  .mobile-nav-link:active .mnl-arrow { opacity: 1; transform: none }
+  .mobile-nav-cta {
+    margin-top: 28px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--accent); color: #080808;
+    font-family: var(--mono); font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase; font-size: .8rem;
+    padding: 18px; border-radius: 10px;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  .mobile-nav.open .mobile-nav-cta {
+    opacity: 1; transform: none;
+    transition-delay: calc(.055s * var(--i) + .12s);
+  }
+  .mobile-nav-cta:hover { opacity: .9 }
 
   .theme-toggle {
     width: 34px; height: 34px;
