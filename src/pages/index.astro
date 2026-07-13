@@ -86,100 +86,72 @@ const featuredProjects = [
 
 ---
 <Base
-  title="Marcos Santiago — Artista Gráfico, Fotógrafo & Videógrafo · Aibonito, Puerto Rico"
-  description="Artista gráfico, fotógrafo y videógrafo profesional en Aibonito, Puerto Rico. Fotografía de bodas, quinceañeros, eventos, diseño gráfico, 360 Video Booth y desarrollo web."
+  title="Marcos Santiago — Fotógrafo, Videógrafo & Artista Gráfico · Aibonito, Puerto Rico"
+  description="Fotógrafo, videógrafo y artista gráfico en Aibonito, Puerto Rico. Bodas, quinceañeros, eventos, video, diseño de marca y 360 Video Booth. Toda la isla."
 >
+ <div class="home">
   <Nav />
 
-  <!-- ═══ HERO ═══ -->
+  <!-- ═══ HERO — cuadro de cine ═══ -->
   <section class="hero">
     <div class="hero-bg" aria-hidden="true">
       <video class="hero-video-bg" autoplay muted loop playsinline
              poster="/marcos-photo.webp"
              src="/hero-bg.mp4"></video>
-      <div class="hero-video-overlay"></div>
+      <div class="hero-grade"></div>
+      <div class="hero-leak"></div>
     </div>
-    <div class="container">
-      <div class="hero-inner">
 
-        <div class="hero-copy">
-          <p class="hero-from">Aibonito, Puerto Rico</p>
-          <h1 class="hero-title">
-            <span class="name">MARCOS</span>
-            <span class="last">SANTIAGO</span>
-          </h1>
-          <p class="hero-role">
-            <span class="role-dot" id="roleDot">●</span>
-            <span id="roleText">Artista Gráfico</span>
-            <span class="cursor">_</span>
-          </p>
-          <p class="hero-desc">
-            Artista gráfico, fotógrafo de bodas y eventos, videógrafo y desarrollador web. Diseño marcas, capturo momentos y construyo productos digitales — todo desde Aibonito, Puerto Rico.
-          </p>
-          <div class="hero-actions">
-            <a href="/portafolio/" class="btn primary">Ver portafolio</a>
-            <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
-              <i class="fab fa-whatsapp"></i> (787) 243-9670
-            </a>
-          </div>
-          <div class="hero-socials">
-            <a href="https://github.com/marcosstgo" target="_blank" rel="noopener" class="hero-social-link" aria-label="GitHub">
-              <i class="fab fa-github"></i>
-            </a>
-            <a href="https://www.behance.net/marcossantiago" target="_blank" rel="noopener" class="hero-social-link" aria-label="Behance">
-              <i class="fab fa-behance"></i>
-            </a>
-            <a href="https://www.instagram.com/m4rcos" target="_blank" rel="noopener" class="hero-social-link" aria-label="Instagram">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <span class="hero-social-divider"></span>
-            <span class="hero-social-label">Sígueme</span>
-          </div>
-        </div>
+    <span class="hero-bar top" aria-hidden="true"></span>
+    <span class="hero-bar bottom" aria-hidden="true"></span>
 
-        <div class="hero-visual">
-          <div class="hero-deco-num" aria-hidden="true">01</div>
-          <div class="hero-photo">
-            <img src="/marcos-photo.webp" alt="Marcos Santiago — Artista Gráfico, Fotógrafo y Videógrafo en Puerto Rico" />
-          </div>
-        </div>
-
+    <div class="container hero-inner">
+      <p class="hero-eyebrow">Marcos Santiago — Aibonito, Puerto Rico</p>
+      <h1 class="hero-title">
+        <span class="verb" id="verb">Capturo</span>
+        <span class="obj">lo que importa.</span>
+      </h1>
+      <p class="hero-desc">
+        Fotógrafo, videógrafo y artista gráfico. Bodas, quinceañeros, eventos y marcas — desde Aibonito para toda la isla.
+      </p>
+      <div class="hero-actions">
+        <a href="/portafolio/" class="btn primary">Ver mi trabajo</a>
+        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
+          <i class="fab fa-whatsapp"></i> (787) 243-9670
+        </a>
       </div>
     </div>
 
-    <div class="hero-scroll" aria-hidden="true">
-      <span class="hero-scroll-line"></span>
-      <span class="hero-scroll-txt">scroll</span>
+    <div class="hero-slate" aria-hidden="true">
+      <span>MS</span>
+      <span class="dot">·</span>
+      <span>Puerto Rico</span>
+      <span class="dot">·</span>
+      <span>desde 2001</span>
+    </div>
+    <div class="hero-socials" aria-hidden="false">
+      <a href="https://www.instagram.com/m4rcos" target="_blank" rel="noopener" class="hero-social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.behance.net/marcossantiago" target="_blank" rel="noopener" class="hero-social-link" aria-label="Behance"><i class="fab fa-behance"></i></a>
+      <a href="https://github.com/marcosstgo" target="_blank" rel="noopener" class="hero-social-link" aria-label="GitHub"><i class="fab fa-github"></i></a>
     </div>
   </section>
 
   <script>
-    const roles = [
-      { text: 'Artista Gráfico', color: '#e8c84a' },
-      { text: 'Fotógrafo',       color: '#a0c4ff' },
-      { text: 'Videógrafo',      color: '#ff9f7f' },
-      { text: 'Desarrollador',   color: '#88e0b0' },
-    ];
+    const verbs = ['Capturo', 'Diseño', 'Produzco', 'Edito'];
     let idx = 0;
-    const textEl = document.getElementById('roleText');
-    const dotEl  = document.getElementById('roleDot');
-    const roleEl = textEl?.closest('.hero-role') as HTMLElement | null;
-
-    function cycleRole() {
-      if (!textEl || !dotEl || !roleEl) return;
-      roleEl.style.opacity = '0';
-      roleEl.style.transform = 'translateY(6px)';
+    const verbEl = document.getElementById('verb');
+    function cycleVerb() {
+      if (!verbEl) return;
+      verbEl.style.opacity = '0';
+      verbEl.style.transform = 'translateY(10px)';
       setTimeout(() => {
-        idx = (idx + 1) % roles.length;
-        const r = roles[idx];
-        textEl.textContent = r.text;
-        dotEl.style.color  = r.color;
-        roleEl.style.color = r.color;
-        roleEl.style.opacity = '1';
-        roleEl.style.transform = 'translateY(0)';
-      }, 300);
+        idx = (idx + 1) % verbs.length;
+        verbEl.textContent = verbs[idx];
+        verbEl.style.opacity = '1';
+        verbEl.style.transform = 'translateY(0)';
+      }, 320);
     }
-    setInterval(cycleRole, 2800);
+    setInterval(cycleVerb, 2800);
   </script>
 
   <!-- ═══ CLIENTES ═══ -->
@@ -272,6 +244,22 @@ const featuredProjects = [
     </div>
   </section>
 
+  <!-- ═══ CONTACTO ═══ -->
+  <section class="contact-band">
+    <div class="container contact-inner">
+      <div class="contact-copy">
+        <p class="section-label">Hablemos</p>
+        <h2 class="contact-title">¿Tienes algo en mente?</h2>
+        <p class="contact-sub">Cuéntame de tu boda, tu evento o tu marca. Te respondo el mismo día.</p>
+      </div>
+      <div class="contact-actions">
+        <a href="tel:+17872439670" class="btn primary"><i class="fa-solid fa-phone"></i> (787) 243-9670</a>
+        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <a href="/contacto/" class="btn ghost">Pedir cotización →</a>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ BLOG CTA ═══ -->
   <section class="section">
     <div class="container">
@@ -295,166 +283,119 @@ const featuredProjects = [
   </section>
 
   <Footer />
+ </div>
 </Base>
 
 <style>
-/* ── HERO ── */
+/* ══ Acento cinematográfico — scoped SOLO al home ══ */
+.home {
+  --accent:     #f4a83a;   /* ámbar cálido */
+  --accent-2:   #ff6a3d;   /* brasa */
+  --accent-dim: rgba(244,168,58,.14);
+  --film:       #08080b;   /* negro de cine */
+}
+
+/* ── HERO — cuadro de cine ── */
 .hero {
   position: relative;
   min-height: 100svh;
   display: flex; align-items: center;
-  padding: 100px 0 80px;
+  padding: 120px 0 96px;
   overflow: hidden;
+  background: var(--film);
 }
-.hero-bg {
-  position: absolute; inset: 0; z-index: 0;
-  overflow: hidden;
-}
+.hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden }
 .hero-video-bg {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  filter: blur(7px) brightness(.32) saturate(1.1);
-  transform: scale(1.06);
+  filter: brightness(.42) contrast(1.08) saturate(.85);
+  transform: scale(1.04);
 }
-.hero-video-overlay {
+/* Grade cinematográfico: viñeta + oscurecido inferior para el texto */
+.hero-grade {
   position: absolute; inset: 0;
-  background: linear-gradient(to bottom,
-    rgba(8,8,12,.2) 0%,
-    rgba(8,8,12,.05) 35%,
-    rgba(8,8,12,.7) 75%,
-    rgba(8,8,12,1) 100%);
+  background:
+    radial-gradient(120% 90% at 70% 30%, transparent 30%, rgba(8,8,11,.55) 100%),
+    linear-gradient(to bottom, rgba(8,8,11,.55) 0%, rgba(8,8,11,.15) 40%, rgba(8,8,11,.85) 88%, var(--film) 100%);
 }
+/* Light leak ámbar en una esquina — el detalle de firma */
+.hero-leak {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 55% at 100% 0%, color-mix(in srgb, var(--accent) 34%, transparent) 0%, transparent 60%);
+  mix-blend-mode: screen; opacity: .7;
+}
+/* Barras de letterbox (widescreen) */
+.hero-bar {
+  position: absolute; left: 0; right: 0; height: 34px; z-index: 3;
+  background: var(--film); pointer-events: none;
+}
+.hero-bar.top { top: 0; box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 22%, transparent) }
+.hero-bar.bottom { bottom: 0; box-shadow: 0 -1px 0 color-mix(in srgb, var(--accent) 22%, transparent) }
+@media (max-width: 768px) { .hero-bar { height: 20px } }
 
 .hero-inner {
-  position: relative; z-index: 1;
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 64px; align-items: center;
+  position: relative; z-index: 2;
+  color: #f4f1ea;
+  max-width: 900px;
 }
-@media (max-width: 768px) {
-  .hero-inner { grid-template-columns: 1fr; gap: 40px }
-  .hero-visual { order: -1; max-width: 72%; margin: 0 auto }
-}
-
-/* Hero siempre tiene video oscuro — forzar texto claro en cualquier tema */
-.hero-copy { color: #f0ede8 }
-.hero-from {
-  font-family: var(--mono); font-size: .65rem;
-  letter-spacing: 3px; text-transform: uppercase;
-  color: rgba(240,237,232,.55); margin-bottom: 16px;
+.hero-eyebrow {
+  font-family: var(--mono); font-size: .68rem;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 80%, #fff);
+  margin-bottom: 22px;
 }
 .hero-title {
   font-family: var(--display);
-  font-size: clamp(4.5rem, 10vw, 9rem);
-  letter-spacing: 2px; line-height: .88;
-  margin-bottom: 24px;
+  font-size: clamp(4rem, 13vw, 11rem);
+  letter-spacing: 1px; line-height: .82;
+  margin-bottom: 26px;
+  text-transform: uppercase;
 }
-.hero-title .name { display: block }
-.hero-title .last {
+.hero-title .verb {
   display: block;
-  background: linear-gradient(135deg, var(--accent) 0%, #a855f7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  transition: opacity .32s ease, transform .32s ease;
+  will-change: opacity, transform;
 }
-
-/* Cycling role */
-.hero-role {
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: .88rem;
-  letter-spacing: 3px; text-transform: uppercase;
-  color: #e8c84a;
-  margin-bottom: 20px;
-  transition: opacity .3s ease, transform .3s ease, color .3s ease;
-}
-.role-dot { font-size: .45rem; line-height: 1 }
-.cursor { animation: blink 1s step-end infinite }
-@keyframes blink {
-  0%, 100% { opacity: 1 }
-  50%       { opacity: 0 }
-}
-
+.hero-title .obj { display: block; color: #f4f1ea }
 .hero-desc {
-  color: rgba(240,237,232,.6); font-size: var(--text-base);
-  line-height: 1.75; max-width: 48ch; margin-bottom: 32px;
+  color: rgba(244,241,234,.72); font-size: 1.15rem;
+  line-height: 1.65; max-width: 46ch; margin-bottom: 34px;
 }
-.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap }
 
-/* Socials */
+/* Film slate — abajo izquierda */
+.hero-slate {
+  position: absolute; left: 24px; bottom: 46px; z-index: 3;
+  display: flex; gap: 9px; align-items: center;
+  font-family: var(--mono); font-size: .58rem;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(244,241,234,.5);
+}
+.hero-slate .dot { color: var(--accent) }
+/* Socials — abajo derecha */
 .hero-socials {
-  display: flex; align-items: center; gap: 12px;
+  position: absolute; right: 24px; bottom: 42px; z-index: 3;
+  display: flex; align-items: center; gap: 10px;
 }
 .hero-social-link {
-  width: 34px; height: 34px;
+  width: 36px; height: 36px;
   display: flex; align-items: center; justify-content: center;
-  border: 1px solid var(--border); border-radius: 8px;
-  color: var(--muted); font-size: .9rem;
+  border: 1px solid rgba(244,241,234,.16); border-radius: 999px;
+  color: rgba(244,241,234,.7); font-size: .95rem;
   transition: .2s ease;
 }
 .hero-social-link:hover {
-  color: var(--white);
-  border-color: var(--border-h);
-  background: color-mix(in srgb, var(--white) 5%, transparent);
+  color: var(--film); background: var(--accent); border-color: var(--accent);
 }
-.hero-social-divider {
-  width: 1px; height: 16px;
-  background: var(--border);
+@media (max-width: 600px) {
+  .hero { padding: 108px 0 120px }
+  .hero-slate { left: 16px; bottom: 20px; font-size: .52rem; letter-spacing: 1.5px }
+  .hero-socials { right: 16px; bottom: 16px }
+  .hero-desc { font-size: 1.02rem }
 }
-.hero-social-label {
-  font-family: var(--mono); font-size: .55rem;
-  letter-spacing: 3px; text-transform: uppercase;
-  color: var(--muted);
-}
-
-/* Photo + deco */
-.hero-visual { position: relative }
-
-.hero-deco-num {
-  position: absolute;
-  bottom: -16px; right: -24px;
-  font-family: var(--display);
-  font-size: clamp(7rem, 14vw, 13rem);
-  letter-spacing: 4px; line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(74,108,247,.12);
-  user-select: none; pointer-events: none; z-index: 0;
-}
-.hero-photo {
-  position: relative; z-index: 1;
-  aspect-ratio: 3/4; border-radius: 16px; overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
-  box-shadow:
-    -3px 0 0 0 var(--accent),
-    0 0 80px color-mix(in srgb, var(--accent) 14%, transparent);
-}
-.hero-photo img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: top;
-  display: block;
-}
-
-/* Scroll indicator */
-.hero-scroll {
-  position: absolute; bottom: 32px; left: 50%;
-  transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  z-index: 1;
-}
-.hero-scroll-line {
-  width: 1px; height: 48px;
-  background: linear-gradient(to bottom, var(--accent), transparent);
-  animation: scrollline 2s ease-in-out infinite;
-}
-.hero-scroll-txt {
-  font-family: var(--mono); font-size: .5rem;
-  letter-spacing: 3px; text-transform: uppercase;
-  color: var(--muted);
-}
-@keyframes scrollline {
-  0%, 100% { opacity: .3; transform: scaleY(1) }
-  50%       { opacity: 1;  transform: scaleY(1.1) }
-}
-@media (max-width: 768px) { .hero-scroll { display: none } }
 
 /* ── CLIENTS ── */
 .clients-section {
@@ -622,6 +563,33 @@ const featuredProjects = [
   border: 1px solid var(--border); color: var(--muted);
 }
 .dev-arrow { font-size: 1rem; color: var(--muted); flex-shrink: 0; transition: transform .2s }
+
+/* ── CONTACTO ── */
+.contact-band {
+  padding: 88px 0;
+  background:
+    radial-gradient(90% 140% at 100% 0%, color-mix(in srgb, var(--accent) 12%, transparent) 0%, transparent 55%),
+    var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.contact-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 40px; flex-wrap: wrap;
+}
+.contact-title {
+  font-family: var(--display);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  letter-spacing: 1.5px; line-height: .95;
+  color: var(--white); margin: 6px 0 10px;
+}
+.contact-sub { color: var(--muted); font-size: 1.05rem; max-width: 42ch }
+.contact-actions { display: flex; gap: 12px; flex-wrap: wrap }
+@media (max-width: 700px) {
+  .contact-band { padding: 64px 0 }
+  .contact-actions { width: 100% }
+  .contact-actions .btn { flex: 1; justify-content: center }
+}
 
 /* ── BLOG CTA ── */
 .blog-row {
