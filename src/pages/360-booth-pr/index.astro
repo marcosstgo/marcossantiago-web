@@ -178,6 +178,20 @@ import Footer from '../../components/Footer.astro';
       </div>
     </section>
 
+    <!-- ── Testimonio ── -->
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="testi-single">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-quote">"El 360 Booth fue el hit de la recepción. Los invitados hacían fila para grabarse y se fueron con su clip al instante por QR. Lo recomendaría mil veces."</p>
+          <div class="testi-single-footer">
+            <span class="testi-name">Luis &amp; Andrea P.</span>
+            <span class="testi-loc">360 Booth · Boda · San Juan, PR</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── Lead form ── -->
     <section class="lead-section" id="cotizar">
       <div class="container">
@@ -524,6 +538,30 @@ import Footer from '../../components/Footer.astro';
   @media (max-width: 900px) {
     .packages-grid { grid-template-columns: 1fr }
   }
+  /* ── Testimonio ── */
+  .testimonials-section {
+    padding: 72px 0;
+    background: color-mix(in srgb, var(--white) 1.5%, transparent);
+  }
+  .testi-single {
+    max-width: 680px; margin: 0 auto; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 18px;
+  }
+  .testi-single .testi-stars { color: #facc15; font-size: 1rem; letter-spacing: 4px }
+  .testi-single .testi-quote {
+    font-size: clamp(1.1rem, 2.4vw, 1.5rem); line-height: 1.6;
+    color: var(--white); margin: 0; max-width: 620px;
+  }
+  .testi-single-footer { display: flex; flex-direction: column; gap: 4px }
+  .testi-single .testi-name {
+    font-family: var(--mono); font-size: .8rem; font-weight: 700;
+    color: #d946ef; letter-spacing: 1px;
+  }
+  .testi-single .testi-loc {
+    font-family: var(--mono); font-size: .62rem; color: var(--muted);
+    letter-spacing: 1.5px; text-transform: uppercase;
+  }
+
   @media (max-width: 768px) {
     .lead-grid { grid-template-columns: 1fr }
     .lead-row { grid-template-columns: 1fr }
