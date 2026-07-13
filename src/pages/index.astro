@@ -102,9 +102,6 @@ const featuredProjects = [
       <div class="hero-leak"></div>
     </div>
 
-    <span class="hero-bar top" aria-hidden="true"></span>
-    <span class="hero-bar bottom" aria-hidden="true"></span>
-
     <div class="container hero-inner">
       <p class="hero-eyebrow">Marcos Santiago — Aibonito, Puerto Rico</p>
       <h1 class="hero-title">
@@ -325,15 +322,6 @@ const featuredProjects = [
   background: radial-gradient(60% 55% at 100% 0%, rgba(255,255,255,.16) 0%, transparent 60%);
   mix-blend-mode: screen; opacity: .55;
 }
-/* Barras de letterbox (widescreen) */
-.hero-bar {
-  position: absolute; left: 0; right: 0; height: 34px; z-index: 3;
-  background: var(--film); pointer-events: none;
-}
-.hero-bar.top { top: 0; box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 22%, transparent) }
-.hero-bar.bottom { bottom: 0; box-shadow: 0 -1px 0 color-mix(in srgb, var(--accent) 22%, transparent) }
-@media (max-width: 768px) { .hero-bar { height: 20px } }
-
 .hero-inner {
   position: relative; z-index: 2;
   color: #f4f1ea;
