@@ -26,6 +26,8 @@ from pydantic import BaseModel, Field
 # ── Config ────────────────────────────────────────────────────────────────────
 REPLICATE_API_KEY = os.environ.get("REPLICATE_API_KEY", "")
 REPLICATE_MODEL   = "recraft-ai/recraft-v3-svg"
+# Estilo Recraft: "engraving" da grabado vintage premium (vector). NO usar "any" -> clipart.
+RECRAFT_STYLE     = os.environ.get("RECRAFT_STYLE", "engraving")
 
 TELEGRAM_TOKEN    = os.environ.get("MS_TELEGRAM_TOKEN", "")
 TELEGRAM_CHAT_ID  = os.environ.get("MS_TELEGRAM_CHAT_ID", "")
@@ -42,23 +44,44 @@ INDEX_PATH = DATA_DIR / "index.json"
 ADMIN_KEY  = os.environ.get("ADMIN_KEY", "")
 GALLERY_MAX = 120  # máximo de aprobados que devuelve la galería pública
 
-# ── Estilo: mapea la vibra elegida (ES) a descriptores para el prompt (EN) ──────
+# ── Estilo: la vibra elegida (ES) añade un matiz al grabado premium ─────────────
+# Todas caen bien sobre un grabado vintage; nunca "colorful/childish" (evita clipart).
 STYLE_MAP = {
-    "moderno":     "modern, sleek, minimalist, contemporary",
-    "minimalista": "ultra-minimalist, simple, clean negative space",
-    "elegante":    "elegant, refined, luxury, sophisticated, premium",
-    "divertido":   "playful, friendly, bold, colorful, energetic",
-    "clasico":     "classic, timeless, traditional, trustworthy",
-    "tecnologico": "tech, futuristic, geometric, precise",
-    "organico":    "organic, natural, hand-crafted, earthy, warm",
+    "moderno":     "clean and contemporary yet refined",
+    "minimalista": "restrained and elegant, with minimal ornamentation",
+    "elegante":    "elegant, luxurious and sophisticated",
+    "divertido":   "lively and full of character, but still tasteful",
+    "clasico":     "classic, traditional and heritage-inspired",
+    "tecnologico": "precise, sharp and modern",
+    "organico":    "natural, botanical and hand-crafted",
 }
-DEFAULT_STYLE = "moderno"
+DEFAULT_STYLE = "elegante"
 
-# Tres enfoques distintos para dar variedad real entre los 3 conceptos
+# Andamiaje compartido: fuerza calidad premium de grabado y bloquea el look clipart.
+ENGRAVING_TAIL = (
+    " Rendered as an intricate premium vintage engraving with fine cross-hatching, "
+    "delicate detailed line work and subtle shading, in the style of a high-end artisanal "
+    "craft brand — luxury, timeless and sophisticated. Monochrome black ink on a plain solid "
+    "white background, one single centered and balanced logo, clean negative space, "
+    "professional brand identity. Absolutely NOT a cartoon, NOT childish, NOT clipart, "
+    "NOT a generic flat Microsoft-clipart sticker, no photograph, no mockup, no canvas border."
+)
+
+# Tres enfoques distintos para dar variedad real entre los 3 conceptos.
+# Placeholders: {name} (negocio), {ind} (cláusula de rubro opcional), {vibe} (matiz de estilo).
 APPROACHES = [
-    ("Símbolo",  "A minimalist abstract icon symbol only — absolutely NO letters, NO words, NO text of any kind, just a single clean graphic mark"),
-    ("Wordmark", "A clean typographic wordmark logo featuring the exact text \"{name}\""),
-    ("Emblema",  "An emblem badge logo combining a simple icon with the exact text \"{name}\""),
+    ("Símbolo",
+     "A single refined engraved symbolic icon for the brand \"{name}\"{ind} — {vibe}. "
+     "One sophisticated emblematic mark that visually captures the essence of the business. "
+     "Absolutely NO text, NO letters, NO words of any kind: only the symbol."),
+    ("Wordmark",
+     "An elegant engraved wordmark logo for \"{name}\"{ind} — {vibe}. "
+     "Beautiful refined serif lettering spelling exactly \"{name}\", with tasteful engraved "
+     "flourishes and a decorative underline or ornament; typography-led, correct spelling."),
+    ("Emblema",
+     "A premium vintage engraved badge emblem for \"{name}\"{ind} — {vibe}. "
+     "An ornate circular crest that combines a symbolic engraved icon with the exact text "
+     "\"{name}\" set in elegant serif lettering, framed like a heritage seal."),
 ]
 
 app = FastAPI(title="ms-logo-service")
@@ -137,16 +160,9 @@ def clean(s: str, maxlen: int) -> str:
 
 
 def build_prompt(approach_tpl: str, name: str, industry: str, vibe: str) -> str:
-    approach = approach_tpl.format(name=name)
-    ctx = ""
-    if industry:
-        ctx = f", a {industry} brand"
-    return (
-        f"{approach} for \"{name}\"{ctx}. {vibe} aesthetic. "
-        "Flat vector logo, clean lines, professional, high contrast, "
-        "centered on a plain solid white background. "
-        "No mockup, no photograph, no realistic scene, no frame."
-    )
+    ind = f", a {industry} business" if industry else ""
+    approach = approach_tpl.format(name=name, ind=ind, vibe=vibe)
+    return approach + ENGRAVING_TAIL
 
 
 # ── Replicate: una generación SVG (serializada + reintento en 429) ──────────────
@@ -156,7 +172,7 @@ async def generate_one(label: str, prompt: str):
         "Content-Type": "application/json",
         "Prefer": "wait",
     }
-    body = {"input": {"prompt": prompt, "size": "1024x1024", "style": "any"}}
+    body = {"input": {"prompt": prompt, "size": "1024x1024", "style": RECRAFT_STYLE}}
     url = f"https://api.replicate.com/v1/models/{REPLICATE_MODEL}/predictions"
 
     async with _replicate_gate:  # una predicción a la vez en todo el proceso
