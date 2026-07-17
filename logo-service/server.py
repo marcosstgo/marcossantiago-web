@@ -11,6 +11,7 @@ Recraft solo admite ~1 predicción concurrente por cuenta -> semáforo(1) + rein
 import os
 import re
 import time
+import base64
 import asyncio
 from collections import defaultdict, deque
 
@@ -182,6 +183,35 @@ async def send_telegram(text: str):
         pass
 
 
+async def send_telegram_photo(png: bytes, caption: str):
+    """Envía el logo elegido como foto (con fallback a texto si falla)."""
+    if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID:
+        return
+    try:
+        async with httpx.AsyncClient() as c:
+            await c.post(
+                f"{TELEGRAM_API_URL}/bot{TELEGRAM_TOKEN}/sendPhoto",
+                data={"chat_id": TELEGRAM_CHAT_ID, "caption": caption, "parse_mode": "HTML"},
+                files={"photo": ("logo.png", png, "image/png")},
+                timeout=30,
+            )
+    except Exception:  # noqa: BLE001
+        await send_telegram(caption)
+
+
+def decode_data_url(data_url: str) -> bytes | None:
+    """'data:image/png;base64,....' -> bytes (con tope de tamaño)."""
+    if not data_url or "base64," not in data_url:
+        return None
+    b64 = data_url.split("base64,", 1)[1]
+    if len(b64) > 8_000_000:  # ~6MB de imagen
+        return None
+    try:
+        return base64.b64decode(b64)
+    except Exception:  # noqa: BLE001
+        return None
+
+
 # ── Modelos ─────────────────────────────────────────────────────────────────────
 class GenBody(BaseModel):
     name: str = Field(default="")
@@ -196,6 +226,8 @@ class LeadBody(BaseModel):
     business: str = Field(default="")    # negocio que escribió
     style: str = Field(default="")
     industry: str = Field(default="")
+    liked: str = Field(default="")       # concepto elegido (Símbolo/Wordmark/Emblema)
+    image: str = Field(default="")       # PNG del concepto elegido (data URL, rasterizado en el navegador)
 
 
 # ── Rutas ───────────────────────────────────────────────────────────────────────
@@ -251,6 +283,7 @@ async def lead(body: LeadBody, request: Request):
     business = clean(body.business, 60)
     style = clean(body.style, 30)
     industry = clean(body.industry, 40)
+    liked = clean(body.liked, 20)
 
     msg = (
         "🎨 <b>Nuevo lead — Generador de logos</b>\n\n"
@@ -259,7 +292,13 @@ async def lead(body: LeadBody, request: Request):
         f"<b>Negocio:</b> {business or '—'}\n"
         f"<b>Rubro:</b> {industry or '—'}\n"
         f"<b>Estilo:</b> {style or '—'}\n"
+        f"<b>Concepto que le gustó:</b> {liked or '— (no eligió)'}\n"
         f"<i>IP:</i> {ip}"
     )
-    await send_telegram(msg)
+
+    png = decode_data_url(body.image)
+    if png:
+        await send_telegram_photo(png, msg)  # el logo elegido, visible en Telegram
+    else:
+        await send_telegram(msg)
     return {"ok": True}

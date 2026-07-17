@@ -209,7 +209,8 @@ const featuredProjects = [
       <div class="ai-lead-box" id="aiLeadBox" hidden>
         <div class="ai-lead-copy">
           <h3>¿Te gustó alguno?</h3>
-          <p>Déjame tu contacto y te los envío en <strong>alta resolución, editables y refinados a mano</strong> — listos para tu marca.</p>
+          <p>Toca <strong>"Elegir este"</strong> en tu favorito, déjame tu contacto y te lo envío en <strong>alta resolución, editable y refinado a mano</strong> — listo para tu marca.</p>
+          <p class="ai-liked-hint" id="aiLikedHint" hidden>Concepto elegido: <span></span></p>
         </div>
         <form class="ai-lead-form" id="aiLeadForm">
           <input id="leadName" type="text" placeholder="Tu nombre" maxlength="60" autocomplete="name" />
@@ -236,6 +237,7 @@ const featuredProjects = [
 
       const svgStore = [null, null, null];
       let ctx = { name: '', industry: '', style: '' };
+      let picked = null;   // variant elegido por el usuario
 
       const slotMarkup = () => LABELS.map((lb, i) => (
         '<div class="ai-card" data-slot="' + i + '">' +
@@ -244,8 +246,43 @@ const featuredProjects = [
             '<a class="ai-dl" data-dl="' + i + '" hidden>SVG ↓</a>' +
           '</div>' +
           '<div class="ai-canvas"><div class="ai-skeleton"></div></div>' +
+          '<button class="ai-pick" data-pick="' + i + '" hidden>Elegir este</button>' +
         '</div>'
       )).join('');
+
+      // Rasteriza el SVG a PNG en el navegador (para mandárselo a Marcos por Telegram)
+      function svgToPng(svgStr, size) {
+        size = size || 800;
+        return new Promise((resolve) => {
+          const blob = new Blob([svgStr], { type: 'image/svg+xml' });
+          const url = URL.createObjectURL(blob);
+          const img = new Image();
+          img.onload = () => {
+            const c = document.createElement('canvas'); c.width = size; c.height = size;
+            const g = c.getContext('2d');
+            g.fillStyle = '#fff'; g.fillRect(0, 0, size, size);
+            g.drawImage(img, 0, 0, size, size);
+            URL.revokeObjectURL(url);
+            try { resolve(c.toDataURL('image/png')); } catch (e) { resolve(''); }
+          };
+          img.onerror = () => { URL.revokeObjectURL(url); resolve(''); };
+          img.src = url;
+        });
+      }
+
+      function selectVariant(i) {
+        picked = i;
+        results.querySelectorAll('.ai-card').forEach((el) => {
+          const on = +el.dataset.slot === i;
+          el.classList.toggle('selected', on);
+          const btn = el.querySelector('.ai-pick');
+          if (btn) btn.textContent = on ? '✓ Elegido' : 'Elegir este';
+        });
+        const hint = document.getElementById('aiLikedHint');
+        if (hint) { hint.hidden = false; hint.querySelector('span').textContent = LABELS[i]; }
+        const c = document.getElementById('leadContact');
+        if (c) c.focus({ preventScroll: true });
+      }
 
       async function genVariant(i) {
         const card = results.querySelector('[data-slot="' + i + '"]');
@@ -262,6 +299,7 @@ const featuredProjects = [
           svgStore[i] = data.concept.svg;
           canvas.innerHTML = data.concept.svg;
           card.querySelector('.ai-dl').hidden = false;
+          card.querySelector('.ai-pick').hidden = false;
         } catch (e) {
           card.classList.add('err');
           canvas.innerHTML = '<button class="ai-retry" data-retry="' + i + '">Reintentar</button>';
@@ -275,7 +313,9 @@ const featuredProjects = [
         goBtn.disabled = true; goBtn.textContent = 'Generando…';
         statusEl.hidden = false;
         statusEl.textContent = 'La IA está dibujando tus conceptos… (unos segundos cada uno)';
+        picked = null;
         results.hidden = false; results.innerHTML = slotMarkup();
+        const hint0 = document.getElementById('aiLikedHint'); if (hint0) hint0.hidden = true;
         leadBox.hidden = true; leadOk.hidden = true; if (leadForm) leadForm.hidden = false;
         for (let i = 0; i < 3; i++) { await genVariant(i); }
         goBtn.disabled = false; goBtn.textContent = 'Generar otra vez';
@@ -292,6 +332,8 @@ const featuredProjects = [
       results.addEventListener('click', (e) => {
         const rt = e.target.closest('[data-retry]');
         if (rt) { genVariant(+rt.dataset.retry); return; }
+        const pk = e.target.closest('[data-pick]');
+        if (pk) { selectVariant(+pk.dataset.pick); return; }
         const dl = e.target.closest('[data-dl]');
         if (dl) {
           const i = +dl.dataset.dl;
@@ -311,12 +353,18 @@ const featuredProjects = [
         if (!contact) return;
         const btn = $('leadGo');
         btn.disabled = true; btn.textContent = 'Enviando…';
+        let liked = '', image = '';
+        if (picked !== null && svgStore[picked]) {
+          liked = LABELS[picked];
+          image = await svgToPng(svgStore[picked]);
+        }
         try {
           await fetch(API + '/lead', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               contact, name: $('leadName').value.trim(),
               business: ctx.name, style: ctx.style, industry: ctx.industry,
+              liked, image,
             }),
           });
           leadForm.hidden = true; leadOk.hidden = false;
@@ -897,6 +945,8 @@ const featuredProjects = [
 }
 .ai-lead-copy p { color: var(--muted); font-size: var(--text-base); line-height: 1.6; margin-top: 6px }
 .ai-lead-copy strong { color: var(--white); font-weight: 600 }
+.ai-liked-hint { color: color-mix(in srgb, var(--accent) 85%, var(--white)); font-size: var(--text-sm); margin-top: 10px }
+.ai-liked-hint span { font-weight: 700; color: var(--white) }
 .ai-lead-form { display: flex; gap: 12px; flex-wrap: wrap }
 .ai-lead-form input {
   flex: 1; min-width: 190px; background: var(--bg);
@@ -956,4 +1006,14 @@ const featuredProjects = [
     padding: 9px 16px; border-radius: 8px; cursor: pointer; transition: .2s;
   }
   .ai-retry:hover { color: var(--white) }
+  .ai-pick {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 11px 12px; border-radius: 9px; cursor: pointer;
+    background: none; color: var(--white);
+    border: 1px solid var(--border); transition: .18s;
+  }
+  .ai-pick:hover { border-color: var(--accent); color: var(--accent) }
+  .ai-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) }
+  .ai-card.selected .ai-pick { background: var(--accent); color: #08080b; border-color: var(--accent) }
 </style>
