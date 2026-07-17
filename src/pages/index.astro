@@ -167,6 +167,166 @@ const featuredProjects = [
     </div>
   </section>
 
+  <!-- ═══ GENERADOR DE MARCA CON IA ═══ -->
+  <section class="section ai-logo" id="generador">
+    <div class="container">
+      <p class="section-label">Diseño con IA · Nuevo</p>
+      <h2 class="section-title">Mira tu logo<br>antes de llamarme</h2>
+      <p class="ai-lead">
+        Escribe el nombre de tu negocio y la inteligencia artificial te muestra
+        <strong>3 conceptos de logo al instante</strong> — vectores reales, no fotos borrosas.
+        La IA pone la chispa; yo la convierto en una marca de verdad.
+      </p>
+
+      <form class="ai-form" id="aiForm">
+        <div class="ai-field">
+          <label for="aiName">Nombre del negocio</label>
+          <input id="aiName" type="text" maxlength="40" placeholder="Ej: Café Lola" autocomplete="off" required />
+        </div>
+        <div class="ai-field">
+          <label for="aiIndustry">Rubro <span>(opcional)</span></label>
+          <input id="aiIndustry" type="text" maxlength="40" placeholder="Ej: cafetería" autocomplete="off" />
+        </div>
+        <div class="ai-field ai-field-sel">
+          <label for="aiStyle">Estilo</label>
+          <select id="aiStyle">
+            <option value="moderno">Moderno</option>
+            <option value="minimalista">Minimalista</option>
+            <option value="elegante">Elegante</option>
+            <option value="divertido">Divertido</option>
+            <option value="clasico">Clásico</option>
+            <option value="tecnologico">Tecnológico</option>
+            <option value="organico">Orgánico</option>
+          </select>
+        </div>
+        <button type="submit" class="btn primary ai-go" id="aiGo">Generar conceptos</button>
+      </form>
+
+      <p class="ai-status" id="aiStatus" hidden></p>
+
+      <div class="ai-results" id="aiResults" hidden></div>
+
+      <div class="ai-lead-box" id="aiLeadBox" hidden>
+        <div class="ai-lead-copy">
+          <h3>¿Te gustó alguno?</h3>
+          <p>Déjame tu contacto y te los envío en <strong>alta resolución, editables y refinados a mano</strong> — listos para tu marca.</p>
+        </div>
+        <form class="ai-lead-form" id="aiLeadForm">
+          <input id="leadName" type="text" placeholder="Tu nombre" maxlength="60" autocomplete="name" />
+          <input id="leadContact" type="text" placeholder="Teléfono o email" maxlength="80" autocomplete="tel" required />
+          <button type="submit" class="btn primary" id="leadGo">Quiero mis conceptos →</button>
+        </form>
+        <p class="ai-lead-ok" id="aiLeadOk" hidden>✓ ¡Listo! Te escribo hoy mismo con tus conceptos.</p>
+        <a class="ai-wa" href="https://wa.me/17872439670" target="_blank" rel="noopener">o escríbeme directo por WhatsApp →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (() => {
+      const API = '/logo-api';
+      const LABELS = ['Símbolo', 'Wordmark', 'Emblema'];
+      const $ = (id) => document.getElementById(id);
+      const form = $('aiForm');
+      if (!form) return;
+      const nameEl = $('aiName'), industryEl = $('aiIndustry'), styleEl = $('aiStyle');
+      const goBtn = $('aiGo'), statusEl = $('aiStatus'), results = $('aiResults');
+      const leadBox = $('aiLeadBox'), leadForm = $('aiLeadForm'), leadOk = $('aiLeadOk');
+      const waLink = document.querySelector('.ai-wa');
+
+      const svgStore = [null, null, null];
+      let ctx = { name: '', industry: '', style: '' };
+
+      const slotMarkup = () => LABELS.map((lb, i) => (
+        '<div class="ai-card" data-slot="' + i + '">' +
+          '<div class="ai-card-head">' +
+            '<span class="ai-card-label">' + lb + '</span>' +
+            '<a class="ai-dl" data-dl="' + i + '" hidden>SVG ↓</a>' +
+          '</div>' +
+          '<div class="ai-canvas"><div class="ai-skeleton"></div></div>' +
+        '</div>'
+      )).join('');
+
+      async function genVariant(i) {
+        const card = results.querySelector('[data-slot="' + i + '"]');
+        const canvas = card.querySelector('.ai-canvas');
+        card.classList.remove('err');
+        canvas.innerHTML = '<div class="ai-skeleton"></div>';
+        try {
+          const r = await fetch(API + '/generate', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: ctx.name, industry: ctx.industry, style: ctx.style, variant: i }),
+          });
+          const data = await r.json();
+          if (!r.ok || !data.concept || !data.concept.svg) throw new Error((data && data.message) || 'error');
+          svgStore[i] = data.concept.svg;
+          canvas.innerHTML = data.concept.svg;
+          card.querySelector('.ai-dl').hidden = false;
+        } catch (e) {
+          card.classList.add('err');
+          canvas.innerHTML = '<button class="ai-retry" data-retry="' + i + '">Reintentar</button>';
+        }
+      }
+
+      async function run() {
+        const name = nameEl.value.trim();
+        if (!name) { nameEl.focus(); return; }
+        ctx = { name, industry: industryEl.value.trim(), style: styleEl.value };
+        goBtn.disabled = true; goBtn.textContent = 'Generando…';
+        statusEl.hidden = false;
+        statusEl.textContent = 'La IA está dibujando tus conceptos… (unos segundos cada uno)';
+        results.hidden = false; results.innerHTML = slotMarkup();
+        leadBox.hidden = true; leadOk.hidden = true; if (leadForm) leadForm.hidden = false;
+        for (let i = 0; i < 3; i++) { await genVariant(i); }
+        goBtn.disabled = false; goBtn.textContent = 'Generar otra vez';
+        statusEl.textContent = 'Estos son puntos de partida — yo los perfecciono a mano hasta que queden perfectos.';
+        if (waLink) {
+          const msg = 'Hola Marcos, generé unos conceptos de logo para "' + ctx.name + '" en tu página y me gustaría trabajarlos.';
+          waLink.href = 'https://wa.me/17872439670?text=' + encodeURIComponent(msg);
+        }
+        leadBox.hidden = false;
+      }
+
+      form.addEventListener('submit', (e) => { e.preventDefault(); run(); });
+
+      results.addEventListener('click', (e) => {
+        const rt = e.target.closest('[data-retry]');
+        if (rt) { genVariant(+rt.dataset.retry); return; }
+        const dl = e.target.closest('[data-dl]');
+        if (dl) {
+          const i = +dl.dataset.dl;
+          if (!svgStore[i]) return;
+          const blob = new Blob([svgStore[i]], { type: 'image/svg+xml' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          const safe = (ctx.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')) || 'logo';
+          a.href = url; a.download = safe + '-' + LABELS[i].toLowerCase() + '.svg';
+          a.click(); URL.revokeObjectURL(url);
+        }
+      });
+
+      leadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const contact = $('leadContact').value.trim();
+        if (!contact) return;
+        const btn = $('leadGo');
+        btn.disabled = true; btn.textContent = 'Enviando…';
+        try {
+          await fetch(API + '/lead', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contact, name: $('leadName').value.trim(),
+              business: ctx.name, style: ctx.style, industry: ctx.industry,
+            }),
+          });
+          leadForm.hidden = true; leadOk.hidden = false;
+        } catch (e2) {
+          btn.disabled = false; btn.textContent = 'Quiero mis conceptos →';
+        }
+      });
+    })();
+  </script>
+
   <!-- ═══ DISCIPLINAS ═══ -->
   <section class="section">
     <div class="container">
@@ -677,4 +837,123 @@ const featuredProjects = [
   .booth-video-bg { order: -1 }
   .booth-content { padding: 24px }
 }
+
+/* ── GENERADOR DE MARCA CON IA ── */
+.ai-logo { background: var(--bg); border-top: 1px solid var(--border) }
+.ai-lead {
+  color: var(--muted); font-size: 1.08rem; line-height: 1.75;
+  max-width: 62ch; margin-top: 16px;
+}
+.ai-lead strong { color: var(--white); font-weight: 600 }
+
+.ai-form {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  margin-top: 34px; align-items: flex-end;
+}
+.ai-field { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 190px }
+.ai-field-sel { flex: 0 0 auto; min-width: 160px }
+.ai-field label {
+  font-family: var(--mono); font-size: var(--text-2xs);
+  letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+}
+.ai-field label span { text-transform: none; letter-spacing: 0; opacity: .7 }
+.ai-field input, .ai-field select {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 13px 15px; color: var(--white); font-size: 1rem;
+  font-family: inherit; transition: border-color .2s;
+}
+.ai-field input::placeholder { color: color-mix(in srgb, var(--muted) 80%, transparent) }
+.ai-field input:focus, .ai-field select:focus { outline: none; border-color: var(--accent) }
+.ai-go { min-width: 200px; height: 49px }
+@media (max-width: 700px) {
+  .ai-form { flex-direction: column; align-items: stretch }
+  .ai-field-sel { min-width: 0 }
+  .ai-go { width: 100% }
+}
+
+.ai-status {
+  font-family: var(--mono); font-size: var(--text-xs);
+  letter-spacing: .5px; color: var(--muted); margin-top: 22px; line-height: 1.6;
+}
+
+.ai-results {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 22px;
+}
+@media (max-width: 760px) { .ai-results { grid-template-columns: 1fr } }
+
+/* Nota: las tarjetas (.ai-card/.ai-canvas/…) se crean por JS con innerHTML, así que
+   NO reciben el atributo de scope de Astro. Sus estilos van en <style is:global> abajo. */
+
+.ai-lead-box {
+  margin-top: 28px; padding: 26px; border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+  display: flex; flex-direction: column; gap: 16px;
+}
+.ai-lead-copy h3 {
+  font-family: var(--display); font-size: 1.7rem;
+  letter-spacing: 1.5px; color: var(--white);
+}
+.ai-lead-copy p { color: var(--muted); font-size: var(--text-base); line-height: 1.6; margin-top: 6px }
+.ai-lead-copy strong { color: var(--white); font-weight: 600 }
+.ai-lead-form { display: flex; gap: 12px; flex-wrap: wrap }
+.ai-lead-form input {
+  flex: 1; min-width: 190px; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 13px 15px; color: var(--white); font-size: 1rem;
+}
+.ai-lead-form input:focus { outline: none; border-color: var(--accent) }
+.ai-lead-ok { color: #4ade80; font-size: var(--text-base); font-weight: 500 }
+.ai-wa {
+  font-family: var(--mono); font-size: var(--text-xs);
+  letter-spacing: 1px; color: var(--muted); transition: color .2s;
+}
+.ai-wa:hover { color: var(--white) }
+@media (max-width: 700px) {
+  .ai-lead-form { flex-direction: column }
+  .ai-lead-form .btn { width: 100% }
+}
+</style>
+
+<!-- Estilos de las tarjetas generadas por JS (innerHTML) — deben ser globales
+     porque no reciben el atributo de scope de Astro. Todo va con prefijo .ai-* -->
+<style is:global>
+  .ai-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px;
+    display: flex; flex-direction: column; gap: 12px;
+    min-width: 0;   /* evita que el SVG intrínseco reviente la columna del grid */
+  }
+  .ai-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px }
+  .ai-card-label {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
+  }
+  .ai-dl {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap;
+    color: var(--muted); cursor: pointer; transition: color .2s;
+  }
+  .ai-dl:hover { color: var(--white) }
+  .ai-canvas {
+    aspect-ratio: 1; background: #fff; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 18px; overflow: hidden;
+  }
+  /* El SVG de Recraft trae width/height="1024" — forzamos 100% del lienzo (viewBox cuadrado) */
+  .ai-canvas svg { width: 100%; height: 100%; display: block }
+  .ai-skeleton {
+    width: 100%; height: 100%; border-radius: 8px;
+    background: linear-gradient(100deg, #ececec 30%, #f7f7f7 50%, #ececec 70%);
+    background-size: 200% 100%; animation: aiShimmer 1.3s linear infinite;
+  }
+  @keyframes aiShimmer { to { background-position: -200% 0 } }
+  .ai-card.err .ai-canvas { background: var(--surface); border: 1px dashed var(--border) }
+  .ai-retry {
+    font-family: var(--mono); font-size: var(--text-xs); color: var(--muted);
+    border: 1px solid var(--border); background: none;
+    padding: 9px 16px; border-radius: 8px; cursor: pointer; transition: .2s;
+  }
+  .ai-retry:hover { color: var(--white) }
 </style>
