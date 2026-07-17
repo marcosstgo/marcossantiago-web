@@ -3,6 +3,7 @@ const links = [
   { href: '/servicios/',  label: 'Servicios' },
   { href: '/reels/',      label: 'Reels' },
   { href: '/portafolio/', label: 'Portafolio' },
+  { href: '/galeria-logos/', label: 'Galería' },
   { href: '/blog/',       label: 'Blog' },
   { href: '/sobre-mi/',   label: 'Sobre mí' },
   { href: '/contacto/',   label: 'Contacto' },
@@ -248,7 +249,7 @@ const current = Astro.url.pathname;
   }
   .shorts-mobile-btn:hover { border-color: var(--accent); color: var(--accent) }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .nav-links { display: none }
     .nav-cta { display: none }
     .nav-hamburger { display: flex }
