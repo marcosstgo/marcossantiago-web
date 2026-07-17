@@ -27,6 +27,10 @@ services:
       - REPLICATE_API_KEY=${REPLICATE_API_KEY}
       - MS_TELEGRAM_TOKEN=${MS_TELEGRAM_TOKEN}
       - MS_TELEGRAM_CHAT_ID=46377544
+      - ADMIN_KEY=${ADMIN_KEY}
+      - DATA_DIR=/data
+    volumes:
+      - /home/corillo-adm/marcossantiago-web/logo-data:/data
 
   telegram-bot-api:
     image: aiogram/telegram-bot-api:latest

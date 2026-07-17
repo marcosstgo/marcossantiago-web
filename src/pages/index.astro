@@ -177,6 +177,7 @@ const featuredProjects = [
         <strong>3 conceptos de logo al instante</strong> — vectores reales, no fotos borrosas.
         La IA pone la chispa; yo la convierto en una marca de verdad.
       </p>
+      <p class="ai-gallery-link"><a href="/galeria-logos/">Ver galería de logos ya generados →</a></p>
 
       <form class="ai-form" id="aiForm">
         <div class="ai-field">
@@ -893,6 +894,14 @@ const featuredProjects = [
   max-width: 62ch; margin-top: 16px;
 }
 .ai-lead strong { color: var(--white); font-weight: 600 }
+.ai-gallery-link { margin-top: 12px }
+.ai-gallery-link a {
+  font-family: var(--mono); font-size: var(--text-xs);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: color-mix(in srgb, var(--accent) 80%, var(--white));
+  border-bottom: 1px solid var(--border); padding-bottom: 2px; transition: .2s;
+}
+.ai-gallery-link a:hover { color: var(--white); border-color: var(--accent) }
 
 .ai-form {
   display: flex; flex-wrap: wrap; gap: 14px;

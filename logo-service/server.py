@@ -11,13 +11,16 @@ Recraft solo admite ~1 predicción concurrente por cuenta -> semáforo(1) + rein
 import os
 import re
 import time
+import json
+import uuid
 import base64
 import asyncio
+from pathlib import Path
 from collections import defaultdict, deque
 
 import httpx
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse, Response
 from pydantic import BaseModel, Field
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -31,6 +34,13 @@ TELEGRAM_API_URL  = os.environ.get("TELEGRAM_API_URL", "https://api.telegram.org
 # Límites de abuso (cada concepto cuesta dinero real). Se cuenta por concepto.
 GEN_LIMIT_PER_HOUR  = int(os.environ.get("GEN_LIMIT_PER_HOUR", "24"))  # ~8 sets de 3
 LEAD_LIMIT_PER_HOUR = int(os.environ.get("LEAD_LIMIT_PER_HOUR", "6"))
+
+# Persistencia / galería
+DATA_DIR   = Path(os.environ.get("DATA_DIR", "/data"))
+LOGOS_DIR  = DATA_DIR / "logos"
+INDEX_PATH = DATA_DIR / "index.json"
+ADMIN_KEY  = os.environ.get("ADMIN_KEY", "")
+GALLERY_MAX = 120  # máximo de aprobados que devuelve la galería pública
 
 # ── Estilo: mapea la vibra elegida (ES) a descriptores para el prompt (EN) ──────
 STYLE_MAP = {
@@ -59,6 +69,45 @@ _replicate_gate = asyncio.Semaphore(1)
 # ── Rate limit en memoria (por IP) ──────────────────────────────────────────────
 _hits = defaultdict(deque)
 _lock = asyncio.Lock()
+
+# ── Persistencia de logos (para la galería) ─────────────────────────────────────
+_index_lock = asyncio.Lock()
+try:
+    LOGOS_DIR.mkdir(parents=True, exist_ok=True)
+except Exception:  # noqa: BLE001
+    pass
+
+_ID_RE = re.compile(r"^[a-f0-9]{6,32}$")
+
+
+def _load_index() -> list:
+    try:
+        return json.loads(INDEX_PATH.read_text())
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def _save_index(items: list):
+    tmp = INDEX_PATH.with_suffix(".tmp")
+    tmp.write_text(json.dumps(items, ensure_ascii=False))
+    tmp.replace(INDEX_PATH)
+
+
+async def save_concept(business: str, industry: str, style: str, label: str, svg: str) -> str:
+    cid = uuid.uuid4().hex[:12]
+    async with _index_lock:
+        try:
+            (LOGOS_DIR / f"{cid}.svg").write_text(svg)
+            items = _load_index()
+            items.append({
+                "id": cid, "ts": int(time.time()),
+                "business": business, "industry": industry,
+                "style": style, "label": label, "approved": False,
+            })
+            _save_index(items)
+        except Exception:  # noqa: BLE001
+            return ""
+    return cid
 
 
 async def rate_ok(ip: str, bucket: str, limit: int) -> bool:
@@ -266,6 +315,7 @@ async def generate(body: GenBody, request: Request):
              "detail": concept.get("error")},
             status_code=502,
         )
+    concept["id"] = await save_concept(name, industry, style_key, label, concept["svg"])
     return {"variant": variant, "concept": concept}
 
 
@@ -302,3 +352,148 @@ async def lead(body: LeadBody, request: Request):
     else:
         await send_telegram(msg)
     return {"ok": True}
+
+
+# ── Galería pública ─────────────────────────────────────────────────────────────
+@app.get("/gallery")
+async def gallery():
+    items = _load_index()
+    ap = [i for i in items if i.get("approved")]
+    ap.sort(key=lambda x: x.get("ts", 0), reverse=True)
+    ap = ap[:GALLERY_MAX]
+    return {"logos": [
+        {"id": i["id"], "business": i["business"], "style": i["style"], "label": i["label"]}
+        for i in ap
+    ]}
+
+
+@app.get("/gallery/svg/{cid}")
+async def gallery_svg(cid: str):
+    if not _ID_RE.match(cid):
+        return Response(status_code=404)
+    f = LOGOS_DIR / f"{cid}.svg"
+    if not f.exists():
+        return Response(status_code=404)
+    return Response(f.read_text(), media_type="image/svg+xml",
+                    headers={"Cache-Control": "public, max-age=86400"})
+
+
+# ── Admin (curaduría) — gated por ADMIN_KEY ─────────────────────────────────────
+def admin_ok(key: str) -> bool:
+    return bool(ADMIN_KEY) and key == ADMIN_KEY
+
+
+@app.get("/admin/list")
+async def admin_list(key: str = ""):
+    if not admin_ok(key):
+        return JSONResponse({"error": "auth"}, status_code=403)
+    items = _load_index()
+    items.sort(key=lambda x: x.get("ts", 0), reverse=True)
+    return {"logos": items}
+
+
+@app.post("/admin/set")
+async def admin_set(key: str = "", id: str = "", approved: int = 0):
+    if not admin_ok(key):
+        return JSONResponse({"error": "auth"}, status_code=403)
+    if not _ID_RE.match(id):
+        return JSONResponse({"error": "id"}, status_code=400)
+    async with _index_lock:
+        items = _load_index()
+        for it in items:
+            if it["id"] == id:
+                it["approved"] = bool(approved)
+        _save_index(items)
+    return {"ok": True}
+
+
+@app.post("/admin/delete")
+async def admin_delete(key: str = "", id: str = ""):
+    if not admin_ok(key):
+        return JSONResponse({"error": "auth"}, status_code=403)
+    if not _ID_RE.match(id):
+        return JSONResponse({"error": "id"}, status_code=400)
+    async with _index_lock:
+        items = _load_index()
+        items = [it for it in items if it["id"] != id]
+        _save_index(items)
+    try:
+        (LOGOS_DIR / f"{id}.svg").unlink(missing_ok=True)
+    except Exception:  # noqa: BLE001
+        pass
+    return {"ok": True}
+
+
+@app.get("/admin")
+async def admin_page(key: str = ""):
+    if not admin_ok(key):
+        return HTMLResponse("<h1>403</h1><p>Falta la clave (?key=...)</p>", status_code=403)
+    return HTMLResponse(ADMIN_HTML)
+
+
+ADMIN_HTML = r"""<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Galería de logos — Admin</title>
+<style>
+:root{--bg:#0b0b0f;--card:#15151c;--bd:#26262f;--tx:#e9e9ee;--mut:#8a8a97;--acc:#ece7dd;--ok:#4ade80}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,sans-serif;padding:20px}
+h1{font-size:1.3rem;margin:0 0 4px}.sub{color:var(--mut);font-size:.85rem;margin-bottom:16px}
+.bar{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.bar button{background:var(--card);color:var(--tx);border:1px solid var(--bd);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:.85rem}
+.bar button.on{background:var(--acc);color:#111;border-color:var(--acc);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.item{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.item.appr{border-color:var(--ok);box-shadow:0 0 0 1px var(--ok)}
+.canvas{background:#fff;border-radius:8px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.canvas img{width:100%;height:100%;object-fit:contain}
+.meta{font-size:.78rem;color:var(--mut);line-height:1.4}
+.meta b{color:var(--tx)}
+.row{display:flex;gap:6px}
+.row button{flex:1;border:none;border-radius:7px;padding:8px;cursor:pointer;font-size:.78rem;font-weight:600}
+.approve{background:var(--ok);color:#062}.hide{background:#3a3a44;color:#eee}.del{background:#2a1416;color:#f88;border:1px solid #4a1d20;flex:0 0 auto;padding:8px 10px}
+.empty{color:var(--mut);padding:40px;text-align:center}
+</style></head><body>
+<h1>Galería de logos — Curaduría</h1>
+<div class="sub">Aprueba los que quieres que salgan en <b>/galeria-logos/</b>. Todo se guarda; solo los aprobados son públicos.</div>
+<div class="bar">
+  <button data-f="all" class="on">Todos (<span id="cAll">0</span>)</button>
+  <button data-f="pending">Pendientes (<span id="cPen">0</span>)</button>
+  <button data-f="approved">Aprobados (<span id="cApp">0</span>)</button>
+</div>
+<div class="grid" id="grid"></div>
+<script>
+var KEY=new URLSearchParams(location.search).get('key')||'';
+var FILTER='all';var DATA=[];
+function esc(s){return (s||'').replace(/[<>&]/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;'}[c]})}
+function when(ts){var d=new Date(ts*1000);return d.toLocaleDateString('es-PR')+' '+d.toLocaleTimeString('es-PR',{hour:'2-digit',minute:'2-digit'})}
+async function load(){
+  var r=await fetch('/logo-api/admin/list?key='+encodeURIComponent(KEY));
+  if(!r.ok){document.getElementById('grid').innerHTML='<div class=empty>Clave inválida.</div>';return}
+  DATA=(await r.json()).logos||[];render()
+}
+function render(){
+  var app=DATA.filter(function(x){return x.approved}).length;
+  document.getElementById('cAll').textContent=DATA.length;
+  document.getElementById('cApp').textContent=app;
+  document.getElementById('cPen').textContent=DATA.length-app;
+  var list=DATA.filter(function(x){return FILTER==='all'?true:FILTER==='approved'?x.approved:!x.approved});
+  var g=document.getElementById('grid');
+  if(!list.length){g.innerHTML='<div class=empty>Nada aquí todavía.</div>';return}
+  g.innerHTML=list.map(function(x){return ''+
+    '<div class="item'+(x.approved?' appr':'')+'">'+
+      '<div class="canvas"><img loading="lazy" src="/logo-api/gallery/svg/'+x.id+'"></div>'+
+      '<div class="meta"><b>'+esc(x.business)+'</b><br>'+esc(x.label)+' · '+esc(x.style)+'<br>'+when(x.ts)+'</div>'+
+      '<div class="row">'+
+        (x.approved
+          ? '<button class="hide" onclick="setA(\''+x.id+'\',0)">Ocultar</button>'
+          : '<button class="approve" onclick="setA(\''+x.id+'\',1)">Aprobar</button>')+
+        '<button class="del" onclick="del(\''+x.id+'\')">🗑</button>'+
+      '</div>'+
+    '</div>'}).join('')
+}
+async function setA(id,a){await fetch('/logo-api/admin/set?key='+encodeURIComponent(KEY)+'&id='+id+'&approved='+a,{method:'POST'});var it=DATA.find(function(x){return x.id===id});if(it)it.approved=!!a;render()}
+async function del(id){if(!confirm('¿Borrar este logo?'))return;await fetch('/logo-api/admin/delete?key='+encodeURIComponent(KEY)+'&id='+id,{method:'POST'});DATA=DATA.filter(function(x){return x.id!==id});render()}
+document.querySelectorAll('.bar button').forEach(function(b){b.onclick=function(){FILTER=b.dataset.f;document.querySelectorAll('.bar button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');render()}});
+load();
+</script></body></html>"""

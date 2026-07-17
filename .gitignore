@@ -29,3 +29,6 @@ public/short-videografy.mp4
 public/shorts/*.mp4
 public/logos-home/Fase1/
 public/logos-home/Fase1 V2/
+
+# logos generados por usuarios (galería) — no versionar
+logo-data/
