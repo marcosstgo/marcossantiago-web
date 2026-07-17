@@ -244,7 +244,6 @@ const featuredProjects = [
         '<div class="ai-card" data-slot="' + i + '">' +
           '<div class="ai-card-head">' +
             '<span class="ai-card-label">' + lb + '</span>' +
-            '<a class="ai-dl" data-dl="' + i + '" hidden>SVG ↓</a>' +
           '</div>' +
           '<div class="ai-canvas"><div class="ai-skeleton"></div></div>' +
           '<button class="ai-pick" data-pick="' + i + '" hidden>Elegir este</button>' +
@@ -299,7 +298,6 @@ const featuredProjects = [
           if (!r.ok || !data.concept || !data.concept.svg) throw new Error((data && data.message) || 'error');
           svgStore[i] = data.concept.svg;
           canvas.innerHTML = data.concept.svg;
-          card.querySelector('.ai-dl').hidden = false;
           card.querySelector('.ai-pick').hidden = false;
         } catch (e) {
           card.classList.add('err');
@@ -335,17 +333,6 @@ const featuredProjects = [
         if (rt) { genVariant(+rt.dataset.retry); return; }
         const pk = e.target.closest('[data-pick]');
         if (pk) { selectVariant(+pk.dataset.pick); return; }
-        const dl = e.target.closest('[data-dl]');
-        if (dl) {
-          const i = +dl.dataset.dl;
-          if (!svgStore[i]) return;
-          const blob = new Blob([svgStore[i]], { type: 'image/svg+xml' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          const safe = (ctx.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')) || 'logo';
-          a.href = url; a.download = safe + '-' + LABELS[i].toLowerCase() + '.svg';
-          a.click(); URL.revokeObjectURL(url);
-        }
       });
 
       leadForm.addEventListener('submit', async (e) => {
@@ -989,12 +976,6 @@ const featuredProjects = [
     font-family: var(--mono); font-size: var(--text-2xs);
     letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
   }
-  .ai-dl {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap;
-    color: var(--muted); cursor: pointer; transition: color .2s;
-  }
-  .ai-dl:hover { color: var(--white) }
   .ai-canvas {
     aspect-ratio: 1; background: #fff; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;

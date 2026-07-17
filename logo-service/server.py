@@ -452,6 +452,8 @@ h1{font-size:1.3rem;margin:0 0 4px}.sub{color:var(--mut);font-size:.85rem;margin
 .row{display:flex;gap:6px}
 .row button{flex:1;border:none;border-radius:7px;padding:8px;cursor:pointer;font-size:.78rem;font-weight:600}
 .approve{background:var(--ok);color:#062}.hide{background:#3a3a44;color:#eee}.del{background:#2a1416;color:#f88;border:1px solid #4a1d20;flex:0 0 auto;padding:8px 10px}
+.dlbtn{display:block;text-align:center;text-decoration:none;background:#182430;color:#9cc4ff;border:1px solid #29405a;border-radius:7px;padding:8px;font-size:.78rem;font-weight:600}
+.dlbtn:hover{background:#1e2f40}
 .empty{color:var(--mut);padding:40px;text-align:center}
 </style></head><body>
 <h1>Galería de logos — Curaduría</h1>
@@ -484,6 +486,7 @@ function render(){
     '<div class="item'+(x.approved?' appr':'')+'">'+
       '<div class="canvas"><img loading="lazy" src="/logo-api/gallery/svg/'+x.id+'"></div>'+
       '<div class="meta"><b>'+esc(x.business)+'</b><br>'+esc(x.label)+' · '+esc(x.style)+'<br>'+when(x.ts)+'</div>'+
+      '<a class="dlbtn" href="/logo-api/gallery/svg/'+x.id+'" download="'+esc((x.business||'logo')+'-'+x.label)+'.svg">Descargar SVG &#8595;</a>'+
       '<div class="row">'+
         (x.approved
           ? '<button class="hide" onclick="setA(\''+x.id+'\',0)">Ocultar</button>'
