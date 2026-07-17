@@ -15,7 +15,7 @@ import Footer from '../components/Footer.astro';
       <p class="gal-eyebrow">Diseño con IA · Galería</p>
       <h1 class="gal-title">Galería de logos<br>generados con IA</h1>
       <p class="gal-lead">
-        Estos son conceptos que la IA generó en esta página — <strong>vectores reales</strong>, curados por mí.
+        Estos son conceptos que la IA generó en esta página — <strong>limpios y profesionales</strong>, curados por mí.
         Úsalos de inspiración para tu marca. ¿Ves el estilo que buscas?
         Genera el tuyo gratis y yo lo <strong>perfecciono a mano</strong>.
       </p>
@@ -68,7 +68,7 @@ import Footer from '../components/Footer.astro';
         status.hidden = true;
         grid.innerHTML = logos.map((l) => (
           '<a class="gal-card" href="/#generador" title="Genera el tuyo">' +
-            '<div class="gal-canvas"><img loading="lazy" alt="Concepto de logo" src="/logo-api/gallery/svg/' + l.id + '"></div>' +
+            '<div class="gal-canvas"><img loading="lazy" alt="Concepto de logo" src="/logo-api/img/' + l.id + '"></div>' +
             '<div class="gal-meta">' +
               '<span class="gal-name">' + esc(l.business) + '</span>' +
               '<span class="gal-tag">' + esc(l.label) + ' · ' + esc(STYLES[l.style] || l.style) + '</span>' +

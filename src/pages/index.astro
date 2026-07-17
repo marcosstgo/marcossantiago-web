@@ -174,7 +174,7 @@ const featuredProjects = [
       <h2 class="section-title">Mira tu logo<br>antes de llamarme</h2>
       <p class="ai-lead">
         Escribe el nombre de tu negocio y la inteligencia artificial te muestra
-        <strong>3 conceptos de logo al instante</strong> — vectores reales, no fotos borrosas.
+        <strong>3 conceptos de logo al instante</strong> — limpios y profesionales.
         La IA pone la chispa; yo la convierto en una marca de verdad.
       </p>
       <p class="ai-gallery-link"><a href="/galeria-logos/">Ver galería de logos ya generados →</a></p>
@@ -227,7 +227,7 @@ const featuredProjects = [
   <script>
     (() => {
       const API = '/logo-api';
-      const LABELS = ['Símbolo', 'Wordmark', 'Emblema'];
+      const LABELS = ['Símbolo', 'Wordmark', 'Combinado'];
       const $ = (id) => document.getElementById(id);
       const form = $('aiForm');
       if (!form) return;
@@ -236,7 +236,7 @@ const featuredProjects = [
       const leadBox = $('aiLeadBox'), leadForm = $('aiLeadForm'), leadOk = $('aiLeadOk');
       const waLink = document.querySelector('.ai-wa');
 
-      const svgStore = [null, null, null];
+      const conceptStore = [null, null, null];   // {id, url} por variant
       let ctx = { name: '', industry: '', style: '' };
       let picked = null;   // variant elegido por el usuario
 
@@ -249,26 +249,6 @@ const featuredProjects = [
           '<button class="ai-pick" data-pick="' + i + '" hidden>Elegir este</button>' +
         '</div>'
       )).join('');
-
-      // Rasteriza el SVG a PNG en el navegador (para mandárselo a Marcos por Telegram)
-      function svgToPng(svgStr, size) {
-        size = size || 800;
-        return new Promise((resolve) => {
-          const blob = new Blob([svgStr], { type: 'image/svg+xml' });
-          const url = URL.createObjectURL(blob);
-          const img = new Image();
-          img.onload = () => {
-            const c = document.createElement('canvas'); c.width = size; c.height = size;
-            const g = c.getContext('2d');
-            g.fillStyle = '#fff'; g.fillRect(0, 0, size, size);
-            g.drawImage(img, 0, 0, size, size);
-            URL.revokeObjectURL(url);
-            try { resolve(c.toDataURL('image/png')); } catch (e) { resolve(''); }
-          };
-          img.onerror = () => { URL.revokeObjectURL(url); resolve(''); };
-          img.src = url;
-        });
-      }
 
       function selectVariant(i) {
         picked = i;
@@ -295,9 +275,9 @@ const featuredProjects = [
             body: JSON.stringify({ name: ctx.name, industry: ctx.industry, style: ctx.style, variant: i }),
           });
           const data = await r.json();
-          if (!r.ok || !data.concept || !data.concept.svg) throw new Error((data && data.message) || 'error');
-          svgStore[i] = data.concept.svg;
-          canvas.innerHTML = data.concept.svg;
+          if (!r.ok || !data.concept || !data.concept.url) throw new Error((data && data.message) || 'error');
+          conceptStore[i] = { id: data.concept.id, url: data.concept.url };
+          canvas.innerHTML = '<img src="' + data.concept.url + '" alt="Concepto de logo">';
           card.querySelector('.ai-pick').hidden = false;
         } catch (e) {
           card.classList.add('err');
@@ -341,10 +321,10 @@ const featuredProjects = [
         if (!contact) return;
         const btn = $('leadGo');
         btn.disabled = true; btn.textContent = 'Enviando…';
-        let liked = '', image = '';
-        if (picked !== null && svgStore[picked]) {
+        let liked = '', likedId = '';
+        if (picked !== null && conceptStore[picked]) {
           liked = LABELS[picked];
-          image = await svgToPng(svgStore[picked]);
+          likedId = conceptStore[picked].id;
         }
         try {
           await fetch(API + '/lead', {
@@ -352,7 +332,7 @@ const featuredProjects = [
             body: JSON.stringify({
               contact, name: $('leadName').value.trim(),
               business: ctx.name, style: ctx.style, industry: ctx.industry,
-              liked, image,
+              liked, liked_id: likedId,
             }),
           });
           leadForm.hidden = true; leadOk.hidden = false;
@@ -983,6 +963,7 @@ const featuredProjects = [
   }
   /* El SVG de Recraft trae width/height="1024" — forzamos 100% del lienzo (viewBox cuadrado) */
   .ai-canvas svg { width: 100%; height: 100%; display: block }
+  .ai-canvas img { width: 100%; height: 100%; object-fit: contain; display: block }
   .ai-skeleton {
     width: 100%; height: 100%; border-radius: 8px;
     background: linear-gradient(100deg, #ececec 30%, #f7f7f7 50%, #ececec 70%);

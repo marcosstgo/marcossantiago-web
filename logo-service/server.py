@@ -1,33 +1,37 @@
 """
 logo-service — generador de conceptos de logo para el home de marcossantiago.com
 
-POST /generate  { name, industry, style, variant }  -> UN concepto SVG (Recraft V3 SVG vía Replicate)
-POST /lead      { contact, name, business, ... }     -> notifica a Marcos por Telegram
+POST /generate  { name, industry, style, variant }  -> UN concepto (PNG, Ideogram v3)
+POST /lead      { contact, name, business, liked, liked_id }  -> Telegram (con la imagen elegida)
+GET  /gallery                 -> aprobados (metadata)
+GET  /img/{id}                -> PNG del concepto
+GET  /admin[/list|/set|/delete]  (gated por ADMIN_KEY)
 GET  /health
 
-El frontend pide los 3 variants en secuencia (0,1,2) y los va mostrando según llegan.
-Recraft solo admite ~1 predicción concurrente por cuenta -> semáforo(1) + reintento en 429.
+Ideogram admite ~1 predicción concurrente -> semáforo(1) + reintento en 429.
+El frontend pide los 3 variants en secuencia y los muestra según llegan.
 """
 import os
 import re
+import io
 import time
 import json
 import uuid
-import base64
 import asyncio
 from pathlib import Path
 from collections import defaultdict, deque
 
 import httpx
+import numpy as np
+from PIL import Image
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, HTMLResponse, Response
 from pydantic import BaseModel, Field
 
 # ── Config ────────────────────────────────────────────────────────────────────
 REPLICATE_API_KEY = os.environ.get("REPLICATE_API_KEY", "")
-REPLICATE_MODEL   = "recraft-ai/recraft-v3-svg"
-# Estilo Recraft: "engraving" da grabado vintage premium (vector). NO usar "any" -> clipart.
-RECRAFT_STYLE     = os.environ.get("RECRAFT_STYLE", "engraving")
+# Ideogram v3: mejor tipografía y logos limpios/minimalistas (PNG). style_type "Design".
+IMAGE_MODEL = os.environ.get("IMAGE_MODEL", "ideogram-ai/ideogram-v3-turbo")
 
 TELEGRAM_TOKEN    = os.environ.get("MS_TELEGRAM_TOKEN", "")
 TELEGRAM_CHAT_ID  = os.environ.get("MS_TELEGRAM_CHAT_ID", "")
@@ -42,51 +46,48 @@ DATA_DIR   = Path(os.environ.get("DATA_DIR", "/data"))
 LOGOS_DIR  = DATA_DIR / "logos"
 INDEX_PATH = DATA_DIR / "index.json"
 ADMIN_KEY  = os.environ.get("ADMIN_KEY", "")
-GALLERY_MAX = 120  # máximo de aprobados que devuelve la galería pública
+GALLERY_MAX = 120
 
-# ── Estilo: la vibra elegida (ES) añade un matiz al grabado premium ─────────────
-# Todas caen bien sobre un grabado vintage; nunca "colorful/childish" (evita clipart).
+# ── Estilo: la vibra elegida (ES) añade un matiz al logo limpio ─────────────────
 STYLE_MAP = {
-    "moderno":     "clean and contemporary yet refined",
-    "minimalista": "restrained and elegant, with minimal ornamentation",
-    "elegante":    "elegant, luxurious and sophisticated",
-    "divertido":   "lively and full of character, but still tasteful",
-    "clasico":     "classic, traditional and heritage-inspired",
-    "tecnologico": "precise, sharp and modern",
-    "organico":    "natural, botanical and hand-crafted",
+    "moderno":     "modern and minimal",
+    "minimalista": "ultra-minimalist, maximum negative space",
+    "elegante":    "elegant, refined and premium",
+    "divertido":   "friendly and approachable, but still clean",
+    "clasico":     "classic and timeless",
+    "tecnologico": "modern, geometric and tech",
+    "organico":    "natural, soft and organic shapes",
 }
-DEFAULT_STYLE = "elegante"
+DEFAULT_STYLE = "moderno"
 
-# Andamiaje compartido: fuerza calidad premium de grabado y bloquea el look clipart.
-ENGRAVING_TAIL = (
-    " Rendered as an intricate premium vintage engraving with fine cross-hatching, "
-    "delicate detailed line work and subtle shading, in the style of a high-end artisanal "
-    "craft brand — luxury, timeless and sophisticated. Monochrome black ink on a plain solid "
-    "white background, one single centered and balanced logo, clean negative space, "
-    "professional brand identity. Absolutely NOT a cartoon, NOT childish, NOT clipart, "
-    "NOT a generic flat Microsoft-clipart sticker, no photograph, no mockup, no canvas border."
+# Andamiaje compartido: fuerza logo limpio/minimalista y bloquea textura/clipart.
+CLEAN_TAIL = (
+    " Simple clean flat vector-style logo, minimal and uncluttered, with lots of negative space, "
+    "elegant modern sans-serif typography, refined, one or two colors maximum, monochrome black "
+    "on a pure solid white #FFFFFF background, centered and balanced, high-end brand identity. "
+    "NOT busy, NO texture, NO cross-hatching, NO engraving, NO detailed illustration, "
+    "not cartoon, not clipart, no photograph, no mockup, no frame."
 )
 
-# Tres enfoques distintos para dar variedad real entre los 3 conceptos.
-# Placeholders: {name} (negocio), {ind} (cláusula de rubro opcional), {vibe} (matiz de estilo).
+# Tres enfoques. Placeholders: {name} (negocio), {ind} (rubro opcional), {vibe} (matiz).
 APPROACHES = [
     ("Símbolo",
-     "A single refined engraved symbolic icon for the brand \"{name}\"{ind} — {vibe}. "
-     "One sophisticated emblematic mark that visually captures the essence of the business. "
+     "A minimal icon-only logo mark for \"{name}\"{ind} — {vibe}. "
+     "A single simple geometric symbol that cleverly represents the business. "
      "Absolutely NO text, NO letters, NO words of any kind: only the symbol."),
     ("Wordmark",
-     "An elegant engraved wordmark logo for \"{name}\"{ind} — {vibe}. "
-     "Beautiful refined serif lettering spelling exactly \"{name}\", with tasteful engraved "
-     "flourishes and a decorative underline or ornament; typography-led, correct spelling."),
-    ("Emblema",
-     "A premium vintage engraved badge emblem for \"{name}\"{ind} — {vibe}. "
-     "An ornate circular crest that combines a symbolic engraved icon with the exact text "
-     "\"{name}\" set in elegant serif lettering, framed like a heritage seal."),
+     "A clean minimal typographic wordmark logo for \"{name}\"{ind} — {vibe}. "
+     "Elegant modern sans-serif lettering spelling exactly \"{name}\", typography-led with a "
+     "single subtle refined detail; correct spelling, tasteful."),
+    ("Combinado",
+     "A clean modern logo lockup for \"{name}\"{ind} — {vibe}. "
+     "A simple minimal geometric icon placed above the text \"{name}\" in elegant sans-serif "
+     "lettering, balanced and professional."),
 ]
 
 app = FastAPI(title="ms-logo-service")
 
-# Recraft ~1 predicción concurrente por cuenta -> serializamos dentro del proceso
+# Ideogram ~1 predicción concurrente -> serializamos dentro del proceso
 _replicate_gate = asyncio.Semaphore(1)
 
 # ── Rate limit en memoria (por IP) ──────────────────────────────────────────────
@@ -116,11 +117,11 @@ def _save_index(items: list):
     tmp.replace(INDEX_PATH)
 
 
-async def save_concept(business: str, industry: str, style: str, label: str, svg: str) -> str:
+async def save_concept(business: str, industry: str, style: str, label: str, img: bytes) -> str:
     cid = uuid.uuid4().hex[:12]
     async with _index_lock:
         try:
-            (LOGOS_DIR / f"{cid}.svg").write_text(svg)
+            (LOGOS_DIR / f"{cid}.png").write_bytes(img)
             items = _load_index()
             items.append({
                 "id": cid, "ts": int(time.time()),
@@ -133,6 +134,7 @@ async def save_concept(business: str, industry: str, style: str, label: str, svg
     return cid
 
 
+# ── Rate limit helpers ──────────────────────────────────────────────────────────
 async def rate_ok(ip: str, bucket: str, limit: int) -> bool:
     key = f"{bucket}:{ip}"
     now = time.time()
@@ -161,21 +163,40 @@ def clean(s: str, maxlen: int) -> str:
 
 def build_prompt(approach_tpl: str, name: str, industry: str, vibe: str) -> str:
     ind = f", a {industry} business" if industry else ""
-    approach = approach_tpl.format(name=name, ind=ind, vibe=vibe)
-    return approach + ENGRAVING_TAIL
+    return approach_tpl.format(name=name, ind=ind, vibe=vibe) + CLEAN_TAIL
 
 
-# ── Replicate: una generación SVG (serializada + reintento en 429) ──────────────
+def whiten_bg(img: bytes) -> bytes:
+    """Ideogram deja un fondo crema (~231,227,223); lo llevamos a blanco puro.
+    Blanquea solo píxeles claros y neutros (no toca el logo ni colores)."""
+    try:
+        im = Image.open(io.BytesIO(img)).convert("RGB")
+        arr = np.asarray(im).astype(np.int16)
+        mn = arr.min(axis=2)
+        spread = arr.max(axis=2) - mn
+        mask = (mn >= 205) & (spread <= 25)   # claro + neutro = fondo
+        arr[mask] = 255
+        out = io.BytesIO()
+        Image.fromarray(arr.astype("uint8"), "RGB").save(out, "PNG", optimize=True)
+        return out.getvalue()
+    except Exception:  # noqa: BLE001
+        return img
+
+
+# ── Ideogram: una generación (serializada + reintento en 429) ───────────────────
 async def generate_one(label: str, prompt: str):
     headers = {
         "Authorization": f"Bearer {REPLICATE_API_KEY}",
         "Content-Type": "application/json",
         "Prefer": "wait",
     }
-    body = {"input": {"prompt": prompt, "size": "1024x1024", "style": RECRAFT_STYLE}}
-    url = f"https://api.replicate.com/v1/models/{REPLICATE_MODEL}/predictions"
+    body = {"input": {
+        "prompt": prompt, "aspect_ratio": "1:1", "style_type": "Design",
+        "magic_prompt_option": "Off", "resolution": "1024x1024",
+    }}
+    url = f"https://api.replicate.com/v1/models/{IMAGE_MODEL}/predictions"
 
-    async with _replicate_gate:  # una predicción a la vez en todo el proceso
+    async with _replicate_gate:
         async with httpx.AsyncClient(timeout=120) as client:
             data = None
             for attempt in range(4):
@@ -186,7 +207,7 @@ async def generate_one(label: str, prompt: str):
                         return {"label": label, "error": f"net: {str(e)[:80]}"}
                     await asyncio.sleep(2 + attempt * 2)
                     continue
-                if r.status_code == 429:  # concurrencia/cuota -> espera y reintenta
+                if r.status_code == 429:
                     await asyncio.sleep(3 + attempt * 2)
                     continue
                 if r.status_code >= 400:
@@ -197,7 +218,6 @@ async def generate_one(label: str, prompt: str):
             if data is None:
                 return {"label": label, "error": "busy"}
 
-            # Con Prefer:wait suele venir resuelto; si no, poll corto
             status = data.get("status")
             get_url = (data.get("urls") or {}).get("get")
             for _ in range(40):
@@ -217,20 +237,17 @@ async def generate_one(label: str, prompt: str):
                 return {"label": label, "error": data.get("error") or status or "failed"}
 
             out = data.get("output")
-            svg_url = out[0] if isinstance(out, list) else out
-            if not svg_url:
+            img_url = out[0] if isinstance(out, list) else out
+            if not img_url:
                 return {"label": label, "error": "no output"}
             try:
-                sr = await client.get(svg_url)
-                svg = sr.text
+                ir = await client.get(img_url)
+                img = ir.content
             except Exception as e:  # noqa: BLE001
                 return {"label": label, "error": f"fetch: {str(e)[:80]}"}
-            if "<svg" not in svg:
-                return {"label": label, "error": "invalid svg"}
-            # Defensivo: se inyecta como innerHTML en la página -> fuera scripts/handlers
-            svg = re.sub(r"<script.*?</script>", "", svg, flags=re.S | re.I)
-            svg = re.sub(r"\son\w+\s*=\s*(\"[^\"]*\"|'[^']*')", "", svg, flags=re.I)
-            return {"label": label, "svg": svg}
+            if not img or len(img) < 500:
+                return {"label": label, "error": "empty img"}
+            return {"label": label, "img": whiten_bg(img)}
 
 
 # ── Telegram ────────────────────────────────────────────────────────────────────
@@ -249,7 +266,6 @@ async def send_telegram(text: str):
 
 
 async def send_telegram_photo(png: bytes, caption: str):
-    """Envía el logo elegido como foto (con fallback a texto si falla)."""
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID:
         return
     try:
@@ -264,19 +280,6 @@ async def send_telegram_photo(png: bytes, caption: str):
         await send_telegram(caption)
 
 
-def decode_data_url(data_url: str) -> bytes | None:
-    """'data:image/png;base64,....' -> bytes (con tope de tamaño)."""
-    if not data_url or "base64," not in data_url:
-        return None
-    b64 = data_url.split("base64,", 1)[1]
-    if len(b64) > 8_000_000:  # ~6MB de imagen
-        return None
-    try:
-        return base64.b64decode(b64)
-    except Exception:  # noqa: BLE001
-        return None
-
-
 # ── Modelos ─────────────────────────────────────────────────────────────────────
 class GenBody(BaseModel):
     name: str = Field(default="")
@@ -286,19 +289,19 @@ class GenBody(BaseModel):
 
 
 class LeadBody(BaseModel):
-    contact: str = Field(default="")     # teléfono o email
-    name: str = Field(default="")        # nombre de la persona
-    business: str = Field(default="")    # negocio que escribió
+    contact: str = Field(default="")
+    name: str = Field(default="")
+    business: str = Field(default="")
     style: str = Field(default="")
     industry: str = Field(default="")
-    liked: str = Field(default="")       # concepto elegido (Símbolo/Wordmark/Emblema)
-    image: str = Field(default="")       # PNG del concepto elegido (data URL, rasterizado en el navegador)
+    liked: str = Field(default="")       # concepto elegido (Símbolo/Wordmark/Combinado)
+    liked_id: str = Field(default="")    # id del concepto elegido (leemos el PNG de disco)
 
 
 # ── Rutas ───────────────────────────────────────────────────────────────────────
 @app.get("/health")
 async def health():
-    return {"ok": True, "replicate": bool(REPLICATE_API_KEY)}
+    return {"ok": True, "replicate": bool(REPLICATE_API_KEY), "model": IMAGE_MODEL}
 
 
 @app.post("/generate")
@@ -325,14 +328,14 @@ async def generate(body: GenBody, request: Request):
     vibe = STYLE_MAP.get(style_key, STYLE_MAP[DEFAULT_STYLE])
 
     concept = await generate_one(label, build_prompt(tpl, name, industry, vibe))
-    if not concept.get("svg"):
+    if not concept.get("img"):
         return JSONResponse(
             {"error": "gen", "label": label, "message": "No se pudo generar este concepto. Intenta de nuevo.",
              "detail": concept.get("error")},
             status_code=502,
         )
-    concept["id"] = await save_concept(name, industry, style_key, label, concept["svg"])
-    return {"variant": variant, "concept": concept}
+    cid = await save_concept(name, industry, style_key, label, concept["img"])
+    return {"variant": variant, "concept": {"id": cid, "label": label, "url": f"/logo-api/img/{cid}"}}
 
 
 @app.post("/lead")
@@ -362,7 +365,11 @@ async def lead(body: LeadBody, request: Request):
         f"<i>IP:</i> {ip}"
     )
 
-    png = decode_data_url(body.image)
+    png = None
+    if _ID_RE.match(body.liked_id or ""):
+        f = LOGOS_DIR / f"{body.liked_id}.png"
+        if f.exists():
+            png = f.read_bytes()
     if png:
         await send_telegram_photo(png, msg)  # el logo elegido, visible en Telegram
     else:
@@ -383,14 +390,14 @@ async def gallery():
     ]}
 
 
-@app.get("/gallery/svg/{cid}")
-async def gallery_svg(cid: str):
+@app.get("/img/{cid}")
+async def img(cid: str):
     if not _ID_RE.match(cid):
         return Response(status_code=404)
-    f = LOGOS_DIR / f"{cid}.svg"
+    f = LOGOS_DIR / f"{cid}.png"
     if not f.exists():
         return Response(status_code=404)
-    return Response(f.read_text(), media_type="image/svg+xml",
+    return Response(f.read_bytes(), media_type="image/png",
                     headers={"Cache-Control": "public, max-age=86400"})
 
 
@@ -434,7 +441,7 @@ async def admin_delete(key: str = "", id: str = ""):
         items = [it for it in items if it["id"] != id]
         _save_index(items)
     try:
-        (LOGOS_DIR / f"{id}.svg").unlink(missing_ok=True)
+        (LOGOS_DIR / f"{id}.png").unlink(missing_ok=True)
     except Exception:  # noqa: BLE001
         pass
     return {"ok": True}
@@ -500,9 +507,9 @@ function render(){
   if(!list.length){g.innerHTML='<div class=empty>Nada aquí todavía.</div>';return}
   g.innerHTML=list.map(function(x){return ''+
     '<div class="item'+(x.approved?' appr':'')+'">'+
-      '<div class="canvas"><img loading="lazy" src="/logo-api/gallery/svg/'+x.id+'"></div>'+
+      '<div class="canvas"><img loading="lazy" src="/logo-api/img/'+x.id+'"></div>'+
       '<div class="meta"><b>'+esc(x.business)+'</b><br>'+esc(x.label)+' · '+esc(x.style)+'<br>'+when(x.ts)+'</div>'+
-      '<a class="dlbtn" href="/logo-api/gallery/svg/'+x.id+'" download="'+esc((x.business||'logo')+'-'+x.label)+'.svg">Descargar SVG &#8595;</a>'+
+      '<a class="dlbtn" href="/logo-api/img/'+x.id+'" download="'+esc(x.business||'logo')+'-'+esc(x.label)+'.png">Descargar PNG &#8595;</a>'+
       '<div class="row">'+
         (x.approved
           ? '<button class="hide" onclick="setA(\''+x.id+'\',0)">Ocultar</button>'
