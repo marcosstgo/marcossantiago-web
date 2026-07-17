@@ -7,7 +7,6 @@ const links = [
   { href: '/blog/',       label: 'Blog' },
   { href: '/sobre-mi/',   label: 'Sobre mí' },
   { href: '/contacto/',   label: 'Contacto' },
-  { href: '/shorts/',     label: 'Shorts', icon: 'fa-solid fa-film' },
 ];
 const current = Astro.url.pathname;
 ---
@@ -28,11 +27,6 @@ const current = Astro.url.pathname;
       </div>
       <div class="nav-right">
         <a href="/contacto/" class="nav-cta">Hablemos <span class="nav-cta-arrow">→</span></a>
-        <a href="/shorts/" class="shorts-mobile-btn" aria-label="Shorts">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="2" y1="17" x2="7" y2="17"/>
-          </svg>
-        </a>
         <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
           <i class="fa-solid fa-sun"  id="iconSun"></i>
           <i class="fa-solid fa-moon" id="iconMoon"></i>
@@ -239,22 +233,11 @@ const current = Astro.url.pathname;
   :global([data-theme="light"]) #iconSun  { display: block }
   :global([data-theme="light"]) #iconMoon { display: none }
 
-  .shorts-mobile-btn {
-    display: none;
-    width: 34px; height: 34px;
-    align-items: center; justify-content: center;
-    border: 1px solid var(--border); border-radius: 8px;
-    color: var(--white); font-size: 1rem;
-    transition: .15s; flex-shrink: 0;
-  }
-  .shorts-mobile-btn:hover { border-color: var(--accent); color: var(--accent) }
-
-  @media (max-width: 900px) {
+  @media (max-width: 768px) {
     .nav-links { display: none }
     .nav-cta { display: none }
     .nav-hamburger { display: flex }
     .mobile-nav { display: block }
-    .shorts-mobile-btn { display: flex }
   }
 </style>
 
