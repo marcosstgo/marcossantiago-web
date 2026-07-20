@@ -20,12 +20,13 @@ const capitulos = [
     meta: ['Sony NEX-3', 'Fines de semana'],
     titulo: 'La primera cámara',
     texto: `Una Sony NEX-3 y ningún plan. Fotografía los sábados, aprendiendo a ver.
-            Con los años el equipo fue creciendo — Canon 6D, Canon R, Canon R6 — y lo
-            que empezó como pasatiempo terminó comiéndose el trabajo principal.`,
+            El equipo fue creciendo con el trabajo — Canon 6D, Canon R, Canon R6, y tres
+            Lumix S5IIx cuando el video dejó de ser un extra — hasta que lo que empezó
+            como pasatiempo terminó comiéndose el trabajo principal.`,
   },
   {
     anio: 'Hoy',
-    meta: ['Tres Lumix S5IIx', 'Del logo al website'],
+    meta: ['Diseño', 'Foto', 'Video', 'Código'],
     titulo: 'La marca completa',
     texto: `Trabajo con negocios de toda la isla en su identidad visual completa: el logo,
             las fotos, el video y el website. Todo de la misma mano — que es, al final, lo
@@ -34,11 +35,13 @@ const capitulos = [
   },
 ];
 
+/* Lo que el cliente se lleva, no con qué lo hago. Cada línea sale de un
+   servicio que existe de verdad en /servicios/. */
 const ficha = [
-  { cat: 'Diseño',      items: ['Identidad visual', 'Branding', 'UI/UX', 'Editorial', 'Adobe Suite'] },
-  { cat: 'Fotografía',  items: ['Eventos', 'Documental', 'Retratos', 'Lightroom', 'Capture One'] },
-  { cat: 'Videografía', items: ['Producción', 'Edición', 'Color grading', 'Premiere Pro', 'DaVinci Resolve'] },
-  { cat: 'Desarrollo',  items: ['HTML/CSS/JS', 'C# / WPF', '.NET', 'Astro', 'Linux / Raspberry Pi'] },
+  { cat: 'Diseño',      items: ['Logo y manual de marca', 'Identidad visual completa', 'Piezas para redes', 'Arte para imprenta', 'Diseño editorial'] },
+  { cat: 'Fotografía',  items: ['Bodas y quinceañeros', 'Eventos sociales', 'Retratos y headshots', 'Fotografía corporativa', 'Galería editada y lista'] },
+  { cat: 'Videografía', items: ['Video de boda', 'Reels para redes', 'Video corporativo', 'Documental', '360 Video Booth'] },
+  { cat: 'Desarrollo',  items: ['Websites y landings', 'Tiendas en línea', 'Apps y herramientas', 'Plataformas a la medida'] },
 ];
 ---
 <Base
@@ -67,7 +70,7 @@ const ficha = [
           <dl class="ap-ficha" data-focus style="--d:220ms">
             <div><dt>Base</dt><dd>Aibonito, PR</dd></div>
             <div><dt>Desde</dt><dd>2001</dd></div>
-            <div><dt>Oficios</dt><dd>Diseño · Foto · Video · Código</dd></div>
+            <div><dt>Alcance</dt><dd>Toda la isla</dd></div>
           </dl>
         </div>
 
@@ -108,8 +111,8 @@ const ficha = [
     <!-- ── Ficha técnica ── -->
     <section class="ficha-sec">
       <div class="container">
-        <p class="eyebrow" data-focus>Ficha técnica</p>
-        <h2 class="ficha-h" data-focus style="--d:80ms">Lo que sé hacer</h2>
+        <p class="eyebrow" data-focus>Servicios</p>
+        <h2 class="ficha-h" data-focus style="--d:80ms">Lo que te llevas</h2>
         <div class="ficha-grid">
           {ficha.map((f, i) => (
             <div class="ficha-col" data-focus style={`--d:${100 + i * 70}ms`}>
