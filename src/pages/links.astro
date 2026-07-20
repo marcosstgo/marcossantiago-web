@@ -129,7 +129,7 @@
       font-size: 0.6rem;
       letter-spacing: 3.5px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.58);
       text-align: center;
     }
 
@@ -137,7 +137,7 @@
     .desc {
       font-size: 0.7rem;
       letter-spacing: 0.5px;
-      color: rgba(255,255,255,0.32);
+      color: rgba(255,255,255,0.5);
       text-align: center;
       line-height: 1.7;
       max-width: 28ch;
@@ -147,7 +147,7 @@
     .location {
       font-size: 0.58rem;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.42);
       display: flex; align-items: center; gap: 7px;
     }
 
@@ -231,6 +231,70 @@
       color: rgba(255,255,255,0.15);
     }
 
+    /* ── Music bar ── */
+    .music-bar {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      user-select: none;
+    }
+    .music-bar:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.14);
+    }
+    .music-btn {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.7rem;
+      transition: background 0.2s ease;
+    }
+    .music-bar:hover .music-btn { background: rgba(255,255,255,0.18); }
+    .music-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .music-title {
+      font-size: 0.58rem;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.55);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      text-transform: uppercase;
+    }
+    /* Equalizer bars */
+    .eq {
+      display: flex; align-items: flex-end; gap: 2px;
+      height: 14px; flex-shrink: 0;
+    }
+    .eq span {
+      display: block;
+      width: 3px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.35);
+      transform-origin: bottom;
+    }
+    .eq span:nth-child(1) { height: 40%; }
+    .eq span:nth-child(2) { height: 80%; }
+    .eq span:nth-child(3) { height: 55%; }
+    .eq span:nth-child(4) { height: 90%; }
+    .eq.playing span:nth-child(1) { animation: eq1 0.9s ease-in-out infinite alternate; }
+    .eq.playing span:nth-child(2) { animation: eq2 0.7s ease-in-out infinite alternate; }
+    .eq.playing span:nth-child(3) { animation: eq3 1.1s ease-in-out infinite alternate; }
+    .eq.playing span:nth-child(4) { animation: eq4 0.8s ease-in-out infinite alternate; }
+    @keyframes eq1 { from { height: 20%; } to { height: 75%; } }
+    @keyframes eq2 { from { height: 60%; } to { height: 100%; } }
+    @keyframes eq3 { from { height: 30%; } to { height: 80%; } }
+    @keyframes eq4 { from { height: 70%; } to { height: 40%; } }
+
     /* ── Particles canvas ── */
     #particles {
       position: fixed; inset: 0;
@@ -283,10 +347,10 @@
       </a>
 
       <div class="socials">
-        <a class="soc" href="https://wa.me/17872439670?text=Hola%2C+me+interesa+cotizar+un+proyecto."
-           target="_blank" rel="noopener" aria-label="WhatsApp">
-          <i class="fab fa-whatsapp"></i>
-          <span>WhatsApp</span>
+        <a class="soc" href="https://marcossantiago.com/servicios/"
+           aria-label="Servicios">
+          <i class="fa-solid fa-camera"></i>
+          <span>Servicios</span>
         </a>
         <a class="soc" href="https://instagram.com/marcosstgo"
            target="_blank" rel="noopener" aria-label="Instagram">
@@ -304,27 +368,78 @@
         </a>
       </div>
 
+      <div class="music-bar" id="musicBar" role="button" aria-label="Reproducir música">
+        <div class="music-btn" id="musicBtn">
+          <i class="fa-solid fa-play" id="musicIcon"></i>
+        </div>
+        <div class="music-info">
+          <div class="music-title" id="musicTitle">ambient · en pausa</div>
+        </div>
+        <div class="eq" id="eq">
+          <span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
       <p class="page-label">marcossantiago.com</p>
     </div>
   </div>
+
+  <!-- Audio -->
+  <audio id="bgAudio" loop preload="none">
+    <!-- Cambia este src por tu track: copia el mp3 a /public/ambient.mp3 -->
+    <source src="/ambient.mp3" type="audio/mpeg" />
+  </audio>
 
   <!-- Particles -->
   <canvas id="particles"></canvas>
 
   <script is:inline>
   (function () {
-    const intro   = document.getElementById('intro');
-    const card    = document.getElementById('card');
-    const nameEl  = document.getElementById('nameEl');
-    const cursor  = document.getElementById('cursor');
-    const videoBg = document.getElementById('videoBg');
+    const intro    = document.getElementById('intro');
+    const card     = document.getElementById('card');
+    const nameEl   = document.getElementById('nameEl');
+    const cursor   = document.getElementById('cursor');
+    const videoBg  = document.getElementById('videoBg');
+    const bgAudio  = document.getElementById('bgAudio');
+    const musicBar = document.getElementById('musicBar');
+    const musicBtn = document.getElementById('musicBtn');
+    const musicIcon = document.getElementById('musicIcon');
+    const musicTitle = document.getElementById('musicTitle');
+    const eq       = document.getElementById('eq');
 
-    /* ── Intro dismiss + lazy video ── */
+    let audioReady = false;
+    let playing    = false;
+
+    function setPlaying(state) {
+      playing = state;
+      musicIcon.className = state ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+      musicTitle.textContent = state ? 'ambient · reproduciendo' : 'ambient · en pausa';
+      eq.classList.toggle('playing', state);
+    }
+
+    bgAudio.addEventListener('canplaythrough', () => { audioReady = true; });
+    bgAudio.addEventListener('error', () => {
+      musicBar.style.display = 'none'; // oculta si no hay archivo
+    });
+
+    musicBar.addEventListener('click', () => {
+      if (bgAudio.paused) {
+        bgAudio.play().then(() => setPlaying(true)).catch(() => {});
+      } else {
+        bgAudio.pause();
+        setPlaying(false);
+      }
+    });
+
+    /* ── Intro dismiss + lazy video + audio ── */
     function dismiss() {
       intro.classList.add('out');
       card.classList.add('visible');
       videoBg.load();
       videoBg.play().catch(() => {});
+      bgAudio.load();
+      bgAudio.volume = 0.4;
+      bgAudio.play().then(() => setPlaying(true)).catch(() => {});
       setTimeout(startTypewriter, 400);
     }
     intro.addEventListener('click',      dismiss);

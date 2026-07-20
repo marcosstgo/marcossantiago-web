@@ -1,0 +1,311 @@
+---
+// Landing page para Google Ads — sin noindex, sin intro, carga directa
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fotógrafo y Videógrafo en Puerto Rico | Marcos Santiago</title>
+  <meta name="description" content="Fotografía de bodas, quinceañeros, comercial y videografía profesional en Puerto Rico. Diseño gráfico incluido. Desde $150. Cotiza hoy por WhatsApp." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://marcossantiago.com/cotiza/" />
+  <meta property="og:title" content="Fotógrafo y Videógrafo en Puerto Rico | Marcos Santiago" />
+  <meta property="og:description" content="Bodas, quinceañeros, comercial, videografía y diseño gráfico. Desde $150. Aibonito, Puerto Rico." />
+  <meta property="og:image" content="/marcos-photo.webp" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #000;
+      font-family: 'Space Mono', monospace;
+      color: #fff;
+    }
+
+    /* ── Video fondo ── */
+    .video-bg {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(0.22) saturate(1.3);
+      z-index: 0;
+    }
+    .video-overlay {
+      position: fixed; inset: 0; z-index: 1;
+      background: linear-gradient(to bottom,
+        rgba(0,0,0,0.6) 0%,
+        rgba(0,0,0,0.2) 50%,
+        rgba(0,0,0,0.7) 100%);
+    }
+
+    /* ── Page ── */
+    #page {
+      position: relative; z-index: 10;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 32px 24px;
+    }
+
+    /* ── Card ── */
+    #card {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 14px;
+      padding: 44px 32px;
+      width: 100%; max-width: 420px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 22px;
+      background: rgba(0,0,0,0.15);
+      backdrop-filter: blur(4px);
+      animation: card-in 0.7s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(30px); filter: blur(8px); }
+      to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+    }
+
+    /* ── Avatar ── */
+    .avatar-ring {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 0 40px rgba(255,255,255,0.1);
+      overflow: hidden; flex-shrink: 0;
+    }
+    .avatar-ring img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+    }
+
+    /* ── Name ── */
+    .name {
+      font-size: clamp(1.2rem, 5vw, 1.6rem);
+      font-weight: 400;
+      letter-spacing: 4px;
+      text-align: center;
+      text-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.2);
+    }
+
+    /* ── Headline ── */
+    .headline {
+      font-size: 0.62rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.58);
+      text-align: center;
+    }
+
+    /* ── Location ── */
+    .location {
+      font-size: 0.56rem;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.38);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* ── Servicios grid ── */
+    .services {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+    }
+    .service-chip {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 14px;
+      border-radius: 11px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.56rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .service-chip i { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+
+    /* ── Precio badge ── */
+    .price-badge {
+      font-size: 0.6rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.32);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .price-badge strong {
+      color: rgba(255,255,255,0.7);
+      font-weight: 700;
+    }
+
+    /* ── CTA WhatsApp ── */
+    .cta-wa {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%;
+      padding: 18px 24px;
+      border-radius: 14px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      color: #4ade80;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.18));
+      transition: transform 0.2s ease, filter 0.2s ease,
+                  background 0.2s ease, border-color 0.2s ease;
+    }
+    .cta-wa i { font-size: 1.1rem; }
+    .cta-wa:hover {
+      transform: translateY(-3px);
+      background: rgba(34, 197, 94, 0.2);
+      border-color: rgba(34, 197, 94, 0.5);
+      filter: drop-shadow(0 0 22px rgba(34, 197, 94, 0.45));
+    }
+    .cta-wa:active { transform: translateY(-1px); }
+
+    /* ── Link secundario ── */
+    .sec-link {
+      font-size: 0.54rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .sec-link:hover { color: rgba(255,255,255,0.55); }
+
+    /* ── Texto SEO oculto visualmente pero legible por Google ── */
+    .seo-text {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+    }
+
+    /* ── Particles canvas ── */
+    #particles {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 5;
+    }
+
+    @media (max-height: 700px) {
+      #page { align-items: flex-start; padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <video class="video-bg" autoplay muted loop playsinline preload="auto">
+    <source src="/short-videografy.mp4" type="video/mp4" />
+  </video>
+  <div class="video-overlay"></div>
+
+  <!-- Texto para Google Ads Quality Score -->
+  <p class="seo-text">
+    Fotógrafo y videógrafo profesional en Puerto Rico. Especializado en fotografía de bodas,
+    quinceañeros, fotografía comercial, videografía de eventos y diseño gráfico.
+    Servicio disponible en Aibonito y toda la isla. Cotiza desde $150.
+  </p>
+
+  <div id="page">
+    <div id="card">
+
+      <div class="avatar-ring">
+        <img src="/marcos-photo.webp" alt="Marcos Santiago — Fotógrafo en Puerto Rico" loading="eager" />
+      </div>
+
+      <h1 class="name">Marcos Santiago</h1>
+      <p class="headline">Fotógrafo · Videógrafo · Diseñador</p>
+      <p class="location"><i class="fa-solid fa-location-dot"></i> Aibonito, Puerto Rico</p>
+
+      <div class="divider"></div>
+
+      <div class="services">
+        <div class="service-chip"><i class="fa-solid fa-heart"></i> Bodas</div>
+        <div class="service-chip"><i class="fa-solid fa-crown"></i> Quinceañeros</div>
+        <div class="service-chip"><i class="fa-solid fa-video"></i> Videografía</div>
+        <div class="service-chip"><i class="fa-solid fa-store"></i> Comercial</div>
+        <div class="service-chip" style="grid-column: span 2; justify-content: center;">
+          <i class="fa-solid fa-pen-nib"></i> Diseño Gráfico
+        </div>
+      </div>
+
+      <div class="price-badge">paquetes <strong>desde $150</strong></div>
+
+      <div class="divider"></div>
+
+      <a class="cta-wa"
+         href="https://wa.me/17872439670?text=Hola%2C+me+interesa+cotizar+un+proyecto."
+         target="_blank" rel="noopener">
+        <i class="fab fa-whatsapp"></i> Cotiza tu proyecto
+      </a>
+
+      <a class="sec-link" href="/portafolio/">Ver portafolio →</a>
+
+    </div>
+  </div>
+
+  <canvas id="particles"></canvas>
+
+  <script is:inline>
+  (function () {
+    const canvas = document.getElementById('particles');
+    const ctx    = canvas.getContext('2d');
+    const pts    = [];
+    const hasHover = window.matchMedia('(hover: hover)').matches;
+
+    function resize() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    if (hasHover) {
+      document.addEventListener('mousemove', (e) => {
+        for (let i = 0; i < 3; i++) {
+          pts.push({
+            x: e.clientX, y: e.clientY,
+            vx: (Math.random() - 0.5) * 2.5,
+            vy: (Math.random() - 0.5) * 2.5 - 0.5,
+            r: Math.random() * 2 + 0.6,
+            life: 1,
+          });
+        }
+      });
+    }
+
+    (function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = pts.length - 1; i >= 0; i--) {
+        const p = pts[i];
+        p.x += p.vx; p.y += p.vy;
+        p.vy += 0.07; p.life -= 0.026;
+        if (p.life <= 0) { pts.splice(i, 1); continue; }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${p.life * 0.45})`;
+        ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    })();
+  })();
+  </script>
+
+</body>
+</html>
