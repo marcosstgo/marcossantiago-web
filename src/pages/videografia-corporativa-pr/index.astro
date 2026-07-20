@@ -5,6 +5,7 @@ import Footer from '../../components/Footer.astro';
 <Base
   title="Videografía Corporativa en Puerto Rico | Marcos Santiago"
   description="Video corporativo profesional en Puerto Rico. Institucionales, testimoniales, reels y campañas desde $1,000. Toda la isla. Cotización gratis en menos de 1 hora."
+  businessSchema={false}
 >
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -77,7 +78,7 @@ import Footer from '../../components/Footer.astro';
     </div>
   </header>
 
-  <main>
+  <main id="main">
     <!-- ── Hero ── -->
     <section class="hero-section">
       <video class="hero-video-bg" autoplay muted loop playsinline preload="metadata" poster="/videos/marcos-video-poster.webp" aria-hidden="true">

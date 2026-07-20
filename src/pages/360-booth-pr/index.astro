@@ -5,6 +5,7 @@ import Footer from '../../components/Footer.astro';
 <Base
   title="360 Photo Booth en Puerto Rico | Marcos Santiago"
   description="360 Video Booth para bodas, quinceañeros y eventos corporativos en Puerto Rico. Desde $350. Air-39 Automatic — entrega por QR al instante. Cotización gratis."
+  businessSchema={false}
 >
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -77,7 +78,7 @@ import Footer from '../../components/Footer.astro';
     </div>
   </header>
 
-  <main>
+  <main id="main">
     <!-- ── Hero ── -->
     <section class="hero-section">
       <video class="hero-video-bg" autoplay muted loop playsinline preload="metadata" poster="/booth-360/360photo1.jpg" aria-hidden="true">
