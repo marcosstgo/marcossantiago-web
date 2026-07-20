@@ -9,56 +9,160 @@ const links = [
   { href: 'https://wa.me/17872439670',              icon: 'fab fa-whatsapp',  label: 'WhatsApp' },
   { href: 'https://t.me/+17872439670',              icon: 'fab fa-telegram',  label: 'Telegram' },
 ];
+
+const cols = [
+  {
+    title: 'Servicios',
+    items: [
+      { href: '/fotografo-bodas-pr/',        label: 'Fotografía de bodas' },
+      { href: '/videografia-corporativa-pr/', label: 'Video corporativo' },
+      { href: '/diseno-grafico-pr/',          label: 'Diseño gráfico y logos' },
+      { href: '/360-booth-pr/',               label: '360 Video Booth' },
+      { href: '/reels/',                      label: 'Reels y contenido' },
+      { href: '/servicios/',                  label: 'Ver todos los servicios' },
+    ],
+  },
+  {
+    title: 'Trabajo',
+    items: [
+      { href: '/portafolio/foto/',   label: 'Portafolio de fotografía' },
+      { href: '/portafolio/video/',  label: 'Portafolio de video' },
+      { href: '/portafolio/logos/',  label: 'Logos e identidad' },
+      { href: '/portafolio/dev/',    label: 'Desarrollo web' },
+      { href: '/galeria-logos/',     label: 'Galería de logos con IA' },
+    ],
+  },
+  {
+    title: 'Más',
+    items: [
+      { href: '/blog/',        label: 'Blog' },
+      { href: '/sobre-mi/',    label: 'Sobre mí' },
+      { href: '/contacto/',    label: 'Contacto' },
+      { href: '/terminos/',    label: 'Términos' },
+      { href: '/privacidad/',  label: 'Privacidad' },
+    ],
+  },
+];
 ---
 <footer>
   <div class="container">
-    <div class="footer-inner">
-      <div class="footer-left">
+
+    <div class="footer-cols">
+      <!-- NAP — debe coincidir palabra por palabra con el Google Business Profile -->
+      <div class="footer-nap">
         <span class="footer-name">MARCOS SANTIAGO</span>
-        <span class="footer-copy">© {year} · Aibonito, Puerto Rico · <a href="/terminos/" class="footer-terms">Términos</a> · <a href="/privacidad/" class="footer-terms">Privacidad</a></span>
+        <p class="footer-tagline">Fotografía, video y diseño desde Aibonito para toda la isla.</p>
+        <address class="footer-address">
+          <span>Aibonito, Puerto Rico</span>
+          <a href="tel:+17872439670" data-track="footer-tel">(787) 243-9670</a>
+          <a href="mailto:hello@marcossantiago.com" data-track="footer-email">hello@marcossantiago.com</a>
+        </address>
+        <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto."
+           target="_blank" rel="noopener" class="footer-wa" data-track="footer-whatsapp">
+          <i class="fab fa-whatsapp" aria-hidden="true"></i> Cotizar por WhatsApp
+        </a>
       </div>
+
+      {cols.map(col => (
+        <nav class="footer-col" aria-label={col.title}>
+          <h2 class="footer-col-title">{col.title}</h2>
+          <ul>
+            {col.items.map(i => (
+              <li><a href={i.href}>{i.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-copy">© {year} Marcos Santiago · Aibonito, Puerto Rico</span>
       <div class="footer-social">
         {links.map(l => (
           <a href={l.href} target="_blank" rel="noopener" aria-label={l.label} class="social-btn">
-            <i class={l.icon}></i>
+            <i class={l.icon} aria-hidden="true"></i>
           </a>
         ))}
       </div>
     </div>
+
   </div>
 </footer>
 
 <style>
   footer {
     border-top: 1px solid var(--border);
-    padding: 32px 0;
+    padding: 56px 0 28px;
     margin-top: 64px;
   }
-  .footer-inner {
+
+  .footer-cols {
+    display: grid;
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+    gap: 40px;
+    padding-bottom: 40px;
+  }
+
+  /* ── NAP ── */
+  .footer-name {
+    font-family: var(--display);
+    font-size: 1.15rem;
+    letter-spacing: 4px;
+    display: block;
+  }
+  .footer-tagline {
+    color: var(--muted);
+    font-size: .88rem;
+    margin: 10px 0 16px;
+    max-width: 30ch;
+  }
+  .footer-address {
+    font-style: normal;
+    display: flex; flex-direction: column; gap: 5px;
+    font-size: .88rem; color: var(--muted);
+  }
+  .footer-address a { color: var(--muted); transition: color .15s }
+  .footer-address a:hover { color: var(--white) }
+  .footer-wa {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 18px; padding: 9px 16px;
+    border: 1px solid var(--border-h); border-radius: 8px;
+    font-family: var(--mono); font-size: .58rem;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--white); transition: .15s;
+    align-self: flex-start; width: fit-content;
+  }
+  .footer-wa:hover { background: #25d366; border-color: #25d366; color: #fff }
+
+  /* ── Columnas de enlaces ── */
+  .footer-col-title {
+    font-family: var(--mono); font-size: .58rem;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--dim); font-weight: 400;
+    margin-bottom: 14px;
+  }
+  .footer-col ul { list-style: none }
+  .footer-col li { margin-bottom: 9px }
+  .footer-col a {
+    color: var(--muted); font-size: .88rem;
+    transition: color .15s;
+  }
+  .footer-col a:hover { color: var(--white) }
+
+  /* ── Barra inferior ── */
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 22px;
     display: flex; align-items: center;
     justify-content: space-between;
     flex-wrap: wrap; gap: 16px;
   }
-  .footer-left { display: flex; flex-direction: column; gap: 3px }
-  .footer-name {
-    font-family: var(--display);
-    font-size: 1rem;
-    letter-spacing: 4px;
-  }
   .footer-copy {
-    font-family: var(--mono);
-    font-size: .5rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    font-family: var(--mono); font-size: .5rem;
+    letter-spacing: 2px; text-transform: uppercase;
     color: var(--muted);
   }
-  .footer-terms {
-    color: var(--muted);
-    text-decoration: none;
-    transition: color .15s;
-  }
-  .footer-terms:hover { color: var(--white) }
-  .footer-social { display: flex; gap: 4px }
+  .footer-social { display: flex; gap: 4px; flex-wrap: wrap }
   .social-btn {
     width: 36px; height: 36px;
     display: flex; align-items: center; justify-content: center;
@@ -67,4 +171,13 @@ const links = [
     transition: .15s;
   }
   .social-btn:hover { border-color: var(--border-h); color: var(--white) }
+
+  @media (max-width: 900px) {
+    .footer-cols { grid-template-columns: 1fr 1fr; gap: 32px }
+    .footer-nap { grid-column: 1 / -1 }
+  }
+  @media (max-width: 520px) {
+    .footer-cols { grid-template-columns: 1fr; gap: 28px }
+    .footer-bottom { flex-direction: column; align-items: flex-start }
+  }
 </style>

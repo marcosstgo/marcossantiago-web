@@ -10,6 +10,8 @@ const links = [
 ];
 const current = Astro.url.pathname;
 ---
+<a href="#main" class="skip-link">Saltar al contenido</a>
+
 <header>
   <div class="container">
     <nav>
@@ -54,6 +56,22 @@ const current = Astro.url.pathname;
 </div>
 
 <style>
+  /* Bypass de bloques (WCAG 2.4.1): oculto hasta recibir foco por teclado */
+  .skip-link {
+    position: fixed; top: 8px; left: 8px; z-index: 200;
+    transform: translateY(-200%);
+    /* No usar --accent: el home lo redefine a blanco hueso y el texto
+       blanco se pierde. --white/--ink se invierten con el tema y garantizan contraste. */
+    background: var(--white); color: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 12px 20px; border-radius: 8px;
+    font-family: var(--mono); font-size: .65rem;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    transition: transform .15s;
+  }
+  .skip-link:focus,
+  .skip-link:focus-visible { transform: translateY(0) }
+
   header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     border-bottom: 1px solid transparent;

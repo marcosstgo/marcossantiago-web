@@ -4,13 +4,27 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  /** Las landings que declaran su propio LocalBusiness lo ponen en false
+   *  para no emitir dos entidades de negocio en la misma página. */
+  businessSchema?: boolean;
 }
 const {
   title,
-  description = 'Marcos Santiago — Graphic Artist, Photographer, Videographer & Developer. Aibonito, Puerto Rico.',
-  image = '/marcos-photo.jpg'
+  description = 'Marcos Santiago — Fotógrafo, videógrafo, artista gráfico y desarrollador en Aibonito, Puerto Rico. Cobertura en toda la isla.',
+  image = '/marcos-photo.jpg',
+  businessSchema = true
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Perfiles oficiales — usados por el schema de Person y del negocio.
+// Al añadir el Google Business Profile, ponerlo aquí también.
+const SOCIALS = [
+  'https://github.com/marcosstgo',
+  'https://www.behance.net/marcossantiago',
+  'https://www.instagram.com/m4rcos',
+  'https://vimeo.com/marcosstgo',
+  'https://x.com/Marc0sSantiago',
+];
 ---
 <!doctype html>
 <html lang="es">
@@ -39,18 +53,47 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
 
-  <!-- JSON-LD -->
+  <!-- JSON-LD — Person + negocio local de área de servicio (SEO local) -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Marcos Santiago",
-    "url": "https://marcossantiago.com",
-    "jobTitle": "Diseñador Gráfico, Fotógrafo, Videógrafo y Desarrollador",
-    "address": { "@type": "PostalAddress", "addressLocality": "Aibonito", "addressRegion": "Puerto Rico" },
-    "sameAs": [
-      "https://github.com/marcosstgo",
-      "https://www.behance.net/marcossantiago",
-      "https://www.instagram.com/m4rcos"
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://marcossantiago.com/#persona",
+        "name": "Marcos Santiago",
+        "url": "https://marcossantiago.com",
+        "jobTitle": "Diseñador Gráfico, Fotógrafo, Videógrafo y Desarrollador",
+        "address": { "@type": "PostalAddress", "addressLocality": "Aibonito", "addressRegion": "PR", "addressCountry": "US" },
+        ...(businessSchema ? { "worksFor": { "@id": "https://marcossantiago.com/#negocio" } } : {}),
+        "sameAs": SOCIALS
+      },
+      ...(!businessSchema ? [] : [{
+        "@type": "ProfessionalService",
+        "@id": "https://marcossantiago.com/#negocio",
+        "name": "Marcos Santiago — Soluciones Creativas",
+        "url": "https://marcossantiago.com",
+        "image": "https://marcossantiago.com/marcos-photo.jpg",
+        "description": "Fotografía, videografía, diseño gráfico, 360 Video Booth y desarrollo web en Puerto Rico.",
+        "telephone": "+1-787-243-9670",
+        "email": "hello@marcossantiago.com",
+        "priceRange": "$$",
+        "founder": { "@id": "https://marcossantiago.com/#persona" },
+        "address": { "@type": "PostalAddress", "addressLocality": "Aibonito", "addressRegion": "PR", "addressCountry": "US" },
+        "areaServed": { "@type": "AdministrativeArea", "name": "Puerto Rico" },
+        "knowsLanguage": ["es", "en"],
+        "sameAs": SOCIALS,
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Servicios",
+          "itemListElement": [
+            "Fotografía de bodas y eventos",
+            "Videografía y video corporativo",
+            "Diseño gráfico e identidad de marca",
+            "360 Video Booth",
+            "Desarrollo web"
+          ].map(s => ({ "@type": "Offer", "itemOffered": { "@type": "Service", "name": s } }))
+        }
+      }])
     ]
   })} />
 
@@ -278,6 +321,30 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   (function() {
     const path = window.location.pathname.replace(/\//g, '-').replace(/^-|-$/g, '') || 'home';
     document.body.classList.add('page-' + path);
+  })();
+
+  // ── Medición de conversiones de contacto ──
+  // Listener delegado: cubre todo enlace tel:/wa.me/mailto: del sitio,
+  // incluidos los que se inserten dinámicamente después.
+  (function() {
+    document.addEventListener('click', function(e) {
+      const a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a || typeof gtag !== 'function') return;
+
+      const href = a.getAttribute('href') || '';
+      let name = null;
+      if (href.startsWith('tel:'))                                  name = 'phone_click';
+      else if (/^(https?:)?\/\/(wa\.me|api\.whatsapp\.com)/.test(href)) name = 'whatsapp_click';
+      else if (href.startsWith('mailto:'))                          name = 'email_click';
+      if (!name) return;
+
+      gtag('event', name, {
+        event_category: 'contacto',
+        event_label: a.dataset.track || a.textContent.trim().slice(0, 60) || href,
+        page_path: window.location.pathname,
+        link_url: href,
+      });
+    }, true);
   })();
 
   (function() {

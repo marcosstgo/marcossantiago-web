@@ -92,12 +92,16 @@ const featuredProjects = [
  <div class="home">
   <Nav />
 
+  <main id="main">
+
   <!-- ═══ HERO — cuadro de cine ═══ -->
   <section class="hero">
     <div class="hero-bg" aria-hidden="true">
       <video class="hero-video-bg" autoplay muted loop playsinline
+             preload="none"
              poster="/marcos-photo.webp"
-             src="/hero-bg.mp4"></video>
+             data-src="/hero-bg.mp4"
+             data-src-mobile="/hero-bg-480.mp4"></video>
       <div class="hero-grade"></div>
       <div class="hero-leak"></div>
     </div>
@@ -149,6 +153,41 @@ const featuredProjects = [
       }, 320);
     }
     setInterval(cycleVerb, 2800);
+  </script>
+
+  <script>
+    // ── Video: el hero carga la variante según el ancho; el resto solo al
+    // entrar en viewport. Evita bajar decenas de MB en la carga inicial.
+    (function () {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const hero = document.querySelector('.hero-video-bg');
+      if (hero instanceof HTMLVideoElement && !reduce) {
+        const mobile = window.matchMedia('(max-width: 768px)').matches;
+        hero.src = (mobile && hero.dataset.srcMobile) || hero.dataset.src || '';
+        hero.load();
+        hero.play().catch(() => {});
+      }
+
+      const lazies = document.querySelectorAll('video.lazy-video');
+      if (!lazies.length) return;
+      if (reduce || !('IntersectionObserver' in window)) return;
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const v = entry.target;
+          if (!(v instanceof HTMLVideoElement)) return;
+          if (entry.isIntersecting) {
+            if (!v.src && v.dataset.src) { v.src = v.dataset.src; v.load(); }
+            v.play().catch(() => {});
+          } else if (!v.paused) {
+            v.pause();
+          }
+        });
+      }, { rootMargin: '200px' });
+
+      lazies.forEach((v) => io.observe(v));
+    })();
   </script>
 
   <!-- ═══ CLIENTES ═══ -->
@@ -404,7 +443,7 @@ const featuredProjects = [
     <div class="container">
       <a href="/video-booth-360/" class="booth-card">
         <div class="booth-video-bg">
-          <video autoplay muted loop playsinline src="/booth-360/360-Recap.mp4"></video>
+          <video muted loop playsinline preload="none" class="lazy-video" data-src="/booth-360/360-Recap.mp4"></video>
           <div class="booth-overlay"></div>
         </div>
         <div class="booth-content">
@@ -454,6 +493,8 @@ const featuredProjects = [
       </div>
     </div>
   </section>
+
+  </main>
 
   <Footer />
  </div>

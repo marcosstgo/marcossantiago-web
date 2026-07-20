@@ -26,6 +26,7 @@ const testimonials = [
 <Base
   title="Fotógrafo de Bodas en Puerto Rico | Marcos Santiago"
   description="Fotografía de bodas en Puerto Rico desde $750. Cobertura completa, galería digital, entrega 4-6 semanas. Cotización gratis. Respondo en menos de 1 hora."
+  businessSchema={false}
 >
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -97,7 +98,7 @@ const testimonials = [
     </div>
   </header>
 
-  <main>
+  <main id="main">
     <!-- ── Hero ── -->
     <section class="hero-section">
       <img class="hero-bg-img" src="/videos/marcos-video-poster.webp" alt="" aria-hidden="true" fetchpriority="high" />

@@ -5,6 +5,7 @@ import Footer from '../../components/Footer.astro';
 <Base
   title="Diseño Gráfico y Branding en Puerto Rico | Marcos Santiago"
   description="Diseño gráfico, logos e identidad de marca en Puerto Rico desde $50. Branding, redes sociales, imprenta y editorial. Cotización gratis. Respondo en menos de 1 hora."
+  businessSchema={false}
 >
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -77,7 +78,7 @@ import Footer from '../../components/Footer.astro';
     </div>
   </header>
 
-  <main>
+  <main id="main">
     <!-- ── Hero ── -->
     <section class="hero-section">
       <img class="hero-bg-img" src="/videos/marcos-video-poster.webp" alt="" aria-hidden="true" fetchpriority="high" />
