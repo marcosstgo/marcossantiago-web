@@ -1,0 +1,703 @@
+---
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+---
+<Base
+  title="Generador de Logos Gratis con IA | Marcos Santiago — Puerto Rico"
+  description="Genera 3 conceptos de logo gratis con inteligencia artificial en segundos. Escribe el nombre de tu negocio y míralo hoy. Diseñador gráfico en Puerto Rico para convertirlo en marca real desde $50."
+  image="/marcos-photo.jpg"
+>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "Generador de Logos con IA — Marcos Santiago",
+        "url": "https://marcossantiago.com/generador-de-logos/",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web",
+        "inLanguage": "es",
+        "description": "Herramienta gratuita que genera 3 conceptos de logo con inteligencia artificial a partir del nombre y rubro de tu negocio.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "author": { "@id": "https://marcossantiago.com/#persona" },
+        "provider": { "@id": "https://marcossantiago.com/#negocio" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿El generador de logos es realmente gratis?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Escribes el nombre de tu negocio y la inteligencia artificial te muestra 3 conceptos de logo sin costo, sin registrarte y sin tarjeta de crédito. Yo pago la generación; si te gusta alguno y quieres convertirlo en marca de verdad, ahí es donde entro a trabajar." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Puedo usar el logo de la IA tal cual para mi negocio?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Te lo digo honesto: no te lo recomiendo. Lo que genera la IA es una imagen de referencia, no un archivo de marca. No viene vectorizado, la tipografía no es una fuente real que puedas editar, y no sirve para imprenta ni para rotulación. Es un excelente punto de partida para ver hacia dónde va tu marca — el trabajo fino lo hago yo a mano." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿En qué formato me entregas el logo final?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Cuando trabajamos el logo de verdad recibes los archivos vectoriales editables (SVG y PDF) más PNG en alta resolución con fondo transparente, en versiones a color, en negro y en blanco. Eso es lo que necesitas para imprenta, rotulación, redes sociales y web." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cuánto cuesta convertir el concepto en un logo profesional?",
+            "acceptedAnswer": { "@type": "Answer", "text": "El diseño gráfico comienza desde $50 para piezas individuales. Un paquete completo de identidad de marca (logo con variantes, paleta de colores, tipografía y guía de estilo) se cotiza según el alcance del proyecto. La cotización es gratis y respondo en menos de una hora." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cuánto tardan en salir los conceptos?",
+            "acceptedAnswer": { "@type": "Answer", "text": "El primer concepto aparece en unos 15 segundos y los tres están listos en menos de un minuto y medio. Van apareciendo uno por uno según se van dibujando." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Trabajas con negocios de toda Puerto Rico?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Estoy en Aibonito y el diseño se trabaja de forma remota, así que atiendo negocios de toda la isla — y fuera de ella — sin problema." }
+          }
+        ]
+      }
+    ]
+  })} />
+
+  <!-- Minimal PPC header — no escape nav -->
+  <header class="ppc-header">
+    <div class="container ppc-header-inner">
+      <a href="/" class="ppc-logo" aria-label="Marcos Santiago — inicio">MARCOS SANTIAGO</a>
+      <a href="tel:+17872439670" class="ppc-phone" data-track="call-header">
+        <i class="fa-solid fa-phone"></i> (787) 243-9670
+      </a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ── Hero + herramienta (la herramienta va arriba del fold a propósito) ── -->
+    <section class="tool-hero">
+      <div class="container">
+        <p class="section-label">Herramienta gratis · Sin registro</p>
+        <h1 class="tool-title">Generador de logos<br><span class="accent">con inteligencia artificial</span></h1>
+        <p class="tool-sub">
+          Escribe el nombre de tu negocio y mira <strong>3 conceptos de logo en segundos</strong>.
+          Gratis, sin cuenta y sin tarjeta. La IA pone la chispa;
+          <strong>yo la convierto en una marca de verdad</strong>.
+        </p>
+
+        <form class="ai-form" id="aiForm">
+          <div class="ai-field">
+            <label for="aiName">Nombre del negocio</label>
+            <input id="aiName" type="text" maxlength="40" placeholder="Ej: Café Lola" autocomplete="off" required />
+          </div>
+          <div class="ai-field">
+            <label for="aiIndustry">Rubro <span>(opcional)</span></label>
+            <input id="aiIndustry" type="text" maxlength="40" placeholder="Ej: cafetería" autocomplete="off" />
+          </div>
+          <div class="ai-field ai-field-sel">
+            <label for="aiStyle">Estilo</label>
+            <select id="aiStyle">
+              <option value="moderno">Moderno</option>
+              <option value="minimalista">Minimalista</option>
+              <option value="elegante">Elegante</option>
+              <option value="divertido">Divertido</option>
+              <option value="clasico">Clásico</option>
+              <option value="tecnologico">Tecnológico</option>
+              <option value="organico">Orgánico</option>
+            </select>
+          </div>
+          <button type="submit" class="btn primary ai-go" id="aiGo" data-track="generar">Generar mis logos gratis</button>
+        </form>
+
+        <p class="tool-trust">
+          <span><i class="fa-solid fa-bolt"></i> El primero sale en ~15 segundos</span>
+          <span><i class="fa-solid fa-lock-open"></i> Sin registro ni tarjeta</span>
+          <span><i class="fa-solid fa-location-dot"></i> Diseñador real en Puerto Rico</span>
+        </p>
+
+        <p class="ai-status" id="aiStatus" hidden></p>
+
+        <div class="ai-results" id="aiResults" hidden></div>
+
+        <div class="ai-lead-box" id="aiLeadBox" hidden>
+          <div class="ai-lead-copy">
+            <h3>¿Te gustó alguno?</h3>
+            <p>Toca <strong>"Elegir este"</strong> en tu favorito, déjame tu contacto y te lo envío en <strong>alta resolución, editable y refinado a mano</strong> — listo para tu marca.</p>
+            <p class="ai-liked-hint" id="aiLikedHint" hidden>Concepto elegido: <span></span></p>
+          </div>
+          <form class="ai-lead-form" id="aiLeadForm">
+            <input id="leadName" type="text" placeholder="Tu nombre" maxlength="60" autocomplete="name" />
+            <input id="leadContact" type="text" placeholder="Teléfono o email" maxlength="80" autocomplete="tel" required />
+            <button type="submit" class="btn primary" id="leadGo">Quiero mis conceptos →</button>
+          </form>
+          <p class="ai-lead-ok" id="aiLeadOk" hidden>✓ ¡Listo! Te escribo hoy mismo con tus conceptos.</p>
+          <a class="ai-wa" href="https://wa.me/17872439670" target="_blank" rel="noopener" data-track="whatsapp-lead">o escríbeme directo por WhatsApp →</a>
+        </div>
+
+        <p class="ai-gallery-link"><a href="/galeria-logos/">Ver galería de logos ya generados →</a></p>
+      </div>
+    </section>
+
+    <!-- ── Cómo funciona ── -->
+    <section class="steps-section">
+      <div class="container">
+        <p class="section-label">Cómo funciona</p>
+        <h2 class="section-title">Tres pasos, <span class="accent">cero compromiso</span></h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-num">01</span>
+            <h3>Escribe tu negocio</h3>
+            <p>Nombre, rubro y el estilo que tienes en mente. Nada más — no pido correo ni cuenta para generar.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-num">02</span>
+            <h3>Mira 3 conceptos</h3>
+            <p>Un símbolo, un wordmark y una versión combinada. Aparecen uno por uno según se van dibujando.</p>
+          </div>
+          <div class="step-card">
+            <span class="step-num">03</span>
+            <h3>Yo lo hago marca</h3>
+            <p>Eliges el que te llegó, me dejas tu contacto y te lo devuelvo vectorizado, refinado y listo para usar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── De concepto a marca real (el pitch honesto) ── -->
+    <section class="real-section">
+      <div class="container">
+        <div class="real-grid">
+          <div class="real-copy">
+            <p class="section-label">La parte que la IA no hace</p>
+            <h2 class="section-title">Un concepto bonito<br>no es <span class="accent">una marca</span></h2>
+            <p class="real-text">
+              Te lo digo claro porque prefiero un cliente informado que una venta rápida:
+              lo que sale del generador es una <strong>imagen de referencia</strong>. No viene
+              vectorizada, la tipografía no es editable y no sirve para imprenta ni rotulación.
+            </p>
+            <p class="real-text">
+              Sirve para algo valiosísimo: <strong>ver hacia dónde va tu marca antes de gastar un peso</strong>.
+              Cuando ya sabes qué te gusta, yo lo redibujo a mano y te entrego lo que un negocio
+              de verdad necesita.
+            </p>
+            <ul class="real-list">
+              <li><i class="fa-solid fa-check"></i> Logo vectorizado a mano (SVG y PDF editables)</li>
+              <li><i class="fa-solid fa-check"></i> Variantes: color, negro, blanco y versión compacta</li>
+              <li><i class="fa-solid fa-check"></i> PNG en alta resolución con fondo transparente</li>
+              <li><i class="fa-solid fa-check"></i> Paleta de colores y tipografía de marca</li>
+              <li><i class="fa-solid fa-check"></i> Listo para imprenta, rotulación, redes y web</li>
+            </ul>
+            <div class="real-price">
+              <span class="price-badge">Desde <strong>$50</strong></span>
+              <span class="price-note">· Cotización gratis · Respondo en &lt;1 hora</span>
+            </div>
+            <div class="real-actions">
+              <a href="https://wa.me/17872439670?text=Hola%2C%20gener%C3%A9%20unos%20conceptos%20de%20logo%20en%20tu%20p%C3%A1gina%20y%20quiero%20trabajarlos."
+                 target="_blank" rel="noopener" class="hero-cta hero-cta-wa" data-track="whatsapp">
+                <i class="fab fa-whatsapp"></i> Hablemos por WhatsApp
+              </a>
+              <a href="/diseno-grafico-pr/" class="hero-cta hero-cta-form">
+                <i class="fa-solid fa-pen-nib"></i> Ver servicio de branding
+              </a>
+            </div>
+          </div>
+          <div class="real-photo">
+            <div class="real-photo-bg" aria-hidden="true"></div>
+            <img src="/marcos-photo.jpg" alt="Marcos Santiago, diseñador gráfico en Puerto Rico" width="640" height="800" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section class="faq-section">
+      <div class="container">
+        <p class="section-label">Preguntas</p>
+        <h2 class="section-title">Lo que todo el mundo <span class="accent">pregunta</span></h2>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>¿El generador de logos es realmente gratis?</summary>
+            <p>Sí. Escribes el nombre de tu negocio y la IA te muestra 3 conceptos sin costo, sin registrarte y sin tarjeta de crédito. Yo pago la generación; si te gusta alguno y quieres convertirlo en marca de verdad, ahí es donde entro a trabajar.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Puedo usar el logo de la IA tal cual para mi negocio?</summary>
+            <p>Te lo digo honesto: no te lo recomiendo. Lo que genera la IA es una imagen de referencia, no un archivo de marca. No viene vectorizado, la tipografía no es una fuente real que puedas editar, y no sirve para imprenta ni rotulación. Es un excelente punto de partida — el trabajo fino lo hago yo a mano.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿En qué formato me entregas el logo final?</summary>
+            <p>Recibes los archivos vectoriales editables (SVG y PDF) más PNG en alta resolución con fondo transparente, en versiones a color, en negro y en blanco. Eso es lo que necesitas para imprenta, rotulación, redes sociales y web.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Cuánto cuesta convertirlo en un logo profesional?</summary>
+            <p>El diseño gráfico comienza desde $50 para piezas individuales. Un paquete completo de identidad de marca (logo con variantes, paleta, tipografía y guía de estilo) se cotiza según el alcance. La cotización es gratis y respondo en menos de una hora.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Cuánto tardan en salir los conceptos?</summary>
+            <p>El primero aparece en unos 15 segundos y los tres están listos en menos de minuto y medio. Van apareciendo uno por uno según se van dibujando, así que no te quedas mirando una pantalla en blanco.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Trabajas con negocios de toda Puerto Rico?</summary>
+            <p>Sí. Estoy en Aibonito y el diseño se trabaja de forma remota, así que atiendo negocios de toda la isla — y fuera de ella — sin problema.</p>
+          </details>
+        </div>
+        <div class="faq-cta">
+          <a href="https://wa.me/17872439670?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20el%20dise%C3%B1o%20de%20mi%20logo."
+             target="_blank" rel="noopener" class="faq-wa-btn" data-track="whatsapp">
+            <i class="fab fa-whatsapp"></i> ¿Otra pregunta? Escríbeme por WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+
+  <!-- Sticky mobile bar -->
+  <div class="sticky-bar" id="stickyBar" aria-hidden="true">
+    <a href="tel:+17872439670" class="sticky-btn sticky-call" data-track="call-sticky">
+      <i class="fa-solid fa-phone"></i> Llamar
+    </a>
+    <a href="https://wa.me/17872439670?text=Hola%2C%20quiero%20trabajar%20el%20logo%20de%20mi%20negocio."
+       target="_blank" rel="noopener" class="sticky-btn sticky-wa" data-track="whatsapp-sticky">
+      <i class="fab fa-whatsapp"></i> WhatsApp
+    </a>
+  </div>
+
+  <style>
+  /* Accent local — mismo verde esmeralda que /diseno-grafico-pr/ (misma campaña) */
+  main { --accent: #10b981 }
+
+  /* ── PPC Header ── */
+  .ppc-header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 800;
+    background: rgba(4,13,22,.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border); padding: 12px 0;
+  }
+  .ppc-header-inner { display: flex; align-items: center; justify-content: space-between }
+  .ppc-logo {
+    font-family: var(--display); font-size: .95rem;
+    letter-spacing: 4px; color: var(--white); text-decoration: none;
+  }
+  .ppc-phone {
+    font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px;
+    color: #10b981; text-decoration: none; border: 1px solid #10b981;
+    border-radius: 8px; padding: 6px 14px; transition: .15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ppc-phone:hover { background: #10b981; color: #fff }
+
+  /* ── Hero + herramienta ── */
+  .tool-hero { padding: 120px 0 70px; border-bottom: 1px solid var(--border) }
+  .tool-title {
+    font-family: var(--display);
+    font-size: clamp(2.6rem, 8vw, 5.4rem);
+    line-height: .94; letter-spacing: 2px;
+    margin: 8px 0 20px; color: var(--white);
+  }
+  .tool-sub {
+    color: var(--muted); font-size: 1.08rem; line-height: 1.75; max-width: 62ch;
+  }
+  .tool-sub strong { color: var(--white); font-weight: 600 }
+  .tool-trust {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;
+  }
+  .tool-trust span {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--mono); font-size: .55rem; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 20px; padding: 6px 13px;
+  }
+  .tool-trust i { color: var(--accent) }
+
+  /* ── Formulario del generador ── */
+  .ai-form {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    margin-top: 34px; align-items: flex-end;
+  }
+  .ai-field { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 190px }
+  .ai-field-sel { flex: 0 0 auto; min-width: 160px }
+  .ai-field label {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+  }
+  .ai-field label span { text-transform: none; letter-spacing: 0; opacity: .7 }
+  .ai-field input, .ai-field select {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 13px 15px; color: var(--white); font-size: 1rem;
+    font-family: inherit; transition: border-color .2s;
+  }
+  .ai-field input::placeholder { color: color-mix(in srgb, var(--muted) 80%, transparent) }
+  .ai-field input:focus, .ai-field select:focus { outline: none; border-color: var(--accent) }
+  .ai-go { min-width: 230px; height: 49px }
+  @media (max-width: 700px) {
+    .ai-form { flex-direction: column; align-items: stretch }
+    .ai-field-sel { min-width: 0 }
+    .ai-go { width: 100% }
+  }
+
+  .ai-status {
+    font-family: var(--mono); font-size: var(--text-xs);
+    letter-spacing: .5px; color: var(--muted); margin-top: 22px; line-height: 1.6;
+  }
+  .ai-results {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; margin-top: 22px;
+  }
+  @media (max-width: 760px) { .ai-results { grid-template-columns: 1fr } }
+
+  .ai-lead-box {
+    margin-top: 28px; padding: 26px; border-radius: 16px;
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+    background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .ai-lead-copy h3 {
+    font-family: var(--display); font-size: 1.7rem;
+    letter-spacing: 1.5px; color: var(--white);
+  }
+  .ai-lead-copy p { color: var(--muted); font-size: var(--text-base); line-height: 1.6; margin-top: 6px }
+  .ai-lead-copy strong { color: var(--white); font-weight: 600 }
+  .ai-liked-hint { color: color-mix(in srgb, var(--accent) 85%, var(--white)); font-size: var(--text-sm); margin-top: 10px }
+  .ai-liked-hint span { font-weight: 700; color: var(--white) }
+  .ai-lead-form { display: flex; gap: 12px; flex-wrap: wrap }
+  .ai-lead-form input {
+    flex: 1; min-width: 190px; background: var(--bg);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 13px 15px; color: var(--white); font-size: 1rem;
+  }
+  .ai-lead-form input:focus { outline: none; border-color: var(--accent) }
+  .ai-lead-ok { color: #4ade80; font-size: var(--text-base); font-weight: 500 }
+  .ai-wa {
+    font-family: var(--mono); font-size: var(--text-xs);
+    letter-spacing: 1px; color: var(--muted); transition: color .2s;
+  }
+  .ai-wa:hover { color: var(--white) }
+  @media (max-width: 700px) {
+    .ai-lead-form { flex-direction: column }
+    .ai-lead-form .btn { width: 100% }
+  }
+  .ai-gallery-link { margin-top: 26px }
+  .ai-gallery-link a {
+    font-family: var(--mono); font-size: var(--text-xs);
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: color-mix(in srgb, var(--accent) 80%, var(--white));
+    border-bottom: 1px solid var(--border); padding-bottom: 2px; transition: .2s;
+  }
+  .ai-gallery-link a:hover { color: var(--white); border-color: var(--accent) }
+
+  /* ── Secciones de contenido ── */
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin: 8px 0 32px; color: var(--white);
+  }
+  .section-title .accent, .tool-title .accent { color: var(--accent) }
+
+  .steps-section { padding: 80px 0 }
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;
+  }
+  .step-card {
+    background: color-mix(in srgb, var(--white) 3%, transparent);
+    border: 1px solid var(--border); border-radius: 16px; padding: 26px;
+  }
+  .step-num {
+    font-family: var(--display); font-size: 2.2rem;
+    color: var(--accent); line-height: 1; display: block; margin-bottom: 12px;
+  }
+  .step-card h3 { font-size: 1.05rem; color: var(--white); margin: 0 0 8px; font-weight: 600 }
+  .step-card p { font-size: .9rem; color: var(--muted); line-height: 1.65; margin: 0 }
+
+  .real-section { padding: 80px 0; border-top: 1px solid var(--border) }
+  .real-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: center }
+  .real-text { font-size: .95rem; color: var(--muted); line-height: 1.75; margin: 0 0 16px }
+  .real-text strong { color: var(--white); font-weight: 600 }
+  .real-list { list-style: none; padding: 0; margin: 24px 0; display: flex; flex-direction: column; gap: 10px }
+  .real-list li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: .92rem; color: color-mix(in srgb, var(--white) 85%, transparent);
+  }
+  .real-list li i { color: var(--accent); width: 16px; flex-shrink: 0 }
+  .real-price { display: flex; align-items: center; gap: 12px; margin: 24px 0; flex-wrap: wrap }
+  .price-badge {
+    background: var(--accent); color: #040d16;
+    padding: 6px 16px; border-radius: 20px;
+    font-family: var(--mono); font-size: .75rem; letter-spacing: 1px;
+  }
+  .price-badge strong { font-size: .95rem }
+  .price-note { font-size: .82rem; color: var(--muted); font-family: var(--mono); letter-spacing: .5px }
+  .real-actions { display: flex; flex-wrap: wrap; gap: 10px }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; border-radius: 10px;
+    font-family: var(--mono); font-size: .65rem;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    text-decoration: none; font-weight: 700; transition: .15s;
+  }
+  .hero-cta-wa { background: #25d366; color: #fff }
+  .hero-cta-wa:hover { opacity: .88 }
+  .hero-cta-form { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,.25) }
+  .hero-cta-form:hover { border-color: var(--accent); color: var(--accent) }
+  .real-photo { position: relative }
+  .real-photo img {
+    width: 100%; border-radius: 20px; display: block;
+    aspect-ratio: 4/5; object-fit: cover; position: relative; z-index: 1;
+  }
+  .real-photo-bg {
+    position: absolute; inset: 12px -12px -12px 12px;
+    background: var(--accent); border-radius: 20px; z-index: 0; opacity: .12;
+  }
+
+  /* ── FAQ ── */
+  .faq-section { padding: 80px 0; border-top: 1px solid var(--border) }
+  .faq-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 32px }
+  .faq-item {
+    border: 1px solid var(--border); border-radius: 12px;
+    background: color-mix(in srgb, var(--white) 2%, transparent); overflow: hidden;
+  }
+  .faq-item summary {
+    padding: 18px 24px; cursor: pointer; font-size: .95rem;
+    color: var(--white); list-style: none; display: flex;
+    align-items: center; justify-content: space-between; gap: 12px; transition: color .15s;
+  }
+  .faq-item summary::-webkit-details-marker { display: none }
+  .faq-item summary:hover { color: var(--accent) }
+  .faq-item summary::after {
+    content: '+'; font-family: var(--mono); font-size: 1rem;
+    color: var(--muted); flex-shrink: 0; transition: transform .2s;
+  }
+  .faq-item[open] summary::after { transform: rotate(45deg) }
+  .faq-item p { padding: 0 24px 18px; font-size: .88rem; color: var(--muted); line-height: 1.65; margin: 0 }
+  .faq-cta { text-align: center }
+  .faq-wa-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #25d366; color: #fff; text-decoration: none;
+    padding: 12px 24px; border-radius: 10px;
+    font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px;
+    text-transform: uppercase; font-weight: 700; transition: opacity .15s;
+  }
+  .faq-wa-btn:hover { opacity: .88 }
+
+  /* ── Sticky bar ── */
+  .sticky-bar {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    z-index: 700; padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: rgba(4,13,22,.96); backdrop-filter: blur(8px);
+    border-top: 1px solid var(--border); gap: 10px;
+  }
+  .sticky-btn {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 13px; border-radius: 10px; text-decoration: none;
+    font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px;
+    text-transform: uppercase; font-weight: 700; transition: opacity .15s;
+  }
+  .sticky-call { background: var(--white); color: #040d16 }
+  .sticky-wa { background: #25d366; color: #fff }
+  .sticky-call:hover, .sticky-wa:hover { opacity: .88 }
+
+  @media (max-width: 768px) {
+    .real-grid { grid-template-columns: 1fr }
+    .real-photo { max-width: 320px; margin: 0 auto }
+    .sticky-bar { display: flex }
+    main { padding-bottom: 80px }
+  }
+  @media (max-width: 480px) {
+    .real-actions { flex-direction: column }
+    .hero-cta { justify-content: center }
+  }
+  </style>
+
+  <!-- Estilos de las tarjetas generadas por JS (innerHTML) — deben ser globales
+       porque no reciben el atributo de scope de Astro. Todo va con prefijo .ai-* -->
+  <style is:global>
+    .ai-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 14px;
+      display: flex; flex-direction: column; gap: 12px;
+      min-width: 0;   /* evita que la imagen intrínseca reviente la columna del grid */
+    }
+    .ai-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px }
+    .ai-card-label {
+      font-family: var(--mono); font-size: var(--text-2xs);
+      letter-spacing: 2px; text-transform: uppercase; color: #10b981;
+    }
+    .ai-canvas {
+      aspect-ratio: 1; background: #fff; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 18px; overflow: hidden;
+    }
+    .ai-canvas svg { width: 100%; height: 100%; display: block }
+    .ai-canvas img { width: 100%; height: 100%; object-fit: contain; display: block }
+    .ai-skeleton {
+      width: 100%; height: 100%; border-radius: 8px;
+      background: linear-gradient(100deg, #ececec 30%, #f7f7f7 50%, #ececec 70%);
+      background-size: 200% 100%; animation: aiShimmer 1.3s linear infinite;
+    }
+    @keyframes aiShimmer { to { background-position: -200% 0 } }
+    .ai-card.err .ai-canvas { background: var(--surface); border: 1px dashed var(--border) }
+    .ai-retry {
+      font-family: var(--mono); font-size: var(--text-xs); color: var(--muted);
+      border: 1px solid var(--border); background: none;
+      padding: 9px 16px; border-radius: 8px; cursor: pointer; transition: .2s;
+    }
+    .ai-retry:hover { color: var(--white) }
+    .ai-pick {
+      font-family: var(--mono); font-size: var(--text-2xs);
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 11px 12px; border-radius: 9px; cursor: pointer;
+      background: none; color: var(--white);
+      border: 1px solid var(--border); transition: .18s;
+    }
+    .ai-pick:hover { border-color: #10b981; color: #10b981 }
+    .ai-card.selected { border-color: #10b981; box-shadow: 0 0 0 1px #10b981 }
+    .ai-card.selected .ai-pick { background: #10b981; color: #040d16; border-color: #10b981 }
+  </style>
+
+  <script>
+    (() => {
+      const API = '/logo-api';
+      const LABELS = ['Símbolo', 'Wordmark', 'Combinado'];
+      const $ = (id) => document.getElementById(id);
+      const form = $('aiForm');
+      if (!form) return;
+      const nameEl = $('aiName'), industryEl = $('aiIndustry'), styleEl = $('aiStyle');
+      const goBtn = $('aiGo'), statusEl = $('aiStatus'), results = $('aiResults');
+      const leadBox = $('aiLeadBox'), leadForm = $('aiLeadForm'), leadOk = $('aiLeadOk');
+      const waLink = document.querySelector('.ai-wa');
+
+      const conceptStore = [null, null, null];   // {id, url} por variant
+      let ctx = { name: '', industry: '', style: '' };
+      let picked = null;   // variant elegido por el usuario
+
+      const track = (event, params) => {
+        const g = window.gtag;
+        if (typeof g === 'function') g('event', event, params);
+      };
+
+      const slotMarkup = () => LABELS.map((lb, i) => (
+        '<div class="ai-card" data-slot="' + i + '">' +
+          '<div class="ai-card-head">' +
+            '<span class="ai-card-label">' + lb + '</span>' +
+          '</div>' +
+          '<div class="ai-canvas"><div class="ai-skeleton"></div></div>' +
+          '<button class="ai-pick" data-pick="' + i + '" hidden>Elegir este</button>' +
+        '</div>'
+      )).join('');
+
+      function selectVariant(i) {
+        picked = i;
+        results.querySelectorAll('.ai-card').forEach((el) => {
+          const on = +el.dataset.slot === i;
+          el.classList.toggle('selected', on);
+          const btn = el.querySelector('.ai-pick');
+          if (btn) btn.textContent = on ? '✓ Elegido' : 'Elegir este';
+        });
+        const hint = document.getElementById('aiLikedHint');
+        if (hint) { hint.hidden = false; hint.querySelector('span').textContent = LABELS[i]; }
+        const c = document.getElementById('leadContact');
+        if (c) c.focus({ preventScroll: true });
+        track('logo_concept_picked', { event_category: 'engagement', event_label: LABELS[i] });
+      }
+
+      async function genVariant(i) {
+        const card = results.querySelector('[data-slot="' + i + '"]');
+        const canvas = card.querySelector('.ai-canvas');
+        card.classList.remove('err');
+        canvas.innerHTML = '<div class="ai-skeleton"></div>';
+        try {
+          const r = await fetch(API + '/generate', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: ctx.name, industry: ctx.industry, style: ctx.style, variant: i }),
+          });
+          const data = await r.json();
+          if (!r.ok || !data.concept || !data.concept.url) throw new Error((data && data.message) || 'error');
+          conceptStore[i] = { id: data.concept.id, url: data.concept.url };
+          canvas.innerHTML = '<img src="' + data.concept.url + '" alt="Concepto de logo generado con IA para ' + ctx.name + '">';
+          card.querySelector('.ai-pick').hidden = false;
+        } catch (e) {
+          card.classList.add('err');
+          canvas.innerHTML = '<button class="ai-retry" data-retry="' + i + '">Reintentar</button>';
+          track('logo_generate_error', { event_category: 'engagement', event_label: 'variant_' + i });
+        }
+      }
+
+      async function run() {
+        const name = nameEl.value.trim();
+        if (!name) { nameEl.focus(); return; }
+        ctx = { name, industry: industryEl.value.trim(), style: styleEl.value };
+        goBtn.disabled = true; goBtn.textContent = 'Generando…';
+        statusEl.hidden = false;
+        statusEl.textContent = 'La IA está dibujando tus conceptos… (unos segundos cada uno)';
+        picked = null;
+        results.hidden = false; results.innerHTML = slotMarkup();
+        const hint0 = document.getElementById('aiLikedHint'); if (hint0) hint0.hidden = true;
+        leadBox.hidden = true; leadOk.hidden = true; if (leadForm) leadForm.hidden = false;
+        track('logo_generate_start', { event_category: 'engagement', event_label: ctx.style });
+        for (let i = 0; i < 3; i++) { await genVariant(i); }
+        goBtn.disabled = false; goBtn.textContent = 'Generar otra vez';
+        statusEl.textContent = 'Estos son puntos de partida — yo los perfecciono a mano hasta que queden perfectos.';
+        if (waLink) {
+          const msg = 'Hola Marcos, generé unos conceptos de logo para "' + ctx.name + '" en tu página y me gustaría trabajarlos.';
+          waLink.href = 'https://wa.me/17872439670?text=' + encodeURIComponent(msg);
+        }
+        leadBox.hidden = false;
+        track('logo_generate_done', { event_category: 'engagement', event_label: ctx.style });
+      }
+
+      form.addEventListener('submit', (e) => { e.preventDefault(); run(); });
+
+      results.addEventListener('click', (e) => {
+        const rt = e.target.closest('[data-retry]');
+        if (rt) { genVariant(+rt.dataset.retry); return; }
+        const pk = e.target.closest('[data-pick]');
+        if (pk) { selectVariant(+pk.dataset.pick); return; }
+      });
+
+      leadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const contact = $('leadContact').value.trim();
+        if (!contact) return;
+        const btn = $('leadGo');
+        btn.disabled = true; btn.textContent = 'Enviando…';
+        let liked = '', likedId = '';
+        if (picked !== null && conceptStore[picked]) {
+          liked = LABELS[picked];
+          likedId = conceptStore[picked].id;
+        }
+        try {
+          await fetch(API + '/lead', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contact, name: $('leadName').value.trim(),
+              business: ctx.name, style: ctx.style, industry: ctx.industry,
+              liked, liked_id: likedId,
+              source: 'generador-de-logos',
+            }),
+          });
+          leadForm.hidden = true; leadOk.hidden = false;
+          track('generate_lead', { event_category: 'engagement', event_label: 'generador-de-logos' });
+        } catch (e2) {
+          btn.disabled = false; btn.textContent = 'Quiero mis conceptos →';
+        }
+      });
+    })();
+  </script>
+
+  <script is:inline>
+  // Sticky bar on scroll
+  (function() {
+    const bar = document.getElementById('stickyBar');
+    if (!bar) return;
+    bar.setAttribute('aria-hidden', 'false');
+    let shown = false;
+    window.addEventListener('scroll', function() {
+      const past = window.scrollY > 300;
+      if (past !== shown) { shown = past; bar.style.display = past ? 'flex' : 'none'; }
+    }, { passive: true });
+  })();
+
+  // GA4 CTA tracking
+  document.querySelectorAll('[data-track]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      if (typeof gtag === 'function') gtag('event', 'cta_click', { event_category: 'engagement', event_label: el.dataset.track });
+    });
+  });
+  </script>
+</Base>

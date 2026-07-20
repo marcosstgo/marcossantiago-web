@@ -42,6 +42,9 @@
 
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+/* El atributo `hidden` debe ganarle a cualquier `display` del autor (flex/grid).
+   Sin esto, un elemento con [hidden] y `display:flex` se queda visible. */
+[hidden] { display: none !important }
 html { scroll-behavior: smooth }
 html, body { max-width: 100%; overflow-x: hidden }
 body {
