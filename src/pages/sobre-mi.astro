@@ -7,46 +7,73 @@ import Footer from '../components/Footer.astro';
 const capitulos = [
   {
     anio: '2001',
-    meta: ['Universidad Interamericana', 'Programador analista'],
+    meta: ['Univ. Interamericana', 'Ciencias de Computadoras'],
     titulo: 'El código primero',
-    texto: `Bachillerato en Ciencias de Computadoras con concentración en Programación
-            Comercial, y maestría con concentración en Comercio Electrónico. Entré a la
-            Universidad Interamericana de Puerto Rico como técnico y salí de ahí siendo
-            programador analista, diseñador web y artista gráfico. Fue donde descubrí que
-            lo que me gustaba no era la máquina, sino lo que se podía hacer con ella.`,
+    parrafos: [
+      `Mi carrera comenzó desde la tecnología. Estudié Ciencias de Computadoras con
+       concentración en Programación Comercial y luego completé una maestría en Comercio
+       Electrónico en la Universidad Interamericana de Puerto Rico.`,
+      `Esa formación me enseñó a combinar estrategia, diseño y programación para convertir
+       ideas en soluciones útiles, funcionales y visualmente atractivas.`,
+    ],
   },
   {
     anio: '2012',
     meta: ['Sony NEX-3', 'Fines de semana'],
-    titulo: 'La primera cámara',
-    texto: `Una Sony NEX-3 y ningún plan. Fotografía los sábados, aprendiendo a ver.
-            El equipo fue creciendo con el trabajo — Canon 6D, Canon R, Canon R6, y tres
-            Lumix S5IIx cuando el video dejó de ser un extra — hasta que lo que empezó
-            como pasatiempo terminó comiéndose el trabajo principal.`,
+    titulo: 'Aprender a mirar',
+    parrafos: [
+      `Una Sony NEX-3 despertó mi interés por la fotografía. Lo que comenzó fotografiando
+       durante los fines de semana fue creciendo con cada proyecto y terminó abriéndome
+       las puertas al video.`,
+      `Desde entonces, la imagen dejó de ser un complemento y se convirtió en una parte
+       esencial de mi manera de comunicar y contar historias.`,
+    ],
   },
   {
     anio: 'Hoy',
-    meta: ['Diseño', 'Foto', 'Video', 'Código'],
-    titulo: 'La marca completa',
-    texto: `Trabajo con negocios de toda la isla en su identidad visual completa: el logo,
-            las fotos, el video y el website. Un solo interlocutor para todo, sin tener que
-            explicarle la marca otra vez a cada proveedor. Sigo siendo autodidacta y sigo
-            aprendiendo.`,
+    meta: ['Negocios', 'Municipios', 'Organizaciones'],
+    titulo: 'Una visión completa',
+    parrafos: [
+      `Hoy colaboro con negocios, municipios, profesionales y organizaciones de toda la isla
+       en proyectos de identidad visual, fotografía, video y desarrollo web.`,
+      `La ventaja para el cliente es sencilla: una sola visión de principio a fin,
+       comunicación directa y una identidad coherente en todos sus puntos de contacto.
+       Sigo aprendiendo, experimentando y buscando nuevas formas de contar mejor cada
+       historia.`,
+    ],
   },
 ];
 
-/* Lo que el cliente se lleva, no con qué lo hago. Cada línea sale de un
-   servicio que existe de verdad en /servicios/. */
+/* Dos públicos, no cuatro disciplinas: el visitante reconoce de inmediato
+   si trabajo el tipo de proyecto que necesita. */
 const ficha = [
-  { cat: 'Diseño',      items: ['Logo y manual de marca', 'Identidad visual completa', 'Piezas para redes', 'Arte para imprenta', 'Diseño editorial'] },
-  { cat: 'Fotografía',  items: ['Bodas y quinceañeros', 'Eventos sociales', 'Retratos y headshots', 'Fotografía corporativa', 'Galería editada y lista'] },
-  { cat: 'Videografía', items: ['Video de boda', 'Reels para redes', 'Video corporativo', 'Documental', '360 Video Booth'] },
-  { cat: 'Desarrollo',  items: ['Websites y landings', 'Tiendas en línea', 'Apps y herramientas', 'Plataformas a la medida'] },
+  {
+    cat: 'Para marcas y organizaciones',
+    items: [
+      'Logos e identidad visual',
+      'Fotografía y video corporativo',
+      'Reels y contenido para redes',
+      'Diseño gráfico y materiales impresos',
+      'Sitios web, tiendas y plataformas',
+      'Documentales y cobertura institucional',
+    ],
+  },
+  {
+    cat: 'Para eventos y personas',
+    items: [
+      'Bodas y quinceañeros',
+      'Eventos sociales',
+      'Retratos y headshots',
+      'Video de eventos',
+      'Galerías digitales',
+      '360 Video Booth',
+    ],
+  },
 ];
 ---
 <Base
   title="Sobre mí — Marcos Santiago"
-  description="Diseñador, fotógrafo, videógrafo y desarrollador en Aibonito, Puerto Rico. Empecé escribiendo código en 2001; la cámara llegó en 2012. Hoy hago identidad visual completa, del logo al website."
+  description="Marcos Santiago, artista visual y desarrollador en Aibonito, Puerto Rico. Más de 20 años integrando diseño, fotografía, video y programación para negocios, municipios y organizaciones de toda la isla."
 >
   <!-- Serif editorial solo para esta página: la narrativa pide otra voz tipográfica -->
   <link
@@ -67,13 +94,15 @@ const ficha = [
 
         <div class="ap-resto">
           <p class="ap-sub" data-focus style="--d:120ms">
-            Diseño, fotografío, grabo y programo — casi siempre para el mismo cliente y la
-            misma marca. Eso es lo que hace que un negocio se vea coherente en todos lados.
+            Soy Marcos Santiago, artista visual y desarrollador con base en Aibonito,
+            Puerto Rico. Integro diseño, fotografía, video y programación para ayudar a
+            negocios, profesionales y organizaciones a proyectarse con claridad y
+            coherencia, desde el logo y el contenido hasta el sitio web.
           </p>
           <dl class="ap-ficha" data-focus style="--d:220ms">
-            <div><dt>Base</dt><dd>Aibonito, PR</dd></div>
-            <div><dt>Desde</dt><dd>2001</dd></div>
-            <div><dt>Alcance</dt><dd>Toda la isla</dd></div>
+            <div><dt>Base</dt><dd>Aibonito, Puerto Rico</dd></div>
+            <div><dt>Experiencia</dt><dd>Más de 20 años</dd></div>
+            <div><dt>Alcance</dt><dd>Toda Puerto Rico</dd></div>
           </dl>
         </div>
 
@@ -103,7 +132,9 @@ const ficha = [
                   <>{j > 0 && <span class="sep" aria-hidden="true">·</span>}<span>{m}</span></>
                 ))}
               </p>
-              <p class="cap-texto">{c.texto}</p>
+              <div class="cap-texto">
+                {c.parrafos.map(t => <p>{t}</p>)}
+              </div>
             </div>
             {i < capitulos.length - 1 && <hr class="cap-regla" />}
           </article>
@@ -131,16 +162,21 @@ const ficha = [
     <section class="cierre">
       <div class="container">
         <blockquote class="cierre-cita" data-focus>
-          Juntos podemos hacer de tu negocio<br><em>una ventana abierta al mundo.</em>
+          Una buena imagen no solamente se ve bien:<br>
+          <em>comunica, se reconoce y deja una impresión.</em>
         </blockquote>
-        <div class="cierre-acciones" data-focus style="--d:140ms">
-          <a href="/portafolio/" class="btn primary">Ver portafolio</a>
-          <a href="/contacto/" class="btn ghost">Hablemos</a>
-        </div>
-        <p class="cierre-nota" data-focus style="--d:220ms">
-          Disponible para proyectos en toda la isla. Para eventos fuera de Puerto Rico,
-          hablamos primero.
+
+        <h2 class="cierre-h" data-focus style="--d:120ms">
+          ¿Tienes un proyecto o evento en mente?
+        </h2>
+        <p class="cierre-texto" data-focus style="--d:180ms">
+          Cuéntame qué quieres lograr. Puedo ayudarte con una necesidad específica o
+          desarrollar una solución completa que combine diseño, imagen y tecnología.
         </p>
+        <div class="cierre-acciones" data-focus style="--d:240ms">
+          <a href="/contacto/" class="btn primary">Solicitar una cotización</a>
+          <a href="/portafolio/" class="btn ghost">Ver proyectos</a>
+        </div>
       </div>
     </section>
   </main>
@@ -264,6 +300,7 @@ const ficha = [
     font-size: clamp(.98rem, 1.3vw, 1.1rem); line-height: 1.78;
     color: var(--muted); max-width: 58ch;
   }
+  .cap-texto p + p { margin-top: 1.15em }
   .cap-regla { border: 0; border-top: 1px solid var(--rule); margin-top: clamp(48px, 7vw, 88px) }
 
   /* ── Ficha técnica ── */
@@ -273,15 +310,17 @@ const ficha = [
     font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.05;
     color: var(--white); margin: 14px 0 46px;
   }
+  /* Dos bloques, uno por público. Más anchos que las 4 columnas de antes
+     porque cada línea es una frase, no una palabra suelta. */
   .ficha-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: clamp(24px, 3vw, 40px);
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: clamp(28px, 5vw, 72px);
   }
-  .ficha-col { border-top: 1px solid var(--rule); padding-top: 18px }
+  .ficha-col { border-top: 1px solid var(--rule); padding-top: 20px }
   .ficha-col h3 {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 2px; text-transform: uppercase;
-    color: var(--white); font-weight: 400; margin-bottom: 16px;
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(1.15rem, 2vw, 1.5rem); line-height: 1.2;
+    color: var(--white); margin-bottom: 18px;
   }
   .ficha-col ul { list-style: none }
   .ficha-col li {
@@ -300,13 +339,19 @@ const ficha = [
     text-wrap: balance;
   }
   .cierre-cita em { font-style: italic; color: var(--muted) }
+  .cierre-h {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(1.4rem, 3vw, 2.1rem); line-height: 1.2;
+    color: var(--white); margin: clamp(48px, 7vw, 72px) auto 0; max-width: 30ch;
+    text-wrap: balance;
+  }
+  .cierre-texto {
+    font-size: var(--text-base); color: var(--muted); line-height: 1.7;
+    margin: 16px auto 0; max-width: 52ch;
+  }
   .cierre-acciones {
     display: flex; gap: 12px; justify-content: center;
-    flex-wrap: wrap; margin-top: 40px;
-  }
-  .cierre-nota {
-    font-size: var(--text-sm); color: var(--muted);
-    margin-top: 28px; max-width: 44ch; margin-inline: auto; line-height: 1.6;
+    flex-wrap: wrap; margin-top: 32px;
   }
 
   /* ── Responsive ── */
@@ -368,7 +413,7 @@ const ficha = [
     .ap-resto { grid-area: resto; padding: clamp(28px, 6vw, 40px) 24px 0 }
     .ap-sub { margin-top: 0 }
 
-    .ficha-grid { grid-template-columns: repeat(2, 1fr) }
+    .ficha-grid { grid-template-columns: 1fr; gap: 36px }
   }
   @media (max-width: 600px) {
     .ap-titular, .ap-resto { padding-inline: 16px }
