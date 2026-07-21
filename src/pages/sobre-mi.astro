@@ -60,9 +60,12 @@ const ficha = [
     <!-- ── Apertura ── -->
     <header class="ap">
       <div class="container ap-grid">
-        <div class="ap-copy">
+        <div class="ap-titular">
           <p class="eyebrow">Sobre mí</p>
           <h1 class="ap-title" data-focus>Aprendiendo<br><em>a ver</em></h1>
+        </div>
+
+        <div class="ap-resto">
           <p class="ap-sub" data-focus style="--d:120ms">
             Diseño, fotografío, grabo y programo — casi siempre para el mismo cliente y la
             misma marca. Eso es lo que hace que un negocio se vea coherente en todos lados.
@@ -180,9 +183,15 @@ const ficha = [
   /* ── Apertura ── */
   .ap { padding: 120px 0 96px }
   .ap-grid {
-    display: grid; grid-template-columns: 1.35fr .65fr;
-    gap: clamp(32px, 6vw, 88px); align-items: center;
+    display: grid;
+    grid-template-columns: 1.35fr .65fr;
+    grid-template-areas: "titular foto" "resto foto";
+    column-gap: clamp(32px, 6vw, 88px); row-gap: 0;
+    align-items: center;
   }
+  .ap-titular { grid-area: titular }
+  .ap-resto   { grid-area: resto }
+  .ap-retrato { grid-area: foto }
   .ap-title {
     font-family: var(--serif); font-weight: 400;
     font-size: clamp(3.4rem, 11vw, 8.5rem);
@@ -301,11 +310,68 @@ const ficha = [
   }
 
   /* ── Responsive ── */
+  /* ── Móvil: el retrato es PORTADA a sangre completa ──
+     La foto y el titular comparten la misma celda del grid, así que el título
+     se apoya sobre la imagen sin posicionamiento absoluto. El nav es
+     transparente hasta que hay scroll, por eso la foto puede pasar por detrás. */
   @media (max-width: 900px) {
-    .ap { padding: 96px 0 72px }
-    .ap-grid { grid-template-columns: 1fr; gap: 40px }
-    .ap-retrato { order: -1; max-width: 260px }
+    .ap { padding: 0 0 clamp(48px, 10vw, 72px) }
+    .ap-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas: "portada" "resto";
+      padding-inline: 0;          /* el .container deja de recortar: full-bleed */
+    }
+    .ap-retrato { grid-area: portada; margin: 0 }
+    .ap-retrato img {
+      height: 78svh; min-height: 420px; width: 100%;
+      object-fit: cover; object-position: 50% 22%;
+      border-radius: 0;
+    }
+    /* Oscurecido inferior para que el titular se lea. Va a negro fijo —no a
+       var(--ink)— porque la foto es oscura en los dos temas. */
+    .ap-retrato::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background:
+        linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.45) 30%, transparent 62%),
+        linear-gradient(to bottom, rgba(0,0,0,.5) 0%, transparent 24%);
+    }
+    /* El nav flota sobre la portada. Mientras no hay scroll (umbral: 20px, muy
+       por debajo del alto de la foto) sus colores se fuerzan a claros: si no,
+       en tema claro quedaban oscuros sobre foto oscura y el botón de menú se
+       volvía invisible. Al hacer scroll el header recupera fondo y colores. */
+    :global(header:not(.scrolled)) {
+      --white: #f0ede8;
+      --muted: rgba(240,237,232,.75);
+      --dim:   rgba(240,237,232,.55);
+    }
+    /* En tema claro global.css le pone fondo sólido al header SIEMPRE (con
+       !important), lo que tapaba la portada. Aquí se destapa hasta que scrollea. */
+    :global([data-theme="light"] header:not(.scrolled)) {
+      background: transparent !important;
+      border-color: transparent !important;
+      backdrop-filter: none;
+    }
+    /* Y el logo, que en tema claro se invierte a oscuro: sobre la foto tiene
+       que quedarse en su versión clara. */
+    :global([data-theme="light"] header:not(.scrolled) .nav-logo-img) { filter: none }
+    .ap-retrato figcaption { display: none }
+
+    .ap-titular {
+      grid-area: portada; align-self: end; z-index: 2;
+      padding: 0 24px clamp(24px, 5vw, 40px);
+    }
+    /* Sobre la foto el texto siempre va claro, aunque el tema sea claro. */
+    .ap-titular .eyebrow { color: rgba(255,255,255,.72) }
+    .ap-title { color: #fff; margin-top: 10px; text-shadow: 0 2px 30px rgba(0,0,0,.5) }
+    .ap-title em { color: rgba(255,255,255,.72) }
+
+    .ap-resto { grid-area: resto; padding: clamp(28px, 6vw, 40px) 24px 0 }
+    .ap-sub { margin-top: 0 }
+
     .ficha-grid { grid-template-columns: repeat(2, 1fr) }
+  }
+  @media (max-width: 600px) {
+    .ap-titular, .ap-resto { padding-inline: 16px }
   }
   @media (max-width: 640px) {
     .cap-cuerpo { grid-template-columns: 1fr; row-gap: 14px }
