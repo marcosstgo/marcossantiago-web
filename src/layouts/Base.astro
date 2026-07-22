@@ -97,13 +97,13 @@ const SOCIALS = [
     ]
   })} />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- Fonts — self-hosted (subset latin). Bebas Neue = fuente del LCP (h1 del
+       hero): se precarga para desbloquear el render. -->
+  <link rel="preload" href="/fonts/bebas-neue-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/fonts.css" />
 
-  <!-- Icons — subset local (~800 B vs 18 KB del all.min.css), fonts desde CDN cacheado -->
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <!-- Icons — subset local + fonts self-hosted (~7 KB total, subseteadas) -->
   <link rel="stylesheet" href="/fa-subset.css" />
 
   <!-- Google tag (gtag.js) -->

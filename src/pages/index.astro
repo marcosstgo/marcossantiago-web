@@ -579,7 +579,7 @@ const featuredProjects = [
   display: flex; gap: 9px; align-items: center;
   font-family: var(--mono); font-size: .58rem;
   letter-spacing: 2.5px; text-transform: uppercase;
-  color: rgba(244,241,234,.5);
+  color: rgba(244,241,234,.7);   /* .5 fallaba WCAG AA (3.61:1 medido); .7 da margen */
 }
 .hero-slate .dot { color: var(--accent) }
 /* Socials — abajo derecha */
@@ -924,7 +924,7 @@ const featuredProjects = [
   font-family: var(--mono); font-size: var(--text-2xs);
   letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
 }
-.ai-field label span { text-transform: none; letter-spacing: 0; opacity: .7 }
+.ai-field label span { text-transform: none; letter-spacing: 0 }  /* opacity .7 bajaba a 3.61:1 (WCAG AA); ya se distingue por ser minúscula */
 .ai-field input, .ai-field select {
   background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
   padding: 13px 15px; color: var(--white); font-size: 1rem;
