@@ -63,7 +63,7 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
         </div>
       ) : (
         <>
-          <a href={`/blog/${featured.slug}/`} class="featured-card">
+          <a href={`/blog/${featured.slug}/`} class="featured-card reveal">
             <div class="featured-top">
               <span class="featured-badge">Último post</span>
               <div class="featured-meta">
@@ -76,7 +76,7 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
             <p class="featured-desc">{featured.desc}</p>
             <div class="featured-footer">
               <div class="post-tags">
-                {featured.tags.map((t: string) => <span class="tag">{t}</span>)}
+                {featured.tags.map((t: string) => <span class="tag" data-cat={t}>{t}</span>)}
               </div>
               <span class="featured-arrow">Leer →</span>
             </div>
@@ -86,14 +86,14 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
             <div class="tag-filters">
               <button class="filter-btn active" data-tag="all">Todos</button>
               {allTags.map(t => (
-                <button class="filter-btn" data-tag={t}>{t}</button>
+                <button class="filter-btn" data-tag={t} data-cat={t}>{t}</button>
               ))}
             </div>
           )}
 
           <div class="posts-grid">
             {rest.map(p => (
-              <a href={`/blog/${p.slug}/`} class="post-card" data-tags={p.tags.join(',')}>
+              <a href={`/blog/${p.slug}/`} class="post-card reveal" data-tags={p.tags.join(',')}>
                 <div class="post-card-top">
                   <div class="post-card-meta">
                     <span>{fmtDate(p.date)}</span>
@@ -105,7 +105,7 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
                 <h2 class="post-card-title">{p.title}</h2>
                 <p class="post-card-desc">{p.desc}</p>
                 <div class="post-tags">
-                  {p.tags.map((t: string) => <span class="tag">{t}</span>)}
+                  {p.tags.map((t: string) => <span class="tag" data-cat={t}>{t}</span>)}
                 </div>
               </a>
             ))}
@@ -119,6 +119,10 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
 </Base>
 
 <script>
+  // Marca la página como JS-capaz para que las animaciones de entrada solo
+  // oculten las tarjetas cuando hay JS que las va a revelar.
+  document.documentElement.classList.add('js-reveal');
+
   const filters = document.querySelectorAll('.filter-btn') as NodeListOf<HTMLButtonElement>;
   const cards   = document.querySelectorAll('.post-card') as NodeListOf<HTMLElement>;
   filters.forEach(btn => {
@@ -132,6 +136,38 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
       });
     });
   });
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Entrada escalonada (fade-up) al entrar en viewport ──
+  const reveals = document.querySelectorAll('.reveal') as NodeListOf<HTMLElement>;
+  if (reduce || !('IntersectionObserver' in window)) {
+    reveals.forEach(el => el.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        const i  = Number(el.dataset.i ?? 0);
+        el.style.transitionDelay = Math.min(i * 70, 420) + 'ms';
+        el.classList.add('in');
+        obs.unobserve(el);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach((el, i) => { el.dataset.i = String(i); io.observe(el); });
+  }
+
+  // ── Spotlight que sigue el cursor sobre las tarjetas ──
+  if (!reduce && window.matchMedia('(hover: hover)').matches) {
+    const glowCards = document.querySelectorAll('.post-card, .featured-card') as NodeListOf<HTMLElement>;
+    glowCards.forEach(card => {
+      card.addEventListener('pointermove', e => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top)  + 'px');
+      });
+    });
+  }
 </script>
 
 <style>
@@ -203,6 +239,7 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
   display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px;
 }
 .filter-btn {
+  display: inline-flex; align-items: center; gap: 7px;
   font-family: var(--mono); font-size: var(--text-2xs);
   letter-spacing: 2px; text-transform: uppercase;
   padding: 7px 16px; border-radius: 999px;
@@ -210,11 +247,15 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
   background: transparent; color: var(--muted);
   cursor: pointer; transition: .2s ease;
 }
+.filter-btn[data-cat]::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c, var(--accent)); flex-shrink: 0;
+}
 .filter-btn:hover { border-color: var(--border-h); color: var(--white) }
 .filter-btn.active {
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-  color: var(--accent);
+  background: color-mix(in srgb, var(--c, var(--accent)) 14%, transparent);
+  border-color: color-mix(in srgb, var(--c, var(--accent)) 45%, transparent);
+  color: var(--white);
 }
 .posts-grid {
   display: grid; grid-template-columns: repeat(2, 1fr);
@@ -222,16 +263,30 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
 }
 @media (max-width: 700px) { .posts-grid { grid-template-columns: 1fr } }
 .post-card {
+  position: relative; overflow: hidden;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 16px; padding: 28px;
   display: flex; flex-direction: column; gap: 12px;
   transition: border-color .2s, transform .2s, box-shadow .2s;
 }
+.post-card > * { position: relative; z-index: 1 }
 .post-card:hover {
-  border-color: var(--border-h);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(0,0,0,.2);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.28);
 }
+/* Spotlight que sigue el cursor */
+.post-card::after,
+.featured-card::after {
+  content: ''; position: absolute; inset: 0; z-index: 0;
+  border-radius: inherit; pointer-events: none;
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent) 14%, transparent), transparent 62%);
+  opacity: 0; transition: opacity .35s ease;
+}
+.post-card:hover::after,
+.featured-card:hover::after { opacity: 1 }
+.featured-card > * { position: relative; z-index: 1 }
 .post-card-top {
   display: flex; align-items: center; justify-content: space-between;
 }
@@ -252,11 +307,47 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
 .post-card-desc { font-size: var(--text-sm); color: var(--muted); line-height: 1.6 }
 .post-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto }
 .tag {
+  --c: var(--accent);
+  display: inline-flex; align-items: center; gap: 6px;
   font-family: var(--mono); font-size: .6rem;
   letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 4px;
-  background: color-mix(in srgb, var(--white) 4%, transparent);
-  border: 1px solid var(--border); color: var(--muted);
+  padding: 4px 10px; border-radius: 999px;
+  background: color-mix(in srgb, var(--c) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c) 30%, var(--border));
+  color: var(--muted);
+}
+.tag::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c); flex-shrink: 0;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--c) 55%, transparent);
+}
+/* ── Colores por categoría (compartido por tags y filtros) ── */
+[data-cat="Video"]          { --c: #6366f1 }
+[data-cat="Audio"]          { --c: #f59e0b }
+[data-cat="Fotografía"]     { --c: #ec4899 }
+[data-cat="Diseño"]         { --c: #8b5cf6 }
+[data-cat="Diseño Web"]     { --c: #a855f7 }
+[data-cat="Recursos"]       { --c: #14b8a6 }
+[data-cat="Desarrollo Web"] { --c: #3b82f6 }
+[data-cat="Desarrollo"]     { --c: #3b82f6 }
+[data-cat="Impresión"]      { --c: #f97316 }
+[data-cat="OBS"]            { --c: #ef4444 }
+[data-cat="Artículo"]       { --c: #10b981 }
+[data-cat="Edición"]        { --c: #818cf8 }
+[data-cat="IA"]             { --c: #06b6d4 }
+[data-cat="Colores"]        { --c: #f43f5e }
+[data-cat="Creatividad"]    { --c: #eab308 }
+[data-cat="Instagram"]      { --c: #d946ef }
+[data-cat="Landscape"]      { --c: #22c55e }
+[data-cat="Games"]          { --c: #84cc16 }
+[data-cat="Técnicas"]       { --c: #64748b }
+[data-cat="LUTS"]           { --c: #0ea5e9 }
+
+/* ── Entrada escalonada (fade-up) ── */
+.js-reveal .reveal { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease }
+.reveal.in { opacity: 1; transform: none }
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal .reveal { opacity: 1; transform: none; transition: none }
 }
 .meta-sep { opacity: .4 }
 .empty-state {

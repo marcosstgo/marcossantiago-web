@@ -40,6 +40,7 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
     "url": `https://marcossantiago.com/blog/${slug}/`
   })} />
   <Nav />
+  <div class="read-progress" aria-hidden="true"><span id="read-bar"></span></div>
   <main id="main" style="padding-top:120px">
     <div class="container">
       <div class="post-header">
@@ -52,7 +53,7 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
             <>
               <span class="meta-sep">·</span>
               <div class="post-tags">
-                {tags.map((t: string) => <span class="tag">{t}</span>)}
+                {tags.map((t: string) => <span class="tag" data-cat={t}>{t}</span>)}
               </div>
             </>
           )}
@@ -100,6 +101,22 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 </Base>
 
 <style>
+/* ── Barra de progreso de lectura ── */
+.read-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px;
+  z-index: 101; background: transparent; pointer-events: none;
+}
+.read-progress span {
+  display: block; height: 100%; width: 0;
+  background: linear-gradient(90deg,
+    var(--accent), color-mix(in srgb, var(--accent) 45%, #a855f7));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 55%, transparent);
+  transition: width .1s linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .read-progress span { transition: none }
+}
+
 .post-header {
   max-width: 72ch; margin-bottom: 56px;
 }
@@ -122,12 +139,40 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 .meta-sep { color: var(--dim); font-size: var(--text-2xs) }
 .post-tags { display: flex; gap: 6px; flex-wrap: wrap }
 .tag {
+  --c: var(--accent);
+  display: inline-flex; align-items: center; gap: 6px;
   font-family: var(--mono); font-size: var(--text-2xs);
   letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 4px;
-  background: color-mix(in srgb, var(--white) 4%, transparent); border: 1px solid var(--border);
+  padding: 4px 10px; border-radius: 999px;
+  background: color-mix(in srgb, var(--c) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c) 30%, var(--border));
   color: var(--dim);
 }
+.tag::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c); flex-shrink: 0;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--c) 55%, transparent);
+}
+[data-cat="Video"]          { --c: #6366f1 }
+[data-cat="Audio"]          { --c: #f59e0b }
+[data-cat="Fotografía"]     { --c: #ec4899 }
+[data-cat="Diseño"]         { --c: #8b5cf6 }
+[data-cat="Diseño Web"]     { --c: #a855f7 }
+[data-cat="Recursos"]       { --c: #14b8a6 }
+[data-cat="Desarrollo Web"] { --c: #3b82f6 }
+[data-cat="Desarrollo"]     { --c: #3b82f6 }
+[data-cat="Impresión"]      { --c: #f97316 }
+[data-cat="OBS"]            { --c: #ef4444 }
+[data-cat="Artículo"]       { --c: #10b981 }
+[data-cat="Edición"]        { --c: #818cf8 }
+[data-cat="IA"]             { --c: #06b6d4 }
+[data-cat="Colores"]        { --c: #f43f5e }
+[data-cat="Creatividad"]    { --c: #eab308 }
+[data-cat="Instagram"]      { --c: #d946ef }
+[data-cat="Landscape"]      { --c: #22c55e }
+[data-cat="Games"]          { --c: #84cc16 }
+[data-cat="Técnicas"]       { --c: #64748b }
+[data-cat="LUTS"]           { --c: #0ea5e9 }
 .post-title {
   font-family: var(--display);
   font-size: clamp(2.5rem, 6vw, 5rem);
@@ -292,3 +337,20 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
   line-height: 1.2;
 }
 </style>
+
+<script>
+  // Barra de progreso de lectura: avanza según cuánto del artículo has pasado.
+  const bar     = document.getElementById('read-bar');
+  const article = document.querySelector('.post-body') as HTMLElement | null;
+  if (bar && article) {
+    const update = () => {
+      const rect  = article.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const done  = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : (rect.top <= 0 ? 1 : 0);
+      bar.style.width = (done * 100) + '%';
+    };
+    document.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+</script>

@@ -1,0 +1,165 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Ángulo de Obturación en Video: Guía Completa (180°, 250°, 100° y Más)"
+date: "2026-07-23"
+desc: "Qué es el ángulo de obturación, cómo se relaciona con la velocidad de obturación y qué look te da cada valor. La regla de los 180°, cómo compensar la luz y qué ángulos usar para festivales, baile y acción rápida."
+tags: ["Video", "Recursos"]
+slug: "angulo-de-obturacion-en-video-guia-completa"
+---
+
+<p>El ángulo de obturación es una de esas configuraciones que casi nadie toca hasta que un video se ve "raro" y no sabe por qué. O el movimiento se ve embarrado, o se ve entrecortado tipo videojuego. Casi siempre la respuesta está aquí. Esta guía explica qué es, cómo afecta la imagen y qué valor usar según lo que estés grabando.</p>
+
+<h2>Qué es el ángulo de obturación</h2>
+
+<p>Viene de las cámaras de cine analógicas. Adentro tenían un disco rotativo con una porción abierta que dejaba pasar la luz al negativo. Ese "pedazo abierto" del disco se medía en grados. Un disco con 180° de apertura dejaba entrar luz durante la mitad de cada rotación.</p>
+
+<p>Las cámaras digitales ya no tienen ese disco, pero heredaron el concepto porque describe muy bien el resultado. El ángulo de obturación es simplemente <strong>otra forma de expresar la velocidad de obturación (shutter speed)</strong>, pero atada al frame rate. Y esa es su gran ventaja, como verás más abajo.</p>
+
+<h2>Ángulo vs. velocidad de obturación</h2>
+
+<p>Ambos controlan lo mismo: <strong>cuánto tiempo permanece abierto el obturador en cada frame</strong>. La diferencia es cómo se expresa el número.</p>
+
+<ul>
+<li><strong>Velocidad de obturación</strong> es un valor absoluto: 1/48, 1/60, 1/120. No cambia si cambias el frame rate.</li>
+<li><strong>Ángulo de obturación</strong> es relativo al frame: 180° siempre significa "la mitad del frame", grabes a 24, 30 o 60 fps.</li>
+</ul>
+
+<p>La fórmula para convertir de uno al otro:</p>
+
+<table>
+<thead>
+<tr><th>De ángulo a velocidad</th><th>De velocidad a ángulo</th></tr>
+</thead>
+<tbody>
+<tr><td>Velocidad = 360 ÷ (ángulo × fps)</td><td>Ángulo = 360 × fps × velocidad</td></tr>
+</tbody>
+</table>
+
+<p><strong>Ejemplo:</strong> a 24 fps con 180° → 360 ÷ (180 × 24) = 1/48 de segundo.</p>
+
+<h2>La regla de los 180°</h2>
+
+<p>Es el estándar del cine y del look "natural" al que tu ojo está acostumbrado. La regla dice: <strong>tu velocidad de obturación debe ser aproximadamente el doble de tu frame rate</strong>. A 24 fps eso es 1/48; a 30 fps, 1/60; a 60 fps, 1/120.</p>
+
+<p>Con 180° el movimiento tiene una cantidad de estela (motion blur) que se siente orgánica: ni demasiado suave ni demasiado seco. Si no sabes qué poner, pon 180° y no te equivocas. Todo lo demás en esta guía son desviaciones intencionales de este punto de partida.</p>
+
+<h2>Tabla de referencia rápida</h2>
+
+<p>Velocidad de obturación equivalente a 23.98 fps y a 60 fps, junto con cuánta luz entra respecto a 180° y qué look produce.</p>
+
+<table>
+<thead>
+<tr><th>Ángulo</th><th>Shutter a 23.98p</th><th>Shutter a 60p</th><th>Luz vs. 180°</th><th>Look</th></tr>
+</thead>
+<tbody>
+<tr><td>360°</td><td>1/24</td><td>1/60</td><td>+1 paso</td><td>Estela extrema, "borroso", onírico total</td></tr>
+<tr><td>270°</td><td>1/32</td><td>1/80</td><td>+0.58 pasos</td><td>Suave, soñador</td></tr>
+<tr><td>250°</td><td>~1/34</td><td>~1/86</td><td>+0.47 pasos</td><td>Estela marcada, "dreamy"</td></tr>
+<tr><td><strong>180°</strong></td><td><strong>1/48</strong></td><td><strong>1/120</strong></td><td><strong>Referencia</strong></td><td><strong>Natural, cinematográfico</strong></td></tr>
+<tr><td>144°</td><td>1/60</td><td>1/150</td><td>−0.32 pasos</td><td>Ligeramente más definido, mata flicker 60 Hz</td></tr>
+<tr><td>120°</td><td>1/72</td><td>1/180</td><td>−0.58 pasos</td><td>Nítido, con energía</td></tr>
+<tr><td>100°</td><td>~1/86</td><td>~1/216</td><td>−0.85 pasos</td><td>Seco, agresivo, tipo acción</td></tr>
+<tr><td>90°</td><td>1/96</td><td>1/240</td><td>−1 paso</td><td>Muy definido, entrecortado</td></tr>
+<tr><td>45°</td><td>1/192</td><td>1/480</td><td>−2 pasos</td><td>Efecto "Salvar al soldado Ryan"</td></tr>
+</tbody>
+</table>
+
+<h2>Si utilizas 250°</h2>
+
+<p>El obturador permanece abierto durante más tiempo. Consecuencias:</p>
+
+<ul>
+<li>Entra aproximadamente medio paso más de luz que a 180°.</li>
+<li>Los movimientos producen más estela.</li>
+<li>Una persona caminando puede verse más suave o "soñadora".</li>
+<li>Un paneo rápido puede verse demasiado embarrado.</li>
+<li>Te puede ayudar en baja iluminación, pero estás pagando esa luz adicional con más motion blur.</li>
+</ul>
+
+<p>Puede funcionar para una escena de ensueño, movimientos lentos o un efecto intencional. No lo usaría como configuración general para artistas bailando, público caminando o tomas rápidas: el embarrado te va a traicionar.</p>
+
+<h2>Si utilizas 100°</h2>
+
+<p>El obturador permanece abierto menos tiempo. Consecuencias:</p>
+
+<ul>
+<li>Entra aproximadamente 0.85 pasos menos de luz que a 180°.</li>
+<li>Cada frame queda más definido.</li>
+<li>Los movimientos se ven más secos y agresivos.</li>
+<li>Facilita congelar acción o extraer un frame más nítido (útil si vas a sacar fotogramas para thumbnails o fotos).</li>
+<li>Al reproducirlo puede sentirse más entrecortado o tipo videoclip de acción.</li>
+</ul>
+
+<p>Es útil para deportes, peleas, baile rápido o cuando quieres una sensación de energía y tensión. Pero necesitarás compensar la pérdida de luz con apertura, ISO o iluminación.</p>
+
+<h2>La gran ventaja de trabajar por ángulo</h2>
+
+<p>Aquí está el motivo real para pensar en grados en lugar de en fracciones. <strong>Si cambias de frame rate y mantienes el mismo ángulo, la cámara ajusta la velocidad de obturación por ti y el look se mantiene consistente.</strong></p>
+
+<table>
+<thead>
+<tr><th>Configuración</th><th>Velocidad resultante</th></tr>
+</thead>
+<tbody>
+<tr><td>23.98p + 180°</td><td>≈ 1/48</td></tr>
+<tr><td>60p + 180°</td><td>= 1/120</td></tr>
+</tbody>
+</table>
+
+<p>No tienes que hacer la cuenta a mano cada vez que pasas de tu toma normal a una cámara lenta. Fijas el ángulo una vez y la cámara mantiene la misma "sensación" de motion blur en todos los frame rates. En un festival, donde saltas entre 24 y 60 fps constantemente, esto te ahorra errores.</p>
+
+<h2>Flicker: por qué a veces bajas a 144°</h2>
+
+<p>El flicker (bandas o parpadeo en la imagen) aparece cuando la velocidad de obturación no está sincronizada con la frecuencia de la corriente eléctrica que alimenta las luces. En Puerto Rico y toda Norteamérica la red es de <strong>60 Hz</strong>, así que las luces LED, fluorescentes y muchos paneles de escenario parpadean 60 (o 120) veces por segundo, aunque tu ojo no lo note.</p>
+
+<p>Si grabas a 23.98 fps con 180° (1/48), esa velocidad no es múltiplo limpio de 60 y las bandas pueden aparecer. La solución clásica es forzar la velocidad a <strong>1/60</strong>, que a 23.98 fps equivale a <strong>144°</strong>. Pierdes un pelín de motion blur (−0.32 pasos), pero eliminas el parpadeo. Por eso 144° es el "plan B" habitual en escenarios con luz artificial.</p>
+
+<blockquote>
+<p><strong>Regla de bolsillo para 60 Hz:</strong> si ves bandas, lleva tu shutter a 1/60 o 1/120. A 23.98p eso es 144°. A 30p es 180°/90°. A 60p es 360°/180°.</p>
+</blockquote>
+
+<h2>Cómo compensar la luz cuando cierras el ángulo</h2>
+
+<p>Cerrar el ángulo (100°, 90°) oscurece la imagen porque el obturador está abierto menos tiempo. Tienes cuatro palancas para recuperar esa luz, en orden de preferencia:</p>
+
+<ol>
+<li><strong>Apertura (diafragma):</strong> abrir de f/4 a f/2.8 recupera un paso. Cuidado: también reduces la profundidad de campo.</li>
+<li><strong>ISO:</strong> subirlo es lo más rápido, pero introduce ruido. Conoce el ISO nativo/dual de tu cámara.</li>
+<li><strong>Iluminación:</strong> añadir luz es siempre la opción de más calidad si el contexto lo permite.</li>
+<li><strong>Filtro ND:</strong> al revés — si <em>abres</em> el ángulo y te sobra luz, un ND te deja mantener 180° sin quemar las altas luces al aire libre.</li>
+</ol>
+
+<h2>¿Y si mi cámara no tiene ángulo, solo velocidad?</h2>
+
+<p>Muchas cámaras (sobre todo DSLR/mirrorless de foto y celulares) solo muestran velocidad de obturación. No es problema: usa la tabla de arriba para traducir. Fija manualmente 1/48 a 24 fps o 1/120 a 60 fps y tienes tu equivalente a 180°. Lo importante es <strong>bloquear el shutter en manual</strong>: si lo dejas en automático, la cámara lo va a mover sola y perderás la consistencia del motion blur.</p>
+
+<h2>Mis ajustes para festivales</h2>
+
+<p>Esto es lo que uso en la práctica cuando cubro festivales, conciertos y eventos en vivo:</p>
+
+<table>
+<thead>
+<tr><th>Situación</th><th>Ángulo</th><th>Por qué</th></tr>
+</thead>
+<tbody>
+<tr><td>Configuración normal</td><td>180°</td><td>Look natural, punto de partida seguro</td></tr>
+<tr><td>Grabando a 23.98 con bandas/flicker bajo luz de 60 Hz</td><td>144°</td><td>Fuerza 1/60 y elimina el parpadeo</td></tr>
+<tr><td>Acción rápida intencional (baile enérgico, deporte)</td><td>90°–120°</td><td>Frames más definidos, sensación de energía</td></tr>
+<tr><td>Escena onírica / cámara lenta artística</td><td>250°+</td><td>Solo si buscas la estela a propósito</td></tr>
+</tbody>
+</table>
+
+<p>Evitaría 250° durante baile o movimientos rápidos, excepto si buscas deliberadamente las estelas. En un festival lo normal es que el movimiento sea constante, así que el embarrado de un ángulo abierto suele jugar en contra.</p>
+
+<h2>Chuletario final</h2>
+
+<ul>
+<li><strong>180°</strong> es tu default. Todo lo demás es una decisión creativa, no un accidente.</li>
+<li><strong>Cerrar el ángulo</strong> (bajar de 180°) → más nitidez, más "seco", menos luz.</li>
+<li><strong>Abrir el ángulo</strong> (subir de 180°) → más estela, más "soñador", más luz.</li>
+<li><strong>144°</strong> es el remedio para flicker de 60 Hz cuando grabas a 23.98.</li>
+<li>Trabajar por ángulo mantiene el look constante al cambiar de frame rate.</li>
+<li>Si cierras el ángulo, compensa la luz con apertura, ISO o iluminación — en ese orden.</li>
+</ul>
+
+<p>Al final, el ángulo de obturación no es un ajuste técnico que "hay que dejar bien": es una herramienta creativa. Domínalo y decides cómo se siente el movimiento en tu video en lugar de dejarlo al azar.</p>
