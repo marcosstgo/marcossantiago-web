@@ -401,6 +401,20 @@ import Footer from '../components/Footer.astro';
     color: color-mix(in srgb, var(--accent) 90%, var(--white));
   }
 
+  /* Chips de tipografía: cada uno se muestra EN su propia fuente para que
+     el usuario vea cómo luce cada estilo de letra. */
+  #typoChips .chip {
+    text-transform: none; letter-spacing: .2px; font-size: .95rem;
+    padding: 7px 16px; line-height: 1.2;
+  }
+  #typoChips .chip[data-typo="auto"]       { font-family: var(--body); font-weight: 500 }
+  #typoChips .chip[data-typo="sans"]       { font-family: var(--body); font-weight: 700 }
+  #typoChips .chip[data-typo="serif"]      { font-family: 'Instrument Serif', Georgia, serif; font-size: 1.12rem }
+  #typoChips .chip[data-typo="script"]     { font-family: 'Caveat', cursive; font-size: 1.35rem; font-weight: 600 }
+  #typoChips .chip[data-typo="display"]    { font-family: var(--display); letter-spacing: 1.5px; font-size: 1.15rem }
+  #typoChips .chip[data-typo="mono"]       { font-family: var(--mono); font-size: .82rem }
+  #typoChips .chip[data-typo="redondeada"] { font-family: 'Quicksand', sans-serif; font-weight: 600 }
+
   .swatches { display: flex; flex-wrap: wrap; gap: 8px }
   .swatch {
     display: inline-flex; align-items: center; gap: 8px;
