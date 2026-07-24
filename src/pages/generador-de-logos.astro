@@ -82,29 +82,72 @@ import Footer from '../components/Footer.astro';
           <strong>yo la convierto en una marca de verdad</strong>.
         </p>
 
-        <form class="ai-form" id="aiForm">
-          <div class="ai-field">
-            <label for="aiName">Nombre del negocio</label>
-            <input id="aiName" type="text" maxlength="40" placeholder="Ej: Café Lola" autocomplete="off" required />
+        <div class="tool-panel">
+          <div class="tool-panel-head">
+            <span class="tp-step">Paso 1</span>
+            <span class="tp-head-label">Cuéntame de tu negocio</span>
           </div>
-          <div class="ai-field">
-            <label for="aiIndustry">Rubro <span>(opcional)</span></label>
-            <input id="aiIndustry" type="text" maxlength="40" placeholder="Ej: cafetería" autocomplete="off" />
-          </div>
-          <div class="ai-field ai-field-sel">
-            <label for="aiStyle">Estilo</label>
-            <select id="aiStyle">
-              <option value="moderno">Moderno</option>
-              <option value="minimalista">Minimalista</option>
-              <option value="elegante">Elegante</option>
-              <option value="divertido">Divertido</option>
-              <option value="clasico">Clásico</option>
-              <option value="tecnologico">Tecnológico</option>
-              <option value="organico">Orgánico</option>
-            </select>
-          </div>
-          <button type="submit" class="btn primary ai-go" id="aiGo" data-track="generar">Generar mis logos gratis</button>
-        </form>
+
+          <form class="ai-form" id="aiForm">
+            <div class="ai-essentials">
+              <div class="ai-field">
+                <label for="aiName">Nombre del negocio</label>
+                <input id="aiName" type="text" maxlength="40" placeholder="Ej: Café Lola" autocomplete="off" required />
+              </div>
+              <div class="ai-field">
+                <label for="aiIndustry">Rubro <span>(opcional)</span></label>
+                <input id="aiIndustry" type="text" maxlength="40" placeholder="Ej: cafetería" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="ai-control">
+              <span class="ai-control-label">Estilo</span>
+              <div class="chips" id="styleChips" role="group" aria-label="Estilo del logo">
+                <button type="button" class="chip is-on" data-style="moderno">Moderno</button>
+                <button type="button" class="chip" data-style="minimalista">Minimalista</button>
+                <button type="button" class="chip" data-style="elegante">Elegante</button>
+                <button type="button" class="chip" data-style="divertido">Divertido</button>
+                <button type="button" class="chip" data-style="clasico">Clásico</button>
+                <button type="button" class="chip" data-style="tecnologico">Tecnológico</button>
+                <button type="button" class="chip" data-style="organico">Orgánico</button>
+              </div>
+            </div>
+
+            <button type="button" class="afinar-toggle" id="afinarToggle" aria-expanded="false" aria-controls="afinar">
+              <span><i class="fa-solid fa-sliders"></i> Afinar tipografía y color</span>
+              <i class="fa-solid fa-chevron-down afinar-caret"></i>
+            </button>
+
+            <div class="afinar" id="afinar" hidden>
+              <div class="ai-control">
+                <span class="ai-control-label">Tipografía</span>
+                <div class="chips" id="typoChips" role="group" aria-label="Tipografía">
+                  <button type="button" class="chip is-on" data-typo="auto">Automática</button>
+                  <button type="button" class="chip" data-typo="sans">Sans moderna</button>
+                  <button type="button" class="chip" data-typo="serif">Serif elegante</button>
+                  <button type="button" class="chip" data-typo="script">Manuscrita</button>
+                  <button type="button" class="chip" data-typo="display">Display fuerte</button>
+                  <button type="button" class="chip" data-typo="mono">Mono tech</button>
+                  <button type="button" class="chip" data-typo="redondeada">Redondeada</button>
+                </div>
+              </div>
+              <div class="ai-control">
+                <span class="ai-control-label">Color</span>
+                <div class="swatches" id="paletteSwatches" role="group" aria-label="Paleta de color">
+                  <button type="button" class="swatch is-on" data-palette="mono" style="--sw:#111827"><span class="sw-dot"></span>Monocromo</button>
+                  <button type="button" class="swatch" data-palette="azul" style="--sw:#2563eb"><span class="sw-dot"></span>Azul</button>
+                  <button type="button" class="swatch" data-palette="verde" style="--sw:#16a34a"><span class="sw-dot"></span>Verde</button>
+                  <button type="button" class="swatch" data-palette="terracota" style="--sw:#ea580c"><span class="sw-dot"></span>Terracota</button>
+                  <button type="button" class="swatch" data-palette="purpura" style="--sw:#7c3aed"><span class="sw-dot"></span>Púrpura</button>
+                  <button type="button" class="swatch" data-palette="dorado" style="--sw:#d4a017"><span class="sw-dot"></span>Dorado</button>
+                  <button type="button" class="swatch" data-palette="vibrante" style="--sw:#e11d48"><span class="sw-dot"></span>Vibrante</button>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn primary ai-go" id="aiGo" data-track="generar">Generar mis 3 logos gratis</button>
+          </form>
+        </div>
 
         <p class="tool-trust">
           <span><i class="fa-solid fa-bolt"></i> El primero sale en ~15 segundos</span>
@@ -115,6 +158,8 @@ import Footer from '../components/Footer.astro';
         <p class="ai-status" id="aiStatus" hidden></p>
 
         <div class="ai-results" id="aiResults" hidden></div>
+
+        <div class="ai-board" id="aiBoard" hidden></div>
 
         <div class="ai-lead-box" id="aiLeadBox" hidden>
           <div class="ai-lead-copy">
@@ -306,30 +351,102 @@ import Footer from '../components/Footer.astro';
   }
   .tool-trust i { color: var(--accent) }
 
-  /* ── Formulario del generador ── */
-  .ai-form {
-    display: flex; flex-wrap: wrap; gap: 14px;
-    margin-top: 34px; align-items: flex-end;
+  /* ── Panel de la herramienta ── */
+  .tool-panel {
+    margin-top: 34px;
+    background: color-mix(in srgb, var(--white) 3%, var(--surface));
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 4px 22px 22px;
   }
+  .tool-panel-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 16px 2px; border-bottom: 1px solid var(--border); margin-bottom: 20px;
+  }
+  .tp-step {
+    font-family: var(--mono); font-size: .55rem; letter-spacing: 1.5px;
+    text-transform: uppercase; color: #040d16;
+    background: var(--accent); padding: 4px 9px; border-radius: 6px;
+  }
+  .tp-head-label {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+  }
+
+  .ai-form { display: flex; flex-direction: column; gap: 20px }
+  .ai-essentials { display: flex; flex-wrap: wrap; gap: 14px }
   .ai-field { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 190px }
-  .ai-field-sel { flex: 0 0 auto; min-width: 160px }
   .ai-field label {
     font-family: var(--mono); font-size: var(--text-2xs);
     letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
   }
   .ai-field label span { text-transform: none; letter-spacing: 0; opacity: .7 }
-  .ai-field input, .ai-field select {
+  .ai-field input {
     background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
     padding: 13px 15px; color: var(--white); font-size: 1rem;
     font-family: inherit; transition: border-color .2s;
   }
   .ai-field input::placeholder { color: color-mix(in srgb, var(--muted) 80%, transparent) }
-  .ai-field input:focus, .ai-field select:focus { outline: none; border-color: var(--accent) }
-  .ai-go { min-width: 230px; height: 49px }
+  .ai-field input:focus { outline: none; border-color: var(--accent) }
+
+  /* Controles (chips / swatches) */
+  .ai-control { display: flex; flex-direction: column; gap: 10px }
+  .ai-control-label {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px }
+  .chip {
+    font-family: var(--mono); font-size: .62rem; letter-spacing: 1px;
+    text-transform: uppercase; padding: 9px 15px; border-radius: 999px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--muted); cursor: pointer; transition: .16s ease;
+  }
+  .chip:hover { border-color: var(--border-h); color: var(--white) }
+  .chip.is-on {
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+    color: color-mix(in srgb, var(--accent) 90%, var(--white));
+  }
+
+  .afinar-toggle {
+    align-self: flex-start; display: inline-flex; align-items: center; gap: 10px;
+    background: none; border: none; cursor: pointer;
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
+    padding: 2px 0; transition: color .16s;
+  }
+  .afinar-toggle:hover { color: var(--white) }
+  .afinar-toggle span i { color: var(--accent); margin-right: 2px }
+  .afinar-caret { transition: transform .2s }
+  .afinar-toggle[aria-expanded="true"] .afinar-caret { transform: rotate(180deg) }
+  .afinar {
+    display: flex; flex-direction: column; gap: 18px;
+    padding: 18px; border-radius: 14px;
+    background: color-mix(in srgb, var(--white) 2%, transparent);
+    border: 1px solid var(--border);
+  }
+
+  .swatches { display: flex; flex-wrap: wrap; gap: 8px }
+  .swatch {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: .62rem; letter-spacing: 1px;
+    text-transform: uppercase; padding: 8px 14px 8px 10px; border-radius: 999px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--muted); cursor: pointer; transition: .16s ease;
+  }
+  .swatch .sw-dot {
+    width: 14px; height: 14px; border-radius: 50%; background: var(--sw);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); flex-shrink: 0;
+  }
+  .swatch:hover { border-color: var(--border-h); color: var(--white) }
+  .swatch.is-on { border-color: var(--sw); color: var(--white);
+    background: color-mix(in srgb, var(--sw) 14%, transparent) }
+
+  .ai-go { width: 100%; height: 52px }
+
   @media (max-width: 700px) {
-    .ai-form { flex-direction: column; align-items: stretch }
-    .ai-field-sel { min-width: 0 }
-    .ai-go { width: 100% }
+    .ai-essentials { flex-direction: column }
+    .tool-panel { padding: 4px 15px 18px }
   }
 
   .ai-status {
@@ -548,6 +665,107 @@ import Footer from '../components/Footer.astro';
     .ai-pick:hover { border-color: #10b981; color: #10b981 }
     .ai-card.selected { border-color: #10b981; box-shadow: 0 0 0 1px #10b981 }
     .ai-card.selected .ai-pick { background: #10b981; color: #040d16; border-color: #10b981 }
+
+    /* ── Brand board (inyectado por JS) ── */
+    .ai-board { margin-top: 26px }
+    .board-inner {
+      border: 1px solid color-mix(in srgb, #10b981 25%, var(--border));
+      border-radius: 18px; overflow: hidden;
+      background: color-mix(in srgb, #10b981 4%, var(--surface));
+    }
+    .board-top {
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;
+      padding: 20px 22px; border-bottom: 1px solid var(--border);
+    }
+    .board-kicker {
+      font-family: var(--mono); font-size: .55rem; letter-spacing: 2px;
+      text-transform: uppercase; color: #10b981; display: block; margin-bottom: 5px;
+    }
+    .board-name { font-family: var(--display); font-size: 1.7rem; letter-spacing: 1px; color: var(--white); line-height: 1 }
+    .board-concept {
+      font-family: var(--mono); font-size: .55rem; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--muted); border: 1px solid var(--border); border-radius: 999px;
+      padding: 5px 11px; white-space: nowrap;
+    }
+    .board-body { padding: 22px }
+    .board-main { display: grid; grid-template-columns: 1.35fr 1fr; gap: 18px; margin-bottom: 24px }
+    @media (max-width: 700px) { .board-main { grid-template-columns: 1fr } }
+
+    .board-preview {
+      border-radius: 14px; aspect-ratio: 16/10; display: flex;
+      align-items: center; justify-content: center; padding: 28px; transition: background .2s;
+    }
+    .board-preview img { max-width: 100%; max-height: 100%; object-fit: contain; display: block }
+    .board-preview[data-bg="light"] { background: #ffffff }
+    .board-preview[data-bg="dark"]  { background: #0e1116 }
+    .board-preview[data-bg="trans"],
+    .bv-thumb.checker {
+      background-color: #e6e6ec;
+      background-image:
+        linear-gradient(45deg,#c4c4cf 25%,transparent 25%),
+        linear-gradient(-45deg,#c4c4cf 25%,transparent 25%),
+        linear-gradient(45deg,transparent 75%,#c4c4cf 75%),
+        linear-gradient(-45deg,transparent 75%,#c4c4cf 75%);
+      background-size: 18px 18px;
+      background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+    }
+    .bv-thumb.checker { background-size: 10px 10px; background-position: 0 0, 0 5px, 5px -5px, -5px 0 }
+
+    .board-side { display: flex; flex-direction: column; gap: 16px }
+    .board-variants { display: flex; gap: 8px }
+    .bvar {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px;
+      background: none; border: 1px solid var(--border); border-radius: 10px; padding: 8px 5px;
+      cursor: pointer; transition: .16s;
+      font-family: var(--mono); font-size: .5rem; letter-spacing: 1px; text-transform: uppercase; color: var(--muted);
+    }
+    .bvar:hover { border-color: var(--border-h); color: var(--white) }
+    .bvar.is-on { border-color: #10b981; color: var(--white) }
+    .bv-thumb {
+      width: 100%; aspect-ratio: 1; border-radius: 6px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 6px;
+    }
+    .bv-thumb img { max-width: 100%; max-height: 100%; object-fit: contain }
+    .bv-thumb.light { background: #fff }
+    .bv-thumb.dark  { background: #0e1116 }
+
+    .board-block { display: flex; flex-direction: column; gap: 9px }
+    .board-block-label {
+      font-family: var(--mono); font-size: .5rem; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .board-palette { display: flex; gap: 6px }
+    .board-sw { width: 30px; height: 30px; border-radius: 7px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.14) }
+    .board-type { font-family: var(--body); font-size: .92rem; color: var(--white) }
+
+    .board-mockups { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px }
+    @media (max-width: 700px) { .board-mockups { grid-template-columns: repeat(2, 1fr) } }
+    .mock { display: flex; flex-direction: column; gap: 8px }
+    .mock-label {
+      font-family: var(--mono); font-size: .5rem; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--muted); text-align: center;
+    }
+    .mock-frame {
+      aspect-ratio: 1; border-radius: 12px; overflow: hidden; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+    }
+    .mock-frame img { max-width: 100%; max-height: 100%; object-fit: contain }
+    .mock-app .mock-frame  { padding: 24% }
+    .mock-sign .mock-frame { background: radial-gradient(circle at 50% 32%, #262b33, #0d1015); padding: 22% }
+    .mock-sign img { filter: drop-shadow(0 0 10px rgba(255,255,255,.22)) }
+    .mock-tote .mock-frame { padding: 26% }
+    .mock-card .mock-frame { background: #f4f2ec; padding: 14%; align-items: stretch }
+    .mock-card-face { width: 100%; display: flex; flex-direction: column; justify-content: space-between }
+    .mock-card-face img { height: 38%; object-position: left center; align-self: flex-start }
+    .mc-name { font-family: var(--display); font-size: .82rem; letter-spacing: 1px; line-height: 1 }
+    .mc-sub { display: block; height: 3px; width: 55%; border-radius: 2px; margin-top: 6px; opacity: .55 }
+
+    .board-foot {
+      margin: 0; padding: 16px 22px; border-top: 1px solid var(--border);
+      font-size: .82rem; color: var(--muted); line-height: 1.55;
+    }
+    .board-foot strong { color: var(--white) }
   </style>
 
   <script>
@@ -557,19 +775,126 @@ import Footer from '../components/Footer.astro';
       const $ = (id) => document.getElementById(id);
       const form = $('aiForm');
       if (!form) return;
-      const nameEl = $('aiName'), industryEl = $('aiIndustry'), styleEl = $('aiStyle');
+      const nameEl = $('aiName'), industryEl = $('aiIndustry');
       const goBtn = $('aiGo'), statusEl = $('aiStatus'), results = $('aiResults');
+      const board = $('aiBoard');
       const leadBox = $('aiLeadBox'), leadForm = $('aiLeadForm'), leadOk = $('aiLeadOk');
       const waLink = document.querySelector('.ai-wa');
 
+      // Etiquetas + paletas para el brand board (deben empatar con PALETTE_MAP del backend)
+      const TYPOS = {
+        auto: 'Automática', sans: 'Sans moderna', serif: 'Serif elegante', script: 'Manuscrita',
+        display: 'Display fuerte', mono: 'Mono tech', redondeada: 'Redondeada',
+      };
+      const PALETTES = {
+        mono:      { primary: '#111827', swatches: ['#111827', '#4b5563', '#9ca3af', '#e5e7eb'] },
+        azul:      { primary: '#1e40af', swatches: ['#1e3a8a', '#2563eb', '#93c5fd', '#0f172a'] },
+        verde:     { primary: '#15803d', swatches: ['#166534', '#22c55e', '#86efac', '#052e16'] },
+        terracota: { primary: '#c2410c', swatches: ['#9a3412', '#ea580c', '#fdba74', '#431407'] },
+        purpura:   { primary: '#6d28d9', swatches: ['#5b21b6', '#8b5cf6', '#c4b5fd', '#2e1065'] },
+        dorado:    { primary: '#b45309', swatches: ['#a16207', '#eab308', '#fde68a', '#1c1917'] },
+        vibrante:  { primary: '#e11d48', swatches: ['#ef4444', '#f59e0b', '#3b82f6', '#10b981'] },
+      };
+
       const conceptStore = [null, null, null];   // {id, url} por variant
-      let ctx = { name: '', industry: '', style: '' };
+      const sel = { style: 'moderno', typo: 'auto', palette: 'mono' };
+      let ctx = { name: '', industry: '', style: 'moderno', typo: 'auto', palette: 'mono' };
       let picked = null;   // variant elegido por el usuario
 
       const track = (event, params) => {
         const g = window.gtag;
         if (typeof g === 'function') g('event', event, params);
       };
+      const esc = (s) => (s || '').replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]));
+      function shade(hex, pct) {   // pct<0 oscurece, pct>0 aclara
+        const n = parseInt(hex.slice(1), 16);
+        let r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+        const f = pct < 0 ? 0 : 255, p = Math.abs(pct);
+        r = Math.round((f - r) * p + r); g = Math.round((f - g) * p + g); b = Math.round((f - b) * p + b);
+        return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+      }
+
+      // ── Chips / swatches / afinar ──
+      function wireGroup(containerId, dataKey, stateKey) {
+        const c = $(containerId);
+        if (!c) return;
+        c.addEventListener('click', (e) => {
+          const b = e.target.closest('[data-' + dataKey + ']');
+          if (!b) return;
+          c.querySelectorAll('.is-on').forEach((x) => x.classList.remove('is-on'));
+          b.classList.add('is-on');
+          sel[stateKey] = b.dataset[dataKey];
+        });
+      }
+      wireGroup('styleChips', 'style', 'style');
+      wireGroup('typoChips', 'typo', 'typo');
+      wireGroup('paletteSwatches', 'palette', 'palette');
+
+      const afinarToggle = $('afinarToggle'), afinar = $('afinar');
+      if (afinarToggle && afinar) {
+        afinarToggle.addEventListener('click', () => {
+          const open = afinar.hidden;
+          afinar.hidden = !open;
+          afinarToggle.setAttribute('aria-expanded', String(open));
+        });
+      }
+
+      // ── Brand board ──
+      function renderBoard(i) {
+        const c = conceptStore[i];
+        if (!c || !board) return;
+        const pal = PALETTES[ctx.palette] || PALETTES.mono;
+        const primary = pal.primary, dark = shade(primary, -0.35);
+        const colorUrl = c.url + '?v=transparent';   // tinta original, fondo transparente
+        const whiteUrl = c.url + '?v=white';          // knockout blanco
+        const biz = esc(ctx.name);
+        const sw = pal.swatches.map((s) => '<span class="board-sw" style="background:' + s + '"></span>').join('');
+
+        board.innerHTML =
+          '<div class="board-inner">' +
+            '<div class="board-top">' +
+              '<div><span class="board-kicker">Tablero de marca</span>' +
+              '<span class="board-name">' + biz + '</span></div>' +
+              '<span class="board-concept">' + LABELS[i] + '</span>' +
+            '</div>' +
+            '<div class="board-body">' +
+              '<div class="board-main">' +
+                '<div class="board-preview" id="boardPreview" data-bg="light"><img id="boardHero" src="' + colorUrl + '" alt="Logo ' + biz + '"></div>' +
+                '<div class="board-side">' +
+                  '<div class="board-variants" id="boardVars">' +
+                    '<button type="button" class="bvar is-on" data-bg="light" data-src="' + colorUrl + '"><span class="bv-thumb light"><img src="' + colorUrl + '" alt=""></span>Color</button>' +
+                    '<button type="button" class="bvar" data-bg="dark" data-src="' + whiteUrl + '"><span class="bv-thumb dark"><img src="' + whiteUrl + '" alt=""></span>Negativo</button>' +
+                    '<button type="button" class="bvar" data-bg="trans" data-src="' + colorUrl + '"><span class="bv-thumb checker"><img src="' + colorUrl + '" alt=""></span>Transp.</button>' +
+                  '</div>' +
+                  '<div class="board-block"><span class="board-block-label">Paleta</span><div class="board-palette">' + sw + '</div></div>' +
+                  '<div class="board-block"><span class="board-block-label">Tipografía</span><span class="board-type">' + (TYPOS[ctx.typo] || 'Automática') + '</span></div>' +
+                '</div>' +
+              '</div>' +
+              '<span class="board-block-label" style="display:block;margin-bottom:12px">Cómo se vería tu marca</span>' +
+              '<div class="board-mockups">' +
+                '<div class="mock mock-app"><div class="mock-frame" style="background:linear-gradient(135deg,' + primary + ',' + dark + ')"><img src="' + whiteUrl + '" alt=""></div><span class="mock-label">Ícono de app</span></div>' +
+                '<div class="mock mock-card"><div class="mock-frame"><div class="mock-card-face"><img src="' + colorUrl + '" alt=""><div><span class="mc-name" style="color:' + primary + '">' + biz + '</span><span class="mc-sub" style="background:' + primary + '"></span></div></div></div><span class="mock-label">Tarjeta</span></div>' +
+                '<div class="mock mock-sign"><div class="mock-frame"><img src="' + whiteUrl + '" alt=""></div><span class="mock-label">Rótulo</span></div>' +
+                '<div class="mock mock-tote"><div class="mock-frame" style="background:' + primary + '"><img src="' + whiteUrl + '" alt=""></div><span class="mock-label">Tote / camiseta</span></div>' +
+              '</div>' +
+            '</div>' +
+            '<p class="board-foot"><strong>Es una simulación automática.</strong> El logo vectorizado de verdad, la paleta afinada y estas piezas listas para imprenta te las entrego yo — déjame tu contacto abajo.</p>' +
+          '</div>';
+        board.hidden = false;
+      }
+
+      // Switch de variante en el preview grande (delegado, el contenedor no se re-crea)
+      if (board) {
+        board.addEventListener('click', (e) => {
+          const b = e.target.closest('.bvar');
+          if (!b) return;
+          board.querySelectorAll('.bvar').forEach((x) => x.classList.remove('is-on'));
+          b.classList.add('is-on');
+          const prev = $('boardPreview'), hero = $('boardHero');
+          if (prev) prev.dataset.bg = b.dataset.bg;
+          if (hero) hero.src = b.dataset.src;
+        });
+      }
 
       const slotMarkup = () => LABELS.map((lb, i) => (
         '<div class="ai-card" data-slot="' + i + '">' +
@@ -591,6 +916,7 @@ import Footer from '../components/Footer.astro';
         });
         const hint = document.getElementById('aiLikedHint');
         if (hint) { hint.hidden = false; hint.querySelector('span').textContent = LABELS[i]; }
+        renderBoard(i);
         const c = document.getElementById('leadContact');
         if (c) c.focus({ preventScroll: true });
         track('logo_concept_picked', { event_category: 'engagement', event_label: LABELS[i] });
@@ -604,7 +930,7 @@ import Footer from '../components/Footer.astro';
         try {
           const r = await fetch(API + '/generate', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: ctx.name, industry: ctx.industry, style: ctx.style, variant: i }),
+            body: JSON.stringify({ name: ctx.name, industry: ctx.industry, style: ctx.style, typography: ctx.typo, palette: ctx.palette, variant: i }),
           });
           const data = await r.json();
           if (!r.ok || !data.concept || !data.concept.url) throw new Error((data && data.message) || 'error');
@@ -621,12 +947,13 @@ import Footer from '../components/Footer.astro';
       async function run() {
         const name = nameEl.value.trim();
         if (!name) { nameEl.focus(); return; }
-        ctx = { name, industry: industryEl.value.trim(), style: styleEl.value };
+        ctx = { name, industry: industryEl.value.trim(), style: sel.style, typo: sel.typo, palette: sel.palette };
         goBtn.disabled = true; goBtn.textContent = 'Generando…';
         statusEl.hidden = false;
         statusEl.textContent = 'La IA está dibujando tus conceptos… (unos segundos cada uno)';
         picked = null;
         results.hidden = false; results.innerHTML = slotMarkup();
+        if (board) board.hidden = true;
         const hint0 = document.getElementById('aiLikedHint'); if (hint0) hint0.hidden = true;
         leadBox.hidden = true; leadOk.hidden = true; if (leadForm) leadForm.hidden = false;
         track('logo_generate_start', { event_category: 'engagement', event_label: ctx.style });

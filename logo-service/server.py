@@ -60,13 +60,38 @@ STYLE_MAP = {
 }
 DEFAULT_STYLE = "moderno"
 
+# ── Tipografía: matiz sobre las letras (aplica a Wordmark/Combinado) ─────────────
+TYPO_MAP = {
+    "auto":       "elegant modern sans-serif typography",
+    "sans":       "clean geometric sans-serif typography, even weight",
+    "serif":      "elegant high-contrast serif typography, refined",
+    "script":     "stylish flowing handwritten script typography",
+    "display":    "bold heavy condensed display typography, strong presence",
+    "mono":       "monospaced technical typography, even spacing",
+    "redondeada": "friendly rounded sans-serif typography, soft terminals",
+}
+DEFAULT_TYPO = "auto"
+
+# ── Paleta: color de la tinta. 'mono' mantiene el logo en negro para variantes ───
+# El fragmento va al prompt; los swatches los pinta el brand board en el frontend.
+PALETTE_MAP = {
+    "mono":       "monochrome pure black ink, one single color only",
+    "azul":       "a deep confident corporate blue color palette, one or two tones",
+    "verde":      "a natural forest-green color palette, one or two tones",
+    "terracota":  "a warm terracotta and clay color palette, one or two tones",
+    "purpura":    "a modern violet-purple color palette, one or two tones",
+    "dorado":     "an elegant metallic gold color palette on white, luxurious",
+    "vibrante":   "a bold vibrant saturated color palette, two colors maximum",
+}
+DEFAULT_PALETTE = "mono"
+
 # Andamiaje compartido: fuerza logo limpio/minimalista y bloquea textura/clipart.
+# {typo} = fragmento tipográfico, {ink} = fragmento de color/paleta.
 CLEAN_TAIL = (
     " Simple clean flat vector-style logo, minimal and uncluttered, with lots of negative space, "
-    "elegant modern sans-serif typography, refined, one or two colors maximum, monochrome black "
-    "on a pure solid white #FFFFFF background, centered and balanced, high-end brand identity. "
-    "NOT busy, NO texture, NO cross-hatching, NO engraving, NO detailed illustration, "
-    "not cartoon, not clipart, no photograph, no mockup, no frame."
+    "{typo}, refined, {ink}, on a pure solid white #FFFFFF background, centered and balanced, "
+    "high-end brand identity. NOT busy, NO texture, NO cross-hatching, NO engraving, "
+    "NO detailed illustration, not cartoon, not clipart, no photograph, no mockup, no frame."
 )
 
 # Tres enfoques. Placeholders: {name} (negocio), {ind} (rubro opcional), {vibe} (matiz).
@@ -161,9 +186,20 @@ def clean(s: str, maxlen: int) -> str:
     return s[:maxlen]
 
 
-def build_prompt(approach_tpl: str, name: str, industry: str, vibe: str) -> str:
+def build_prompt(approach_tpl: str, name: str, industry: str, vibe: str,
+                 typo: str, ink: str, is_text: bool) -> str:
     ind = f", a {industry} business" if industry else ""
-    return approach_tpl.format(name=name, ind=ind, vibe=vibe) + CLEAN_TAIL
+    # Para el símbolo (icon-only) la tipografía no aplica.
+    typo_frag = typo if is_text else "no lettering"
+    tail = CLEAN_TAIL.format(typo=typo_frag, ink=ink)
+    return approach_tpl.format(name=name, ind=ind, vibe=vibe) + tail
+
+
+def _bg_mask(arr: np.ndarray) -> np.ndarray:
+    """True donde el píxel es fondo (claro + neutro). Compartido por las variantes."""
+    mn = arr.min(axis=2)
+    spread = arr.max(axis=2) - mn
+    return (mn >= 205) & (spread <= 25)
 
 
 def whiten_bg(img: bytes) -> bytes:
@@ -172,12 +208,33 @@ def whiten_bg(img: bytes) -> bytes:
     try:
         im = Image.open(io.BytesIO(img)).convert("RGB")
         arr = np.asarray(im).astype(np.int16)
-        mn = arr.min(axis=2)
-        spread = arr.max(axis=2) - mn
-        mask = (mn >= 205) & (spread <= 25)   # claro + neutro = fondo
-        arr[mask] = 255
+        arr[_bg_mask(arr)] = 255
         out = io.BytesIO()
         Image.fromarray(arr.astype("uint8"), "RGB").save(out, "PNG", optimize=True)
+        return out.getvalue()
+    except Exception:  # noqa: BLE001
+        return img
+
+
+def render_variant(img: bytes, variant: str) -> bytes:
+    """Deriva variantes del PNG guardado, sin IA:
+    - transparent: la tinta original sobre fondo transparente (para mockups a color).
+    - white: knockout blanco (silueta de la tinta en blanco, fondo transparente).
+    Habilita el brand board: componer el logo sobre cualquier superficie con CSS."""
+    if variant not in ("transparent", "white"):
+        return img
+    try:
+        im = Image.open(io.BytesIO(img)).convert("RGB")
+        arr = np.asarray(im).astype(np.int16)
+        bg = _bg_mask(arr)
+        alpha = np.where(bg, 0, 255).astype("uint8")
+        if variant == "white":
+            rgb = np.full_like(arr, 255)            # tinta en blanco
+        else:
+            rgb = arr                                # tinta original
+        rgba = np.dstack([rgb.astype("uint8"), alpha])
+        out = io.BytesIO()
+        Image.fromarray(rgba, "RGBA").save(out, "PNG", optimize=True)
         return out.getvalue()
     except Exception:  # noqa: BLE001
         return img
@@ -285,6 +342,8 @@ class GenBody(BaseModel):
     name: str = Field(default="")
     industry: str = Field(default="")
     style: str = Field(default=DEFAULT_STYLE)
+    typography: str = Field(default=DEFAULT_TYPO)
+    palette: str = Field(default=DEFAULT_PALETTE)
     variant: int = Field(default=0)
 
 
@@ -327,7 +386,15 @@ async def generate(body: GenBody, request: Request):
     style_key = (body.style or DEFAULT_STYLE).strip().lower()
     vibe = STYLE_MAP.get(style_key, STYLE_MAP[DEFAULT_STYLE])
 
-    concept = await generate_one(label, build_prompt(tpl, name, industry, vibe))
+    typo_key = (body.typography or DEFAULT_TYPO).strip().lower()
+    typo = TYPO_MAP.get(typo_key, TYPO_MAP[DEFAULT_TYPO])
+
+    palette_key = (body.palette or DEFAULT_PALETTE).strip().lower()
+    ink = PALETTE_MAP.get(palette_key, PALETTE_MAP[DEFAULT_PALETTE])
+
+    # variant 0 = Símbolo (icon-only): sin texto, la tipografía no aplica.
+    prompt = build_prompt(tpl, name, industry, vibe, typo, ink, is_text=(variant != 0))
+    concept = await generate_one(label, prompt)
     if not concept.get("img"):
         return JSONResponse(
             {"error": "gen", "label": label, "message": "No se pudo generar este concepto. Intenta de nuevo.",
@@ -391,13 +458,16 @@ async def gallery():
 
 
 @app.get("/img/{cid}")
-async def img(cid: str):
+async def img(cid: str, v: str = ""):
     if not _ID_RE.match(cid):
         return Response(status_code=404)
     f = LOGOS_DIR / f"{cid}.png"
     if not f.exists():
         return Response(status_code=404)
-    return Response(f.read_bytes(), media_type="image/png",
+    data = f.read_bytes()
+    if v in ("transparent", "white"):
+        data = render_variant(data, v)
+    return Response(data, media_type="image/png",
                     headers={"Cache-Control": "public, max-age=86400"})
 
 
