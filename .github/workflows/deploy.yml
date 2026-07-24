@@ -19,11 +19,21 @@ jobs:
             set -e
             cd /home/corillo-adm/marcossantiago-web
             git pull origin main
-            sudo docker compose up -d --build --force-recreate
+            # Sin --force-recreate: compose recrea SOLO los servicios cuya imagen
+            # cambió (el --build reconstruye; imagen idéntica = no se toca). Así un
+            # cambio del web no rebota el sidecar del generador ni los bots.
+            sudo docker compose up -d --build
             sudo docker image prune -f
-            sleep 3
-            for path in /logos-portfolio/abogo.png /logos-home/bambu.svg /portafolio/logos/; do
-              code=$(curl -s -o /dev/null -w "%{http_code}" -L "https://marcossantiago.com${path}")
+            sleep 5
+            # Incluye /logo-api/health para que un sidecar caído FALLE el deploy
+            # (antes el healthcheck no lo cubría y quedaba en 502 sin avisar).
+            for path in /logos-portfolio/abogo.png /logos-home/bambu.svg /portafolio/logos/ /logo-api/health; do
+              code=""
+              for attempt in 1 2 3 4 5; do
+                code=$(curl -s -o /dev/null -w "%{http_code}" -L "https://marcossantiago.com${path}")
+                [ "$code" = "200" ] && break
+                sleep 3
+              done
               if [ "$code" != "200" ]; then
                 echo "Healthcheck FAILED: ${path} returned ${code}"
                 exit 1
