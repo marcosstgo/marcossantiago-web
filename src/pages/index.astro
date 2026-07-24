@@ -206,15 +206,15 @@ const featuredProjects = [
     </div>
   </section>
 
-  <!-- ═══ GENERADOR DE MARCA CON IA ═══ -->
+  <!-- ═══ IDEAS DE LOGO ═══ -->
   <section class="section ai-logo" id="generador">
     <div class="container">
-      <p class="section-label">Diseño con IA · Nuevo</p>
+      <p class="section-label">Ideas de logo · Gratis</p>
       <h2 class="section-title">Mira tu logo<br>antes de llamarme</h2>
       <p class="ai-lead">
-        Escribe el nombre de tu negocio y la inteligencia artificial te muestra
-        <strong>3 conceptos de logo al instante</strong> — limpios y profesionales.
-        La IA pone la chispa; yo la convierto en una marca de verdad.
+        Escribe el nombre de tu negocio y mira
+        <strong>3 ideas de logo al instante</strong> — limpios y profesionales.
+        Es tu punto de partida; yo lo convierto en una marca de verdad.
       </p>
       <p class="ai-gallery-link">
         <a href="/generador-de-logos/">Cómo funciona y qué recibes →</a>
@@ -333,7 +333,7 @@ const featuredProjects = [
         ctx = { name, industry: industryEl.value.trim(), style: styleEl.value };
         goBtn.disabled = true; goBtn.textContent = 'Generando…';
         statusEl.hidden = false;
-        statusEl.textContent = 'La IA está dibujando tus conceptos… (unos segundos cada uno)';
+        statusEl.textContent = 'Dibujando tus conceptos… (unos segundos cada uno)';
         picked = null;
         results.hidden = false; results.innerHTML = slotMarkup();
         const hint0 = document.getElementById('aiLikedHint'); if (hint0) hint0.hidden = true;
@@ -898,7 +898,7 @@ const featuredProjects = [
   .booth-content { padding: 24px }
 }
 
-/* ── GENERADOR DE MARCA CON IA ── */
+/* ── IDEAS DE LOGO ── */
 .ai-logo { background: var(--bg); border-top: 1px solid var(--border) }
 .ai-lead {
   color: var(--muted); font-size: 1.08rem; line-height: 1.75;

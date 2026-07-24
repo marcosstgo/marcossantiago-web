@@ -1,0 +1,163 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+<Base
+  title="Galería de logos — Marcos Santiago · Puerto Rico"
+  description="Ideas de logo generadas en marcossantiago.com. Inspiración de identidad de marca — genera las tuyas gratis y las perfecciono a mano."
+>
+ <div class="gal">
+  <Nav />
+
+  <main id="main">
+
+  <section class="gal-hero">
+    <div class="container">
+      <p class="gal-eyebrow">Ideas de logo · Galería</p>
+      <h1 class="gal-title">Galería de<br>ideas de logo</h1>
+      <p class="gal-lead">
+        Estos son conceptos que la IA generó en esta página — <strong>limpios y profesionales</strong>, curados por mí.
+        Úsalos de inspiración para tu marca. ¿Ves el estilo que buscas?
+        Genera el tuyo gratis y yo lo <strong>perfecciono a mano</strong>.
+      </p>
+      <div class="gal-actions">
+        <a href="/#generador" class="btn primary">Generar mi logo →</a>
+        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
+          <i class="fab fa-whatsapp"></i> Hablar con Marcos
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section gal-section">
+    <div class="container">
+      <p class="gal-status" id="galStatus">Cargando galería…</p>
+      <div class="gal-grid" id="galGrid"></div>
+    </div>
+  </section>
+
+  <section class="gal-cta">
+    <div class="container">
+      <h2 class="gal-cta-title">¿Listo para tu marca?</h2>
+      <p class="gal-cta-sub">Genera 3 conceptos gratis en segundos. Si te gusta uno, lo trabajo hasta que quede perfecto.</p>
+      <a href="/#generador" class="btn primary">Empezar ahora →</a>
+    </div>
+  </section>
+
+  </main>
+
+  <Footer />
+ </div>
+</Base>
+
+<script>
+  (() => {
+    const STYLES = {
+      moderno: 'Moderno', minimalista: 'Minimalista', elegante: 'Elegante',
+      divertido: 'Divertido', clasico: 'Clásico', tecnologico: 'Tecnológico', organico: 'Orgánico',
+    };
+    const grid = document.getElementById('galGrid');
+    const status = document.getElementById('galStatus');
+    const esc = (s) => (s || '').replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]));
+
+    fetch('/logo-api/gallery')
+      .then((r) => r.json())
+      .then((d) => {
+        const logos = (d && d.logos) || [];
+        if (!logos.length) {
+          status.textContent = 'Aún no hay logos publicados. ¡Sé el primero en generar el tuyo!';
+          return;
+        }
+        status.hidden = true;
+        grid.innerHTML = logos.map((l) => (
+          '<a class="gal-card" href="/#generador" title="Genera el tuyo">' +
+            '<div class="gal-canvas"><img loading="lazy" alt="Concepto de logo" src="/logo-api/img/' + l.id + '"></div>' +
+            '<div class="gal-meta">' +
+              '<span class="gal-name">' + esc(l.business) + '</span>' +
+              '<span class="gal-tag">' + esc(l.label) + ' · ' + esc(STYLES[l.style] || l.style) + '</span>' +
+            '</div>' +
+          '</a>'
+        )).join('');
+      })
+      .catch(() => { status.textContent = 'No se pudo cargar la galería. Intenta de nuevo.'; });
+  })();
+</script>
+
+<style>
+.gal { --accent: #ece7dd }
+.gal-hero {
+  padding: 140px 0 40px; background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.gal-eyebrow {
+  font-family: var(--mono); font-size: .68rem;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 18px;
+}
+.gal-title {
+  font-family: var(--display);
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  letter-spacing: 1px; line-height: .92;
+  text-transform: uppercase; color: var(--white);
+}
+.gal-lead {
+  color: var(--muted); font-size: 1.1rem; line-height: 1.7;
+  max-width: 60ch; margin: 22px 0 30px;
+}
+.gal-lead strong { color: var(--white); font-weight: 600 }
+.gal-actions { display: flex; gap: 12px; flex-wrap: wrap }
+@media (max-width: 600px) { .gal-hero { padding: 120px 0 32px } }
+
+.gal-section { background: var(--bg) }
+.gal-status {
+  font-family: var(--mono); font-size: var(--text-sm);
+  letter-spacing: .5px; color: var(--muted); padding: 20px 0;
+}
+
+.gal-cta {
+  padding: 80px 0; text-align: center;
+  background:
+    radial-gradient(90% 140% at 50% 0%, rgba(255,255,255,.05) 0%, transparent 55%),
+    var(--surface);
+  border-top: 1px solid var(--border);
+}
+.gal-cta-title {
+  font-family: var(--display); font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 1.5px; color: var(--white); margin-bottom: 10px;
+}
+.gal-cta-sub { color: var(--muted); max-width: 46ch; margin: 0 auto 24px; line-height: 1.6 }
+</style>
+
+<!-- Tarjetas inyectadas por JS -> estilos globales (no reciben scope de Astro). Prefijo .gal-* -->
+<style is:global>
+  .gal-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 16px; margin-top: 8px;
+  }
+  @media (max-width: 900px) { .gal-grid { grid-template-columns: repeat(2, 1fr) } }
+  @media (max-width: 480px) { .gal-grid { grid-template-columns: 1fr } }
+  .gal-card {
+    min-width: 0; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 12px; display: flex; flex-direction: column; gap: 10px;
+    transition: border-color .2s, transform .2s;
+  }
+  .gal-card:hover { border-color: var(--accent, #ece7dd); transform: translateY(-3px) }
+  .gal-canvas {
+    aspect-ratio: 1; background: #fff; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px; overflow: hidden;
+  }
+  .gal-canvas img { width: 100%; height: 100%; object-fit: contain; display: block }
+  .gal-meta { display: flex; flex-direction: column; gap: 3px; padding: 0 2px 2px }
+  .gal-name {
+    font-family: var(--display); font-size: 1.05rem;
+    letter-spacing: .5px; color: var(--white);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .gal-tag {
+    font-family: var(--mono); font-size: .6rem;
+    letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
+  }
+</style>
