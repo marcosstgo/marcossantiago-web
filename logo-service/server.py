@@ -99,10 +99,11 @@ CLEAN_TAIL = (
 # claramente distinto del wordmark (y sirve de favicon / ícono de app).
 APPROACHES = [
     ("Monograma",
-     "An elegant single-letter monogram emblem based on the capital letter \"{initial}\"{ind} — {vibe}. "
-     "A refined lettermark badge built from just the letter \"{initial}\", iconic, balanced and "
-     "distinctive — the kind of mark used as an app icon or favicon. "
-     "Show ONLY the single letter \"{initial}\": no other letters, no words, do not spell out any name."),
+     "A refined single-letter monogram logo mark based on the capital letter \"{initial}\" — {vibe}. "
+     "Craft the letter \"{initial}\" as one elegant, distinctive lettermark with a subtle unique detail — "
+     "a clever cut, balanced negative space, or a simple enclosing badge/roundel — centered and iconic, "
+     "the kind of mark that works as an app icon, favicon or social avatar. "
+     "Show ONLY the single letter \"{initial}\": no other letters, no words, no business name."),
     ("Wordmark",
      "A clean minimal typographic wordmark logo for \"{name}\"{ind} — {vibe}. "
      "Lettering spelling exactly \"{name}\", typography-led with a "
