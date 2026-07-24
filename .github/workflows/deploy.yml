@@ -18,11 +18,26 @@ jobs:
           script: |
             set -e
             cd /home/corillo-adm/marcossantiago-web
+            # Desplegar SOLO el/los servicio(s) cuyos archivos cambiaron. Necesario
+            # porque 'docker compose up --build' recrea TODOS los servicios 'build'
+            # cambie lo que cambie (comprobado empíricamente) → un deploy del web
+            # tumbaba el sidecar del generador y los bots. Con diff por paths, un
+            # cambio del web solo recrea el web. Si no hay diff detectable (p.ej.
+            # commit hecho en el server → el pull es no-op), por defecto solo web;
+            # los sub-servicios (logo-service/bot/blog-bot) se despliegan a mano.
+            BEFORE=$(git rev-parse HEAD)
             git pull origin main
-            # Sin --force-recreate: compose recrea SOLO los servicios cuya imagen
-            # cambió (el --build reconstruye; imagen idéntica = no se toca). Así un
-            # cambio del web no rebota el sidecar del generador ni los bots.
-            sudo docker compose up -d --build
+            AFTER=$(git rev-parse HEAD)
+            if [ "$BEFORE" = "$AFTER" ]; then CHANGED=""; else CHANGED=$(git diff --name-only "$BEFORE" "$AFTER"); fi
+            SERVICES=""
+            add() { case " $SERVICES " in *" $1 "*) ;; *) SERVICES="$SERVICES $1";; esac; }
+            printf '%s\n' "$CHANGED" | grep -q '^logo-service/' && add marcossantiago-logo || true
+            printf '%s\n' "$CHANGED" | grep -q '^bot/'          && add marcossantiago-bot || true
+            printf '%s\n' "$CHANGED" | grep -q '^blog-bot/'     && add marcossantiago-blog-bot || true
+            NONSUB=$(printf '%s\n' "$CHANGED" | grep -vE '^(logo-service/|bot/|blog-bot/)' || true)
+            if [ -z "$CHANGED" ] || [ -n "$NONSUB" ]; then add marcossantiago-web; fi
+            echo "Servicios a desplegar:${SERVICES}"
+            sudo docker compose up -d --build ${SERVICES}
             sudo docker image prune -f
             sleep 5
             # Incluye /logo-api/health para que un sidecar caído FALLE el deploy
