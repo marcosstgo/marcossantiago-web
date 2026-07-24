@@ -230,6 +230,28 @@ const featuredProjects = [
     </div>
   </section>
 
+  <script is:inline>
+    /* Teaser del home: si hay logos elegidos en el admin (★ Home) los usa;
+       si no hay o el generador está caído, quedan los 3 estáticos de respaldo. */
+    (function () {
+      var imgs = document.querySelectorAll('.logos-teaser .lt-card img');
+      if (!imgs.length) return;
+      var go = function () {
+        fetch('/logo-api/home-logos')
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (d) {
+            if (!d || !d.logos || !d.logos.length) return;
+            d.logos.slice(0, imgs.length).forEach(function (logo, i) {
+              imgs[i].src = '/logo-api/img/' + logo.id;
+              if (logo.business) imgs[i].setAttribute('alt', 'Logo de ejemplo: ' + logo.business);
+            });
+          })
+          .catch(function () {});
+      };
+      if ('requestIdleCallback' in window) requestIdleCallback(go); else setTimeout(go, 400);
+    })();
+  </script>
+
   <!-- ═══ DISCIPLINAS ═══ -->
   <section class="section">
     <div class="container">

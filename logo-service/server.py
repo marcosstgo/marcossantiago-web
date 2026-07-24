@@ -47,6 +47,7 @@ LOGOS_DIR  = DATA_DIR / "logos"
 INDEX_PATH = DATA_DIR / "index.json"
 ADMIN_KEY  = os.environ.get("ADMIN_KEY", "")
 GALLERY_MAX = 120
+HOME_MAX = 3   # logos que Marcos elige para el teaser del home
 
 # ── Estilo: la vibra elegida (ES) añade un matiz al logo limpio ─────────────────
 STYLE_MAP = {
@@ -459,6 +460,19 @@ async def gallery():
     ]}
 
 
+# Logos elegidos para el teaser del home (curados en /admin, máx HOME_MAX).
+@app.get("/home-logos")
+async def home_logos():
+    items = _load_index()
+    hs = [i for i in items if i.get("home") and i.get("approved")]
+    hs.sort(key=lambda x: x.get("home_ts", x.get("ts", 0)))
+    hs = hs[:HOME_MAX]
+    return {"logos": [
+        {"id": i["id"], "business": i["business"], "label": i["label"]}
+        for i in hs
+    ]}
+
+
 @app.get("/img/{cid}")
 async def img(cid: str, v: str = ""):
     if not _ID_RE.match(cid):
@@ -498,6 +512,37 @@ async def admin_set(key: str = "", id: str = "", approved: int = 0):
         for it in items:
             if it["id"] == id:
                 it["approved"] = bool(approved)
+                if not approved:            # si se oculta, sale también del home
+                    it["home"] = False
+        _save_index(items)
+    return {"ok": True}
+
+
+@app.post("/admin/home")
+async def admin_home(key: str = "", id: str = "", on: int = 0):
+    """Elige (o quita) un logo del teaser del home. Máx HOME_MAX. Marcar home
+    implica aprobado (para que sea público)."""
+    if not admin_ok(key):
+        return JSONResponse({"error": "auth"}, status_code=403)
+    if not _ID_RE.match(id):
+        return JSONResponse({"error": "id"}, status_code=400)
+    async with _index_lock:
+        items = _load_index()
+        target = next((it for it in items if it["id"] == id), None)
+        if target is None:
+            return JSONResponse({"error": "notfound"}, status_code=404)
+        if on:
+            n_home = sum(1 for it in items if it.get("home"))
+            if not target.get("home") and n_home >= HOME_MAX:
+                return JSONResponse(
+                    {"error": "max", "message": f"Máximo {HOME_MAX} logos en el home. Quita uno primero."},
+                    status_code=409,
+                )
+            target["home"] = True
+            target["approved"] = True
+            target["home_ts"] = int(time.time())
+        else:
+            target["home"] = False
         _save_index(items)
     return {"ok": True}
 
@@ -550,13 +595,17 @@ h1{font-size:1.3rem;margin:0 0 4px}.sub{color:var(--mut);font-size:.85rem;margin
 .dlbtn{display:block;text-align:center;text-decoration:none;background:#182430;color:#9cc4ff;border:1px solid #29405a;border-radius:7px;padding:8px;font-size:.78rem;font-weight:600}
 .dlbtn:hover{background:#1e2f40}
 .empty{color:var(--mut);padding:40px;text-align:center}
+.homebtn{flex:0 0 auto;padding:8px 10px;background:#2a2410;color:#f5d76e;border:1px solid #5c4a12}
+.homebtn.on{background:#f5d76e;color:#111;border-color:#f5d76e}
+.item.home{border-color:#f5d76e;box-shadow:0 0 0 1px #f5d76e}
 </style></head><body>
 <h1>Galería de logos — Curaduría</h1>
-<div class="sub">Aprueba los que quieres que salgan en <b>/galeria-logos/</b>. Todo se guarda; solo los aprobados son públicos.</div>
+<div class="sub">Aprueba los que salen en <b>/galeria-logos/</b>. Marca <b>★ Home</b> (máx 3) los del teaser de la página principal. Solo los aprobados son públicos.</div>
 <div class="bar">
   <button data-f="all" class="on">Todos (<span id="cAll">0</span>)</button>
   <button data-f="pending">Pendientes (<span id="cPen">0</span>)</button>
   <button data-f="approved">Aprobados (<span id="cApp">0</span>)</button>
+  <button data-f="home">★ Home (<span id="cHome">0</span>/3)</button>
 </div>
 <div class="grid" id="grid"></div>
 <script>
@@ -571,14 +620,16 @@ async function load(){
 }
 function render(){
   var app=DATA.filter(function(x){return x.approved}).length;
+  var home=DATA.filter(function(x){return x.home}).length;
   document.getElementById('cAll').textContent=DATA.length;
   document.getElementById('cApp').textContent=app;
   document.getElementById('cPen').textContent=DATA.length-app;
-  var list=DATA.filter(function(x){return FILTER==='all'?true:FILTER==='approved'?x.approved:!x.approved});
+  document.getElementById('cHome').textContent=home;
+  var list=DATA.filter(function(x){return FILTER==='all'?true:FILTER==='home'?x.home:FILTER==='approved'?x.approved:!x.approved});
   var g=document.getElementById('grid');
   if(!list.length){g.innerHTML='<div class=empty>Nada aquí todavía.</div>';return}
   g.innerHTML=list.map(function(x){return ''+
-    '<div class="item'+(x.approved?' appr':'')+'">'+
+    '<div class="item'+(x.approved?' appr':'')+(x.home?' home':'')+'">'+
       '<div class="canvas"><img loading="lazy" src="/logo-api/img/'+x.id+'"></div>'+
       '<div class="meta"><b>'+esc(x.business)+'</b><br>'+esc(x.label)+' · '+esc(x.style)+'<br>'+when(x.ts)+'</div>'+
       '<a class="dlbtn" href="/logo-api/img/'+x.id+'" download="'+esc(x.business||'logo')+'-'+esc(x.label)+'.png">Descargar PNG &#8595;</a>'+
@@ -586,11 +637,17 @@ function render(){
         (x.approved
           ? '<button class="hide" onclick="setA(\''+x.id+'\',0)">Ocultar</button>'
           : '<button class="approve" onclick="setA(\''+x.id+'\',1)">Aprobar</button>')+
+        '<button class="homebtn'+(x.home?' on':'')+'" title="Mostrar en el home" onclick="setH(\''+x.id+'\','+(x.home?0:1)+')">★</button>'+
         '<button class="del" onclick="del(\''+x.id+'\')">🗑</button>'+
       '</div>'+
     '</div>'}).join('')
 }
-async function setA(id,a){await fetch('/logo-api/admin/set?key='+encodeURIComponent(KEY)+'&id='+id+'&approved='+a,{method:'POST'});var it=DATA.find(function(x){return x.id===id});if(it)it.approved=!!a;render()}
+async function setA(id,a){await fetch('/logo-api/admin/set?key='+encodeURIComponent(KEY)+'&id='+id+'&approved='+a,{method:'POST'});var it=DATA.find(function(x){return x.id===id});if(it){it.approved=!!a;if(!a)it.home=false;}render()}
+async function setH(id,on){
+  var r=await fetch('/logo-api/admin/home?key='+encodeURIComponent(KEY)+'&id='+id+'&on='+on,{method:'POST'});
+  if(!r.ok){var e={};try{e=await r.json()}catch(_){}alert(e.message||'No se pudo actualizar el home.');return}
+  var it=DATA.find(function(x){return x.id===id});if(it){it.home=!!on;if(on)it.approved=true;}render();
+}
 async function del(id){if(!confirm('¿Borrar este logo?'))return;await fetch('/logo-api/admin/delete?key='+encodeURIComponent(KEY)+'&id='+id,{method:'POST'});DATA=DATA.filter(function(x){return x.id!==id});render()}
 document.querySelectorAll('.bar button').forEach(function(b){b.onclick=function(){FILTER=b.dataset.f;document.querySelectorAll('.bar button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');render()}});
 load();
