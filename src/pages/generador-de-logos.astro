@@ -85,7 +85,7 @@ import Footer from '../components/Footer.astro';
         <div class="tool-panel">
           <div class="tool-panel-head">
             <span class="tp-step">Paso 1</span>
-            <span class="tp-head-label">Cuéntame de tu negocio</span>
+            <span class="tp-head-label">Describe y personaliza tu logo</span>
           </div>
 
           <form class="ai-form" id="aiForm">
@@ -113,41 +113,28 @@ import Footer from '../components/Footer.astro';
               </div>
             </div>
 
-            <button type="button" class="afinar-toggle" id="afinarToggle" aria-expanded="false" aria-controls="afinar">
-              <span class="afinar-lead">
-                <i class="fa-solid fa-sliders"></i>
-                <span class="afinar-text">
-                  <span class="afinar-title">Personaliza tipografía y color</span>
-                  <span class="afinar-hint">Opcional · elige la letra y la paleta antes de generar</span>
-                </span>
-              </span>
-              <i class="fa-solid fa-chevron-down afinar-caret"></i>
-            </button>
-
-            <div class="afinar" id="afinar" hidden>
-              <div class="ai-control">
-                <span class="ai-control-label">Tipografía</span>
-                <div class="chips" id="typoChips" role="group" aria-label="Tipografía">
-                  <button type="button" class="chip is-on" data-typo="auto">Automática</button>
-                  <button type="button" class="chip" data-typo="sans">Sans moderna</button>
-                  <button type="button" class="chip" data-typo="serif">Serif elegante</button>
-                  <button type="button" class="chip" data-typo="script">Manuscrita</button>
-                  <button type="button" class="chip" data-typo="display">Display fuerte</button>
-                  <button type="button" class="chip" data-typo="mono">Mono tech</button>
-                  <button type="button" class="chip" data-typo="redondeada">Redondeada</button>
-                </div>
+            <div class="ai-control">
+              <span class="ai-control-label">Tipografía</span>
+              <div class="chips" id="typoChips" role="group" aria-label="Tipografía">
+                <button type="button" class="chip is-on" data-typo="auto">Automática</button>
+                <button type="button" class="chip" data-typo="sans">Sans moderna</button>
+                <button type="button" class="chip" data-typo="serif">Serif elegante</button>
+                <button type="button" class="chip" data-typo="script">Manuscrita</button>
+                <button type="button" class="chip" data-typo="display">Display fuerte</button>
+                <button type="button" class="chip" data-typo="mono">Mono tech</button>
+                <button type="button" class="chip" data-typo="redondeada">Redondeada</button>
               </div>
-              <div class="ai-control">
-                <span class="ai-control-label">Color</span>
-                <div class="swatches" id="paletteSwatches" role="group" aria-label="Paleta de color">
-                  <button type="button" class="swatch is-on" data-palette="mono" style="--sw:#111827"><span class="sw-dot"></span>Monocromo</button>
-                  <button type="button" class="swatch" data-palette="azul" style="--sw:#2563eb"><span class="sw-dot"></span>Azul</button>
-                  <button type="button" class="swatch" data-palette="verde" style="--sw:#16a34a"><span class="sw-dot"></span>Verde</button>
-                  <button type="button" class="swatch" data-palette="terracota" style="--sw:#ea580c"><span class="sw-dot"></span>Terracota</button>
-                  <button type="button" class="swatch" data-palette="purpura" style="--sw:#7c3aed"><span class="sw-dot"></span>Púrpura</button>
-                  <button type="button" class="swatch" data-palette="dorado" style="--sw:#d4a017"><span class="sw-dot"></span>Dorado</button>
-                  <button type="button" class="swatch" data-palette="vibrante" style="--sw:#e11d48"><span class="sw-dot"></span>Vibrante</button>
-                </div>
+            </div>
+            <div class="ai-control">
+              <span class="ai-control-label">Color</span>
+              <div class="swatches" id="paletteSwatches" role="group" aria-label="Paleta de color">
+                <button type="button" class="swatch is-on" data-palette="mono" style="--sw:#111827"><span class="sw-dot"></span>Monocromo</button>
+                <button type="button" class="swatch" data-palette="azul" style="--sw:#2563eb"><span class="sw-dot"></span>Azul</button>
+                <button type="button" class="swatch" data-palette="verde" style="--sw:#16a34a"><span class="sw-dot"></span>Verde</button>
+                <button type="button" class="swatch" data-palette="terracota" style="--sw:#ea580c"><span class="sw-dot"></span>Terracota</button>
+                <button type="button" class="swatch" data-palette="purpura" style="--sw:#7c3aed"><span class="sw-dot"></span>Púrpura</button>
+                <button type="button" class="swatch" data-palette="dorado" style="--sw:#d4a017"><span class="sw-dot"></span>Dorado</button>
+                <button type="button" class="swatch" data-palette="vibrante" style="--sw:#e11d48"><span class="sw-dot"></span>Vibrante</button>
               </div>
             </div>
 
@@ -412,39 +399,6 @@ import Footer from '../components/Footer.astro';
     background: color-mix(in srgb, var(--accent) 14%, transparent);
     border-color: color-mix(in srgb, var(--accent) 55%, transparent);
     color: color-mix(in srgb, var(--accent) 90%, var(--white));
-  }
-
-  .afinar-toggle {
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    width: 100%; cursor: pointer; text-align: left;
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
-    border-radius: 12px; padding: 14px 18px; transition: .16s ease;
-  }
-  .afinar-toggle:hover {
-    background: color-mix(in srgb, var(--accent) 13%, transparent);
-    border-color: color-mix(in srgb, var(--accent) 60%, transparent);
-  }
-  .afinar-lead { display: inline-flex; align-items: center; gap: 13px; min-width: 0 }
-  .afinar-lead > i {
-    color: var(--accent); font-size: 1.05rem; flex-shrink: 0;
-  }
-  .afinar-text { display: flex; flex-direction: column; gap: 3px; min-width: 0 }
-  .afinar-title {
-    font-family: var(--mono); font-size: .72rem; letter-spacing: 1px;
-    text-transform: uppercase; color: var(--white); font-weight: 700;
-  }
-  .afinar-hint {
-    font-size: .74rem; color: var(--muted); letter-spacing: .2px;
-    text-transform: none; font-family: var(--body);
-  }
-  .afinar-caret { transition: transform .2s; color: var(--accent); flex-shrink: 0 }
-  .afinar-toggle[aria-expanded="true"] .afinar-caret { transform: rotate(180deg) }
-  .afinar {
-    display: flex; flex-direction: column; gap: 18px;
-    padding: 18px; border-radius: 14px;
-    background: color-mix(in srgb, var(--white) 2%, transparent);
-    border: 1px solid var(--border);
   }
 
   .swatches { display: flex; flex-wrap: wrap; gap: 8px }
@@ -835,7 +789,7 @@ import Footer from '../components/Footer.astro';
         return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
       }
 
-      // ── Chips / swatches / afinar ──
+      // ── Chips / swatches ──
       function wireGroup(containerId, dataKey, stateKey) {
         const c = $(containerId);
         if (!c) return;
@@ -850,15 +804,6 @@ import Footer from '../components/Footer.astro';
       wireGroup('styleChips', 'style', 'style');
       wireGroup('typoChips', 'typo', 'typo');
       wireGroup('paletteSwatches', 'palette', 'palette');
-
-      const afinarToggle = $('afinarToggle'), afinar = $('afinar');
-      if (afinarToggle && afinar) {
-        afinarToggle.addEventListener('click', () => {
-          const open = afinar.hidden;
-          afinar.hidden = !open;
-          afinarToggle.setAttribute('aria-expanded', String(open));
-        });
-      }
 
       // ── Brand board ──
       function renderBoard(i) {
