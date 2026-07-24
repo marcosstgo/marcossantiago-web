@@ -598,6 +598,13 @@ h1{font-size:1.3rem;margin:0 0 4px}.sub{color:var(--mut);font-size:.85rem;margin
 .homebtn{flex:0 0 auto;padding:8px 10px;background:#2a2410;color:#f5d76e;border:1px solid #5c4a12}
 .homebtn.on{background:#f5d76e;color:#111;border-color:#f5d76e}
 .item.home{border-color:#f5d76e;box-shadow:0 0 0 1px #f5d76e}
+.homestrip{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--card);border:1px solid #5c4a12;border-radius:10px;padding:10px 12px;margin-bottom:16px}
+.hs-label{font-size:.8rem;color:#f5d76e;font-weight:600;margin-right:2px}
+.hs-item{display:flex;align-items:center;gap:8px;background:#1b1710;border:1px solid #5c4a12;border-radius:8px;padding:5px 8px}
+.hs-item img{width:34px;height:34px;object-fit:contain;background:#fff;border-radius:5px}
+.hs-item span{font-size:.75rem;color:var(--tx)}
+.hs-x{background:none;border:none;color:#f88;cursor:pointer;font-size:1rem;line-height:1;padding:0 2px}
+.hs-empty{font-size:.78rem;color:var(--mut)}
 </style></head><body>
 <h1>Galería de logos — Curaduría</h1>
 <div class="sub">Aprueba los que salen en <b>/galeria-logos/</b>. Marca <b>★ Home</b> (máx 3) los del teaser de la página principal. Solo los aprobados son públicos.</div>
@@ -607,6 +614,7 @@ h1{font-size:1.3rem;margin:0 0 4px}.sub{color:var(--mut);font-size:.85rem;margin
   <button data-f="approved">Aprobados (<span id="cApp">0</span>)</button>
   <button data-f="home">★ Home (<span id="cHome">0</span>/3)</button>
 </div>
+<div class="homestrip" id="homeStrip"></div>
 <div class="grid" id="grid"></div>
 <script>
 var KEY=new URLSearchParams(location.search).get('key')||'';
@@ -625,6 +633,14 @@ function render(){
   document.getElementById('cApp').textContent=app;
   document.getElementById('cPen').textContent=DATA.length-app;
   document.getElementById('cHome').textContent=home;
+  var homeList=DATA.filter(function(x){return x.home});
+  document.getElementById('homeStrip').innerHTML=
+    '<span class="hs-label">★ En el home ahora ('+homeList.length+'/3):</span>'+
+    (homeList.length
+      ? homeList.map(function(x){return '<span class="hs-item"><img src="/logo-api/img/'+x.id+'">'+
+          '<span>'+esc(x.business||'—')+'</span>'+
+          '<button class="hs-x" title="Quitar del home" onclick="setH(\''+x.id+'\',0)">&times;</button></span>';}).join('')
+      : '<span class="hs-empty">ninguno — dale a ★ en cualquier logo para ponerlo</span>');
   var list=DATA.filter(function(x){return FILTER==='all'?true:FILTER==='home'?x.home:FILTER==='approved'?x.approved:!x.approved});
   var g=document.getElementById('grid');
   if(!list.length){g.innerHTML='<div class=empty>Nada aquí todavía.</div>';return}
