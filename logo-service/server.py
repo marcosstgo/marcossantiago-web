@@ -95,19 +95,22 @@ CLEAN_TAIL = (
 )
 
 # Tres enfoques. Placeholders: {name} (negocio), {ind} (rubro opcional), {vibe} (matiz).
+# El "Monograma" usa la inicial como emblema: Ideogram lo hace confiable y queda
+# claramente distinto del wordmark (y sirve de favicon / ícono de app).
 APPROACHES = [
-    ("Símbolo",
-     "A minimal icon-only logo mark for \"{name}\"{ind} — {vibe}. "
-     "A single simple geometric symbol that cleverly represents the business. "
-     "Absolutely NO text, NO letters, NO words of any kind: only the symbol."),
+    ("Monograma",
+     "An elegant single-letter monogram emblem based on the capital letter \"{initial}\"{ind} — {vibe}. "
+     "A refined lettermark badge built from just the letter \"{initial}\", iconic, balanced and "
+     "distinctive — the kind of mark used as an app icon or favicon. "
+     "Show ONLY the single letter \"{initial}\": no other letters, no words, do not spell out any name."),
     ("Wordmark",
      "A clean minimal typographic wordmark logo for \"{name}\"{ind} — {vibe}. "
-     "Elegant modern sans-serif lettering spelling exactly \"{name}\", typography-led with a "
+     "Lettering spelling exactly \"{name}\", typography-led with a "
      "single subtle refined detail; correct spelling, tasteful."),
     ("Combinado",
      "A clean modern logo lockup for \"{name}\"{ind} — {vibe}. "
-     "A simple minimal geometric icon placed above the text \"{name}\" in elegant sans-serif "
-     "lettering, balanced and professional."),
+     "A simple minimal icon placed above the text \"{name}\", "
+     "balanced and professional."),
 ]
 
 app = FastAPI(title="ms-logo-service")
@@ -187,12 +190,11 @@ def clean(s: str, maxlen: int) -> str:
 
 
 def build_prompt(approach_tpl: str, name: str, industry: str, vibe: str,
-                 typo: str, ink: str, is_text: bool) -> str:
+                 typo: str, ink: str) -> str:
     ind = f", a {industry} business" if industry else ""
-    # Para el símbolo (icon-only) la tipografía no aplica.
-    typo_frag = typo if is_text else "no lettering"
-    tail = CLEAN_TAIL.format(typo=typo_frag, ink=ink)
-    return approach_tpl.format(name=name, ind=ind, vibe=vibe) + tail
+    initial = (name.strip()[:1] or "A").upper()
+    tail = CLEAN_TAIL.format(typo=typo, ink=ink)
+    return approach_tpl.format(name=name, ind=ind, vibe=vibe, initial=initial) + tail
 
 
 def _bg_mask(arr: np.ndarray) -> np.ndarray:
@@ -392,8 +394,7 @@ async def generate(body: GenBody, request: Request):
     palette_key = (body.palette or DEFAULT_PALETTE).strip().lower()
     ink = PALETTE_MAP.get(palette_key, PALETTE_MAP[DEFAULT_PALETTE])
 
-    # variant 0 = Símbolo (icon-only): sin texto, la tipografía no aplica.
-    prompt = build_prompt(tpl, name, industry, vibe, typo, ink, is_text=(variant != 0))
+    prompt = build_prompt(tpl, name, industry, vibe, typo, ink)
     concept = await generate_one(label, prompt)
     if not concept.get("img"):
         return JSONResponse(
