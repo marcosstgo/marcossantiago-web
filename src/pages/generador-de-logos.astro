@@ -114,7 +114,13 @@ import Footer from '../components/Footer.astro';
             </div>
 
             <button type="button" class="afinar-toggle" id="afinarToggle" aria-expanded="false" aria-controls="afinar">
-              <span><i class="fa-solid fa-sliders"></i> Afinar tipografía y color</span>
+              <span class="afinar-lead">
+                <i class="fa-solid fa-sliders"></i>
+                <span class="afinar-text">
+                  <span class="afinar-title">Personaliza tipografía y color</span>
+                  <span class="afinar-hint">Opcional · elige la letra y la paleta antes de generar</span>
+                </span>
+              </span>
               <i class="fa-solid fa-chevron-down afinar-caret"></i>
             </button>
 
@@ -409,15 +415,30 @@ import Footer from '../components/Footer.astro';
   }
 
   .afinar-toggle {
-    align-self: flex-start; display: inline-flex; align-items: center; gap: 10px;
-    background: none; border: none; cursor: pointer;
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
-    padding: 2px 0; transition: color .16s;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    width: 100%; cursor: pointer; text-align: left;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--border));
+    border-radius: 12px; padding: 14px 18px; transition: .16s ease;
   }
-  .afinar-toggle:hover { color: var(--white) }
-  .afinar-toggle span i { color: var(--accent); margin-right: 2px }
-  .afinar-caret { transition: transform .2s }
+  .afinar-toggle:hover {
+    background: color-mix(in srgb, var(--accent) 13%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  }
+  .afinar-lead { display: inline-flex; align-items: center; gap: 13px; min-width: 0 }
+  .afinar-lead > i {
+    color: var(--accent); font-size: 1.05rem; flex-shrink: 0;
+  }
+  .afinar-text { display: flex; flex-direction: column; gap: 3px; min-width: 0 }
+  .afinar-title {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--white); font-weight: 700;
+  }
+  .afinar-hint {
+    font-size: .74rem; color: var(--muted); letter-spacing: .2px;
+    text-transform: none; font-family: var(--body);
+  }
+  .afinar-caret { transition: transform .2s; color: var(--accent); flex-shrink: 0 }
   .afinar-toggle[aria-expanded="true"] .afinar-caret { transform: rotate(180deg) }
   .afinar {
     display: flex; flex-direction: column; gap: 18px;
