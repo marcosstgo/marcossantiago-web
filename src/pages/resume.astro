@@ -60,6 +60,44 @@ const trayectoria = [
   },
 ];
 
+/* Obra verificable. Todo lo que se afirma aquí se puede comprobar abriendo el
+   enlace; las métricas del sitio propio se midieron con Lighthouse 12 móvil. */
+const proyectos = [
+  {
+    destacado: true,
+    nombre: 'marcossantiago.com',
+    rol: 'Diseño, código e infraestructura',
+    url: '/', dominio: 'marcossantiago.com',
+    desc: `Este mismo sitio: 54 páginas en Astro, blog en MDX y un generador de propuestas
+           de logo con su propio servicio. Diseño, front-end, servidor y despliegue continuo.`,
+    datos: ['Lighthouse móvil 100 · 100 · 100 · 100', 'LCP 1.5 s', 'Portada: 37.8 MB → 2.8 MB por visita'],
+  },
+  {
+    nombre: 'Corillo',
+    rol: 'Front-end y plataforma',
+    url: 'https://corillo.live', dominio: 'corillo.live',
+    desc: `Plataforma de streaming en vivo para creadores de Puerto Rico. Reproductor propio
+           con HLS y WebRTC de baja latencia, roster dinámico y VODs procesados automáticamente.`,
+    datos: ['Astro', 'HLS.js + WHEP', 'Servidor propio'],
+  },
+  {
+    nombre: 'Kioskko',
+    rol: 'Producto completo',
+    url: 'https://demo.kioskko.com', dominio: 'demo.kioskko.com',
+    desc: `Tiendas en línea para negocios de Puerto Rico: catálogo, carrito y cobro con
+           ATH Móvil, cada tienda con su propio dominio.`,
+    datos: ['Astro con render en servidor', 'PocketBase', 'ATH Móvil'],
+  },
+  {
+    nombre: 'FanPrompt',
+    rol: 'Aplicación para cliente',
+    url: 'https://fanprompt.app', dominio: 'fanprompt.app',
+    desc: `Aplicación en producción con cuentas de usuario, cobros en línea y panel de
+           administración con métricas de uso.`,
+    datos: ['En producción', 'Pagos', 'Panel de administración'],
+  },
+];
+
 const capacidades = {
   sys: [
     { t: 'Administración de sistemas', d: 'Servidores Windows y Linux, Active Directory, IIS, virtualización, seguridad informática y continuidad operacional.' },
@@ -195,6 +233,33 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
             </li>
           ))}
         </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Proyectos: la obra, con enlace para comprobarla ── -->
+    <section class="cv-sec" aria-labelledby="h-proy">
+      <div class="container">
+        <h2 class="cv-h2 cv-h2--wide" id="h-proy">Proyectos</h2>
+        <p class="cv-note">
+          Todo lo de abajo está en línea. Cada enlace abre el proyecto funcionando.
+        </p>
+
+        <div class="cv-proy">
+          {proyectos.map(p => (
+            <a class={`cv-proy-card${p.destacado ? ' cv-proy-card--top' : ''}`}
+               href={p.url}
+               target={p.url.startsWith('http') ? '_blank' : null}
+               rel={p.url.startsWith('http') ? 'noopener' : null}>
+              <p class="cv-proy-rol">{p.rol}</p>
+              <h3 class="cv-proy-nombre">{p.nombre}</h3>
+              <p class="cv-proy-url">{p.dominio}</p>
+              <p class="cv-proy-desc">{p.desc}</p>
+              <ul class="cv-proy-datos">
+                {p.datos.map(d => <li>{d}</li>)}
+              </ul>
+            </a>
+          ))}
         </div>
       </div>
     </section>
@@ -513,6 +578,48 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
   :global(html.cv-anim) .cv-tl-item--vis { transform: translate(18px, 22px) }
   :global(html.cv-anim) .cv-tl-item.is-in { opacity: 1; transform: none }
 
+  /* ── Proyectos ── */
+  .cv-proy { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px }
+  .cv-proy-card {
+    display: block; padding: 24px 26px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--panel);
+    transition: border-color .2s, transform .2s;
+  }
+  .cv-proy-card:hover { border-color: var(--border-h); transform: translateY(-2px) }
+  /* El sitio propio abre la sección: es el único proyecto que el lector ya
+     tiene abierto mientras lo lee. */
+  .cv-proy-card--top {
+    grid-column: 1 / -1;
+    background:
+      linear-gradient(var(--panel), var(--panel)) padding-box,
+      linear-gradient(90deg, var(--sys), var(--vis)) border-box;
+    border: 1px solid transparent;
+  }
+  .cv-proy-rol {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
+  }
+  .cv-proy-nombre {
+    margin-top: 8px;
+    font-family: var(--cv-display); font-weight: 700;
+    font-size: clamp(1.2rem, 2.6vw, 1.6rem); letter-spacing: -.02em; color: var(--white);
+  }
+  .cv-proy-url {
+    font-family: var(--mono); font-size: var(--text-xs);
+    color: var(--vis); margin-top: 3px;
+  }
+  .cv-proy-desc { margin-top: 12px; font-size: var(--text-sm); color: var(--muted); max-width: 68ch }
+  .cv-proy-datos {
+    list-style: none; display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px;
+  }
+  .cv-proy-datos li {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: .5px; color: var(--dim);
+    border: 1px solid var(--border); border-radius: 5px; padding: 4px 9px;
+  }
+  .cv-proy-card--top .cv-proy-datos li { color: var(--muted); border-color: var(--border-h) }
+
   /* ── Capacidades ── */
   .cv-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 44px }
   .cv-col-h {
@@ -579,6 +686,7 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
   @media (max-width: 900px) {
     .cv-grid { grid-template-columns: 1fr; gap: 18px }
     .cv-cols { grid-template-columns: 1fr; gap: 34px }
+    .cv-proy { grid-template-columns: 1fr }
     .cv-ficha { grid-template-columns: 1fr 1fr; gap: 20px }
   }
   @media (max-width: 760px) {
@@ -602,6 +710,84 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
     :global(html.cv-anim) .cv-tl-item--vis { transform: translateY(22px) }
     .cv-thesis { margin: 34px 0 26px }
     .cv-btn { width: 100% ; justify-content: center }
+  }
+
+  /* ── Impresión: "Imprimir → Guardar como PDF" da un CV entregable ──
+     Ni el PDF técnico ni el creativo cubren las dos caras; esta vista sí.
+     Se imprime siempre en claro, sin cromo del sitio y sin cortar tarjetas. */
+  @media print {
+    @page { margin: 14mm 13mm }
+
+    /* OJO: el hero también es un <header>; solo se oculta el del sitio. */
+    :global(header:not(.cv-hero)), :global(footer), :global(#ms-chat-btn),
+    :global(#ms-chat-panel), :global(.skip-link),
+    .cv-actions, .cv-axis, .cv-sec--tray .cv-note { display: none !important }
+    :global(body)::after { display: none !important }
+    /* Sin color-scheme claro, Chrome pinta el canvas del PDF en oscuro. */
+    :global(html) { color-scheme: light; background: #fff !important }
+    :global(body) { background: #fff !important }
+
+    /* Los tokens se reescriben para papel; el resto del CSS no cambia. */
+    .cv {
+      --ink: #fff; --surface: #fff; --panel: #fff;
+      --white: #111; --muted: #333; --dim: #444;
+      --border: #ccc; --border-h: #888;
+      --sys: #2a35a8; --vis: #0a5f80;
+      --text-2xs: 6.5pt; --text-xs: 7pt; --text-sm: 8.5pt;
+      --text-base: 9.5pt; --text-lg: 10pt;
+      color: #111; font-size: 9.5pt; line-height: 1.45;
+    }
+    .cv-sec, .cv-hero { padding: 11px 0; border-top-color: #ddd }
+    .cv-hero { padding-top: 0 }
+    :global(.container) { max-width: none; padding: 0 }
+    .cv-name { font-size: 26pt; line-height: .95 }
+    .cv-suffix { font-size: .45em }
+    .cv-role { margin-top: 7px }
+    .cv-thesis { font-size: 9.5pt; margin: 12px 0 0; max-width: none }
+    .cv-portrait { width: 74px; height: 74px }
+    .cv-ficha { margin-top: 12px; padding-top: 10px; gap: 12px }
+    .cv-card-title { font-size: 11pt }
+    .cv-proy-nombre { font-size: 10.5pt }
+    .cv-puente h3 { font-size: 11pt }
+
+    /* Nada de tarjetas partidas entre páginas. */
+    .cv-tl-item, .cv-card, .cv-proy-card, .cv-cap, .cv-puente, .cv-tool-g,
+    .cv-contacto-row { break-inside: avoid; page-break-inside: avoid }
+    .cv-sec { break-inside: auto }
+    .cv-h2, .cv-col-h { break-after: avoid }
+
+    /* El raíl y los nodos son cromo de pantalla: en papel manda el texto. */
+    .cv-tl-rail, .cv-tl-node { display: none }
+    .cv-tl-item { grid-template-columns: 1fr; padding: 4px 0 }
+    .cv-tl-item--sys .cv-card, .cv-tl-item--vis .cv-card,
+    .cv-tl-item--ambos .cv-card {
+      grid-column: 1; margin: 0; padding: 9px 12px;
+      display: block; background: #fff; border: 1px solid #ddd;
+    }
+    .cv-tl-item--sys .cv-card { border-left: 2px solid var(--sys) }
+    .cv-tl-item--vis .cv-card { border-left: 2px solid var(--vis) }
+    .cv-tl-item--ambos .cv-card { border-left: 2px solid var(--sys); border-right: 2px solid var(--vis) }
+    .cv-card-desc, .cv-tl-item--ambos .cv-card-desc { margin-top: 8px; max-width: none }
+
+    .cv-proy { grid-template-columns: 1fr; gap: 7px }
+    .cv-proy-card, .cv-proy-card--top { background: #fff; border: 1px solid #ddd; padding: 9px 12px }
+    .cv-proy-card--top { border-left: 2px solid var(--sys) }
+    .cv-proy-card:hover { transform: none }
+    .cv-proy-desc { margin-top: 6px; max-width: none }
+    .cv-proy-datos { margin-top: 8px }
+
+    .cv-puente { background: #fff; border: 1px solid #ddd; margin-top: 14px; padding: 10px 12px }
+    .cv-note { margin-bottom: 11px }
+    .cv-cap + .cv-cap { margin-top: 12px }
+    .cv-cols { gap: 26px }
+    .cv-col-h { padding-bottom: 7px; margin-bottom: 12px }
+    .cv-tools { gap: 12px }
+    .cv-contacto-row { padding: 5px 0 }
+    .cv-sec--fin { padding-bottom: 0 }
+
+    /* Sin animaciones ni estados de entrada al imprimir. */
+    .cv-axis-line, .cv-tl-fill { animation: none !important; transform: none !important }
+    :global(html.cv-anim) .cv-tl-item { opacity: 1 !important; transform: none !important }
   }
 
   @media (prefers-reduced-motion: reduce) {
