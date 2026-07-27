@@ -73,6 +73,14 @@ const proyectos = [
     datos: ['Lighthouse móvil 100 · 100 · 100 · 100', 'LCP 1.5 s', 'Portada: 37.8 MB → 2.8 MB por visita'],
   },
   {
+    nombre: 'Flashealo',
+    rol: 'Front-end y producto',
+    url: 'https://flashealo.com', dominio: 'flashealo.com',
+    desc: `Aplicación para compartir y gestionar las fotos de un evento en tiempo real,
+           pensada para usarse desde el celular durante la actividad.`,
+    datos: ['React', 'Supabase', 'Netlify'],
+  },
+  {
     nombre: 'Corillo',
     rol: 'Front-end y plataforma',
     url: 'https://corillo.live', dominio: 'corillo.live',
@@ -579,7 +587,7 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
   :global(html.cv-anim) .cv-tl-item.is-in { opacity: 1; transform: none }
 
   /* ── Proyectos ── */
-  .cv-proy { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px }
+  .cv-proy { display: grid; grid-template-columns: 1fr 1fr; gap: 18px }
   .cv-proy-card {
     display: block; padding: 24px 26px;
     border: 1px solid var(--border); border-radius: var(--radius);
