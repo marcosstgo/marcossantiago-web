@@ -729,7 +729,8 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
     /* OJO: el hero también es un <header>; solo se oculta el del sitio. */
     :global(header:not(.cv-hero)), :global(footer), :global(#ms-chat-btn),
     :global(#ms-chat-panel), :global(.skip-link),
-    .cv-actions, .cv-axis, .cv-sec--tray .cv-note { display: none !important }
+    .cv-actions, .cv-axis, .cv-sec--tray .cv-note,
+    .cv-lanes { display: none !important }
     :global(body)::after { display: none !important }
     /* Sin color-scheme claro, Chrome pinta el canvas del PDF en oscuro. */
     :global(html) { color-scheme: light; background: #fff !important }
@@ -743,9 +744,9 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
       --sys: #2a35a8; --vis: #0a5f80;
       --text-2xs: 6.5pt; --text-xs: 7pt; --text-sm: 8.5pt;
       --text-base: 9.5pt; --text-lg: 10pt;
-      color: #111; font-size: 9.5pt; line-height: 1.45;
+      color: #111; font-size: 9.5pt; line-height: 1.38;
     }
-    .cv-sec, .cv-hero { padding: 11px 0; border-top-color: #ddd }
+    .cv-sec, .cv-hero { padding: 8px 0; border-top-color: #ddd }
     .cv-hero { padding-top: 0 }
     :global(.container) { max-width: none; padding: 0 }
     .cv-name { font-size: 26pt; line-height: .95 }
@@ -787,11 +788,19 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
     .cv-puente { background: #fff; border: 1px solid #ddd; margin-top: 14px; padding: 10px 12px }
     .cv-note { margin-bottom: 11px }
     .cv-cap + .cv-cap { margin-top: 12px }
-    .cv-cols { gap: 26px }
+    /* Una carta mide ~816px, así que los media queries de ≤900px se activan al
+       imprimir y tumban las rejillas a una columna. En papel sí hay ancho:
+       se recuperan aquí (este bloque va después, así que gana). */
+    .cv-cols { grid-template-columns: 1fr 1fr; gap: 26px }
+    .cv-grid { grid-template-columns: 128px 1fr; gap: 22px }
+    .cv-cap p { max-width: none }
     .cv-col-h { padding-bottom: 7px; margin-bottom: 12px }
     .cv-tools { gap: 12px }
-    .cv-contacto-row { padding: 5px 0 }
-    .cv-sec--fin { padding-bottom: 0 }
+    /* El contacto pasa a dos columnas: seis filas apiladas empujaban una página
+       entera solo para el pie. Y la sección no se parte. */
+    .cv-contacto { grid-template-columns: 1fr 1fr; column-gap: 26px }
+    .cv-contacto-row { padding: 4px 0; grid-template-columns: 76px 1fr; gap: 10px }
+    .cv-sec--fin { padding-bottom: 0; break-inside: avoid; page-break-inside: avoid }
 
     /* Sin animaciones ni estados de entrada al imprimir. */
     .cv-axis-line, .cv-tl-fill { animation: none !important; transform: none !important }
