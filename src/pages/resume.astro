@@ -1,0 +1,634 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+/* Los dos carriles son la estructura de toda la página: 'sys' (infraestructura)
+   y 'vis' (imagen). Las entradas que pertenecen a los dos se marcan 'ambos' y
+   se montan sobre el eje central — es la tesis: no son dos carreras, es una. */
+
+const ACTUALIZADO = 'Julio 2026';
+
+const contacto = [
+  { label: 'Correo',   valor: 'hello@marcossantiago.com', href: 'mailto:hello@marcossantiago.com' },
+  { label: 'Teléfono', valor: '(787) 243-9670',           href: 'tel:+17872439670' },
+  { label: 'Teléfono', valor: '(787) 735-4919',           href: 'tel:+17877354919' },
+  { label: 'Sitio',    valor: 'marcossantiago.com',       href: '/' },
+  { label: 'Código',   valor: 'github.com/marcosstgo',    href: 'https://github.com/marcosstgo' },
+  { label: 'Base',     valor: 'Aibonito, Puerto Rico',    href: null },
+];
+
+const ficha = [
+  { k: 'Base',        v: 'Aibonito, Puerto Rico' },
+  { k: 'Experiencia', v: 'Más de 20 años' },
+  { k: 'Grado',       v: 'M.Cs. · Comercio Electrónico' },
+  { k: 'Alcance',     v: 'Toda la isla y remoto' },
+];
+
+/* Cronología ascendente: la línea arranca en el carril técnico y termina
+   cruzando el eje. El orden de los años ES el argumento. */
+const trayectoria = [
+  {
+    desde: '1995', hasta: '2000', carril: 'sys', tipo: 'Formación',
+    titulo: 'Bachillerato en Ciencias de Computadoras',
+    donde: 'Universidad Interamericana de Puerto Rico',
+    detalle: 'Concentración en Aplicaciones Comerciales.',
+  },
+  {
+    desde: '2001', hasta: '2015', carril: 'ambos', tipo: 'Empleo',
+    titulo: 'Programador Analista y Artista Gráfico',
+    donde: 'Universidad Interamericana de Puerto Rico',
+    detalle: 'Diseño y producción de todos los materiales promocionales de la institución, y desarrollo y mantenimiento de sus aplicaciones web y servidores.',
+  },
+  {
+    desde: '2010', hasta: '2012', carril: 'sys', tipo: 'Formación',
+    titulo: 'Maestría en Ciencias de Computadoras',
+    donde: 'Universidad Interamericana de Puerto Rico',
+    detalle: 'Concentración en Comercio Electrónico.',
+  },
+  {
+    desde: '2012', hasta: 'Hoy', carril: 'ambos', tipo: 'Independiente',
+    titulo: 'Artista multidisciplinario',
+    donde: 'Trabajo independiente',
+    detalle: 'Logotipos, identidades visuales, campañas publicitarias, contenido audiovisual y sitios web para clientes de múltiples industrias. Hoy incluye plataformas completas: comercio en línea, transmisión en vivo y aplicaciones a la medida.',
+  },
+  {
+    desde: '2016', hasta: '2024', carril: 'ambos', tipo: 'Empleo',
+    titulo: 'Diseñador Gráfico y Desarrollador Web',
+    donde: 'Like Family Inc. · LatinShots Inc. · FB Logistic Inc.',
+    detalle: 'Material promocional digital e impreso, programación de aplicaciones web y administración de las redes de las empresas.',
+  },
+];
+
+const capacidades = {
+  sys: [
+    { t: 'Administración de sistemas', d: 'Servidores Windows y Linux, Active Directory, IIS, virtualización, seguridad informática y continuidad operacional.' },
+    { t: 'Infraestructura y redes',    d: 'Redes TCP/IP, VPN, firewalls, servidores web, almacenamiento, respaldos y monitoreo de sistemas.' },
+    { t: 'Bases de datos',             d: 'Microsoft SQL Server y MySQL: diseño de consultas, optimización y soporte a aplicaciones empresariales.' },
+    { t: 'Integración de sistemas',    d: 'Conectar aplicaciones por bases de datos, servicios web y APIs, con automatización de procesos entre plataformas.' },
+    { t: 'Documentación y soporte',    d: 'Análisis de requerimientos, resolución de incidentes, soporte de segundo y tercer nivel, y capacitación a usuarios.' },
+  ],
+  puente: {
+    t: 'Desarrollo y diseño web',
+    d: 'Sitios, tiendas y aplicaciones que se ven bien y aguantan carga: la única capacidad que aparece completa en las dos columnas.',
+  },
+  vis: [
+    { t: 'Diseño gráfico',           d: 'Logotipos corporativos, identidad visual, ilustración de producto y piezas para impresión y redes.' },
+    { t: 'Fotografía',               d: 'Retrato, evento, producto e institucional, con un enfoque narrativo sobre el técnico.' },
+    { t: 'Video y edición',          d: 'Producción y postproducción de contenido audiovisual, del corporativo al social.' },
+    { t: 'Marca y contenido digital', d: 'Manejo estratégico de la presencia en redes y coherencia de la marca en cada punto de contacto.' },
+  ],
+};
+
+const herramientas = [
+  { g: 'Sistemas', items: ['Windows Server', 'Linux', 'Active Directory', 'IIS', 'Virtualización', 'VPN', 'Firewalls', 'TCP/IP', 'Respaldos', 'Monitoreo'] },
+  { g: 'Datos',    items: ['Microsoft SQL Server', 'MySQL', 'APIs', 'Servicios web', 'Automatización'] },
+  { g: 'Código',   items: ['PHP', 'JavaScript', 'Python', 'React', 'Vue', 'WordPress'] },
+];
+
+const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador de sistemas, artista visual y desarrollador en Aibonito, Puerto Rico. Más de 20 años entre infraestructura IT y comunicación visual.';
+---
+
+<Base title="Currículum — Marcos J. Santiago Santos, M.Cs." description={desc}>
+  <!-- El h1 es el LCP y va en Bricolage: precargarla desbloquea el render. -->
+  <link slot="head" rel="preload" href="/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin />
+  <Nav />
+
+  <main id="main" class="cv">
+
+    <!-- ── Encabezado: el eje nace aquí y estructura el resto ── -->
+    <header class="cv-hero">
+      <div class="container cv-hero-in">
+        <p class="cv-kicker">Currículum · Actualizado {ACTUALIZADO}</p>
+
+        <div class="cv-head">
+          <div class="cv-head-txt">
+            <h1 class="cv-name">Marcos J.<br />Santiago Santos<span class="cv-suffix">, M.Cs.</span></h1>
+            <p class="cv-role">Administrador de sistemas · Artista visual · Desarrollador</p>
+          </div>
+          <img class="cv-portrait" src="/marcos-photo-280.webp" width="280" height="280"
+               alt="Retrato de Marcos J. Santiago Santos" loading="eager" decoding="async" />
+        </div>
+
+        <div class="cv-axis" aria-hidden="true"><span class="cv-axis-line"></span></div>
+
+        <div class="cv-lanes">
+          <div class="cv-lane cv-lane--sys">
+            <span class="cv-lane-tag">Sistemas</span>
+            <p>Servidores · Redes · Bases de datos · Integración</p>
+          </div>
+          <div class="cv-lane cv-lane--vis">
+            <span class="cv-lane-tag">Imagen</span>
+            <p>Diseño · Fotografía · Video · Marca</p>
+          </div>
+        </div>
+
+        <p class="cv-thesis">
+          Dos oficios que casi nunca aparecen en la misma persona. Llevo más de veinte
+          años ejerciendo los dos, y casi siempre a la vez.
+        </p>
+
+        <div class="cv-actions">
+          <a class="cv-btn cv-btn--solid" href="/Marcos-Santiago-CV.pdf" download data-track="cv-descarga">
+            Descargar el CV en PDF
+          </a>
+          <a class="cv-btn" href="/contacto/">Escríbeme</a>
+        </div>
+
+        <dl class="cv-ficha">
+          {ficha.map(f => (
+            <div class="cv-ficha-item">
+              <dt>{f.k}</dt>
+              <dd>{f.v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </header>
+
+    <!-- ── Perfil ── -->
+    <section class="cv-sec" aria-labelledby="h-perfil">
+      <div class="container cv-grid">
+        <h2 class="cv-h2" id="h-perfil">Perfil</h2>
+        <div class="cv-prose">
+          <p>
+            Por un lado está la infraestructura: servidores Windows y Linux, Active Directory,
+            bases de datos SQL, redes corporativas, integración de aplicaciones y automatización
+            de procesos. Por el otro está la imagen: identidad visual, fotografía, video y
+            desarrollo web.
+          </p>
+          <p>
+            Los aprendí a la vez y en el mismo sitio. En la Universidad Interamericana fui
+            simultáneamente el que diseñaba los materiales promocionales y el que mantenía las
+            aplicaciones y los servidores. Desde entonces trabajo igual: entiendo el sistema que
+            está debajo y la pieza que ve el cliente, así que ningún proyecto necesita un
+            traductor entre las dos partes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Trayectoria: el signature de la página ── -->
+    <section class="cv-sec cv-sec--tray" aria-labelledby="h-tray">
+      <div class="container">
+        <h2 class="cv-h2 cv-h2--wide" id="h-tray">Trayectoria</h2>
+        <p class="cv-note">
+          La formación es puramente técnica. Los tres trabajos montan el eje porque en
+          los tres ejercí las dos disciplinas a la vez.
+        </p>
+
+        <div class="cv-tl-wrap">
+        <span class="cv-tl-rail" aria-hidden="true"><span class="cv-tl-fill"></span></span>
+        <ol class="cv-tl">
+          {trayectoria.map(e => (
+            <li class={`cv-tl-item cv-tl-item--${e.carril}`}>
+              <span class="cv-tl-node" aria-hidden="true"></span>
+              <article class="cv-card">
+                <p class="cv-card-meta">
+                  <span class="cv-years">{e.desde} — {e.hasta}</span>
+                  <span class="cv-tipo">{e.tipo}</span>
+                </p>
+                <h3 class="cv-card-title">{e.titulo}</h3>
+                <p class="cv-card-where">{e.donde}</p>
+                <p class="cv-card-desc">{e.detalle}</p>
+              </article>
+            </li>
+          ))}
+        </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Capacidades ── -->
+    <section class="cv-sec" aria-labelledby="h-cap">
+      <div class="container">
+        <h2 class="cv-h2 cv-h2--wide" id="h-cap">Capacidades</h2>
+
+        <div class="cv-cols">
+          <div class="cv-col cv-col--sys">
+            <h3 class="cv-col-h">Sistemas</h3>
+            {capacidades.sys.map(c => (
+              <div class="cv-cap">
+                <h4>{c.t}</h4>
+                <p>{c.d}</p>
+              </div>
+            ))}
+          </div>
+
+          <div class="cv-col cv-col--vis">
+            <h3 class="cv-col-h">Imagen</h3>
+            {capacidades.vis.map(c => (
+              <div class="cv-cap">
+                <h4>{c.t}</h4>
+                <p>{c.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="cv-puente">
+          <span class="cv-puente-tag">En las dos columnas</span>
+          <h3>{capacidades.puente.t}</h3>
+          <p>{capacidades.puente.d}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Herramientas ── -->
+    <section class="cv-sec" aria-labelledby="h-tools">
+      <div class="container cv-grid">
+        <h2 class="cv-h2" id="h-tools">Herramientas</h2>
+        <div class="cv-tools">
+          {herramientas.map(g => (
+            <div class="cv-tool-g">
+              <h3>{g.g}</h3>
+              <ul>
+                {g.items.map(i => <li>{i}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Contacto y cierre ── -->
+    <section class="cv-sec cv-sec--fin" aria-labelledby="h-contacto">
+      <div class="container cv-grid">
+        <h2 class="cv-h2" id="h-contacto">Contacto</h2>
+        <div>
+          <dl class="cv-contacto">
+            {contacto.map(c => (
+              <div class="cv-contacto-row">
+                <dt>{c.label}</dt>
+                <dd>
+                  {c.href
+                    ? <a href={c.href} data-track="cv-contacto" rel={c.href.startsWith('http') ? 'noopener' : null} target={c.href.startsWith('http') ? '_blank' : null}>{c.valor}</a>
+                    : c.valor}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <div class="cv-actions cv-actions--fin">
+            <a class="cv-btn cv-btn--solid" href="/Marcos-Santiago-CV.pdf" download data-track="cv-descarga-fin">
+              Descargar el CV en PDF
+            </a>
+            <a class="cv-btn" href="/sobre-mi/">La versión en primera persona</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  /* ── Paleta scoped: los dos carriles. Derivada del CV impreso de Marcos
+     (azul índigo + cyan). No toca --accent global. ── */
+  .cv {
+    --sys:      #7b8cff;
+    --vis:      #35c2f0;
+    --sys-soft: rgba(123,140,255,.13);
+    --vis-soft: rgba(53,194,240,.13);
+    --cv-display: 'Bricolage Grotesque', 'Bebas Neue', sans-serif;
+  }
+  /* En claro los dos acentos bajan de luminosidad para cumplir WCAG AA como
+     texto pequeño, incluso sobre --panel (el fondo más claro que los rodea):
+     --sys 5.24:1 y --vis 5.10:1 sobre panel. */
+  :global([data-theme="light"]) .cv {
+    --sys:      #3b45c9;
+    --vis:      #0a5f80;
+    --sys-soft: rgba(59,69,201,.10);
+    --vis-soft: rgba(10,95,128,.10);
+  }
+
+  /* ── Encabezado ── */
+  .cv-hero { padding: 132px 0 64px }
+  .cv-kicker {
+    font-family: var(--mono); font-size: var(--text-xs);
+    letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 26px;
+  }
+
+  .cv-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 32px; flex-wrap: wrap;
+  }
+  .cv-name {
+    font-family: var(--cv-display);
+    font-weight: 800;
+    font-size: clamp(2.6rem, 8.5vw, 5.6rem);
+    line-height: .93;
+    letter-spacing: -.03em;
+    color: var(--white);
+  }
+  .cv-suffix {
+    font-weight: 300; letter-spacing: -.01em;
+    color: var(--dim);
+    font-size: .42em;
+  }
+  .cv-role {
+    margin-top: 16px;
+    font-size: var(--text-lg); color: var(--muted);
+    max-width: 48ch;
+  }
+  .cv-portrait {
+    width: 118px; height: 118px; border-radius: 50%;
+    object-fit: cover; filter: grayscale(1) contrast(1.06);
+    border: 1px solid var(--border-h);
+    flex-shrink: 0;
+  }
+
+  /* El eje: nace bajo el nombre y vuelve como raíl del timeline. */
+  .cv-axis { margin: 34px 0 20px; height: 2px; overflow: hidden }
+  .cv-axis-line {
+    display: block; height: 100%; width: 100%;
+    background: linear-gradient(90deg, var(--sys), var(--vis));
+    transform: scaleX(0); transform-origin: left;
+    animation: cv-axis 1.1s cubic-bezier(.2,.8,.2,1) .15s forwards;
+  }
+  @keyframes cv-axis { to { transform: scaleX(1) } }
+
+  .cv-lanes {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  .cv-lane p { font-size: var(--text-sm); color: var(--muted); margin-top: 6px }
+  .cv-lane--vis { text-align: right }
+  .cv-lane-tag {
+    font-family: var(--mono); font-size: var(--text-xs);
+    letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700;
+  }
+  .cv-lane--sys .cv-lane-tag { color: var(--sys) }
+  .cv-lane--vis .cv-lane-tag { color: var(--vis) }
+
+  .cv-thesis {
+    margin: 44px 0 30px; max-width: 46ch;
+    font-size: clamp(1.05rem, 2.4vw, 1.32rem);
+    line-height: 1.5; color: var(--white);
+  }
+
+  .cv-actions { display: flex; flex-wrap: wrap; gap: 12px }
+  .cv-btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 12px 22px; border-radius: 8px;
+    border: 1px solid var(--border-h);
+    font-size: var(--text-sm); font-weight: 600;
+    color: var(--white);
+    transition: border-color .18s, background .18s, transform .18s;
+  }
+  .cv-btn:hover { border-color: var(--sys); transform: translateY(-1px) }
+  .cv-btn--solid {
+    background: var(--white); color: var(--ink); border-color: var(--white);
+  }
+  /* El texto del hover se queda en --ink: blanco sobre --sys da 2.98:1 en oscuro. */
+  .cv-btn--solid:hover { background: var(--sys); border-color: var(--sys); color: var(--ink) }
+
+  .cv-ficha {
+    margin-top: 52px; padding-top: 26px;
+    border-top: 1px solid var(--border);
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px;
+  }
+  .cv-ficha-item dt {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
+    margin-bottom: 6px;
+  }
+  .cv-ficha-item dd { font-size: var(--text-sm); color: var(--white) }
+
+  /* ── Secciones ── */
+  .cv-sec { padding: 68px 0; border-top: 1px solid var(--border); scroll-margin-top: 90px }
+  .cv-grid { display: grid; grid-template-columns: 210px 1fr; gap: 40px; align-items: start }
+  .cv-h2 {
+    font-family: var(--mono); font-size: var(--text-xs);
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--dim); font-weight: 400;
+    padding-top: 6px;
+  }
+  .cv-h2--wide { padding-top: 0; margin-bottom: 10px }
+  .cv-note { font-size: var(--text-sm); color: var(--dim); max-width: 52ch; margin-bottom: 44px }
+  .cv-prose p { color: var(--muted); max-width: 62ch }
+  .cv-prose p + p { margin-top: 18px }
+
+  /* ── Trayectoria ── */
+  .cv-tl-wrap { position: relative }
+  .cv-tl { list-style: none; padding: 0 }
+  .cv-tl-rail {
+    position: absolute; top: 0; bottom: 0; left: 50%;
+    width: 2px; margin-left: -1px;
+    background: var(--border);
+  }
+  .cv-tl-fill {
+    display: block; width: 100%; height: 100%;
+    background: linear-gradient(180deg, var(--sys), var(--vis));
+    transform: scaleY(1); transform-origin: top;
+  }
+  @supports (animation-timeline: view()) {
+    .cv-tl-fill {
+      animation: cv-fill linear both;
+      animation-timeline: view();
+      animation-range: cover 12% cover 68%;
+    }
+    @keyframes cv-fill { from { transform: scaleY(0) } to { transform: scaleY(1) } }
+  }
+
+  .cv-tl-item {
+    position: relative; display: grid; align-items: center;
+    padding: 20px 0;
+    grid-template-columns: 1fr 1fr;
+  }
+  .cv-tl-node {
+    position: absolute; left: 50%; top: 50%;
+    width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px;
+    border-radius: 50%; background: var(--ink);
+    border: 2px solid var(--border-h);
+    transition: border-color .4s, box-shadow .4s;
+  }
+  .cv-tl-item--sys .cv-tl-node { border-color: var(--sys) }
+  .cv-tl-item--vis .cv-tl-node { border-color: var(--vis) }
+  .cv-tl-item--ambos .cv-tl-node {
+    width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px;
+    background: linear-gradient(135deg, var(--sys), var(--vis));
+    border-color: transparent;
+  }
+
+  .cv-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+  }
+  /* Un carril: la tarjeta se queda de su lado y no toca el eje. */
+  .cv-tl-item--sys .cv-card { grid-column: 1; margin-right: 46px; border-left: 2px solid var(--sys) }
+  .cv-tl-item--vis .cv-card { grid-column: 2; margin-left: 46px; border-right: 2px solid var(--vis) }
+  /* Los dos carriles: la tarjeta monta sobre el eje. La forma ES el dato. */
+  .cv-tl-item--ambos .cv-card {
+    grid-column: 1 / -1;
+    background:
+      linear-gradient(var(--panel), var(--panel)) padding-box,
+      linear-gradient(90deg, var(--sys), var(--vis)) border-box;
+    border: 1px solid transparent;
+    padding: 26px 28px;
+  }
+
+  .cv-card-meta {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .cv-years {
+    font-family: var(--mono); font-size: var(--text-sm);
+    letter-spacing: 1px; color: var(--white);
+  }
+  .cv-tipo {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
+    border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px;
+  }
+  .cv-card-title {
+    font-family: var(--cv-display); font-weight: 700;
+    font-size: clamp(1.15rem, 2.6vw, 1.5rem); line-height: 1.15;
+    letter-spacing: -.015em; color: var(--white);
+  }
+  .cv-card-where { margin-top: 5px; font-size: var(--text-sm); color: var(--muted) }
+  .cv-card-desc  { margin-top: 12px; font-size: var(--text-sm); color: var(--dim); max-width: 62ch }
+
+  /* La tarjeta que cruza reparte su contenido en los dos carriles: el puesto
+     del lado técnico, lo que hacía del lado visual. El hueco central cae justo
+     sobre el eje, así que el nodo nunca pisa texto. */
+  @media (min-width: 761px) {
+    .cv-tl-item--ambos .cv-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: 44px; align-items: start;
+    }
+    .cv-tl-item--ambos .cv-card-desc {
+      grid-column: 2; grid-row: 1 / span 3;
+      margin-top: 0; padding-left: 2px;
+    }
+  }
+
+  /* Entrada al hacer scroll (la clase la pone el JS; sin JS nace visible). */
+  :global(html.cv-anim) .cv-tl-item { opacity: 0; transform: translateY(22px); transition: opacity .6s, transform .6s }
+  :global(html.cv-anim) .cv-tl-item--sys { transform: translate(-18px, 22px) }
+  :global(html.cv-anim) .cv-tl-item--vis { transform: translate(18px, 22px) }
+  :global(html.cv-anim) .cv-tl-item.is-in { opacity: 1; transform: none }
+
+  /* ── Capacidades ── */
+  .cv-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 44px }
+  .cv-col-h {
+    font-family: var(--mono); font-size: var(--text-xs);
+    letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700;
+    padding-bottom: 12px; margin-bottom: 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cv-col--sys .cv-col-h { color: var(--sys); border-bottom-color: var(--sys) }
+  .cv-col--vis .cv-col-h { color: var(--vis); border-bottom-color: var(--vis) }
+  .cv-cap + .cv-cap { margin-top: 22px }
+  .cv-cap h4 { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 5px }
+  .cv-cap p  { font-size: var(--text-sm); color: var(--dim); max-width: 52ch }
+
+  .cv-puente {
+    margin-top: 44px; padding: 28px 30px; border-radius: var(--radius);
+    background:
+      linear-gradient(var(--panel), var(--panel)) padding-box,
+      linear-gradient(90deg, var(--sys), var(--vis)) border-box;
+    border: 1px solid transparent;
+  }
+  .cv-puente-tag {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+  }
+  .cv-puente h3 {
+    margin: 8px 0 8px;
+    font-family: var(--cv-display); font-weight: 700;
+    font-size: clamp(1.3rem, 3vw, 1.75rem); letter-spacing: -.02em; color: var(--white);
+  }
+  .cv-puente p { font-size: var(--text-sm); color: var(--muted); max-width: 62ch }
+
+  /* ── Herramientas ── */
+  .cv-tools { display: grid; gap: 26px }
+  .cv-tool-g h3 {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
+    font-weight: 400; margin-bottom: 10px;
+  }
+  .cv-tool-g ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px }
+  .cv-tool-g li {
+    font-size: var(--text-sm); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px;
+  }
+
+  /* ── Contacto ── */
+  .cv-contacto { display: grid; gap: 0 }
+  .cv-contacto-row {
+    display: grid; grid-template-columns: 110px 1fr; gap: 16px;
+    padding: 11px 0; border-bottom: 1px solid var(--border);
+  }
+  .cv-contacto-row dt {
+    font-family: var(--mono); font-size: var(--text-2xs);
+    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
+    padding-top: 2px;
+  }
+  .cv-contacto-row dd { font-size: var(--text-sm); color: var(--white) }
+  .cv-contacto-row a { border-bottom: 1px solid var(--border-h); transition: border-color .18s }
+  .cv-contacto-row a:hover { border-color: var(--vis) }
+  .cv-actions--fin { margin-top: 30px }
+  .cv-sec--fin { padding-bottom: 90px }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .cv-grid { grid-template-columns: 1fr; gap: 18px }
+    .cv-cols { grid-template-columns: 1fr; gap: 34px }
+    .cv-ficha { grid-template-columns: 1fr 1fr; gap: 20px }
+  }
+  @media (max-width: 760px) {
+    .cv-hero { padding: 112px 0 48px }
+    .cv-head { align-items: center; gap: 20px }
+    .cv-portrait { width: 84px; height: 84px }
+    .cv-lanes { grid-template-columns: 1fr; gap: 14px }
+    .cv-lane--vis { text-align: left }
+
+    /* Un solo carril: el eje se va a la izquierda y el color lo lleva la tarjeta. */
+    .cv-tl-rail { left: 6px }
+    .cv-tl-item { grid-template-columns: 1fr; padding: 14px 0 }
+    .cv-tl-node { left: 6px }
+    .cv-tl-item--ambos .cv-tl-node { left: 6px }
+    .cv-tl-item--sys .cv-card,
+    .cv-tl-item--vis .cv-card,
+    .cv-tl-item--ambos .cv-card {
+      grid-column: 1; margin: 0 0 0 30px; padding: 20px 20px;
+    }
+    :global(html.cv-anim) .cv-tl-item--sys,
+    :global(html.cv-anim) .cv-tl-item--vis { transform: translateY(22px) }
+    .cv-thesis { margin: 34px 0 26px }
+    .cv-btn { width: 100% ; justify-content: center }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cv-axis-line { animation: none; transform: scaleX(1) }
+    .cv-tl-fill   { animation: none !important; transform: scaleY(1) }
+    :global(html.cv-anim) .cv-tl-item { opacity: 1; transform: none; transition: none }
+    .cv-btn:hover { transform: none }
+  }
+</style>
+
+<script>
+  /* La animación de entrada solo existe si hay JS y el usuario no pidió menos
+     movimiento. Sin esto, la página nace completa y legible. */
+  const menos = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const items = document.querySelectorAll('.cv-tl-item');
+
+  if (!menos && items.length && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('cv-anim');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (!e.isIntersecting) return;
+        const el = e.target as HTMLElement;
+        el.style.transitionDelay = `${Math.min(i, 3) * 70}ms`;
+        el.classList.add('is-in');
+        io.unobserve(el);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: .18 });
+    items.forEach(el => io.observe(el));
+  }
+</script>

@@ -137,6 +137,12 @@ const ficha = [
             {i < capitulos.length - 1 && <hr class="cap-regla" />}
           </article>
         ))}
+
+        <!-- Puente al currículum formal: la misma trayectoria, en formato de CV -->
+        <div class="cap-cv" data-focus>
+          <p>La misma trayectoria en formato formal: empleos, grados, capacidades y herramientas.</p>
+          <a href="/resume/">Ver el currículum <span aria-hidden="true">→</span></a>
+        </div>
       </div>
     </section>
 
@@ -300,6 +306,23 @@ const ficha = [
   }
   .cap-texto p + p { margin-top: 1.15em }
   .cap-regla { border: 0; border-top: 1px solid var(--rule); margin-top: clamp(48px, 7vw, 88px) }
+
+  /* Puente al currículum */
+  .cap-cv {
+    margin-top: clamp(48px, 7vw, 88px);
+    padding-top: 28px; border-top: 1px solid var(--rule);
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+  }
+  .cap-cv p { font-size: .92rem; color: var(--muted); max-width: 48ch }
+  .cap-cv a {
+    font-family: var(--mono); font-size: .78rem;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--white); white-space: nowrap;
+    border-bottom: 1px solid var(--rule); padding-bottom: 4px;
+    transition: border-color .2s;
+  }
+  .cap-cv a:hover { border-color: var(--white) }
 
   /* ── Ficha técnica ── */
   .ficha-sec { padding: clamp(80px, 11vw, 140px) 0 }

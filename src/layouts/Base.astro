@@ -102,6 +102,8 @@ const SOCIALS = [
   <link rel="preload" href="/fonts/bebas-neue-400.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/fonts.css" />
+  <!-- Precargas propias de la página (p. ej. /resume/ precarga su display). -->
+  <slot name="head" />
 
   <!-- Icons — subset local + fonts self-hosted (~7 KB total, subseteadas) -->
   <link rel="stylesheet" href="/fa-subset.css" />
