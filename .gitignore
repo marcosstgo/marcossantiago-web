@@ -32,3 +32,13 @@ public/logos-home/Fase1 V2/
 
 # logos generados por usuarios (galería) — no versionar
 logo-data/
+
+# Basura de trabajo, no assets del sitio
+__pycache__/
+*.pyc
+
+# Capturas sueltas dejadas en public/ (ninguna esta referenciada por el sitio).
+# OJO: seguir en public/ significa que se SIRVEN publicamente aunque no se
+# versionen; si no hacen falta, borrarlas del disco.
+public/Screenshot*.png
+public/obs-setting.png
