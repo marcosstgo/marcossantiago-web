@@ -33,6 +33,11 @@ REPLICATE_API_KEY = os.environ.get("REPLICATE_API_KEY", "")
 # Ideogram v3: mejor tipografía y logos limpios/minimalistas (PNG). style_type "Design".
 IMAGE_MODEL = os.environ.get("IMAGE_MODEL", "ideogram-ai/ideogram-v3-turbo")
 
+# Groq: mismo patrón/llave que bot/server.py — se usa SOLO para pensar el concepto del
+# enfoque "Ícono" antes de generarlo (ver icon_concept_hint() más abajo).
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+GROQ_MODEL   = os.environ.get("GROQ_MODEL",   "llama-3.3-70b-versatile")
+
 TELEGRAM_TOKEN    = os.environ.get("MS_TELEGRAM_TOKEN", "")
 TELEGRAM_CHAT_ID  = os.environ.get("MS_TELEGRAM_CHAT_ID", "")
 TELEGRAM_API_URL  = os.environ.get("TELEGRAM_API_URL", "https://api.telegram.org")
@@ -203,15 +208,65 @@ def clean(s: str, maxlen: int) -> str:
     return s[:maxlen]
 
 
-def build_prompt(approach_tpl: str, name: str, industry: str, vibe: str,
-                 typo: str, ink: str, icon_only: bool = False) -> str:
-    ind = f", a {industry} business" if industry else ""
-    icon_subject = (
+ICON_HINT_SYSTEM = (
+    "You are a senior brand identity designer. Given a business name and industry (often "
+    "written in Spanish), respond with ONE short, concrete, universally recognizable visual "
+    "concept for a wordless icon/pictogram logo — a specific physical object, or two related "
+    "objects cleverly combined. Ground it in what the business actually does, not a vague "
+    "abstract idea. Examples of the level of concreteness expected: financial services/pensions "
+    "-> 'a piggy bank wrapped in a protective shield'; coffee shop -> 'a coffee cup fused with a "
+    "coffee bean'; barbershop -> 'a classic barber pole'; law firm -> 'a scale of justice merged "
+    "with a shield'; real estate -> 'a house key shaped like a house roof'. "
+    "Reply with ONLY the concept phrase in English, 4-14 words, lowercase, no quotes, no "
+    "explanation, no trailing punctuation. If nothing can be reasonably inferred from the name "
+    "or industry, reply exactly: a refined abstract mark, premium and intentional."
+)
+
+
+async def icon_concept_hint(name: str, industry: str, vibe: str) -> str:
+    """Piensa un concepto visual CONCRETO (objeto/símbolo) antes de generarlo — sin esto,
+    Ideogram a veces cae en formas abstractas sin relación real con el negocio (hallazgo real
+    con "Pensiones"/"Servicios Financieros", reportado por Marcos 2026-08-10). Falla suave: si
+    Groq no responde a tiempo o no hay llave, se usa el fallback genérico de siempre."""
+    fallback = (
         f"that represents what a {industry} business actually does or offers"
         if industry else
         "that feels premium and intentional for this specific brand — never a random or "
         "stock-looking abstract shape"
     )
+    if not GROQ_API_KEY:
+        return fallback
+    try:
+        async with httpx.AsyncClient(timeout=10) as c:
+            r = await c.post(
+                "https://api.groq.com/openai/v1/chat/completions",
+                json={
+                    "model": GROQ_MODEL,
+                    "max_tokens": 60,
+                    "temperature": 0.8,
+                    "messages": [
+                        {"role": "system", "content": ICON_HINT_SYSTEM},
+                        {"role": "user", "content": f"Negocio: {name}. Rubro: {industry or '(no especificado)'}. Estilo: {vibe}."},
+                    ],
+                },
+                headers={"Authorization": f"Bearer {GROQ_API_KEY}"},
+            )
+        hint = r.json()["choices"][0]["message"]["content"].strip().strip('"').rstrip(".")
+        return f"depicting {hint}" if hint else fallback
+    except Exception:  # noqa: BLE001
+        return fallback
+
+
+def build_prompt(approach_tpl: str, name: str, industry: str, vibe: str,
+                 typo: str, ink: str, icon_only: bool = False, icon_subject: str = "") -> str:
+    ind = f", a {industry} business" if industry else ""
+    if not icon_subject:
+        icon_subject = (
+            f"that represents what a {industry} business actually does or offers"
+            if industry else
+            "that feels premium and intentional for this specific brand — never a random or "
+            "stock-looking abstract shape"
+        )
     initial = (name.strip()[:1] or "A").upper()
     tail = clean_tail("" if icon_only else typo, ink)
     return approach_tpl.format(name=name, ind=ind, vibe=vibe, initial=initial, icon_subject=icon_subject) + tail
@@ -420,7 +475,8 @@ async def generate(body: GenBody, request: Request):
     palette_key = (body.palette or DEFAULT_PALETTE).strip().lower()
     ink = PALETTE_MAP.get(palette_key, PALETTE_MAP[DEFAULT_PALETTE])
 
-    prompt = build_prompt(tpl, name, industry, vibe, typo, ink, icon_only)
+    icon_subject = await icon_concept_hint(name, industry, vibe) if icon_only else ""
+    prompt = build_prompt(tpl, name, industry, vibe, typo, ink, icon_only, icon_subject)
     concept = await generate_one(label, prompt, icon_only)
     if not concept.get("img"):
         return JSONResponse(

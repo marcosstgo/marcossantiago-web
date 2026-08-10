@@ -25,6 +25,7 @@ services:
       - "127.0.0.1:3012:3012"
     environment:
       - REPLICATE_API_KEY=${REPLICATE_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
       - MS_TELEGRAM_TOKEN=${MS_TELEGRAM_TOKEN}
       - MS_TELEGRAM_CHAT_ID=46377544
       - ADMIN_KEY=${ADMIN_KEY}
