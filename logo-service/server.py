@@ -87,32 +87,44 @@ PALETTE_MAP = {
 DEFAULT_PALETTE = "mono"
 
 # Andamiaje compartido: fuerza logo limpio/minimalista y bloquea textura/clipart.
-# {typo} = fragmento tipográfico, {ink} = fragmento de color/paleta.
-CLEAN_TAIL = (
-    " Simple clean flat vector-style logo, minimal and uncluttered, with lots of negative space, "
-    "{typo}, refined, {ink}, on a pure solid white #FFFFFF background, centered and balanced, "
-    "high-end brand identity. NOT busy, NO texture, NO cross-hatching, NO engraving, "
-    "NO detailed illustration, not cartoon, not clipart, no photograph, no mockup, no frame."
-)
+# {typo} = fragmento tipográfico (vacío para el enfoque sin texto), {ink} = fragmento de color/paleta.
+def clean_tail(typo: str, ink: str) -> str:
+    typo_part = f"{typo}, " if typo else ""
+    return (
+        " Simple clean flat vector-style logo, minimal and uncluttered, with lots of negative space, "
+        f"{typo_part}refined, {ink}, on a pure solid white #FFFFFF background, centered and balanced, "
+        "high-end brand identity. NOT busy, NO texture, NO cross-hatching, NO engraving, "
+        "NO detailed illustration, not cartoon, not clipart, no photograph, no mockup, no frame."
+    )
 
-# Tres enfoques. Placeholders: {name} (negocio), {ind} (rubro opcional), {vibe} (matiz).
-# El "Monograma" usa la inicial como emblema: Ideogram lo hace confiable y queda
-# claramente distinto del wordmark (y sirve de favicon / ícono de app).
+# Tres enfoques: (label, template, icon_only). Placeholders: {name} (negocio), {ind} (rubro
+# opcional), {vibe} (matiz), {icon_subject} (solo para el enfoque de ícono).
+# "Ícono" es un símbolo puro sin ninguna letra (icon_only=True → no se le aplica tipografía,
+# sería contradictorio pedirle estilo de letra a algo que no debe tener texto).
 APPROACHES = [
-    ("Monograma",
-     "A refined single-letter monogram logo mark based on the capital letter \"{initial}\" — {vibe}. "
-     "Craft the letter \"{initial}\" as one elegant, distinctive lettermark with a subtle unique detail — "
-     "a clever cut, balanced negative space, or a simple enclosing badge/roundel — centered and iconic, "
-     "the kind of mark that works as an app icon, favicon or social avatar. "
-     "Show ONLY the single letter \"{initial}\": no other letters, no words, no business name."),
+    ("Ícono",
+     "A single, cleverly conceived pictorial icon logo mark {icon_subject}, {vibe}. "
+     "Think like a senior brand designer: distill what this business actually does into ONE "
+     "specific, memorable visual metaphor — a smart simplification, a clever use of negative "
+     "space, or two related shapes merged into one form. The symbol must be conceptually "
+     "meaningful and ownable, not a generic or interchangeable shape that could belong to any "
+     "company in the same industry; avoid overused, literal clip-art symbols. "
+     "Centered, balanced and iconic — the kind of thoughtful mark that works as an app icon, "
+     "favicon or social avatar, like a single wordless glyph from a premium icon set. "
+     "This image must contain ZERO characters of any kind: NO letters, NO initials, NO numbers, "
+     "NO words, NO caption, NO label, NO business name, NO typography, NO signage or writing "
+     "anywhere in the frame — a purely graphical pictogram, nothing else.",
+     True),
     ("Wordmark",
      "A clean minimal typographic wordmark logo for \"{name}\"{ind} — {vibe}. "
      "Lettering spelling exactly \"{name}\", typography-led with a "
-     "single subtle refined detail; correct spelling, tasteful."),
+     "single subtle refined detail; correct spelling, tasteful.",
+     False),
     ("Combinado",
      "A clean modern logo lockup for \"{name}\"{ind} — {vibe}. "
      "A simple minimal icon placed above the text \"{name}\", "
-     "balanced and professional."),
+     "balanced and professional.",
+     False),
 ]
 
 app = FastAPI(title="ms-logo-service")
@@ -192,11 +204,17 @@ def clean(s: str, maxlen: int) -> str:
 
 
 def build_prompt(approach_tpl: str, name: str, industry: str, vibe: str,
-                 typo: str, ink: str) -> str:
+                 typo: str, ink: str, icon_only: bool = False) -> str:
     ind = f", a {industry} business" if industry else ""
+    icon_subject = (
+        f"that represents what a {industry} business actually does or offers"
+        if industry else
+        "that feels premium and intentional for this specific brand — never a random or "
+        "stock-looking abstract shape"
+    )
     initial = (name.strip()[:1] or "A").upper()
-    tail = CLEAN_TAIL.format(typo=typo, ink=ink)
-    return approach_tpl.format(name=name, ind=ind, vibe=vibe, initial=initial) + tail
+    tail = clean_tail("" if icon_only else typo, ink)
+    return approach_tpl.format(name=name, ind=ind, vibe=vibe, initial=initial, icon_subject=icon_subject) + tail
 
 
 def _bg_mask(arr: np.ndarray) -> np.ndarray:
@@ -245,14 +263,20 @@ def render_variant(img: bytes, variant: str) -> bytes:
 
 
 # ── Ideogram: una generación (serializada + reintento en 429) ───────────────────
-async def generate_one(label: str, prompt: str):
+# Ideogram v3 NO soporta negative_prompt (confirmado contra su schema real en Replicate —
+# lo acepta sin error pero lo ignora, no hace nada). style_type "Design" está entrenado para
+# pósters/branding CON texto, así que cuela una palabra del rubro como caption aunque el
+# prompt positivo diga "no letters" (hallazgo real: "Barbería" coló como texto). Para el
+# enfoque de Ícono se usa style_type "General" en su lugar, menos sesgado a agregar texto.
+async def generate_one(label: str, prompt: str, icon_only: bool = False):
     headers = {
         "Authorization": f"Bearer {REPLICATE_API_KEY}",
         "Content-Type": "application/json",
         "Prefer": "wait",
     }
     body = {"input": {
-        "prompt": prompt, "aspect_ratio": "1:1", "style_type": "Design",
+        "prompt": prompt, "aspect_ratio": "1:1",
+        "style_type": "General" if icon_only else "Design",
         "magic_prompt_option": "Off", "resolution": "1024x1024",
     }}
     url = f"https://api.replicate.com/v1/models/{IMAGE_MODEL}/predictions"
@@ -357,7 +381,7 @@ class LeadBody(BaseModel):
     business: str = Field(default="")
     style: str = Field(default="")
     industry: str = Field(default="")
-    liked: str = Field(default="")       # concepto elegido (Símbolo/Wordmark/Combinado)
+    liked: str = Field(default="")       # concepto elegido (Ícono/Wordmark/Combinado)
     liked_id: str = Field(default="")    # id del concepto elegido (leemos el PNG de disco)
 
 
@@ -385,7 +409,7 @@ async def generate(body: GenBody, request: Request):
         return JSONResponse({"error": "name", "message": "Escribe el nombre de tu negocio."}, status_code=400)
 
     variant = body.variant if body.variant in (0, 1, 2) else 0
-    label, tpl = APPROACHES[variant]
+    label, tpl, icon_only = APPROACHES[variant]
 
     style_key = (body.style or DEFAULT_STYLE).strip().lower()
     vibe = STYLE_MAP.get(style_key, STYLE_MAP[DEFAULT_STYLE])
@@ -396,8 +420,8 @@ async def generate(body: GenBody, request: Request):
     palette_key = (body.palette or DEFAULT_PALETTE).strip().lower()
     ink = PALETTE_MAP.get(palette_key, PALETTE_MAP[DEFAULT_PALETTE])
 
-    prompt = build_prompt(tpl, name, industry, vibe, typo, ink)
-    concept = await generate_one(label, prompt)
+    prompt = build_prompt(tpl, name, industry, vibe, typo, ink, icon_only)
+    concept = await generate_one(label, prompt, icon_only)
     if not concept.get("img"):
         return JSONResponse(
             {"error": "gen", "label": label, "message": "No se pudo generar este concepto. Intenta de nuevo.",
