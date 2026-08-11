@@ -94,10 +94,16 @@ DEFAULT_PALETTE = "mono"
 # Andamiaje compartido: fuerza logo limpio/minimalista y bloquea textura/clipart.
 # {typo} = fragmento tipográfico (vacío para el enfoque sin texto), {ink} = fragmento de color/paleta.
 def clean_tail(typo: str, ink: str) -> str:
+    # {ink} y "fondo blanco" van en frases separadas y explícitas a propósito: pegados en una
+    # sola cláusula, Ideogram a veces pinta el FONDO del color de la paleta en vez del ícono
+    # (hallazgo real con paleta "azul" + ícono de escudo: salió ícono blanco sobre fondo
+    # azul marino invertido — reproducible, no fue azar de una sola corrida).
     typo_part = f"{typo}, " if typo else ""
     return (
         " Simple clean flat vector-style logo, minimal and uncluttered, with lots of negative space, "
-        f"{typo_part}refined, {ink}, on a pure solid white #FFFFFF background, centered and balanced, "
+        f"{typo_part}refined. The mark itself is rendered in {ink}. "
+        "The background MUST stay pure solid white #FFFFFF — plain white paper, completely unfilled "
+        "and untinted, never painted in the palette color. Centered and balanced, "
         "high-end brand identity. NOT busy, NO texture, NO cross-hatching, NO engraving, "
         "NO detailed illustration, not cartoon, not clipart, no photograph, no mockup, no frame."
     )
@@ -304,6 +310,24 @@ def whiten_bg(img: bytes) -> bytes:
         return img
 
 
+def has_white_background(img: bytes) -> bool:
+    """Revisa los 4 rincones del PNG con el MISMO criterio que _bg_mask (min>=205, spread<=25).
+    whiten_bg() ya blanquea fondo crema/casi-blanco, pero un fondo genuinamente oscuro/saturado
+    (ej. azul marino en vez de blanco, hallazgo real de Marcos con "seguros") no pasa ese umbral
+    y queda intacto — de ahí la necesidad de detectarlo aparte y regenerar."""
+    try:
+        im = Image.open(io.BytesIO(img)).convert("RGB")
+        arr = np.asarray(im).astype(np.int16)
+        h, w, _ = arr.shape
+        m = max(6, min(h, w) // 40)
+        for patch in (arr[:m, :m], arr[:m, w - m:], arr[h - m:, :m], arr[h - m:, w - m:]):
+            if not _bg_mask(patch).all():
+                return False
+        return True
+    except Exception:  # noqa: BLE001
+        return True  # si no se puede verificar, no bloquear el flujo
+
+
 def render_variant(img: bytes, variant: str) -> bytes:
     """Deriva variantes del PNG guardado, sin IA:
     - transparent: la tinta original sobre fondo transparente (para mockups a color).
@@ -489,6 +513,12 @@ async def generate(body: GenBody, request: Request):
     icon_subject = await icon_concept_hint(name, industry, vibe) if icon_only else ""
     prompt = build_prompt(tpl, name, industry, vibe, typo, ink, icon_only, icon_subject)
     concept = await generate_one(label, prompt, icon_only)
+    # Reintento único si el fondo no salió blanco de verdad (hallazgo real, ver
+    # has_white_background) — solo para Ícono, que es donde importa más un fondo limpio.
+    if icon_only and concept.get("img") and not has_white_background(concept["img"]):
+        retry = await generate_one(label, prompt, icon_only)
+        if retry.get("img"):
+            concept = retry
     if not concept.get("img"):
         return JSONResponse(
             {"error": "gen", "label": label, "message": "No se pudo generar este concepto. Intenta de nuevo.",
