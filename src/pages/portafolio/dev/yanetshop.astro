@@ -1,0 +1,177 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/Footer.astro';
+
+const stack = ['WordPress', 'WooCommerce', 'LiveCanvas', 'Mailgun', 'SEO Técnico'];
+---
+<Base
+  title="Caso de estudio: Yanet Jabones Naturales — Marcos Santiago"
+  description="Rediseño completo de e-commerce en WordPress + WooCommerce para una jabonería artesanal puertorriqueña — nueva marca, checkout pulido y 91/100 de rendimiento móvil."
+>
+  <Nav />
+  <main id="main" class="case" style="--c:#4F7A2A; padding-top:120px">
+    <div class="container">
+      <a href="/portafolio/dev/" class="back-link">← Portafolio</a>
+
+      <div class="case-head">
+        <div>
+          <p class="case-label">Caso de estudio · Sitio web para cliente</p>
+          <h1 class="case-title">Yanet Jabones Naturales</h1>
+          <p class="case-tagline">Rediseño completo de e-commerce para una jabonería artesanal puertorriqueña con más de 10 años en el mercado.</p>
+        </div>
+        <div class="case-meta">
+          <span class="case-status preview">En desarrollo</span>
+          <span class="case-year">2026</span>
+        </div>
+      </div>
+
+      <div class="case-tags">
+        {stack.map(t => <span class="tag">{t}</span>)}
+      </div>
+
+      <img
+        src="/portfolio-cases/yanetshop/home-hero.webp"
+        alt="Página de inicio de Yanet Jabones Naturales, rediseñada"
+        class="case-hero-img"
+        width="1200" height="683" loading="eager"
+      />
+
+      <div class="case-grid">
+        <section class="case-col">
+          <h2 class="case-h2">El reto</h2>
+          <p>Yanet Jabones Naturales llevaba años vendiendo con un sitio hecho en Beaver Builder: plantillas genéricas de WooCommerce sin pulir, texto de relleno heredado de un clon anterior y ninguna dirección de marca propia — solo colores sueltos, sin sistema.</p>
+          <p>La dificultad real no era el diseño en sí, sino que <strong>la tienda tenía ventas activas</strong>. Cualquier cambio tenía que hacerse sin arriesgar un solo pedido ni un solo cliente.</p>
+        </section>
+        <section class="case-col">
+          <h2 class="case-h2">El enfoque</h2>
+          <p>Reconstrucción completa sobre WordPress + WooCommerce usando LiveCanvas, para que la clienta pueda seguir editando su propio contenido sin tocar código. Paleta de marca extraída de fotografía real de producto — verde natural y terracota — con tipografía editorial (Fraunces + Inter) autohospedada para no sacrificar velocidad.</p>
+          <p>Carrito, checkout y ficha de producto rediseñados de cero, formulario de contacto propio, y notificaciones de pedido traducidas y con la marca de la tienda — nada del inglés genérico ni el texto de relleno de WooCommerce por defecto.</p>
+        </section>
+      </div>
+
+      <div class="case-shots">
+        <img src="/portfolio-cases/yanetshop/store.webp" alt="Tienda de Yanet Jabones Naturales con catálogo de productos" loading="lazy" width="1200" height="683" />
+        <img src="/portfolio-cases/yanetshop/product.webp" alt="Ficha de producto individual de Yanet Jabones Naturales" loading="lazy" width="1200" height="683" />
+      </div>
+
+      <div class="case-grid case-grid-result">
+        <section class="case-col">
+          <h2 class="case-h2">El resultado</h2>
+          <p>Sitio completamente responsivo, construido en un dominio de staging aparte para poder pulir cada detalle sin tocar la tienda real ni un solo pedido en curso. El catálogo completo (75 productos) migrado y reorganizado, listo para el cambio final.</p>
+          <div class="case-stats">
+            <div class="case-stat">
+              <span class="case-stat-num">91<span class="case-stat-unit">/100</span></span>
+              <span class="case-stat-label">Rendimiento móvil<br/>(Lighthouse)</span>
+            </div>
+            <div class="case-stat">
+              <span class="case-stat-num">75</span>
+              <span class="case-stat-label">Productos migrados<br/>y reorganizados</span>
+            </div>
+          </div>
+        </section>
+        <img src="/portfolio-cases/yanetshop/home-mobile.webp" alt="Vista móvil de Yanet Jabones Naturales" class="case-mobile-img" loading="lazy" width="600" height="1200" />
+      </div>
+
+      <div class="contact-cta">
+        <div>
+          <h2 class="cta-title">¿Tienes un negocio que necesita esto?</h2>
+          <p class="cta-sub">Rediseño y tiendas online en WordPress, hechas para que las administres tú mismo. Escríbeme con tu idea.</p>
+        </div>
+        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
+          <i class="fab fa-whatsapp"></i> (787) 243-9670
+        </a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+.back-link {
+  display: inline-block; font-family: var(--mono); font-size: var(--text-2xs);
+  letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 40px; transition: color .2s;
+}
+.back-link:hover { color: var(--c) }
+
+.case-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 24px; flex-wrap: wrap; margin-bottom: 20px;
+}
+.case-label {
+  font-family: var(--mono); font-size: var(--text-2xs);
+  letter-spacing: 2px; text-transform: uppercase; color: var(--c); margin-bottom: 10px;
+}
+.case-title {
+  font-family: var(--display); font-size: clamp(2.4rem, 5vw, 4rem);
+  letter-spacing: 2px; color: var(--white); margin-bottom: 12px;
+}
+.case-tagline { color: var(--muted); font-size: var(--text-lg); line-height: 1.6; max-width: 56ch }
+.case-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0 }
+.case-status {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 20px;
+}
+.case-status.preview {
+  background: color-mix(in srgb, #facc15 10%, transparent);
+  border: 1px solid color-mix(in srgb, #facc15 30%, transparent);
+  color: #facc15;
+}
+.case-year { font-family: var(--mono); font-size: var(--text-2xs); letter-spacing: 2px; color: var(--dim) }
+
+.case-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 40px }
+.case-tags .tag {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 4px;
+  background: color-mix(in srgb, var(--c) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c) 30%, transparent); color: var(--c);
+}
+
+.case-hero-img {
+  width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--border);
+  margin-bottom: 56px;
+}
+
+.case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 56px }
+@media (max-width: 800px) { .case-grid { grid-template-columns: 1fr; gap: 32px } }
+.case-h2 {
+  font-family: var(--display); font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+  letter-spacing: 1.5px; color: var(--white); margin-bottom: 16px;
+}
+.case-col p { color: var(--muted); font-size: var(--text-base); line-height: 1.75; margin-bottom: 14px }
+.case-col strong { color: var(--white) }
+
+.case-shots { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 56px }
+@media (max-width: 800px) { .case-shots { grid-template-columns: 1fr } }
+.case-shots img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border) }
+
+.case-grid-result { align-items: center }
+.case-mobile-img {
+  width: 100%; max-width: 280px; height: auto; border-radius: 16px;
+  border: 1px solid var(--border); margin: 0 auto; display: block;
+}
+.case-stats { display: flex; gap: 32px; margin-top: 28px; flex-wrap: wrap }
+.case-stat-num {
+  font-family: var(--display); font-size: clamp(2.2rem, 4vw, 3rem);
+  color: var(--c); line-height: 1; display: block;
+}
+.case-stat-unit { font-size: .5em; color: var(--dim) }
+.case-stat-label {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: 1px;
+  color: var(--muted); line-height: 1.5; display: block; margin-top: 8px;
+}
+
+.contact-cta {
+  margin-top: 24px; padding: 48px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 32px; flex-wrap: wrap;
+}
+.cta-title {
+  font-family: var(--display); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  letter-spacing: 2px; margin-bottom: 8px;
+}
+.cta-sub { color: var(--muted); font-size: var(--text-base); line-height: 1.7; max-width: 48ch }
+</style>
