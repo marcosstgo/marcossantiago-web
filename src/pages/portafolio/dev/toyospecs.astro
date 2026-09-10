@@ -3,22 +3,22 @@ import Base from '../../../layouts/Base.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/Footer.astro';
 
-const stack = ['WordPress', 'WooCommerce', 'LiveCanvas', 'Mailgun', 'SEO Técnico'];
+const stack = ['WordPress', 'WooCommerce', 'LiveCanvas', 'WholesaleX B2B', 'SEO Técnico'];
 ---
 <Base
-  title="Caso de estudio: Yanet Jabones Naturales — Marcos Santiago"
-  description="Modernización integral de la tienda en línea de una marca puertorriqueña de jabones artesanales — WordPress, WooCommerce y LiveCanvas, 91/100 de rendimiento móvil."
+  title="Caso de estudio: Toyo-Specs — Marcos Santiago"
+  description="Modernización de la tienda en línea de un distribuidor de piezas genuinas Toyota en Puerto Rico — catálogo reorganizado por modelo y registro de cuentas mayoristas."
 >
   <Nav />
-  <main id="main" class="case" style="--c:#4F7A2A; padding-top:120px">
+  <main id="main" class="case" style="--c:#dc2626; padding-top:120px">
     <div class="container">
       <a href="/portafolio/dev/" class="back-link">← Portafolio</a>
 
       <div class="case-head">
         <div>
           <p class="case-label">Caso de estudio · Sitio web para cliente</p>
-          <h1 class="case-title">Yanet Jabones Naturales</h1>
-          <p class="case-tagline">Modernización integral de la tienda en línea de una marca puertorriqueña dedicada a la elaboración de jabones artesanales y productos para el cuidado de la piel.</p>
+          <h1 class="case-title">Toyo-Specs</h1>
+          <p class="case-tagline">Modernización de la tienda en línea de un distribuidor de piezas genuinas, de reemplazo y japonesas para Toyota en Puerto Rico.</p>
         </div>
         <div class="case-meta">
           <span class="case-status live">Live</span>
@@ -31,8 +31,8 @@ const stack = ['WordPress', 'WooCommerce', 'LiveCanvas', 'Mailgun', 'SEO Técnic
       </div>
 
       <img
-        src="/portfolio-cases/yanetshop/home-hero.webp"
-        alt="Página de inicio de Yanet Jabones Naturales, rediseñada"
+        src="/portfolio-cases/toyospecs/home-hero.webp"
+        alt="Página de inicio de Toyo-Specs, rediseñada"
         class="case-hero-img"
         width="1200" height="683" loading="eager"
       />
@@ -40,43 +40,43 @@ const stack = ['WordPress', 'WooCommerce', 'LiveCanvas', 'Mailgun', 'SEO Técnic
       <div class="case-grid">
         <section class="case-col">
           <h2 class="case-h2">El reto</h2>
-          <p>Yanet Jabones Naturales necesitaba modernizar su tienda en línea para que reflejara mejor la calidad, la trayectoria y el carácter artesanal de la marca. Con un catálogo amplio y una operación ya establecida, el nuevo sitio debía ofrecer una experiencia de compra más clara, rápida y coherente, tanto para sus clientes como para la administración diaria del negocio.</p>
-          <p>El reto principal era realizar esta transformación mientras la tienda continuaba recibiendo pedidos. El rediseño debía desarrollarse sin interrumpir las ventas y protegiendo cuidadosamente el catálogo, la información de los productos y las órdenes existentes.</p>
+          <p>Toyo-Specs es un distribuidor de piezas genuinas, de reemplazo y japonesas para Toyota en Puerto Rico, con un catálogo de más de 400 productos. El sitio anterior organizaba las piezas por su origen de fabricación en vez de por modelo o tipo de pieza, así que encontrar la pieza correcta dependía de leer título por título — sin forma real de filtrar por compatibilidad con el vehículo.</p>
+          <p>El negocio también necesitaba abrirle la puerta a talleres y compradores al por mayor, con un flujo de registro propio para cuentas de negocio, separado de la compra regular al detal.</p>
         </section>
         <section class="case-col">
           <h2 class="case-h2">El enfoque</h2>
-          <p>El proyecto se desarrolló en un entorno independiente utilizando WordPress, WooCommerce y LiveCanvas, lo que permitió reconstruir y probar cada sección de la tienda sin afectar el funcionamiento del sitio anterior mientras seguía recibiendo pedidos.</p>
-          <p>La nueva dirección visual parte de la esencia artesanal de los productos, con una paleta inspirada en tonos naturales y terracota, acompañada por una combinación tipográfica cálida y contemporánea. Además, se reorganizó el catálogo y se rediseñaron las páginas principales del proceso de compra: tienda, producto, carrito y checkout.</p>
-          <p>También se trabajó la experiencia móvil, la optimización técnica, la estructura SEO y las comunicaciones transaccionales de WooCommerce, incluyendo correos de pedidos adaptados al idioma y a la identidad de la tienda. Una vez todo quedó probado, la migración final a producción se hizo sin perder un solo pedido ni interrumpir las ventas.</p>
+          <p>El sitio se reconstruyó sobre WordPress, WooCommerce y LiveCanvas, partiendo de una reorganización completa del catálogo: se asignaron atributos reales de compatibilidad por modelo (39 modelos entre Toyota, Lexus y Scion que comparten piezas) y por tipo de pieza (original, de reemplazo, japonesa), permitiendo filtrar la tienda de la forma en que un mecánico realmente busca una pieza.</p>
+          <p>Se diseñó una página de "Modelos Toyota" para navegar el catálogo por vehículo, y se optimizó el catálogo completo de imágenes a WebP para acelerar la carga en móvil, donde ocurre la mayoría de las búsquedas.</p>
+          <p>Para el lado mayorista, se habilitó un flujo de registro de cuentas de negocio con aprobación manual — el taller o comprador solicita su cuenta con sus datos, y una vez aprobada accede a la tienda como cliente mayorista.</p>
         </section>
       </div>
 
       <div class="case-shots">
-        <img src="/portfolio-cases/yanetshop/store.webp" alt="Tienda de Yanet Jabones Naturales con catálogo de productos" loading="lazy" width="1200" height="683" />
-        <img src="/portfolio-cases/yanetshop/product.webp" alt="Ficha de producto individual de Yanet Jabones Naturales" loading="lazy" width="1200" height="683" />
+        <img src="/portfolio-cases/toyospecs/store.webp" alt="Catálogo de Toyo-Specs organizado por categoría" loading="lazy" width="1200" height="683" />
+        <img src="/portfolio-cases/toyospecs/product.webp" alt="Ficha de producto individual de Toyo-Specs" loading="lazy" width="1200" height="683" />
       </div>
 
       <div class="case-grid case-grid-result">
         <section class="case-col">
           <h2 class="case-h2">El resultado</h2>
-          <p>El sitio nuevo ya está en producción, reemplazando por completo a la tienda anterior. La migración de base de datos, catálogo, órdenes y clientes se completó sin perder un solo pedido, con una experiencia visual más clara, coherente y completamente adaptable a dispositivos móviles.</p>
-          <p>El catálogo quedó reorganizado con 63 productos activos, y el sitio en vivo mantiene un balance saludable entre diseño, funcionalidad y velocidad en las pruebas de rendimiento móvil de Lighthouse.</p>
+          <p>El sitio nuevo ya está en producción, con los 409 productos del catálogo reorganizados bajo un sistema real de filtros por modelo y tipo de pieza. El flujo de registro mayorista quedó habilitado de punta a punta, desde la solicitud hasta la aprobación de la cuenta de negocio.</p>
+          <p>El sitio en vivo mantiene un balance saludable entre diseño, funcionalidad y velocidad en las pruebas de rendimiento móvil de Lighthouse.</p>
           <div class="case-stats">
             <div class="case-stat">
-              <span class="case-stat-num">0</span>
-              <span class="case-stat-label">Pedidos perdidos<br/>en la migración</span>
+              <span class="case-stat-num">409</span>
+              <span class="case-stat-label">Productos en<br/>el catálogo</span>
             </div>
             <div class="case-stat">
-              <span class="case-stat-num">75<span class="case-stat-unit">/100</span></span>
+              <span class="case-stat-num">39</span>
+              <span class="case-stat-label">Modelos con filtro<br/>de compatibilidad</span>
+            </div>
+            <div class="case-stat">
+              <span class="case-stat-num">77<span class="case-stat-unit">/100</span></span>
               <span class="case-stat-label">Rendimiento móvil<br/>(Lighthouse, en vivo)</span>
-            </div>
-            <div class="case-stat">
-              <span class="case-stat-num">63</span>
-              <span class="case-stat-label">Productos activos<br/>en el catálogo</span>
             </div>
           </div>
         </section>
-        <img src="/portfolio-cases/yanetshop/home-mobile.webp" alt="Vista móvil de Yanet Jabones Naturales" class="case-mobile-img" loading="lazy" width="600" height="1200" />
+        <img src="/portfolio-cases/toyospecs/home-mobile.webp" alt="Vista móvil de Toyo-Specs" class="case-mobile-img" loading="lazy" width="600" height="1200" />
       </div>
 
       <div class="contact-cta">
@@ -118,11 +118,6 @@ const stack = ['WordPress', 'WooCommerce', 'LiveCanvas', 'Mailgun', 'SEO Técnic
 .case-status {
   font-family: var(--mono); font-size: .68rem; letter-spacing: 1.5px; text-transform: uppercase;
   padding: 3px 10px; border-radius: 20px;
-}
-.case-status.preview {
-  background: color-mix(in srgb, #facc15 10%, transparent);
-  border: 1px solid color-mix(in srgb, #facc15 30%, transparent);
-  color: #facc15;
 }
 .case-status.live {
   background: color-mix(in srgb, #4ade80 12%, transparent);
