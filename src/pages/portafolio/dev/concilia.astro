@@ -7,7 +7,7 @@ const stack = ['Python', 'FastAPI', 'ATH Móvil Business', 'MikroWisp', 'Twilio 
 ---
 <Base
   title="Caso de estudio: Concilia — Marcos Santiago"
-  description="Concilia aplica automáticamente en MikroWisp cada pago de ATH Móvil de un proveedor de internet de Puerto Rico: identifica al cliente, paga su factura, reactiva el servicio y avisa por WhatsApp."
+  description="Caso de estudio de Concilia: aplica en MikroWisp los pagos de ATH Móvil que llegan fuera del portal, prepara los que necesitan una decisión y entrega por WhatsApp los avisos de MikroWisp."
 >
   <Nav />
   <main id="main" class="case" style="--c:#34b885; padding-top:120px">
@@ -18,7 +18,7 @@ const stack = ['Python', 'FastAPI', 'ATH Móvil Business', 'MikroWisp', 'Twilio 
         <div>
           <p class="case-label">Caso de estudio · Producto propio</p>
           <h1 class="case-title">Concilia</h1>
-          <p class="case-tagline">Un sistema que aplica sola en MikroWisp cada pago de ATH Móvil de un proveedor de internet de Puerto Rico: identifica al cliente, paga su factura, reactiva el servicio y le confirma por WhatsApp.</p>
+          <p class="case-tagline">Un sistema que aplica en MikroWisp los pagos de ATH Móvil que llegan fuera del portal, prepara los que necesitan una decisión y entrega por WhatsApp los avisos de MikroWisp.</p>
         </div>
         <div class="case-meta">
           <span class="case-status live">Live</span>
@@ -40,14 +40,14 @@ const stack = ['Python', 'FastAPI', 'ATH Móvil Business', 'MikroWisp', 'Twilio 
       <div class="case-grid">
         <section class="case-col">
           <h2 class="case-h2">El reto</h2>
-          <p>Un proveedor de internet de Puerto Rico recibe alrededor de 1,000 pagos de ATH Móvil al mes. El dinero llegaba solo, pero registrarlo no: alguien tenía que buscar cada pago, adivinar de qué cliente era, aplicarlo a la factura correcta en MikroWisp y avisarle al cliente por WhatsApp.</p>
-          <p>Eran unas 60 horas al mes de trabajo manual, con pagos que se quedaban sin aplicar y clientes suspendidos aunque ya habían pagado. Un sistema anterior para automatizarlo nunca había llegado a funcionar.</p>
+          <p>MikroWisp, el sistema de facturación que usan muchos proveedores de internet en Puerto Rico, aplica solo los pagos que entran por su portal. Pero muchos abonados prefieren pagar directo por ATH Móvil, y esos pagos MikroWisp no los ve: cada uno hay que registrarlo a mano en la factura correcta y avisarle al abonado.</p>
+          <p>Casi todos se identifican por el teléfono registrado en la cuenta, así que el reto no es saber de quién es el pago, sino el volumen: con cientos de pagos al mes, registrar y avisar se vuelve trabajo de tiempo completo. Además, los avisos de MikroWisp necesitan un gateway para llegar por WhatsApp.</p>
         </section>
         <section class="case-col">
           <h2 class="case-h2">El enfoque</h2>
-          <p>Concilia recibe cada pago por <strong>tres caminos a la vez</strong> (el aviso instantáneo de ATH Móvil Business, el recibo por correo y el reporte oficial de ATH), así que ningún pago se pierde ni se aplica dos veces. Identifica al cliente por su número de cuenta o su teléfono, <strong>nunca por un nombre parecido</strong>, y reparte el dinero entre sus facturas sin cobrar de más.</p>
-          <p>Lo que no está claro no se adivina: pasa a una <strong>bandeja de revisión</strong> con la mejor sugerencia, y una persona lo aprueba con un clic. Antes de escribir un solo pago en MikroWisp, el sistema trabajó en modo prueba hasta acertar más del 90 % de las veces.</p>
-          <p>Además, Concilia se convirtió en el puente de mensajería de MikroWisp con WhatsApp, con plantillas aprobadas por Meta para confirmación de pago, factura nueva, vencimiento y suspensión. Corre en su propio servidor, con copias de seguridad diarias, vigilancia continua y 287 pruebas automáticas que protegen cada pago.</p>
+          <p>Concilia confirma cada pago por <strong>tres caminos</strong> (la API de ATH Móvil Business, el recibo por correo y el reporte oficial de ATH), así que ningún pago se aplica dos veces. Identifica al cliente por el teléfono registrado en su cuenta o por el número de cuenta en la nota, confirmado con el nombre: <strong>un nombre parecido nunca basta</strong>.</p>
+          <p>Lo que necesita una decisión, como un teléfono que paga por varias cuentas, pasa a una <strong>bandeja de revisión</strong> con la mejor sugerencia, y una persona decide con un clic. Concilia aprende esa decisión: el próximo pago desde ese teléfono se aplica solo. Antes de escribir un solo pago en MikroWisp, el sistema trabajó en modo prueba hasta acertar más del 90 % de las veces.</p>
+          <p>Además, Concilia funciona como <strong>gateway de WhatsApp para MikroWisp</strong>: recibe sus avisos de factura nueva, vencimiento y suspensión y los entrega con plantillas aprobadas por Meta, junto con la confirmación de cada pago. Corre en su propio servidor, con copias de seguridad diarias, vigilancia continua y más de 270 pruebas automáticas que protegen cada pago.</p>
         </section>
       </div>
 
@@ -59,20 +59,20 @@ const stack = ['Python', 'FastAPI', 'ATH Móvil Business', 'MikroWisp', 'Twilio 
       <div class="case-grid case-grid-result">
         <section class="case-col">
           <h2 class="case-h2">El resultado</h2>
-          <p>Concilia está en producción desde el 1 de octubre de 2026. En sus primeros 26 días procesó 912 pagos de ATH Móvil y aplicó 788 en MikroWisp, más de 9 de cada 10 sin que nadie los tocara, y envió 2,572 mensajes de WhatsApp por su cuenta.</p>
+          <p>Concilia está en producción desde octubre de 2026, aplicando pagos y entregando avisos todos los días. Está hecho por módulos, así que puede crecer: otro método de pago, la conexión con otro sistema o un reporte a la medida se añaden como módulos nuevos.</p>
           <p>Del proyecto salió un producto: marca propia, página en <a href="https://conciliapr.com" target="_blank" rel="noopener">conciliapr.com</a> con calculadora de ahorro, y planes para otros proveedores de internet que usan MikroWisp.</p>
           <div class="case-stats">
             <div class="case-stat">
-              <span class="case-stat-num">912</span>
-              <span class="case-stat-label">Pagos procesados<br/>en 26 días</span>
+              <span class="case-stat-num">3</span>
+              <span class="case-stat-label">Caminos para confirmar<br/>cada pago</span>
             </div>
             <div class="case-stat">
-              <span class="case-stat-num">2,572</span>
-              <span class="case-stat-label">Mensajes de WhatsApp<br/>enviados solos</span>
+              <span class="case-stat-num">4</span>
+              <span class="case-stat-label">Avisos de WhatsApp<br/>con plantillas aprobadas</span>
             </div>
             <div class="case-stat">
-              <span class="case-stat-num">~60<span class="case-stat-unit"> h</span></span>
-              <span class="case-stat-label">Al mes de trabajo<br/>manual ahorradas</span>
+              <span class="case-stat-num">270+</span>
+              <span class="case-stat-label">Pruebas automáticas<br/>que protegen cada pago</span>
             </div>
           </div>
         </section>
