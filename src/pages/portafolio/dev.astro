@@ -5,6 +5,16 @@ import Footer from '../../components/Footer.astro';
 
 const featuredProjects = [
   {
+    name: 'CONCILIA',
+    tagline: 'Pagos de ATH Móvil aplicados en MikroWisp',
+    desc: 'Aplica sola cada pago de ATH Móvil en el sistema de facturación de proveedores de internet: identifica al cliente, paga su factura, reactiva el servicio y avisa por WhatsApp.',
+    href: '/portafolio/dev/concilia/',
+    tags: ['Python', 'FastAPI', 'ATH Móvil', 'MikroWisp', 'Twilio'],
+    status: 'Live',
+    color: '#34b885',
+    year: '2026',
+  },
+  {
     name: 'KIOSKKO',
     tagline: 'E-commerce para negocios en Puerto Rico',
     desc: 'Plataforma SaaS con tienda online, carrito, pagos con Stripe y ATH Móvil, panel admin completo y configuración sin código.',
@@ -91,7 +101,7 @@ const otherProjects = [
 
       <div class="featured-grid">
         {featuredProjects.map(p => (
-          <a href={p.href} target="_blank" rel="noopener" class="featured-card" style={`--c:${p.color}`}>
+          <a href={p.href} target={p.href.startsWith("http") ? "_blank" : undefined} rel={p.href.startsWith("http") ? "noopener" : undefined} class="featured-card" style={`--c:${p.color}`}>
             <div class="featured-top">
               <div class="featured-meta">
                 <span class="featured-year">{p.year}</span>
@@ -111,6 +121,16 @@ const otherProjects = [
 
       <p class="other-label">Sitios para clientes</p>
       <div class="client-grid">
+        <a href="/portafolio/dev/concilia/" class="client-card">
+          <img src="/portfolio-cases/concilia/home-hero.webp" alt="Concilia" class="client-thumb" loading="lazy" width="1200" height="683" />
+          <div class="client-info">
+            <div>
+              <span class="client-name">Concilia</span>
+              <span class="client-tagline">Conciliación automática de pagos · Python + FastAPI</span>
+            </div>
+            <span class="client-arrow">Ver caso completo →</span>
+          </div>
+        </a>
         <a href="/portafolio/dev/yanetshop/" class="client-card">
           <img src="/portfolio-cases/yanetshop/home-hero.webp" alt="Yanet Jabones Naturales" class="client-thumb" loading="lazy" width="1200" height="683" />
           <div class="client-info">
