@@ -72,7 +72,7 @@ export const categories = [
         name: 'Reels & Contenido',
         desc: 'Reels profesionales para Instagram, TikTok y YouTube. Contenido que conecta y convierte seguidores en clientes.',
         includes: ['Hasta 3 reels por sesión', 'Edición con trending audio', 'Formato vertical y horizontal', 'Entrega 48–72h'],
-        price: 'Desde $150 por reel',
+        price: 'Desde $175 por reel',
         wa: 'Hola, me interesa cotizar reels y contenido para redes sociales.',
       },
       {
