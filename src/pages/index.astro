@@ -221,9 +221,14 @@ const areas = [
     // Booth: anda solo hasta que alguien lo toca; luego lo manda el dedo.
     var bo = document.getElementById('bo'), bv = bo.querySelector('video'), br = bo.querySelector('.bo-r'), t = 0, sk = false;
     new IntersectionObserver(function (e, o) {
-      if (e[0].isIntersecting) { bv.src = bv.dataset.lazy; if (!ligero) bv.play().catch(function () {}); o.disconnect() }
+      if (!e[0].isIntersecting) return; o.disconnect();
+      // Se baja completo (1.7 MB, solo al acercarse): así el arrastre es inmediato en cualquier navegador.
+      fetch(bv.dataset.lazy).then(function (r) { return r.blob() }).then(function (bl) {
+        bv.src = URL.createObjectURL(bl); bv.load();
+        if (!ligero && !bo.classList.contains('usado')) bv.play().catch(function () {});
+      }).catch(function () { bv.src = bv.dataset.lazy });
     }, { rootMargin: '300px' }).observe(bo);
-    function lleva() { sk = false; if (bv.duration) bv.currentTime = t * bv.duration }
+    function lleva() { sk = false; if (bv.duration) bv.currentTime = Math.min(t * bv.duration, bv.duration - .05) }
     br.addEventListener('input', function () {
       bo.classList.add('usado'); bv.pause(); t = br.value / 1000;
       if (!sk) { sk = true; requestAnimationFrame(lleva) }
