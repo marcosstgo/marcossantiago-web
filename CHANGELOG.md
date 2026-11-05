@@ -8,6 +8,8 @@ Cambios notables al sitio. Más reciente primero.
 - Sistema visual nuevo; trabajo real de Vimeo y Behance en todas las páginas.
 - Muro de logos interactivo: blanco, negro, azul, color de marca y prueba en cuatro fondos.
 - Portada, portafolio, video, foto, diseño, web, logos, servicios, contacto, blog y 404 reconstruidos. Las demás páginas toman el sistema visual por tokens.
+- Jalda como logo protagonista: sección propia en la portada con cambio de fondo y pieza doble en el muro.
+- Quitados 22 logos con texto sin convertir a curvas o incompletos; `scripts/analizar-logos.mjs` ahora rechaza los que traigan texto vivo.
 - Generador de logos eliminado (`/generador-de-logos/` y `/galeria-logos/` → 301 a `/portafolio/logos/`). `/shorts/` → 301 a `/reels/`.
 - En Git lo que solo estaba en producción: `functions/`, `_redirects`, `_headers`. Página 404 real.
 - Formulario de contacto nuevo: si el envío falla lo dice y ofrece WhatsApp.

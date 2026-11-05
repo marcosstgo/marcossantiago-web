@@ -53,6 +53,21 @@ const areas = [
       </div>
     </section>
 
+    <section class="ja" aria-labelledby="ja-t">
+      <input type="radio" name="ja" id="ja-p" class="vh" checked aria-label="Fondo papel" />
+      <input type="radio" name="ja" id="ja-n" class="vh" aria-label="Fondo negro" />
+      <input type="radio" name="ja" id="ja-a" class="vh" aria-label="Fondo azul" />
+      <input type="radio" name="ja" id="ja-f" class="vh" aria-label="Fondo naranja" />
+      <div class="ja-l"><img class="reveal" src="/logos-portfolio/jalda.svg" width="379" height="242" alt="Logo de Jalda, Premium Cream Liqueur" loading="lazy" decoding="async" /></div>
+      <div class="ja-b full">
+        <h2 id="ja-t" class="ja-t">Jalda <span>Identidad · Premium Cream Liqueur</span></h2>
+        <div class="ja-s" aria-hidden="true">
+          <label for="ja-p" class="p"></label><label for="ja-n" class="n"></label><label for="ja-a" class="a"></label><label for="ja-f" class="f"></label>
+        </div>
+        <a class="link-a" href="https://www.behance.net/gallery/153299389/Jalda-Cream-Liqueur" target="_blank" rel="noopener">Ver el proyecto →</a>
+      </div>
+    </section>
+
     <section class="sel full" aria-labelledby="sel-t">
       <div class="sec-top">
         <h2 id="sel-t" class="sec-h">Trabajo reciente</h2>
@@ -64,7 +79,7 @@ const areas = [
         <WorkCard class="reveal c" b={brand('tropical-paws')} sizes="(max-width:700px) 100vw, 40vw" />
         <WorkCard class="reveal d" v={video('832286606')} sizes="(max-width:700px) 100vw, 60vw" />
         <WorkCard class="reveal e" v={video('873793066')} sizes="(max-width:700px) 100vw, 60vw" />
-        <WorkCard class="reveal f" b={brand('blue-pineapple')} sizes="(max-width:700px) 100vw, 40vw" />
+        <WorkCard class="reveal f" b={brand('jalda')} sizes="(max-width:700px) 100vw, 40vw" />
       </div>
     </section>
 
@@ -187,12 +202,31 @@ const areas = [
   .sec-h .it { font-size: 1.04em; line-height: 1 }
   .sec-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 32px; margin-bottom: clamp(24px, 4vw, 56px) }
 
-  .yo { padding-block: var(--sec) calc(var(--sec) * .8) }
+  .yo { padding-block: var(--sec) }
   .yo-t { font-size: clamp(2rem, 5.1vw, 5.25rem); line-height: 1.06; font-weight: 500; letter-spacing: -.025em; max-width: 21em }
   .yo-t .it { color: var(--flame); letter-spacing: -.015em }
   .yo-a { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(24px, 3vw, 44px) }
 
-  .sel { padding-bottom: var(--sec) }
+  /* Jalda: el logo protagonista. Cambio de fondo con CSS puro. */
+  .ja { --bg: #f3eee5; --tx: #14120f; --fl: none; background: var(--bg); color: var(--tx); transition: background-color .5s ease, color .5s ease; display: flex; flex-direction: column; min-height: min(100svh, 62vw + 120px) }
+  .ja:has(#ja-n:checked) { --bg: #0c0c0e; --tx: #f3eee5; --fl: brightness(0) invert(1) }
+  .ja:has(#ja-a:checked) { --bg: #1a3cff; --tx: #fff; --fl: brightness(0) invert(1) }
+  .ja:has(#ja-f:checked) { --bg: #ff4f1f; --tx: #0d0c0b; --fl: none }
+  .ja-l { flex: 1; display: grid; place-items: center; padding: clamp(48px, 7vw, 96px) var(--gut) 24px }
+  .ja-l img { width: min(72vw, 110vh); filter: var(--fl); transition: filter .5s ease }
+  .ja-b { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px 24px; padding-block: 20px }
+  .ja-t { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.75rem, 3vw, 2.75rem); line-height: 1 }
+  .ja-t span { display: block; margin-top: 4px; font-family: var(--body); font-weight: 500; text-transform: none; font-size: .9375rem }
+  .ja-s { display: flex; gap: 10px }
+  .ja-s label { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--tx); cursor: pointer; transition: scale .2s var(--ease) }
+  .ja-s label:hover { scale: 1.12 }
+  .ja-s .p { background: #f3eee5 } .ja-s .n { background: #0c0c0e } .ja-s .a { background: #1a3cff } .ja-s .f { background: #ff4f1f }
+  .ja .link-a { justify-self: end; color: inherit }
+  .ja .link-a:hover { color: inherit; opacity: .7 }
+  .ja:has(#ja-p:focus-visible) .ja-s .p, .ja:has(#ja-n:focus-visible) .ja-s .n, .ja:has(#ja-a:focus-visible) .ja-s .a, .ja:has(#ja-f:focus-visible) .ja-s .f { outline: 2px solid var(--tx); outline-offset: 3px }
+  @media (max-width: 700px) { .ja { min-height: 0 } .ja-l img { width: 84vw } .ja-b { grid-template-columns: 1fr auto } .ja-s { grid-row: 2; grid-column: 1 / -1 } }
+
+  .sel { padding-block: var(--sec) }
   .sel-g { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(28px, 3.5vw, 56px) clamp(14px, 1.6vw, 24px) }
   .sel-g :global(.a) { grid-column: span 8 } .sel-g :global(.b) { grid-column: span 4 }
   .sel-g :global(.c) { grid-column: span 5 } .sel-g :global(.d) { grid-column: span 7 }

@@ -11,8 +11,9 @@ const sup = ['blanco','negro','azul','papel'] as const;
 
 // Orden estable y variado: los de color primero, sin caer en orden alfabético.
 const hash = (s: string) => [...s].reduce((a,c) => (a*31 + c.charCodeAt(0)) >>> 0, 7);
-const orden = [...logos].sort((a,b) => (+!!b.marca - +!!a.marca) || hash(a.slug)-hash(b.slug));
-const lista = (limite ? orden.slice(0, limite) : orden).map((l, i) => {
+// Jalda encabeza el muro en doble tamaño (ocupa 4 casillas).
+const orden = [...logos].sort((a,b) => (+(b.slug === 'jalda') - +(a.slug === 'jalda')) || (+!!b.marca - +!!a.marca) || hash(a.slug)-hash(b.slug));
+const lista = (limite ? orden.slice(0, limite - 3) : orden).map((l, i) => {
   const SOM = 'drop-shadow(0 6px 16px rgba(0,0,0,.25))', HALO = 'drop-shadow(0 0 1px rgba(255,255,255,.7))';
   const f = l.macizo ? {
     blanco: l.lee.blanco < .6 ? SOM : 'none', papel: l.lee.papel < .6 ? SOM : 'none',
@@ -51,7 +52,7 @@ const fondos = [['mezcla','Mezcla'],['blanco','Blanco'],['negro','Negro'],['azul
   </div>
   <ul class="lw-grid">
     {lista.map(l => (
-      <li class="lg" data-s={l.s} data-n={l.name.toLowerCase()} data-slug={l.slug}
+      <li class:list={['lg', { 'lg-d': l.slug === 'jalda' }]} data-s={l.slug === 'jalda' ? 'negro' : l.s} data-n={l.name.toLowerCase()} data-slug={l.slug}
           style={`--i:${l.i};--m:${l.m};--fb:${l.f.blanco};--fn:${l.f.negro};--fa:${l.f.azul};--fp:${l.f.papel};--fm:${l.f.marca}`}>
         <button aria-label={`Ver el logo de ${l.name} en distintos fondos`}>
           <img src={`/logos-portfolio/${l.slug}.svg`} alt="" width={l.w} height={l.h} loading="lazy" decoding="async" />
@@ -155,7 +156,7 @@ const fondos = [['mezcla','Mezcla'],['blanco','Blanco'],['negro','Negro'],['azul
   .pt-mezcla { background: conic-gradient(#fff 0 25%, #0c0c0e 0 50%, #1a3cff 0 75%, #ff4f1f 0) }
   .lw-busca input { width: min(320px, 78vw); min-height: 44px; padding: 8px 18px; border-radius: 99px; border: 1px solid var(--border-h); background: transparent; color: inherit; font: inherit; font-size: 1rem }
 
-  .lw-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(150px, 16.6vw, 280px), 1fr)) }
+  .lw-grid { list-style: none; display: grid; grid-auto-flow: dense; grid-template-columns: repeat(auto-fill, minmax(clamp(150px, 16.6vw, 280px), 1fr)) }
   .lg {
     --bg: #fff; --fl: none; aspect-ratio: 1; position: relative;
     background: var(--bg);
@@ -170,6 +171,7 @@ const fondos = [['mezcla','Mezcla'],['blanco','Blanco'],['negro','Negro'],['azul
   [data-fondo='mezcla'] .lg[data-s='azul'] { --bg: #1a3cff; --fl: var(--fa) }
   [data-fondo='mezcla'] .lg[data-s='papel'] { --bg: #f2ede4; --fl: var(--fp) }
   [data-fondo='mezcla'] .lg[data-s='marca'] { --bg: var(--m); --fl: var(--fm) }
+  .lg-d { grid-column: span 2; grid-row: span 2; aspect-ratio: 1 }
   .lg button { position: absolute; inset: 0; display: grid; place-items: center; width: 100%; overflow: hidden }
   .lg img { width: 62%; height: 54%; object-fit: contain; filter: var(--fl); transition: filter .5s ease, scale .5s var(--ease); transition-delay: calc(var(--i) * 14ms), 0s }
   .lg button:hover img, .lg button:focus-visible img { scale: 1.1 }
