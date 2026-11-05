@@ -32,7 +32,7 @@ const cats = orden.map(id => categories.find(c => c.id === id)!);
       <h1 class="ti">Servicios</h1>
       <p>Precios de partida para que sepas por dónde empieza cada cosa. Cada proyecto lo cotizo contigo, directo y sin compromiso.</p>
     </header>
-    <nav class="sal full sticky-bar" aria-label="Ir a una categoría">
+    <nav class="sal full barra-pegada" aria-label="Ir a una categoría">
       {cats.map(c => <a href={`#${c.id}`}>{c.label}</a>)}
     </nav>
     {cats.map(c => (

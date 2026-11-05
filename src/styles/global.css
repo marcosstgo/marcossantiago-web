@@ -134,6 +134,6 @@ hr { border: 0; border-top: 1px solid var(--border) }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important }
 }
 /* Barras pegadas: bajan cuando aparece el menú */
-.sticky-bar { position: sticky; top: 0; z-index: 20; transition: top .3s var(--ease) }
-body:has(.nav:not(.oculto)) .sticky-bar { top: 72px }
+.barra-pegada { position: sticky; top: 0; z-index: 20; transition: top .3s var(--ease) }
+body:has(.nav:not(.oculto)) .barra-pegada { top: 72px }
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap }

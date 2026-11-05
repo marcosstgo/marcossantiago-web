@@ -40,7 +40,7 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
       <h1 class="ti">Blog</h1>
       <p>Lo que aprendo haciendo: video, foto, diseño, web. {posts.length} artículos.</p>
     </header>
-    <div class="fl full sticky-bar" role="group" aria-label="Filtrar por tema">
+    <div class="fl full barra-pegada" role="group" aria-label="Filtrar por tema">
       <button class="on" data-t="">Todos</button>
       {allTags.map(t => <button data-t={t}>{t}</button>)}
     </div>

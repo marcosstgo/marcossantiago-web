@@ -18,7 +18,7 @@ const cubro = ['Bodas y quinceañeros','Conciertos y festivales','Video corporat
     </header>
     <!-- Filtro sin JavaScript: radios + :has() -->
     <div class="fl">
-      <div class="fl-b full sticky-bar" role="group" aria-label="Filtrar por categoría">
+      <div class="fl-b full barra-pegada" role="group" aria-label="Filtrar por categoría">
         {cats.map((c, i) => <label><input type="radio" name="cat" value={c} checked={i === 0} /><span>{c}</span></label>)}
       </div>
       <h2 class="vh">Videos</h2>
