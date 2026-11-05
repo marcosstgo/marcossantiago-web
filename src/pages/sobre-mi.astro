@@ -1,497 +1,442 @@
 ---
+import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { video, brand, logos, videos } from '../lib/media';
 
-/* La secuencia es cronológica de verdad: el año es el dato, no un adorno. */
-const capitulos = [
-  {
-    anio: '2001',
-    meta: ['Univ. Interamericana', 'Ciencias de Computadoras'],
-    titulo: 'El código primero',
-    parrafos: [
-      `Mi carrera comenzó desde la tecnología. Estudié Ciencias de Computadoras con
-       concentración en Programación Comercial y luego completé una maestría en Comercio
-       Electrónico en la Universidad Interamericana de Puerto Rico.`,
-      `Esa formación me enseñó a combinar estrategia, diseño y programación para convertir
-       ideas en soluciones útiles, funcionales y visualmente atractivas.`,
-    ],
-  },
-  {
-    anio: '2012',
-    meta: ['Sony NEX-3', 'Fines de semana'],
-    titulo: 'Aprender a mirar',
-    parrafos: [
-      `Una Sony NEX-3 despertó mi interés por la fotografía. Lo que comenzó fotografiando
-       durante los fines de semana fue creciendo con cada proyecto y terminó abriéndome
-       las puertas al video.`,
-      `Desde entonces, la imagen dejó de ser un complemento y se convirtió en una parte
-       esencial de mi manera de comunicar y contar historias.`,
-    ],
-  },
-  {
-    anio: 'Hoy',
-    meta: ['Negocios', 'Municipios', 'Organizaciones'],
-    titulo: 'Una visión completa',
-    parrafos: [
-      `Hoy colaboro con negocios, municipios, profesionales y organizaciones de toda la isla
-       en proyectos de identidad visual, fotografía, video y desarrollo web.`,
-      `La ventaja para el cliente es sencilla: una sola visión de principio a fin,
-       comunicación directa y una identidad coherente en todos sus puntos de contacto.
-       Sigo aprendiendo, experimentando y buscando nuevas formas de contar mejor cada
-       historia.`,
-    ],
-  },
+const anios = new Date().getFullYear() - 2001;
+const articulos = Object.keys(import.meta.glob('./blog/*.mdx')).length;
+const web = async (src: any) => (await getImage({ src, width: 1280, format: 'webp', quality: 74 })).src;
+
+// Cada disparo revela algo que ha pasado frente a su lente.
+const rollo = [
+  { s: '/marcos-photo.webp', t: 'Marcos Santiago, Aibonito' },
+  { s: await web(video('1084774680').img), t: 'IRONMAN 70.3 Puerto Rico' },
+  { s: await web(video('1075437696').img), t: 'Alejandra & Luis' },
+  { s: await web(video('1214473531').img), t: 'Teatro Encanto, Miguel Morales' },
+  { s: await web(video('873793066').img), t: 'Reapertura de la Plaza de Aibonito' },
+  { s: await web(video('676644299').img), t: 'Roy Brown, Boricua en la Luna' },
+  { s: await web(brand('jalda').img), t: 'Identidad de Jalda' },
+  { s: await web(video('1053857501').img), t: 'Historia de Aibonito' },
 ];
-
-/* Dos públicos, no cuatro disciplinas: el visitante reconoce de inmediato
-   si trabajo el tipo de proyecto que necesita. */
-const ficha = [
-  {
-    cat: 'Para marcas y organizaciones',
-    items: [
-      'Logos e identidad visual',
-      'Fotografía y video corporativo',
-      'Reels y contenido para redes',
-      'Diseño gráfico y materiales impresos',
-      'Sitios web, tiendas y plataformas',
-      'Documentales y cobertura institucional',
-    ],
-  },
-  {
-    cat: 'Para eventos y personas',
-    items: [
-      'Bodas y quinceañeros',
-      'Eventos sociales',
-      'Retratos y headshots',
-      'Video de eventos',
-      'Galerías digitales',
-      '360 Video Booth',
-    ],
-  },
+const oficios = [
+  { k: 'diseno', t: 'Diseño', d: 'Logotipos corporativos, identidad visual, ilustración de producto y piezas para impresión y redes.', h: '/portafolio/diseno/', i: await web(brand('el-chustruck').img), n: `${logos.length} logos en el muro` },
+  { k: 'foto', t: 'Fotografía', d: 'Retrato, evento, producto e institucional, con un enfoque narrativo sobre el técnico.', h: '/portafolio/foto/', i: await web(video('1052549620').img), n: 'Bodas, eventos y retratos' },
+  { k: 'video', t: 'Video', d: 'Producción y postproducción de contenido audiovisual, del corporativo al social.', h: '/portafolio/video/', i: await web(video('944305796').img), n: `${videos.length} piezas en el portafolio` },
+  { k: 'web', t: 'Web', d: 'Sitios, tiendas y aplicaciones que se ven bien y aguantan carga.', h: '/portafolio/dev/', i: '/portfolio-cases/concilia/home-hero.webp', n: 'Concilia, Corillo, FacturaPR' },
+  { k: 'sis', t: 'Sistemas', d: 'Servidores Windows y Linux, redes, bases de datos e integración de aplicaciones. Lo que nadie ve y todo lo sostiene.', h: '/resume/', i: '/portfolio-cases/previas/corillo.webp', n: 'Infraestructura propia' },
+];
+const ruta = [
+  { a: '1995–2000', t: 'Bachillerato en Ciencias de Computadoras', d: 'Universidad Interamericana de Puerto Rico. Concentración en Aplicaciones Comerciales.' },
+  { a: '2001–2015', t: 'Programador Analista y Artista Gráfico', d: 'Universidad Interamericana. Diseñaba los materiales promocionales y mantenía las aplicaciones y los servidores.' },
+  { a: '2010–2012', t: 'Maestría en Ciencias de Computadoras', d: 'Universidad Interamericana. Concentración en Comercio Electrónico.' },
+  { a: '2012–Hoy', t: 'Artista multidisciplinario', d: 'Logotipos, campañas, contenido audiovisual y sitios web. Hoy también plataformas completas.' },
+  { a: '2016–2024', t: 'Diseñador Gráfico y Desarrollador Web', d: 'Like Family Inc., LatinShots Inc. y FB Logistic Inc.: material promocional, aplicaciones web y redes.' },
+];
+const camaraImg = await web(video('1075437696').img);
+const paleta = [
+  ['Flamboyán', '#ff4f1f'], ['Mango', '#ffb000'], ['Caribe', '#00c2cc'],
+  ['Coquí', '#4fdc6a'], ['Orquídea', '#ff6fc3'], ['Cielo', '#7fa8ff'],
+];
+const publicos = [
+  { k: 'marca', t: 'Tienes una marca', i: ['Logos e identidad visual', 'Fotografía y video corporativo', 'Reels y contenido para redes', 'Diseño gráfico e impresos', 'Sitios web, tiendas y plataformas', 'Documentales y cobertura institucional'] },
+  { k: 'evento', t: 'Tienes un evento', i: ['Bodas y quinceañeros', 'Eventos sociales', 'Retratos y headshots', 'Video de eventos', 'Galerías digitales', '360 Video Booth'] },
 ];
 ---
 <Base
   title="Sobre mí — Marcos Santiago"
   description="Marcos Santiago, artista visual y desarrollador en Aibonito, Puerto Rico. Más de 20 años integrando diseño, fotografía, video y programación para negocios, municipios y organizaciones de toda la isla."
 >
-  <!-- Serif editorial solo para esta página: la narrativa pide otra voz tipográfica.
-       Self-hosted (subset latin) para no depender de Google Fonts. -->
-
+  <Fragment slot="head"><link rel="preload" href="/marcos-photo.webp" as="image" /></Fragment>
   <Nav />
-
   <main id="main">
-    <!-- ── Apertura ── -->
-    <header class="ap">
-      <div class="container ap-grid">
-        <div class="ap-titular">
-          <p class="eyebrow">Sobre mí</p>
-          <h1 class="ap-title" data-focus>Aprendiendo<br><em>a ver</em></h1>
-        </div>
 
-        <div class="ap-resto">
-          <p class="ap-sub" data-focus style="--d:120ms">
-            Soy Marcos Santiago, artista visual y desarrollador con base en Aibonito,
-            Puerto Rico. Integro diseño, fotografía, video y programación para ayudar a
-            negocios, profesionales y organizaciones a proyectarse con claridad y
-            coherencia, desde el logo y el contenido hasta el sitio web.
-          </p>
-          <dl class="ap-ficha" data-focus style="--d:220ms">
-            <div><dt>Base</dt><dd>Aibonito, Puerto Rico</dd></div>
-            <div><dt>Experiencia</dt><dd>Más de 20 años</dd></div>
-            <div><dt>Alcance</dt><dd>Todo Puerto Rico</dd></div>
-          </dl>
-        </div>
-
-        <figure class="ap-retrato" data-focus style="--d:80ms">
-          <img
-            src="/marcos-photo.webp" width="1080" height="1080"
-            alt="Marcos Santiago, diseñador y fotógrafo en Aibonito, Puerto Rico"
-            fetchpriority="high" decoding="async"
-          />
-          <figcaption>Marcos Santiago · Aibonito</figcaption>
-        </figure>
-      </div>
-    </header>
-
-    <!-- ── Capítulos: cada uno entra fuera de foco y el scroll lo enfoca ── -->
-    <section class="cronologia" aria-label="Trayectoria">
-      <div class="container">
-        {capitulos.map((c, i) => (
-          <article class="cap" data-focus>
-            <p class="cap-anio" aria-hidden="true" style="--d:90ms">{c.anio}</p>
-            <div class="cap-cuerpo">
-              <h2 class="cap-titulo">
-                <span class="cap-anio-sr">{c.anio} — </span>{c.titulo}
-              </h2>
-              <p class="cap-meta">
-                {c.meta.map((m, j) => (
-                  <>{j > 0 && <span class="sep" aria-hidden="true">·</span>}<span>{m}</span></>
-                ))}
-              </p>
-              <div class="cap-texto">
-                {c.parrafos.map(t => <p>{t}</p>)}
-              </div>
-            </div>
-            {i < capitulos.length - 1 && <hr class="cap-regla" />}
-          </article>
-        ))}
-
-        <!-- Puente al currículum formal: la misma trayectoria, en formato de CV -->
-        <div class="cap-cv" data-focus>
-          <p>La misma trayectoria en formato formal: empleos, grados, capacidades y herramientas.</p>
-          <a href="/resume/">Ver el currículum <span aria-hidden="true">→</span></a>
+    <!-- 1 · El visor: enfocas girando el anillo y disparas -->
+    <section class="vi" id="vi">
+      <h1 class="ti"><span>Aprendiendo</span> <em class="it">a ver</em></h1>
+      <div class="vi-t">
+        <p class="vi-s">Soy Marcos Santiago. Integro diseño, fotografía, video y programación para que negocios, municipios y organizaciones se proyecten con claridad, desde el logo hasta el sitio web.</p>
+        <dl class="vi-d">
+          <div><dt>Base</dt><dd>Aibonito, Puerto Rico</dd></div>
+          <div><dt>Experiencia</dt><dd>Más de 20 años</dd></div>
+          <div><dt>Alcance</dt><dd>Todo Puerto Rico</dd></div>
+        </dl>
+        <div class="vi-ct">
+          <label class="an"><span>Gira el anillo para enfocar</span>
+            <input id="vi-a" type="range" min="0" max="100" value="100" aria-label="Anillo de enfoque" />
+          </label>
+          <button id="vi-d" class="ob" type="button" aria-label="Disparar y ver otra imagen"><span>Dispara</span></button>
         </div>
       </div>
+      <figure class="vi-f">
+        <div class="vi-m">
+          <img id="vi-i" src="/marcos-photo.webp" width="1080" height="1080" alt="Marcos Santiago apuntando su cámara, Aibonito, Puerto Rico" fetchpriority="high" />
+          <div class="vi-c" aria-hidden="true"><i></i><i></i></div>
+          <div class="vi-h" aria-hidden="true">
+            <span class="af" id="vi-af">AF</span>
+            <span class="cn"></span>
+            <span class="pa"><b>f/1.8</b> <b>1/125</b> <b>ISO 800</b></span>
+            <span class="nu" id="vi-n">1/{rollo.length}</span>
+          </div>
+        </div>
+        <figcaption class="vi-pie" id="vi-p">{rollo[0].t}</figcaption>
+      </figure>
     </section>
 
-    <!-- ── Ficha técnica ── -->
-    <section class="ficha-sec">
-      <div class="container">
-        <p class="eyebrow" data-focus>Servicios</p>
-        <h2 class="ficha-h" data-focus style="--d:80ms">Lo que te llevas</h2>
-        <div class="ficha-grid">
-          {ficha.map((f, i) => (
-            <div class="ficha-col" data-focus style={`--d:${100 + i * 70}ms`}>
-              <h3>{f.cat}</h3>
-              <ul>{f.items.map(it => <li>{it}</li>)}</ul>
-            </div>
+    <!-- 2 · Tres capítulos que se apilan al bajar -->
+    <section class="ca" aria-label="Trayectoria">
+      <article class="cp c1">
+        <p class="cp-a" aria-hidden="true">2001</p>
+        <div class="cp-b">
+          <h2><span class="vh">2001, </span>El código primero</h2>
+          <p>Mi carrera comenzó desde la tecnología: Ciencias de Computadoras y una maestría en Comercio Electrónico. Ahí aprendí a combinar estrategia, diseño y programación para convertir ideas en soluciones útiles.</p>
+          <div class="cd" aria-hidden="true"><span>const marcos = &#123;</span><span>  base: 'Aibonito, PR',</span><span>  oficios: ['programador', 'artista gráfico'],</span><span>  aVeces: 'los dos el mismo día',</span><span>&#125;;</span></div>
+        </div>
+      </article>
+      <article class="cp c2 on-paper">
+        <p class="cp-a" aria-hidden="true">2012</p>
+        <div class="cp-b">
+          <h2><span class="vh">2012, </span>Aprender a mirar</h2>
+          <p>Una Sony NEX-3 despertó mi interés por la fotografía. Lo que comenzó los fines de semana creció con cada proyecto y terminó abriéndome las puertas al video. La imagen dejó de ser un complemento: se volvió mi manera de contar historias.</p>
+          <div class="ter" aria-hidden="true"><img src={oficios[1].i} width="1280" height="720" alt="" loading="lazy" decoding="async" /><i></i></div>
+        </div>
+      </article>
+      <article class="cp c3">
+        <p class="cp-a" aria-hidden="true">Hoy</p>
+        <div class="cp-b">
+          <h2><span class="vh">Hoy, </span>Una visión completa</h2>
+          <p>Colaboro con negocios, municipios, profesionales y organizaciones de toda la isla. La ventaja es sencilla: una sola visión de principio a fin, comunicación directa y una identidad coherente en todo.</p>
+          <dl class="cu">
+            <div><dt>años desde 2001</dt><dd data-n={anios}>{anios}</dd></div>
+            <div><dt>logos en el muro</dt><dd data-n={logos.length}>{logos.length}</dd></div>
+            <div><dt>videos en portafolio</dt><dd data-n={videos.length}>{videos.length}</dd></div>
+            <div><dt>artículos escritos</dt><dd data-n={articulos}>{articulos}</dd></div>
+          </dl>
+        </div>
+      </article>
+    </section>
+
+    <!-- Cómo funciona una cámara: apertura, velocidad e ISO de verdad -->
+    <section class="cm full" id="cm" aria-labelledby="cm-t">
+      <h2 id="cm-t" class="sec">La cámara, <em class="it">en tus manos</em></h2>
+      <div class="cm-g">
+        <div class="cm-f">
+          <div class="cm-i" id="cm-i">
+            <img class="cm-b" src={camaraImg} width="1280" height="720" alt="Pareja en su boda, foto para probar los controles de la cámara" loading="lazy" decoding="async" />
+            <img class="cm-n" src={camaraImg} width="1280" height="720" alt="" loading="lazy" decoding="async" />
+            <span class="cm-gr" aria-hidden="true"></span>
+          </div>
+          <div class="cm-me" aria-hidden="true"><span>−3</span><i><b id="cm-ag"></b></i><span>+3</span></div>
+          <p class="cm-v" id="cm-v" aria-live="polite">Bien expuesta</p>
+        </div>
+        <div class="cm-c">
+          <div class="cm-pr" role="group" aria-label="Situaciones">
+            <button type="button" data-p="0,4,2">Retrato</button>
+            <button type="button" data-p="1,4,3">Concierto</button>
+            <button type="button" data-p="2,5,5">Deporte</button>
+            <button type="button" data-p="4,1,3">Paisaje</button>
+          </div>
+          <label class="cm-s"><span>Apertura <strong id="cm-fv">f/1.8</strong></span><input id="cm-f" type="range" min="0" max="6" value="0" aria-label="Apertura" /><small id="cm-fd"></small></label>
+          <label class="cm-s"><span>Velocidad <strong id="cm-sv">1/500</strong></span><input id="cm-s" type="range" min="0" max="6" value="4" aria-label="Velocidad de obturación" /><small id="cm-sd"></small></label>
+          <label class="cm-s"><span>ISO <strong id="cm-iv">400</strong></span><input id="cm-o" type="range" min="0" max="6" value="2" aria-label="ISO" /><small id="cm-id"></small></label>
+          <svg class="cm-ir" viewBox="-50 -50 100 100" aria-hidden="true"><circle r="48" fill="#0d0c0b" /><polygon id="cm-ip" points="0,-40 34.6,-20 34.6,20 0,40 -34.6,20 -34.6,-20" fill="var(--flame)" /></svg>
+        </div>
+      </div>
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="mb"><feGaussianBlur id="mb-g" stdDeviation="0 0" /></filter></svg>
+    </section>
+
+    <!-- 3 · Cinco oficios: apuntas uno y cambia todo -->
+    <section class="of full" aria-labelledby="of-t">
+      <h2 id="of-t" class="sec">Cinco oficios, <em class="it">una sola mirada</em></h2>
+      <div class="of-g">
+        <div class="of-l" role="radiogroup" aria-label="Oficios">
+          {oficios.map((o, i) => (
+            <label><input class="vh" type="radio" name="of" id={`of-${o.k}`} checked={i === 0} /><span>{o.t}</span></label>
+          ))}
+        </div>
+        <div class="of-p">
+          {oficios.map(o => (
+            <a class={`of-c of-${o.k}`} href={o.h}>
+              <img src={o.i} alt="" width="1280" height="720" loading="lazy" decoding="async" />
+              <span class="of-d"><strong>{o.n}</strong>{o.d}<em>Ver más →</em></span>
+            </a>
           ))}
         </div>
       </div>
     </section>
 
-    <!-- ── Cierre ── -->
-    <section class="cierre">
-      <div class="container">
-        <blockquote class="cierre-cita" data-focus>
-          Una buena imagen no solamente se ve bien:<br>
-          <em>comunica, se reconoce y deja una impresión.</em>
-        </blockquote>
-
-        <h2 class="cierre-h" data-focus style="--d:120ms">
-          ¿Tienes un proyecto o evento en mente?
-        </h2>
-        <p class="cierre-texto" data-focus style="--d:180ms">
-          Cuéntame qué quieres lograr. Puedo ayudarte con una necesidad específica o
-          desarrollar una solución completa que combine diseño, imagen y tecnología.
-        </p>
-        <div class="cierre-acciones" data-focus style="--d:240ms">
-          <a href="/contacto/" class="btn primary">Solicitar una cotización</a>
-          <a href="/portafolio/" class="btn ghost">Ver proyectos</a>
-        </div>
+    <!-- Paleta: el color que escojas pinta toda la página -->
+    <section class="pl" aria-labelledby="pl-t">
+      <div class="full pl-h">
+        <h2 id="pl-t" class="sec">Escoge el color. <em class="it">La página te sigue.</em></h2>
+        <p role="status" id="pl-e">Toca uno: cambia el acento de todo el sitio en esta visita y copia el código.</p>
+      </div>
+      <div class="pl-b" role="group" aria-label="Paleta de colores">
+        {paleta.map(([n, h], i) => (
+          <button type="button" data-c={h} data-n={n} aria-pressed={i === 0 ? 'true' : 'false'} style={`--c:${h}`}>
+            <strong>{n}</strong><span>{h.toUpperCase()}</span>
+          </button>
+        ))}
       </div>
     </section>
+
+    <!-- 4 · La ruta completa: se arrastra -->
+    <section class="ru on-paper" aria-labelledby="ru-t">
+      <div class="full ru-h">
+        <h2 id="ru-t" class="sec">La ruta</h2>
+        <p><a class="btn" href="/resume/">Currículum completo</a> <a class="btn" href="/Marcos-Santiago-CV.pdf">Descargar PDF</a></p>
+      </div>
+      <ol class="ru-l" id="ru-l" tabindex="0" aria-label="Trayectoria, desplázate de lado">
+        {ruta.map(r => <li><p class="ru-a">{r.a}</p><h3>{r.t}</h3><p>{r.d}</p></li>)}
+      </ol>
+      <p class="full ru-q" aria-hidden="true">Arrastra de lado →</p>
+    </section>
+
+    <!-- 5 · ¿Qué te llevas? Depende de quién eres -->
+    <section class="pu full" aria-labelledby="pu-t">
+      <h2 id="pu-t" class="sec">Lo que te llevas</h2>
+      <div class="pu-s" role="radiogroup" aria-label="Qué tienes">
+        {publicos.map((p, i) => <label><input class="vh" type="radio" name="pu" id={`pu-${p.k}`} checked={i === 0} /><span>{p.t}</span></label>)}
+      </div>
+      {publicos.map(p => (
+        <ul class={`pu-l pu-${p.k}`}>{p.i.map((t, i) => <li style={`--i:${i}`}>{t}</li>)}</ul>
+      ))}
+      <blockquote class="cita">Una buena imagen no solamente se ve bien:<br> <em>comunica, se reconoce y deja una impresión.</em></blockquote>
+    </section>
   </main>
-
+  <CtaBand titulo="¿Hablamos?" texto="Cuéntame qué tienes en mente y me llega directo a WhatsApp." />
   <Footer />
-
-  <style>
-  /* ═══════════════════════════════════════════════════════════════
-     "Aprendiendo a ver" — la página entra fuera de foco y el scroll
-     la enfoca. El efecto es la única licencia; todo lo demás calla.
-     ═══════════════════════════════════════════════════════════════ */
-  main {
-    --serif: 'Instrument Serif', Georgia, serif;
-    --rule: color-mix(in srgb, var(--white) 14%, transparent);
-  }
-
-  /* ── El enfoque ──
-     El desenfoque solo existe si hay JS (la clase la pone el script).
-     Sin JS, o con reduced-motion, todo nace nítido. */
-  :global(html.js-focus) [data-focus] {
-    filter: blur(14px);
-    opacity: .18;
-    transform: translateY(18px) scale(1.012);
-    transition:
-      filter    1.05s cubic-bezier(.16,.84,.24,1) var(--d, 0ms),
-      opacity    .8s  cubic-bezier(.16,.84,.24,1) var(--d, 0ms),
-      transform 1.05s cubic-bezier(.16,.84,.24,1) var(--d, 0ms);
-    will-change: filter, opacity, transform;
-  }
-  :global(html.js-focus) [data-focus].nitido {
-    filter: blur(0); opacity: 1; transform: none;
-    will-change: auto;
-  }
-
-  .eyebrow {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 3px; text-transform: uppercase; color: var(--muted);
-  }
-
-  /* ── Apertura ── */
-  .ap { padding: 120px 0 96px }
-  .ap-grid {
-    display: grid;
-    grid-template-columns: 1.35fr .65fr;
-    grid-template-areas: "titular foto" "resto foto";
-    column-gap: clamp(32px, 6vw, 88px); row-gap: 0;
-    align-items: center;
-  }
-  .ap-titular { grid-area: titular }
-  .ap-resto   { grid-area: resto }
-  .ap-retrato { grid-area: foto }
-  .ap-title {
-    font-family: var(--serif); font-weight: 400;
-    font-size: clamp(3.4rem, 11vw, 8.5rem);
-    line-height: .88; letter-spacing: -.02em;
-    color: var(--white); margin: 18px 0 0;
-  }
-  .ap-title em { font-style: italic; color: var(--muted) }
-  .ap-sub {
-    font-size: clamp(1rem, 1.5vw, 1.22rem); line-height: 1.65;
-    color: var(--muted); max-width: 46ch; margin-top: 26px;
-  }
-  .ap-ficha {
-    display: flex; flex-wrap: wrap; gap: 10px 44px; margin-top: 40px;
-    padding-top: 24px; border-top: 1px solid var(--rule);
-  }
-  .ap-ficha dt {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
-    margin-bottom: 6px;
-  }
-  .ap-ficha dd { font-size: var(--text-sm); color: var(--white) }
-
-  .ap-retrato { position: relative }
-  .ap-retrato img {
-    width: 100%; height: auto; display: block; border-radius: 2px;
-    filter: grayscale(1) contrast(1.06);
-  }
-  .ap-retrato figcaption {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 1.6px; text-transform: uppercase; color: var(--muted);
-    margin-top: 12px; padding-left: 1px;
-  }
-
-  /* ── Cronología ── */
-  .cronologia { padding: 40px 0 20px }
-  .cap { padding: clamp(56px, 8vw, 104px) 0 0 }
-  .cap:first-child { padding-top: 0 }
-  .cap-anio {
-    font-family: var(--display);
-    font-size: clamp(4.5rem, 15vw, 12rem);
-    line-height: .82; letter-spacing: .06em;
-    color: var(--white); opacity: .12;
-    margin-bottom: .06em;
-    user-select: none;
-  }
-  /* Izquierda: título + metadatos. Derecha: el relato, alineado al título. */
-  .cap-cuerpo {
-    display: grid; grid-template-columns: .92fr 1.08fr;
-    column-gap: clamp(24px, 5vw, 72px); row-gap: 16px;
-    align-items: start;
-  }
-  .cap-titulo { grid-column: 1; grid-row: 1 }
-  .cap-meta   { grid-column: 1; grid-row: 2 }
-  .cap-texto  { grid-column: 2; grid-row: 1 / span 2 }
-  .cap-anio-sr {
-    position: absolute; width: 1px; height: 1px;
-    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
-  }
-  .cap-titulo {
-    font-family: var(--serif); font-weight: 400;
-    font-size: clamp(1.9rem, 4.2vw, 3.2rem);
-    line-height: 1.02; letter-spacing: -.01em; color: var(--white);
-  }
-  .cap-meta {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
-  }
-  .cap-meta .sep { margin: 0 10px; opacity: .55 }
-  .cap-texto {
-    font-size: clamp(.98rem, 1.3vw, 1.1rem); line-height: 1.78;
-    color: var(--muted); max-width: 58ch;
-  }
-  .cap-texto p + p { margin-top: 1.15em }
-  .cap-regla { border: 0; border-top: 1px solid var(--rule); margin-top: clamp(48px, 7vw, 88px) }
-
-  /* Puente al currículum */
-  .cap-cv {
-    margin-top: clamp(48px, 7vw, 88px);
-    padding-top: 28px; border-top: 1px solid var(--rule);
-    display: flex; align-items: baseline; justify-content: space-between;
-    gap: 20px; flex-wrap: wrap;
-  }
-  .cap-cv p { font-size: .92rem; color: var(--muted); max-width: 48ch }
-  .cap-cv a {
-    font-family: var(--mono); font-size: .78rem;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    color: var(--white); white-space: nowrap;
-    border-bottom: 1px solid var(--rule); padding-bottom: 4px;
-    transition: border-color .2s;
-  }
-  .cap-cv a:hover { border-color: var(--white) }
-
-  /* ── Ficha técnica ── */
-  .ficha-sec { padding: clamp(80px, 11vw, 140px) 0 }
-  .ficha-h {
-    font-family: var(--serif); font-weight: 400;
-    font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.05;
-    color: var(--white); margin: 14px 0 46px;
-  }
-  /* Dos bloques, uno por público. Más anchos que las 4 columnas de antes
-     porque cada línea es una frase, no una palabra suelta. */
-  .ficha-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr);
-    gap: clamp(28px, 5vw, 72px);
-  }
-  .ficha-col { border-top: 1px solid var(--rule); padding-top: 20px }
-  .ficha-col h3 {
-    font-family: var(--serif); font-weight: 400;
-    font-size: clamp(1.15rem, 2vw, 1.5rem); line-height: 1.2;
-    color: var(--white); margin-bottom: 18px;
-  }
-  .ficha-col ul { list-style: none }
-  .ficha-col li {
-    font-size: var(--text-sm); color: var(--muted);
-    padding: 7px 0; border-bottom: 1px solid color-mix(in srgb, var(--white) 6%, transparent);
-  }
-  .ficha-col li:last-child { border-bottom: 0 }
-
-  /* ── Cierre ── */
-  .cierre { padding: 0 0 clamp(90px, 12vw, 150px); text-align: center }
-  .cierre-cita {
-    font-family: var(--serif); font-weight: 400;
-    font-size: clamp(1.7rem, 4.6vw, 3.4rem);
-    line-height: 1.16; letter-spacing: -.01em;
-    color: var(--white); max-width: 34ch; margin: 0 auto;
-    text-wrap: balance;
-  }
-  .cierre-cita em { font-style: italic; color: var(--muted) }
-  .cierre-h {
-    font-family: var(--serif); font-weight: 400;
-    font-size: clamp(1.4rem, 3vw, 2.1rem); line-height: 1.2;
-    color: var(--white); margin: clamp(48px, 7vw, 72px) auto 0; max-width: 30ch;
-    text-wrap: balance;
-  }
-  .cierre-texto {
-    font-size: var(--text-base); color: var(--muted); line-height: 1.7;
-    margin: 16px auto 0; max-width: 52ch;
-  }
-  .cierre-acciones {
-    display: flex; gap: 12px; justify-content: center;
-    flex-wrap: wrap; margin-top: 32px;
-  }
-
-  /* ── Responsive ── */
-  /* ── Móvil: el retrato es PORTADA a sangre completa ──
-     La foto y el titular comparten la misma celda del grid, así que el título
-     se apoya sobre la imagen sin posicionamiento absoluto. El nav es
-     transparente hasta que hay scroll, por eso la foto puede pasar por detrás. */
-  @media (max-width: 900px) {
-    .ap { padding: 0 0 clamp(48px, 10vw, 72px) }
-    .ap-grid {
-      grid-template-columns: 1fr;
-      grid-template-areas: "portada" "resto";
-      padding-inline: 0;          /* el .container deja de recortar: full-bleed */
-    }
-    .ap-retrato { grid-area: portada; margin: 0 }
-    .ap-retrato img {
-      height: 78svh; min-height: 420px; width: 100%;
-      object-fit: cover; object-position: 50% 22%;
-      border-radius: 0;
-    }
-    /* Oscurecido inferior para que el titular se lea. Va a negro fijo —no a
-       var(--ink)— porque la foto es oscura en los dos temas. */
-    .ap-retrato::after {
-      content: ''; position: absolute; inset: 0; pointer-events: none;
-      background:
-        linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.45) 30%, transparent 62%),
-        linear-gradient(to bottom, rgba(0,0,0,.5) 0%, transparent 24%);
-    }
-    /* El nav flota sobre la portada. Mientras no hay scroll (umbral: 20px, muy
-       por debajo del alto de la foto) sus colores se fuerzan a claros: si no,
-       en tema claro quedaban oscuros sobre foto oscura y el botón de menú se
-       volvía invisible. Al hacer scroll el header recupera fondo y colores. */
-    :global(header:not(.scrolled)) {
-      --white: #f0ede8;
-      --muted: rgba(240,237,232,.75);
-      --dim:   rgba(240,237,232,.55);
-    }
-    /* En tema claro global.css le pone fondo sólido al header SIEMPRE (con
-       !important), lo que tapaba la portada. Aquí se destapa hasta que scrollea. */
-    :global([data-theme="light"] header:not(.scrolled)) {
-      background: transparent !important;
-      border-color: transparent !important;
-      backdrop-filter: none;
-    }
-    /* Y el logo, que en tema claro se invierte a oscuro: sobre la foto tiene
-       que quedarse en su versión clara. */
-    :global([data-theme="light"] header:not(.scrolled) .nav-logo-img) { filter: none }
-    .ap-retrato figcaption { display: none }
-
-    .ap-titular {
-      grid-area: portada; align-self: end; z-index: 2;
-      padding: 0 24px clamp(24px, 5vw, 40px);
-    }
-    /* Sobre la foto el texto siempre va claro, aunque el tema sea claro. */
-    .ap-titular .eyebrow { color: rgba(255,255,255,.72) }
-    .ap-title { color: #fff; margin-top: 10px; text-shadow: 0 2px 30px rgba(0,0,0,.5) }
-    .ap-title em { color: rgba(255,255,255,.72) }
-
-    .ap-resto { grid-area: resto; padding: clamp(28px, 6vw, 40px) 24px 0 }
-    .ap-sub { margin-top: 0 }
-
-    .ficha-grid { grid-template-columns: 1fr; gap: 36px }
-  }
-  @media (max-width: 600px) {
-    .ap-titular, .ap-resto { padding-inline: 16px }
-  }
-  @media (max-width: 640px) {
-    .cap-cuerpo { grid-template-columns: 1fr; row-gap: 14px }
-    .cap-titulo, .cap-meta, .cap-texto { grid-column: 1; grid-row: auto }
-    .cap-anio { font-size: clamp(4rem, 22vw, 7rem); margin-bottom: -.1em }
-    .ficha-grid { grid-template-columns: 1fr }
-    .cierre-cita { max-width: 100% }
-  }
-
-  /* ── Sin movimiento ── */
-  @media (prefers-reduced-motion: reduce) {
-    :global(html.js-focus) [data-focus],
-    :global(html.js-focus) [data-focus].nitido {
-      filter: none; opacity: 1; transform: none; transition: none;
-    }
-  }
-  </style>
-
-  <script>
-    /* El desenfoque se activa solo si hay JS: sin él la página nace nítida
-       y perfectamente legible. Con reduced-motion el CSS anula el efecto. */
-    (() => {
-      const targets = document.querySelectorAll('[data-focus]');
-      if (!targets.length) return;
-
-      const quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (quieto) return;
-
-      document.documentElement.classList.add('js-focus');
-
-      const enfocar = (el) => el.classList.add('nitido');
-
-      if (!('IntersectionObserver' in window)) {
-        targets.forEach(enfocar);
-        return;
-      }
-
-      const io = new IntersectionObserver((entradas) => {
-        entradas.forEach((e) => {
-          if (!e.isIntersecting) return;
-          enfocar(e.target);
-          io.unobserve(e.target);
-        });
-      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
-
-      targets.forEach((t) => io.observe(t));
-
-      /* Lo que ya está en pantalla al cargar enfoca de una, sin esperar scroll. */
-      requestAnimationFrame(() => {
-        targets.forEach((t) => {
-          if (t.getBoundingClientRect().top < window.innerHeight * 0.9) {
-            enfocar(t); io.unobserve(t);
-          }
-        });
-      });
-    })();
-  </script>
 </Base>
+
+<script is:inline define:vars={{ rollo }}>
+  (function () {
+    var vi = document.getElementById('vi'), im = document.getElementById('vi-i'), an = document.getElementById('vi-a'), af = document.getElementById('vi-af');
+    var quieto = matchMedia('(prefers-reduced-motion: reduce)').matches, raf = 0, i = 0;
+    function foco(v) { vi.style.setProperty('--b', ((100 - v) * .2).toFixed(2) + 'px'); af.classList.toggle('ok', v >= 96) }
+    // Autofoco: de borroso a nítido, como la cámara.
+    function autofoco(d) {
+      cancelAnimationFrame(raf);
+      if (quieto) { an.value = 100; foco(100); return; }
+      var v0 = +d, t0 = performance.now();
+      an.value = v0; foco(v0);
+      (function p(t) { var k = Math.min((t - t0) / 800, 1), e = 1 - Math.pow(1 - k, 3), v = v0 + (100 - v0) * e; an.value = v; foco(v); if (k < 1) raf = requestAnimationFrame(p) })(t0);
+    }
+    an.addEventListener('input', function () { cancelAnimationFrame(raf); foco(+an.value) });
+    autofoco(25);
+
+    // Disparar: la cortina cierra, cambia la imagen y vuelve a enfocar.
+    var d = document.getElementById('vi-d'), n = document.getElementById('vi-n'), pie = document.getElementById('vi-p');
+    function pre(j) { var x = new Image(); x.src = rollo[j % rollo.length].s }
+    d.addEventListener('pointerenter', function () { pre(i + 1) }, { once: false });
+    d.addEventListener('click', function () {
+      i = (i + 1) % rollo.length; pre(i + 1);
+      vi.classList.remove('dis'); void vi.offsetWidth; vi.classList.add('dis');
+      setTimeout(function () {
+        im.src = rollo[i].s; im.alt = rollo[i].t;
+        n.textContent = (i + 1) + '/' + rollo.length; pie.textContent = rollo[i].t;
+        autofoco(55);
+      }, 130);
+    });
+
+    // Contadores: suben al entrar en pantalla.
+    var ds = document.querySelectorAll('.cu dd');
+    if (!quieto) new IntersectionObserver(function (e, o) {
+      if (!e[0].isIntersecting) return; o.disconnect();
+      ds.forEach(function (el) { var fin = +el.dataset.n, t0 = performance.now();
+        (function p(t) { var k = Math.min((t - t0) / 1100, 1); el.textContent = Math.round(fin * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(p) })(t0) });
+    }, { threshold: .4 }).observe(document.querySelector('.cu'));
+
+    // Cámara: la exposición se calcula de verdad, en pasos de luz.
+    var F = [1.8, 2.8, 4, 5.6, 8, 11, 16], V = [30, 60, 125, 250, 500, 1000, 4000], O = [100, 200, 400, 800, 1600, 3200, 6400];
+    var cm = document.getElementById('cm'), rf = document.getElementById('cm-f'), rs = document.getElementById('cm-s'), ro = document.getElementById('cm-o');
+    var $ = function (x) { return document.getElementById(x) }, mg = $('mb-g');
+    function expo() {
+      var f = F[rf.value], d = V[rs.value], o = O[ro.value];
+      var ev = Math.log2(o / 400) + Math.log2(125 / d) + 2 * Math.log2(4 / f);
+      var br = Math.max(.1, Math.min(3, Math.pow(2, ev * .55))), bl = Math.max(0, (16 / f - 1) * 1.1), mo = d <= 30 ? 12 : d <= 60 ? 5 : 0;
+      mg.setAttribute('stdDeviation', mo + ' 0');
+      cm.style.setProperty('--br', br.toFixed(2)); cm.style.setProperty('--bl', bl.toFixed(1) + 'px');
+      cm.style.setProperty('--mo', mo ? 'url(#mb)' : 'none');
+      cm.style.setProperty('--gr', (Math.log2(o / 100) / 6 * .95).toFixed(2));
+      $('cm-ip').setAttribute('transform', 'scale(' + Math.max(.11, 1.8 / f).toFixed(3) + ')');
+      $('cm-ag').style.left = (Math.max(-3, Math.min(3, ev)) + 3) / 6 * 100 + '%';
+      $('cm-fv').textContent = 'f/' + f; $('cm-sv').textContent = '1/' + d; $('cm-iv').textContent = o;
+      $('cm-fd').textContent = f <= 2.8 ? 'Entra mucha luz y el fondo se desenfoca.' : f >= 8 ? 'Entra poca luz; casi todo sale nítido.' : 'Un punto medio de luz y nitidez.';
+      $('cm-sd').textContent = d <= 60 ? 'Lo que se mueve queda barrido.' : d >= 1000 ? 'Congela la acción, pero entra poca luz.' : 'Sin barrido en la mayoría de las escenas.';
+      $('cm-id').textContent = o >= 1600 ? 'Ve en la oscuridad, con más grano.' : o <= 200 ? 'Imagen limpia; necesita más luz.' : 'Equilibrio entre luz y grano.';
+      $('cm-v').textContent = ev > 1.2 ? 'Sobreexpuesta: demasiada luz' : ev < -1.2 ? 'Subexpuesta: falta luz' : 'Bien expuesta';
+      $('cm-v').dataset.ok = Math.abs(ev) <= 1.2;
+    }
+    [rf, rs, ro].forEach(function (r) { r.addEventListener('input', expo) });
+    document.querySelectorAll('.cm-pr button').forEach(function (b) { b.addEventListener('click', function () {
+      var p = b.dataset.p.split(','); rf.value = p[0]; rs.value = p[1]; ro.value = p[2]; expo();
+    }) });
+    expo();
+
+    // Paleta: un cambio de variable pinta toda la página.
+    var pb = document.querySelectorAll('.pl-b button'), pe = $('pl-e');
+    pb.forEach(function (b) { b.addEventListener('click', function () {
+      document.documentElement.style.setProperty('--flame', b.dataset.c);
+      pb.forEach(function (x) { x.setAttribute('aria-pressed', x === b) });
+      var c = b.dataset.c.toUpperCase();
+      pe.textContent = b.dataset.n + ' ' + c;
+      if (navigator.clipboard) navigator.clipboard.writeText(c).then(function () { pe.textContent = b.dataset.n + ' ' + c + ' copiado.' }).catch(function () {});
+    }) });
+
+    // Oficios: en escritorio basta con apuntar.
+    document.querySelectorAll('.of-l label').forEach(function (l) {
+      l.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') l.querySelector('input').checked = true });
+    });
+
+    // La ruta se arrastra con el ratón.
+    var ru = document.getElementById('ru-l'), dn = false, x0 = 0, s0 = 0;
+    ru.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') return; dn = true; x0 = e.clientX; s0 = ru.scrollLeft; ru.classList.add('ag') });
+    addEventListener('pointermove', function (e) { if (dn) ru.scrollLeft = s0 - (e.clientX - x0) });
+    addEventListener('pointerup', function () { dn = false; ru.classList.remove('ag') });
+  })();
+</script>
+
+<style>
+  .sec { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.75rem, 7.2vw, 7.5rem); line-height: .94 }
+  .sec .it { font-size: 1.04em }
+
+  /* ── Visor ── */
+  .vi { --b: 0px; --muted: rgba(13,12,11,.88); min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); grid-template-rows: auto 1fr; gap: clamp(14px, 2vw, 28px) clamp(20px, 4vw, 72px); align-items: center; padding: 92px var(--gut) 32px; overflow: clip; background: var(--flame); color: #0d0c0b; transition: background-color .45s ease }
+  .ti { grid-column: 1 / -1; font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: calc((100vw - 2 * var(--gut)) / 8.05); line-height: .86; white-space: nowrap; filter: blur(calc(var(--b) * .25)); will-change: filter }
+  .ti .it { font-size: 1.08em; line-height: .9; margin-left: .04em }
+  .vi-t { min-width: 0 }
+  .vi-s { font-size: clamp(1.125rem, 1.65vw, 1.625rem); font-weight: 500; line-height: 1.32; max-width: 32em }
+  .vi-d { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-block: clamp(14px, 2vw, 26px); padding-top: 12px; border-top: 2px solid #0d0c0b; font-size: .9375rem }
+  .vi-d dt { font-weight: 500 } .vi-d dd { font-weight: 700 }
+  /* La foto es una copia impresa: borde blanco, sombra y un bloque detrás */
+  .vi-f { position: relative; min-width: 0; background: #fff; padding: clamp(8px, 1vw, 14px) clamp(8px, 1vw, 14px) 0; rotate: 1.6deg; box-shadow: 14px 14px 0 #0d0c0b, 0 30px 60px rgba(13,12,11,.3); transition: rotate .5s var(--ease), scale .5s var(--ease) }
+  .vi-f:hover { rotate: 0deg; scale: 1.012 }
+  .vi-m { position: relative; aspect-ratio: 5/4; max-height: calc(100svh - 310px); width: 100%; overflow: hidden; background: #000 }
+  .vi-m img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; filter: blur(var(--b)); transform: scale(1.04); will-change: filter }
+  .vi-h { position: absolute; inset: 14px; color: #fff; font-size: .8125rem; font-weight: 600; font-variant-numeric: tabular-nums; text-shadow: 0 1px 4px rgba(0,0,0,.8); pointer-events: none }
+  .vi-h::before, .vi-h::after { content:''; position: absolute; width: 26px; height: 26px; border: 2px solid rgba(255,255,255,.85) }
+  .vi-h::before { left: 0; top: 0; border-right: 0; border-bottom: 0 } .vi-h::after { right: 0; bottom: 0; border-left: 0; border-top: 0 }
+  .af { position: absolute; left: 36px; top: 6px; padding: 1px 7px; border: 1.5px solid #fff; border-radius: 3px; transition: background .15s, border-color .15s, color .15s }
+  .af:global(.ok) { background: #25d366; border-color: #25d366; color: #06230f; text-shadow: none }
+  .cn { position: absolute; left: 50%; top: 50%; width: 78px; height: 56px; translate: -50% -50%; border: 2px solid rgba(255,255,255,.8); border-radius: 3px; transition: border-color .15s, scale .25s var(--ease) }
+  .vi:has(.af:global(.ok)) .cn { border-color: #25d366; scale: .86 }
+  .pa { position: absolute; left: 0; bottom: 2px; display: flex; gap: 12px } .pa b { font-weight: 600 }
+  .nu { position: absolute; right: 36px; bottom: 2px }
+  .vi-c { position: absolute; inset: 0; pointer-events: none; z-index: 2 }
+  .vi-c i { position: absolute; left: 0; right: 0; height: 50.5%; background: #000; transform: scaleY(0) }
+  .vi-c i:first-child { top: 0; transform-origin: top } .vi-c i:last-child { bottom: 0; transform-origin: bottom }
+  .vi:global(.dis) .vi-c i { animation: cort .36s ease-in-out }
+  @keyframes cort { 0%, 100% { transform: scaleY(0) } 38%, 62% { transform: scaleY(1) } }
+  .vi-pie { font-family: var(--serif); font-style: italic; font-size: 1.25rem; color: #14120f; padding-block: 8px 12px; text-align: center; min-height: 2.6em }
+  .vi-ct { display: flex; align-items: center; gap: 16px }
+  .an { flex: 1; display: grid; gap: 6px; font-size: .875rem; font-weight: 600 }
+  .an input { -webkit-appearance: none; appearance: none; width: 100%; height: 44px; cursor: ew-resize; border-radius: 6px; background: repeating-linear-gradient(90deg, rgba(243,238,229,.55) 0 1px, transparent 1px 9px) center / 100% 16px no-repeat, #0d0c0b; border: 0 }
+  .an input::-webkit-slider-thumb { -webkit-appearance: none; width: 8px; height: 44px; border-radius: 3px; background: #fff }
+  .an input::-moz-range-thumb { width: 8px; height: 44px; border: 0; border-radius: 3px; background: #fff }
+  .an input:focus-visible { outline: 2px solid #0d0c0b; outline-offset: 2px }
+  .ob { flex: none; width: 84px; height: 84px; border-radius: 50%; border: 3px solid #0d0c0b; padding: 5px; transition: scale .15s }
+  .ob span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: #0d0c0b; color: #fff; font-size: .75rem; font-weight: 700; transition: background .15s }
+  .ob:hover span { background: #fff; color: #0d0c0b } .ob:active { scale: .9 }
+  @media (max-width: 900px) {
+    .vi { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-bottom: 44px }
+    .ti { font-size: calc((100vw - 2 * var(--gut)) / 5.75); white-space: normal } .ti span, .ti .it { display: block } .ti .it { margin: 0 }
+    .vi-m { max-height: none } .vi-f { order: 2; margin-right: 14px; margin-bottom: 14px } .vi-t { display: contents } .vi-s { order: 1 } .vi-d { order: 3; margin-top: 16px } .vi-ct { order: 4 }
+  }
+
+  /* ── Capítulos que se apilan ── */
+  .cp { position: relative; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 72px); align-items: center; padding: 96px var(--gut) 40px; overflow: clip; border-top: 1px solid var(--border) }
+  @media (min-width: 901px) and (min-height: 700px) { .cp { position: sticky; top: 0 } }
+  .c1 { background: #05251a; z-index: 1 } .c2 { z-index: 2; background: #ffc21a } .c3 { background: var(--cobalto); color: #fff; z-index: 3; --muted: rgba(255,255,255,.88); --border: rgba(255,255,255,.3) }
+  .cp-a { font-family: var(--display); font-weight: 800; font-size: clamp(7rem, 25vw, 28rem); line-height: .8; letter-spacing: -.02em }
+  .c1 .cp-a { color: #2fe06f } .c2 .cp-a { color: #0d0c0b } .c3 .cp-a { color: #fff }
+  .cp-b h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.25rem, 4.6vw, 4.75rem); line-height: .96; margin-bottom: 14px }
+  .cp-b > p { font-size: clamp(1.0625rem, 1.5vw, 1.375rem); line-height: 1.4; color: var(--muted); max-width: 36em }
+  .cd { margin-top: 22px; padding: 16px 18px; border: 1px solid rgba(47,224,111,.35); border-radius: 6px; font: 500 clamp(.8125rem, 1.15vw, 1.0625rem)/1.6 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; color: #7ff0a6; overflow: hidden }
+  .cd span { display: block; white-space: pre-wrap }
+  .ter { position: relative; margin-top: 22px; aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius) }
+  .ter img { width: 100%; height: 100%; object-fit: cover; transition: scale 1s var(--ease) } .ter:hover img { scale: 1.05 }
+  .ter i { position: absolute; inset: 0; opacity: .75; transition: opacity .3s; background: linear-gradient(90deg, transparent calc(33.33% - 1px), #fff 0 calc(33.33% + 1px), transparent 0 calc(66.66% - 1px), #fff 0 calc(66.66% + 1px), transparent 0), linear-gradient(0deg, transparent calc(33.33% - 1px), #fff 0 calc(33.33% + 1px), transparent 0 calc(66.66% - 1px), #fff 0 calc(66.66% + 1px), transparent 0) }
+  .ter:hover i { opacity: 0 }
+  .cu { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 18px }
+  .cu div { display: flex; flex-direction: column-reverse } .cu dd { font-family: var(--display); font-weight: 800; font-size: clamp(3rem, 6vw, 6rem); line-height: .95; font-variant-numeric: tabular-nums } .cu dt { font-size: .9375rem; font-weight: 500 }
+  @media (max-width: 900px) { .cp { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-block: 56px } }
+
+  /* ── Cámara ── */
+  .cm { --br: 1; --bl: 0px; --mo: none; --gr: 0; position: relative; z-index: 4; padding-block: var(--sec); background: #06343a; color: #eef7f5; --muted: rgba(238,247,245,.82); --border: rgba(238,247,245,.25) }
+  .cm-g { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 28px clamp(24px, 4vw, 64px); margin-top: clamp(22px, 3.5vw, 48px); align-items: start }
+  .cm-f { background: #fff; padding: 10px; color: #14120f; rotate: -.8deg; box-shadow: 0 22px 48px rgba(0,0,0,.35) }
+  .cm-i { position: relative; aspect-ratio: 16/10; overflow: hidden; background: #000; filter: brightness(var(--br)); transition: filter .25s }
+  .cm-i img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover }
+  .cm-b { filter: blur(var(--bl)) var(--mo); transform: scale(1.03); transition: filter .25s }
+  .cm-n { filter: var(--mo); -webkit-mask-image: radial-gradient(ellipse 46% 56% at 50% 45%, #000 45%, transparent 100%); mask-image: radial-gradient(ellipse 46% 56% at 50% 45%, #000 45%, transparent 100%) }
+  .cm-gr { position: absolute; inset: 0; background: url(/grano.webp) 0 0 / 160px, url(/grano.webp) 53px 37px / 120px; opacity: var(--gr) }
+  .cm-me { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding-top: 10px; font-size: .8125rem; font-weight: 700 }
+  .cm-me i { position: relative; height: 10px; background: repeating-linear-gradient(90deg, #14120f 0 2px, transparent 2px calc(100% / 6)) }
+  .cm-me b { position: absolute; top: -4px; width: 4px; height: 18px; margin-left: -2px; background: #d9310a; transition: left .25s var(--ease) }
+  .cm-v { font-weight: 700; padding-block: 8px 4px; text-align: center; color: #b3260a } .cm-v[data-ok='true'] { color: #0a7a3d }
+  .cm-c { display: grid; gap: 16px; position: relative }
+  .cm-pr { display: flex; flex-wrap: wrap; gap: 6px }
+  .cm-pr button { min-height: 42px; padding: 7px 15px; border: 1px solid var(--border); border-radius: 99px; font-weight: 600; font-size: .9375rem; transition: background .2s, color .2s }
+  .cm-pr button:hover, .cm-pr button:focus-visible { background: var(--flame); color: #0d0c0b }
+  .cm-s { display: grid; gap: 4px }
+  .cm-s > span { display: flex; justify-content: space-between; font-weight: 600 } .cm-s strong { font-size: 1.25rem; font-variant-numeric: tabular-nums }
+  .cm-s small { color: var(--muted); font-size: .9375rem; min-height: 1.4em }
+  .cm-s input { width: 100%; height: 36px; accent-color: var(--flame); cursor: pointer }
+  .cm-ir { width: clamp(84px, 9vw, 130px); justify-self: end; margin-top: -6px }
+  #cm-ip { transition: transform .3s var(--ease) }
+  @media (max-width: 860px) { .cm-g { grid-template-columns: minmax(0, 1fr) } }
+
+  /* ── Paleta ── */
+  .pl { position: relative; z-index: 4; padding-top: var(--sec); background: var(--paper); color: var(--on-paper) }
+  .pl-h { display: grid; gap: 12px; padding-bottom: clamp(20px, 3vw, 36px) } .pl-h p { font-size: var(--text-lg); font-weight: 500 }
+  .pl-b { display: flex; height: clamp(300px, 46vh, 520px) }
+  .pl-b button { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 2px; padding: clamp(10px, 1.4vw, 20px); background: var(--c); color: #0d0c0b; text-align: left; overflow: hidden; transition: flex-grow .45s var(--ease) }
+  .pl-b button:hover, .pl-b button:focus-visible { flex-grow: 1.9 }
+  .pl-b button[aria-pressed='true'] { flex-grow: 2.4 }
+  .pl-b strong { font-family: var(--display); font-weight: 800; font-size: clamp(1.25rem, 2.6vw, 2.75rem); text-transform: uppercase; line-height: 1; white-space: nowrap }
+  .pl-b span { font-weight: 600; font-size: .875rem; font-variant-numeric: tabular-nums }
+  @media (max-width: 700px) { .pl-b { flex-direction: column; height: auto } .pl-b button { flex: none; min-height: 64px; flex-direction: row; justify-content: space-between; align-items: center } .pl-b button[aria-pressed='true'] { min-height: 92px } }
+
+  /* ── Oficios ── */
+  .of { padding-block: var(--sec); position: relative; z-index: 4; background: #111733 }
+  .of-g { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(20px, 4vw, 64px); align-items: start; margin-top: clamp(24px, 4vw, 56px) }
+  .of-l label { display: block; cursor: pointer; border-top: 1px solid var(--border) }
+  .of-l label:last-child { border-bottom: 1px solid var(--border) }
+  .of-l span { display: block; font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.5rem, 6vw, 6.25rem); line-height: 1.04; color: var(--dim); transition: color .2s, translate .3s var(--ease) }
+  .of-l input:checked + span { color: var(--flame); translate: 10px 0 }
+  .of-l input:focus-visible + span { outline: 2px solid var(--flame); outline-offset: 2px }
+  .of-p { display: grid; position: sticky; top: 92px }
+  .of-c { grid-area: 1 / 1; opacity: 0; visibility: hidden; translate: 0 12px; transition: opacity .28s, translate .4s var(--ease), visibility .28s }
+  .of-g:has(#of-diseno:checked) .of-diseno, .of-g:has(#of-foto:checked) .of-foto, .of-g:has(#of-video:checked) .of-video, .of-g:has(#of-web:checked) .of-web, .of-g:has(#of-sis:checked) .of-sis { opacity: 1; visibility: visible; translate: 0 0 }
+  .of-c img { width: 100%; aspect-ratio: 16/10; object-fit: cover; object-position: top; border-radius: var(--radius); background: var(--surface) }
+  .of-d { display: grid; gap: 4px; padding-top: 14px; color: var(--muted); font-size: 1.0625rem; line-height: 1.4 }
+  .of-d strong { color: var(--white); font-weight: 600; font-size: 1.25rem } .of-d em { font-style: normal; font-weight: 600; color: var(--flame); margin-top: 4px }
+  @media (max-width: 800px) { .of-g { grid-template-columns: minmax(0, 1fr) } .of-p { position: static; order: -1 } }
+
+  /* ── Ruta ── */
+  .ru { padding-block: var(--sec) calc(var(--sec) * .7); position: relative; z-index: 4 }
+  .ru-h { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 14px 32px; margin-bottom: clamp(20px, 3vw, 40px) }
+  .ru-h p { display: flex; flex-wrap: wrap; gap: 8px }
+  .ru-l { list-style: none; display: flex; gap: 0; overflow-x: auto; scroll-snap-type: x proximity; scroll-padding-left: var(--gut); padding-inline: var(--gut); cursor: grab; scrollbar-width: none; border-block: 2px solid var(--on-paper) }
+  .ru-l:global(.ag) { cursor: grabbing; scroll-snap-type: none; user-select: none }
+  .ru-l:focus-visible { outline: 2px solid var(--flame); outline-offset: 2px }
+  .ru-l li { flex: 0 0 clamp(270px, 30vw, 440px); scroll-snap-align: start; padding: 22px 28px 26px 0; margin-right: 28px; border-right: 1px solid var(--border); transition: background .2s }
+  .ru-a { font-family: var(--display); font-weight: 800; font-size: clamp(2.25rem, 4vw, 3.75rem); line-height: 1; margin-bottom: 14px; color: #c93208 }
+  .ru-l h3 { font-size: 1.25rem; font-weight: 600; line-height: 1.2; letter-spacing: -.015em; margin-bottom: 6px } .ru-l li p:last-child { color: var(--muted) }
+  .ru-q { padding-top: 12px; font-size: .875rem; font-weight: 600 }
+
+  /* ── Público ── */
+  .pu { padding-block: var(--sec); position: relative; z-index: 4; background: var(--flame); color: #0d0c0b; --border: rgba(13,12,11,.35); --border-h: #0d0c0b; transition: background-color .45s ease }
+  .pu-s { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-block: 22px 26px; padding: 5px; border: 2px solid #0d0c0b; border-radius: 30px }
+  .pu-s label { cursor: pointer } .pu-s span { display: block; padding: 11px 22px; border-radius: 99px; font-weight: 600; transition: background .2s, color .2s }
+  .pu-s input:checked + span { background: #0d0c0b; color: #fff } .pu-s input:focus-visible + span { outline: 2px solid #0d0c0b; outline-offset: 2px }
+  .pu-l { display: none; list-style: none; grid-template-columns: repeat(2, 1fr); column-gap: clamp(20px, 4vw, 64px); border-top: 1px solid var(--border) }
+  .pu:has(#pu-marca:checked) .pu-marca, .pu:has(#pu-evento:checked) .pu-evento { display: grid }
+  .pu-l li { padding-block: 13px; border-bottom: 1px solid var(--border); font-size: clamp(1.25rem, 2.2vw, 2rem); font-weight: 500; letter-spacing: -.02em; animation: pu-in .4s var(--ease) both; animation-delay: calc(var(--i) * 45ms) }
+  @keyframes pu-in { from { opacity: 0; translate: -12px 0 } }
+  .cita { margin-top: clamp(48px, 7vw, 100px); font-family: var(--serif); font-style: italic; font-size: clamp(2rem, 4.8vw, 4.75rem); line-height: 1.08; max-width: 20em }
+  .cita :global(em) { text-decoration: underline; text-decoration-thickness: .05em; text-underline-offset: .12em }
+  @media (max-width: 640px) { .pu-l { grid-template-columns: 1fr } }
+</style>
