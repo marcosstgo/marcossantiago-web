@@ -8,70 +8,119 @@ const activo = (h: string) =>
 ---
 <a href="#main" class="skip">Saltar al contenido</a>
 <header class="nav">
+  <span class="grano" aria-hidden="true"></span>
   <a href="/" class="nav-marca" aria-label="Marcos Santiago, inicio">
     <img src="/logos-home/logo-marcos.svg" alt="" width="62" height="28" />
   </a>
   <nav class="nav-links" aria-label="Principal">
-    {NAV.map(l => <a href={l.href} aria-current={activo(l.href) ? 'page' : undefined}>{l.label}</a>)}
+    <span class="capsula" aria-hidden="true"></span>
+    {NAV.map(l => <a href={l.href} aria-current={activo(l.href) ? 'page' : undefined}><span data-t={l.label}>{l.label}</span></a>)}
   </nav>
   <a href="/contacto/" class="nav-cta">Hablemos <span aria-hidden="true">→</span></a>
   <button class="nav-abrir" popovertarget="nav-movil" aria-label="Abrir menú"><span></span><span></span></button>
+  <span class="avance" aria-hidden="true"></span>
 </header>
 
-<!-- Menú móvil con popover nativo: cero JavaScript -->
+<!-- Menú móvil con popover nativo: se enciende como un televisor -->
 <div id="nav-movil" popover="auto" class="nav-movil">
+  <span class="grano" aria-hidden="true"></span>
   <button class="nav-cerrar" popovertarget="nav-movil" popovertargetaction="hide" aria-label="Cerrar menú">×</button>
   <nav aria-label="Móvil">
-    {NAV.map(l => <a href={l.href}>{l.label}</a>)}
-    <a href="/contacto/">Hablemos</a>
+    {NAV.map((l, i) => <a href={l.href} style={`--i:${i}`} aria-current={activo(l.href) ? 'page' : undefined}>{l.label}</a>)}
+    <a href="/contacto/" style={`--i:${NAV.length}`}>Hablemos</a>
   </nav>
-  <a class="nav-wa" href={wa()} data-track="nav-whatsapp">WhatsApp · (787) 243-9670</a>
+  <a class="nav-wa" href={wa()} data-track="nav-whatsapp">Escríbeme por WhatsApp →</a>
 </div>
 
 <script is:inline>
-  // Al bajar se esconde; al subir vuelve con fondo sólido para no pisar el contenido.
   (function () {
+    // Al bajar se esconde; al subir vuelve.
     var n = document.querySelector('.nav'), y0 = scrollY, pend = false;
     function f() { pend = false; var y = scrollY;
       n.classList.toggle('fijo', y > 40);
       if (Math.abs(y - y0) > 6) { n.classList.toggle('oculto', y > y0 && y > 160); y0 = y; } }
     addEventListener('scroll', function () { if (!pend) { pend = true; requestAnimationFrame(f); } }, { passive: true });
     f();
+    // Cápsula que sigue el cursor y regresa a la página actual.
+    var c = n.querySelector('.capsula'), ls = n.querySelector('.nav-links'), act = ls.querySelector('[aria-current]');
+    function a(el) {
+      if (!el) { c.style.opacity = 0; return; }
+      c.style.opacity = 1; c.style.width = el.offsetWidth + 'px'; c.style.translate = el.offsetLeft + 'px 0';
+    }
+    ls.querySelectorAll('a').forEach(function (l) {
+      l.addEventListener('pointerenter', function () { a(l) });
+      l.addEventListener('focus', function () { a(l) });
+    });
+    ls.addEventListener('pointerleave', function () { a(act) });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { a(act) }); else a(act);
+    addEventListener('resize', function () { a(act) }, { passive: true });
   })();
 </script>
 
 <style>
   .skip { position: fixed; left: 12px; top: -60px; z-index: 300; background: var(--flame); color: #0d0c0b; padding: 10px 16px; font-weight: 600 }
   .skip:focus { top: 12px }
-  .nav {
-    position: fixed; inset: 0 0 auto; z-index: 100; height: 72px;
-    display: flex; align-items: center; gap: 28px; padding-inline: var(--gut);
-    color: #f3eee5; transition: translate .3s var(--ease), background-color .25s;
-  }
-  :global(body:has(main.on-paper)) .nav:not(:global(.fijo)) { color: #14120f }
-  :global(body:has(main.on-paper)) .nav:not(:global(.fijo)) img { filter: invert(1) }
-  :global(body:has(main.on-paper)) .nav:not(:global(.fijo)) .nav-cta:hover { background: #14120f; color: #f3eee5 }
-  .nav:global(.fijo) { background: #0d0c0b }
-  .nav:global(.oculto) { translate: 0 -100% }
-  .nav-marca { margin-right: auto; display: block }
-  .nav-marca img { height: 28px; width: auto }
-  .nav-links { display: flex; gap: 30px; font-size: .9375rem; font-weight: 500 }
-  .nav-links a { position: relative; padding: 8px 0; white-space: nowrap }
-  .nav-links a::after { content:''; position: absolute; left: 0; right: 0; bottom: 3px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease) }
-  .nav-links a:hover::after, .nav-links a[aria-current]::after { transform: scaleX(1) }
-  .nav-cta { font-weight: 600; font-size: .9375rem; padding: 9px 18px; border: 1px solid currentColor; border-radius: 99px; transition: background .2s, color .2s; white-space: nowrap }
-  .nav-cta:hover { background: #f3eee5; color: #0d0c0b }
-  .nav-abrir { display: none; width: 44px; height: 44px; position: relative }
-  .nav-abrir span { position: absolute; left: 9px; right: 9px; height: 2px; background: currentColor }
-  .nav-abrir span:first-child { top: 18px } .nav-abrir span:last-child { top: 26px }
 
-  .nav-movil { position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; border: 0; padding: 88px var(--gut) 32px; background: var(--flame); color: #0d0c0b; flex-direction: column; justify-content: space-between }
-  .nav-movil:popover-open { display: flex; animation: entra .28s var(--ease) }
-  @keyframes entra { from { opacity: 0; translate: 0 16px } }
+  /* Grano de TV: el mismo mosaico del video, movido por el compositor. */
+  .grano { position: absolute; inset: -160px; pointer-events: none; background: url(/grano.webp) 0 0 / 160px, url(/grano.webp) 53px 37px / 160px; will-change: translate; animation: nav-grano .7s steps(1) infinite; z-index: 0 }
+  @keyframes nav-grano { 0% { translate: 0 0 } 20% { translate: -47px 31px } 40% { translate: 62px -58px } 60% { translate: -83px -24px } 80% { translate: 29px 76px } }
+
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 100; height: 72px; overflow: clip;
+    display: flex; align-items: center; gap: 28px; padding-inline: var(--gut);
+    color: #f3eee5; background: #151412; transition: translate .3s var(--ease), background-color .3s;
+  }
+  .nav > :not(.grano, .avance) { position: relative; z-index: 1 }
+  /* Sobre el video de la portada: transparente hasta que se hace scroll */
+  :global(body:has([data-hero])) .nav:not(:global(.fijo)) { background: transparent }
+  :global(body:has([data-hero])) .nav:not(:global(.fijo)) .grano { display: none }
+  .nav:global(.oculto) { translate: 0 -100% }
+
+  .nav-marca { margin-right: auto; display: block; transition: scale .3s var(--ease) }
+  .nav-marca img { height: 28px; width: auto }
+  .nav-marca:hover { scale: 1.06; animation: tv-img .32s steps(2) 1 }
+  @keyframes tv-img { 0%, 100% { filter: none } 30% { filter: drop-shadow(2px 0 0 #ff2a55) drop-shadow(-2px 0 0 #18e0ff) } 70% { filter: drop-shadow(-1px 0 0 #ff2a55) drop-shadow(1px 0 0 #18e0ff) } }
+
+  .nav-links { position: relative; display: flex; gap: 2px; font-size: .9375rem; font-weight: 500 }
+  .capsula { position: absolute; left: 0; top: 0; height: 100%; width: 0; opacity: 0; border-radius: 99px; background: #f3eee5; transition: translate .36s var(--ease), width .36s var(--ease), opacity .2s; z-index: 0 }
+  .nav-links a { position: relative; z-index: 1; padding: 8px 15px; white-space: nowrap; border-radius: 99px; transition: color .2s }
+  .nav-links a span { display: block }
+  .nav-links a[aria-current] { color: #0d0c0b }
+  .nav-links:hover a[aria-current]:not(:hover) { color: #f3eee5 }
+  .nav-links a:hover, .nav-links a:focus-visible { color: #0d0c0b }
+  /* Parpadeo de canal: separación de color de un instante */
+  .nav-links a:hover span { animation: tv-txt .32s steps(2) 1 }
+  @keyframes tv-txt { 0%, 100% { text-shadow: none } 30% { text-shadow: 2px 0 0 #ff2a55, -2px 0 0 #18a8ff } 70% { text-shadow: -1px 0 0 #ff2a55, 1px 0 0 #18a8ff } }
+
+  .nav-cta { font-weight: 600; font-size: .9375rem; padding: 9px 18px; border: 1px solid currentColor; border-radius: 99px; transition: background .2s, color .2s, border-color .2s, scale .2s var(--ease); white-space: nowrap }
+  .nav-cta:hover { background: #25d366; border-color: #25d366; color: #06230f; scale: 1.04 }
+  .nav-abrir { display: none; width: 44px; height: 44px }
+  .nav-abrir span { position: absolute; left: 9px; right: 9px; height: 2px; background: currentColor; transition: translate .25s var(--ease) }
+  .nav-abrir span:first-child { top: 18px } .nav-abrir span:last-child { top: 26px }
+  .nav-abrir:hover span:first-child { translate: 0 -2px } .nav-abrir:hover span:last-child { translate: 0 2px }
+
+  /* Línea de avance de la página */
+  .avance { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--flame); transform: scaleX(0); transform-origin: left; z-index: 1 }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+      .avance { animation: nav-avance linear both; --tl: scroll(root); animation-timeline: var(--tl) }
+      @keyframes nav-avance { to { transform: scaleX(1) } }
+    }
+  }
+
+  .nav-movil { position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; border: 0; padding: 88px var(--gut) 32px; background: #0d0c0b; color: #f3eee5; flex-direction: column; justify-content: space-between; overflow: clip }
+  .nav-movil > :not(.grano) { position: relative; z-index: 1 }
+  /* Se enciende como un televisor: una línea que se abre */
+  .nav-movil:popover-open { display: flex; animation: tv-on .42s cubic-bezier(.2,.8,.2,1) both }
+  @keyframes tv-on { 0% { clip-path: inset(49.7% 0); filter: brightness(3) } 45% { clip-path: inset(49.7% 0); filter: brightness(2.2) } 100% { clip-path: inset(0 0); filter: brightness(1) } }
   .nav-movil nav { display: grid; gap: 2px }
-  .nav-movil nav a { font-family: var(--display); font-weight: 800; font-size: clamp(3rem, 15vw, 5rem); line-height: 1.02; text-transform: uppercase }
-  .nav-cerrar { position: absolute; right: var(--gut); top: 16px; width: 44px; height: 44px; font-size: 2.25rem; line-height: 1 }
-  .nav-wa { font-weight: 600 }
+  .nav-movil nav a { font-family: var(--display); font-weight: 800; font-size: clamp(3rem, 15vw, 5rem); line-height: 1.04; text-transform: uppercase; transition: color .15s, translate .2s var(--ease) }
+  .nav-movil:popover-open nav a { animation: mv-in .42s var(--ease) both; animation-delay: calc(.2s + var(--i) * 45ms) }
+  @keyframes mv-in { from { opacity: 0; translate: -18px 0 } }
+  .nav-movil nav a[aria-current], .nav-movil nav a:hover, .nav-movil nav a:active { color: var(--flame); translate: 8px 0 }
+  .nav-cerrar { position: absolute !important; right: var(--gut); top: 16px; width: 44px; height: 44px; font-size: 2.25rem; line-height: 1; transition: rotate .25s var(--ease) }
+  .nav-cerrar:hover { rotate: 90deg }
+  .nav-wa { display: flex; align-items: center; justify-content: center; min-height: 58px; border-radius: 99px; background: #25d366; color: #06230f; font-weight: 700; font-size: 1.0625rem }
   @media (max-width: 900px) {
     .nav-links, .nav-cta { display: none }
     .nav-abrir { display: block }

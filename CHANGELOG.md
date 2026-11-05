@@ -10,6 +10,7 @@ Cambios notables al sitio. Más reciente primero.
 - Portada, portafolio, video, foto, diseño, web, logos, servicios, contacto, blog y 404 reconstruidos. Las demás páginas toman el sistema visual por tokens.
 - Jalda como logo protagonista: sección propia en la portada con cambio de fondo y pieza doble en el muro.
 - Quitados 22 logos con texto sin convertir a curvas o incompletos; `scripts/analizar-logos.mjs` ahora rechaza los que traigan texto vivo.
+- Menú con grano de TV en movimiento, cápsula que sigue el cursor, parpadeo de canal y línea de avance; en móvil se enciende como un televisor.
 - Generador de logos eliminado (`/generador-de-logos/` y `/galeria-logos/` → 301 a `/portafolio/logos/`). `/shorts/` → 301 a `/reels/`.
 - En Git lo que solo estaba en producción: `_redirects`, `_headers`. Página 404 real.
 - Contacto por WhatsApp: frase para completar con burbuja en vivo en `/contacto/`, barra de chat en toda franja final y formularios de landings que abren WhatsApp. Se elimina el envío a Telegram.
