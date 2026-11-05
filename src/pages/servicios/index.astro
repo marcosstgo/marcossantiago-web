@@ -149,7 +149,10 @@ const cats = orden.map(id => categories.find(c => c.id === id)!);
   .fq-g { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.7fr); gap: 24px clamp(24px, 5vw, 96px) }
   .fq-t { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.5rem, 5vw, 5rem); line-height: .95 }
   details { border-top: 1px solid var(--border) } details:last-child { border-bottom: 1px solid var(--border) }
-  summary { cursor: pointer; padding-block: 18px; font-weight: 600; font-size: 1.125rem; list-style-position: outside }
+  summary { cursor: pointer; padding-block: 18px; font-weight: 600; font-size: 1.125rem; list-style: none; display: flex; justify-content: space-between; align-items: baseline; gap: 16px }
+  summary::-webkit-details-marker { display: none }
+  summary::after { content: '+'; flex-shrink: 0; font-size: 1.5rem; line-height: 1; transition: rotate .2s var(--ease) }
+  details[open] summary::after { rotate: 45deg }
   details p { padding-bottom: 18px; color: var(--muted); max-width: 62ch }
   @media (max-width: 800px) { .fq-g { grid-template-columns: 1fr } }
 </style>

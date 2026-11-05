@@ -157,20 +157,6 @@ import Footer from '../../components/Footer.astro';
       </div>
     </section>
 
-    <!-- ── Testimonio ── -->
-    <section class="testimonials-section">
-      <div class="container">
-        <div class="testi-single">
-          <div class="testi-stars">★★★★★</div>
-          <p class="testi-quote">"Marcos diseñó la identidad completa de nuestra empresa. Logo, paleta, posts — todo consistente y profesional. Nuestros clientes notan el cambio inmediatamente."</p>
-          <div class="testi-single-footer">
-            <span class="testi-name">Roberto F.</span>
-            <span class="testi-loc">Branding & Identidad · Aibonito, PR</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- ── Lead form ── -->
     <section class="lead-section" id="cotizar">
       <div class="container">
@@ -400,30 +386,6 @@ import Footer from '../../components/Footer.astro';
     text-transform: uppercase; color: var(--muted);
   }
   .includes-checklist span i { color: var(--accent) }
-
-  /* ── Testimonio ── */
-  .testimonials-section {
-    padding: 72px 0;
-    background: color-mix(in srgb, var(--white) 1.5%, transparent);
-  }
-  .testi-single {
-    max-width: 680px; margin: 0 auto; text-align: center;
-    display: flex; flex-direction: column; align-items: center; gap: 18px;
-  }
-  .testi-single .testi-stars { color: #facc15; font-size: 1rem; letter-spacing: 4px }
-  .testi-single .testi-quote {
-    font-size: clamp(1.1rem, 2.4vw, 1.5rem); line-height: 1.6;
-    color: var(--white); margin: 0; max-width: 620px;
-  }
-  .testi-single-footer { display: flex; flex-direction: column; gap: 4px }
-  .testi-single .testi-name {
-    font-family: var(--mono); font-size: .8rem; font-weight: 700;
-    color: var(--accent); letter-spacing: 1px;
-  }
-  .testi-single .testi-loc {
-    font-family: var(--mono); font-size: .62rem; color: var(--muted);
-    letter-spacing: 1.5px; text-transform: uppercase;
-  }
 
   /* ── Lead form ── */
   .lead-section { padding: 80px 0; background: color-mix(in srgb, var(--white) 1.5%, transparent) }

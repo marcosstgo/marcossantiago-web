@@ -19,7 +19,7 @@ const icono = 'M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3
     <div class="full">
       <h1 class="ti">Hablemos</h1>
       <form id="w" class="gr" action={wa()} target="_blank">
-        <div class="fr">
+        <div class="fr" id="fr-q">
           <span>Hola Marcos, soy </span>
           <input name="nombre" aria-label="Tu nombre" placeholder="tu nombre" autocomplete="given-name" size="10" />
           <span>. Necesito </span>
@@ -33,6 +33,15 @@ const icono = 'M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3
           <input name="fecha" aria-label="Fecha" placeholder="cuándo" size="7" />
           <span>.</span>
         </div>
+        <div class="fr" id="fr-c" hidden>
+          <span>Hola Marcos, soy </span>
+          <input name="cnombre" aria-label="Tu nombre" placeholder="tu nombre" autocomplete="given-name" size="10" />
+          <span>. Trabajamos en </span>
+          <input name="trabajo" aria-label="En qué trabajaron" placeholder="mi logo, mi boda…" size="17" />
+          <span>. Te dejo mi comentario:</span>
+          <textarea name="comentario" aria-label="Tu comentario" placeholder="Si te gustó, dímelo. Si no, también." rows="2"></textarea>
+          <div class="ch pu"><label><input type="checkbox" name="publicar" /><b>Puedes publicarlo con mi nombre</b></label></div>
+        </div>
         <aside class="ph">
           <div class="ph-top">
             <img src="/marcos-photo-280.webp" width="40" height="40" alt="" decoding="async" />
@@ -43,11 +52,12 @@ const icono = 'M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3
           </div>
           <button class="env" type="submit">
             <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d={icono} /></svg>
-            Enviar por WhatsApp
+            <span id="env-t">Enviar por WhatsApp</span>
           </button>
           <p class="st" id="st" role="status"></p>
         </aside>
       </form>
+      <a class="cm" id="cm" href="#comentario"><span id="cm-a">¿Ya trabajamos juntos?</span> <strong id="cm-b">Déjame un comentario →</strong></a>
       <ul class="ot">
         <li><span>¿Prefieres llamar?</span><a href={`tel:${TEL}`} data-track="contacto-tel">{TEL_TXT}</a></li>
         <li><span>Correo</span><a href={`mailto:${EMAIL}`} data-track="contacto-email">{EMAIL}</a></li>
@@ -60,7 +70,25 @@ const icono = 'M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3
 <script is:inline>
   (function () {
     var f = document.getElementById('w'), tx = document.getElementById('tx'), ck = document.getElementById('ck'), st = document.getElementById('st');
+    function esC() { return location.hash === '#comentario' }
+    function modo(mover) {
+      var c = esC(), cm = document.getElementById('cm');
+      if (c) f.cnombre.value = f.cnombre.value || f.nombre.value; else f.nombre.value = f.nombre.value || f.cnombre.value;
+      document.getElementById('fr-q').hidden = c;
+      document.getElementById('fr-c').hidden = !c;
+      document.getElementById('env-t').textContent = c ? 'Enviar comentario por WhatsApp' : 'Enviar por WhatsApp';
+      document.getElementById('cm-a').textContent = c ? '¿Necesitas cotizar algo?' : '¿Ya trabajamos juntos?';
+      document.getElementById('cm-b').textContent = c ? 'Volver a la cotización →' : 'Déjame un comentario →';
+      cm.setAttribute('href', c ? '#cotizar' : '#comentario');
+      st.textContent = '';
+      pinta();
+      if (mover) f.scrollIntoView();
+    }
     function msg() {
+      if (esC()) {
+        var cn = f.cnombre.value.trim(), tr = f.trabajo.value.trim(), co = f.comentario.value.trim();
+        return 'Hola Marcos' + (cn ? ', soy ' + cn : '') + '.' + (tr ? ' Trabajamos en ' + tr + '.' : '') + ' Te dejo mi comentario' + (co ? ':\n\n' + co : '.') + (f.publicar.checked ? '\n\nPuedes publicarlo con mi nombre.' : '');
+      }
       var n = f.nombre.value.trim(), q = (f.que.value || '').trim(), p = f.para.value.trim(), d = f.fecha.value.trim();
       var t = 'Hola Marcos' + (n ? ', soy ' + n : '') + '.';
       if (q || p) t += ' Necesito ' + (q || 'ayuda') + (p ? ' para ' + p : '') + '.';
@@ -75,13 +103,17 @@ const icono = 'M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3
     var q = new URLSearchParams(location.search).get('servicio');
     if (q) { var r = f.querySelector('[data-k="' + q + '"]'); if (r) r.checked = true; }
     var h = new Date(); document.getElementById('hr').textContent = h.toLocaleTimeString('es-PR', { hour: 'numeric', minute: '2-digit' });
-    f.addEventListener('input', pinta); pinta();
+    f.addEventListener('input', pinta);
+    f.comentario.addEventListener('input', function () { this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px' });
+    addEventListener('hashchange', function () { modo(true) });
+    modo(false);
     f.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (esC() && !f.comentario.value.trim()) { st.textContent = 'Falta tu comentario.'; f.comentario.focus(); return; }
       window.open('https://wa.me/17872439670?text=' + encodeURIComponent(msg()), '_blank');
       ck.classList.add('leido');
       st.textContent = 'Se abrió WhatsApp: solo falta pulsar enviar.';
-      if (typeof gtag === 'function') gtag('event', 'whatsapp_click', { event_category: 'contacto', event_label: 'contacto-frase', page_path: location.pathname });
+      if (typeof gtag === 'function') gtag('event', 'whatsapp_click', { event_category: 'contacto', event_label: esC() ? 'contacto-comentario' : 'contacto-frase', page_path: location.pathname });
     });
   })();
 </script>
@@ -90,6 +122,12 @@ const icono = 'M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3
   .ti { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(4rem, 15vw, 16rem); line-height: .84 }
   .gr { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(300px, 1fr); gap: 32px clamp(28px, 5vw, 88px); align-items: start; margin-top: clamp(24px, 4vw, 56px) }
   .fr { font-size: clamp(2rem, 4.5vw, 4.75rem); font-weight: 500; line-height: 1.22; letter-spacing: -.025em }
+  .fr[hidden] { display: none }
+  .gr { scroll-margin-top: 88px }
+  .fr > textarea { display: block; width: 100%; margin-top: .3em; font: inherit; font-family: var(--serif); font-style: italic; font-size: .72em; line-height: 1.25; letter-spacing: -.01em; color: inherit; background: none; border: 0; border-bottom: .07em solid currentColor; border-radius: 0; padding: .1em .08em; resize: none; overflow: hidden; transition: background .2s }
+  .fr > textarea::placeholder { color: rgba(5,25,12,.82); opacity: 1 }
+  .fr > textarea:focus { outline: 0; background: rgba(255,255,255,.28) }
+  .ch.pu { display: block; margin-top: .45em } .ch.pu input:checked + b { scale: 1 }
   .fr > input { font: inherit; font-family: var(--serif); font-style: italic; letter-spacing: -.01em; color: inherit; background: none; border: 0; border-bottom: .05em solid currentColor; border-radius: 0; padding: 0 .08em; max-width: 100%; field-sizing: content; min-width: 2ch; transition: background .2s }
   .fr > input::placeholder { color: rgba(5,25,12,.82); opacity: 1 }
   .fr > input:focus { outline: 0; background: rgba(255,255,255,.28) }
@@ -108,12 +146,17 @@ const icono = 'M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3
   .ph-top p { display: grid; line-height: 1.2 } .ph-top strong { font-weight: 600 } .ph-top small { color: #8696a0; font-size: .8125rem }
   .ph-chat { min-height: 190px; padding: 18px 12px; background: #0f1d24 radial-gradient(rgba(255,255,255,.035) 1px, transparent 1.4px) 0 0 / 14px 14px; border-radius: 14px; display: flex; align-items: flex-end; justify-content: flex-end }
   .bu { position: relative; background: #005c4b; color: #e9edef; padding: 8px 10px 7px 12px; border-radius: 10px 10px 2px 10px; max-width: 94%; font-size: 1.0625rem; line-height: 1.32; overflow-wrap: anywhere }
+  #tx { white-space: pre-line }
   .bu small { display: block; text-align: right; font-size: .6875rem; color: rgba(233,237,239,.92); min-height: 1.3em; margin-top: 3px }
   .bu i { font-style: normal; letter-spacing: -.25em; margin-right: .25em; transition: color .4s } .bu i.leido { color: #53bdeb }
   .env { width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 64px; margin-top: 10px; border-radius: 14px; background: var(--v); color: #06230f; font-size: 1.125rem; font-weight: 700; transition: background .2s, scale .2s var(--ease) }
   .env:hover { background: #f3eee5; scale: 1.015 } .env:active { scale: .98 }
   .st { font-size: .875rem; text-align: center; color: #e9edef; padding: 8px 6px 2px } .st:empty { display: none }
 
+  .cm { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 24px; margin-top: clamp(36px, 5vw, 72px); padding: 18px 20px; background: #14120f; color: #f3eee5; border-radius: 14px; transition: background .2s }
+  .cm:hover { background: #000 }
+  .cm span { font-size: .9375rem; font-weight: 500 }
+  .cm strong { color: var(--v); font-size: clamp(1.125rem, 1.7vw, 1.5rem); font-weight: 600; letter-spacing: -.015em }
   .ot { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 clamp(20px, 3vw, 48px); margin-top: clamp(36px, 5vw, 72px); border-top: 2px solid #14120f }
   .ot li { display: grid; gap: 2px; padding-top: 14px }
   .ot span { font-size: .9375rem; font-weight: 500 }

@@ -2,26 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import Footer from '../../components/Footer.astro';
 
-const testimonials = [
-  {
-    quote: 'Marcos capturó nuestra boda en Ponce mejor de lo que imaginamos. Cada foto cuenta una historia. Entregó la galería antes de lo prometido — calidad y profesionalismo totales.',
-    name: 'Gabriela M.',
-    location: 'Ponce, PR',
-    service: 'Boda',
-  },
-  {
-    quote: 'El video de la quinceañera de mi hija nos dejó sin palabras. El highlights para Instagram tuvo más de 8,000 reproducciones en los primeros días. Vale cada centavo.',
-    name: 'Carmen R.',
-    location: 'Bayamón, PR',
-    service: 'Quinceañero',
-  },
-  {
-    quote: 'El 360 Booth fue el hit de la recepción. Los invitados hacían fila para grabarse y se fueron con su clip al instante por QR. Lo recomendaría mil veces.',
-    name: 'Luis & Andrea P.',
-    location: 'San Juan, PR',
-    service: '360 Booth · Boda',
-  },
-];
 ---
 <Base
   title="Fotógrafo de Bodas en Puerto Rico | Marcos Santiago"
@@ -173,29 +153,6 @@ const testimonials = [
           <span><i class="fa-solid fa-check"></i> Entrega 4–6 semanas</span>
           <span><i class="fa-solid fa-check"></i> Backup de archivos</span>
           <span><i class="fa-solid fa-check"></i> Acceso a galería Pixieset</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Testimonios ── -->
-    <section class="testimonials-section">
-      <div class="container">
-        <p class="section-label">Parejas que confiaron en mí</p>
-        <h2 class="testimonials-title">Lo que dicen de <span class="accent">su boda</span></h2>
-        <div class="testimonials-grid">
-          {testimonials.map(t => (
-            <div class="testi-card">
-              <div class="testi-stars">★★★★★</div>
-              <p class="testi-quote">{t.quote}</p>
-              <div class="testi-footer">
-                <div>
-                  <p class="testi-name">{t.name}</p>
-                  <p class="testi-loc">{t.location}</p>
-                </div>
-                <span class="testi-tag">{t.service}</span>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </section>
@@ -575,65 +532,6 @@ const testimonials = [
   .sticky-call { background: var(--white); color: #040d16 }
   .sticky-wa { background: #25d366; color: #06230f }
   .sticky-call:hover, .sticky-wa:hover { opacity: .88 }
-
-  /* ── Testimonials ── */
-  .testimonials-section {
-    padding: 80px 0;
-    background: color-mix(in srgb, var(--white) 1.5%, transparent);
-  }
-  .testimonials-title {
-    font-family: var(--display);
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    margin: 8px 0 32px; color: var(--white);
-  }
-  .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-    gap: 16px;
-  }
-  .testi-card {
-    background: color-mix(in srgb, var(--white) 3%, transparent);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px 24px;
-    display: flex; flex-direction: column; gap: 14px;
-    position: relative; overflow: hidden;
-    transition: border-color .2s, transform .25s;
-  }
-  .testi-card::before {
-    content: '\201C';
-    font-family: var(--display); font-size: 6rem;
-    color: var(--accent); opacity: .08;
-    position: absolute; top: -4px; left: 16px;
-    line-height: 1; pointer-events: none;
-  }
-  .testi-card:hover {
-    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
-    transform: translateY(-3px);
-  }
-  .testi-stars { color: #facc15; font-size: .9rem; letter-spacing: 3px }
-  .testi-quote {
-    color: var(--muted); font-size: .88rem; line-height: 1.75; flex: 1; margin: 0;
-  }
-  .testi-footer {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    gap: 12px; padding-top: 16px; border-top: 1px solid var(--border);
-  }
-  .testi-name {
-    font-family: var(--mono); font-size: .78rem; font-weight: 700;
-    color: var(--white); letter-spacing: .5px; margin: 0;
-  }
-  .testi-loc {
-    font-family: var(--mono); font-size: .62rem;
-    color: var(--muted); letter-spacing: 1px; margin: 3px 0 0;
-  }
-  .testi-tag {
-    font-family: var(--mono); font-size: .58rem;
-    letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 10%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-    padding: 5px 10px; border-radius: 100px; white-space: nowrap; flex-shrink: 0;
-  }
 
   /* ── Responsive ── */
   @media (max-width: 768px) {

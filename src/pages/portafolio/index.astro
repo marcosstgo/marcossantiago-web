@@ -7,11 +7,13 @@ import WorkCard from '../../components/WorkCard.astro';
 import VideoDialog from '../../components/VideoDialog.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { videos, brands, video, brand, logos } from '../../lib/media';
+import chustruck from '../../assets/brand/el-chustruck-portada.jpg';
+import jalda from '../../assets/brand/jalda-portada.jpg';
 const areas = [
   { t: 'Video', n: `${videos.length} piezas`, h: '/portafolio/video/', i: video('1084774680').img },
   { t: 'Fotografía', n: 'Bodas, eventos, retratos', h: '/portafolio/foto/', i: video('1052549620').img },
-  { t: 'Diseño', n: `${brands.length} identidades`, h: '/portafolio/diseno/', i: brand('rustica').img },
-  { t: 'Logos', n: `${logos.length} marcas`, h: '/portafolio/logos/', i: brand('sangria').img },
+  { t: 'Diseño', n: `${brands.length} identidades`, h: '/portafolio/diseno/', i: chustruck },
+  { t: 'Logos', n: `${logos.length} marcas`, h: '/portafolio/logos/', i: jalda },
 ];
 const sel = ['1153022005','944305796','1214473531','1084774680','1145809002','699656446'].map(video);
 ---
