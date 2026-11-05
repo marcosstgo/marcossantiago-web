@@ -29,3 +29,5 @@ jobs:
           done
           # Una ruta falsa debe dar 404 real, no la portada con 200.
           [ "$(curl -s -o /dev/null -w '%{http_code}' https://marcossantiago.com/no-existe-prueba/)" = 404 ]
+          # El Modo Director vive: una idea vacía se rechaza con 400 (no gasta crédito).
+          [ "$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'Origin: https://marcossantiago.com' -H 'Content-Type: application/json' -d '{}' https://marcossantiago.com/api/director)" = 400 ]
