@@ -29,13 +29,10 @@ const SOCIALS = [
 <!doctype html>
 <html lang="es">
 <head>
-  <script is:inline>
-    const t = localStorage.getItem('ms-theme');
-    if (t) document.documentElement.dataset.theme = t;
-  </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0d0c0b" />
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
@@ -97,234 +94,39 @@ const SOCIALS = [
     ]
   })} />
 
-  <!-- Fonts — self-hosted (subset latin). Bebas Neue = fuente del LCP (h1 del
-       hero): se precarga para desbloquear el render. -->
-  <link rel="preload" href="/fonts/bebas-neue-400.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/fonts.css" />
+  <!-- Fuentes propias (subset latin): 11 KB display + 26 KB texto -->
+  <link rel="preload" href="/fonts/ms-display.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/ms-body.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/instrument-serif.css" media="print" onload="this.media='all'" />
   <!-- Precargas propias de la página (p. ej. /resume/ precarga su display). -->
   <slot name="head" />
 
   <!-- Icons — subset local + fonts self-hosted (~7 KB total, subseteadas) -->
   <link rel="stylesheet" href="/fa-subset.css" />
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0M2T7NQQG" is:inline></script>
+  <!-- Analytics: se carga con la primera interacción o a los 4 s para no competir con el render -->
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-Y0M2T7NQQG');
+    (function(){
+      var done=false, go=function(){ if(done) return; done=true;
+        var s=document.createElement('script'); s.async=true;
+        s.src='https://www.googletagmanager.com/gtag/js?id=G-Y0M2T7NQQG'; document.head.appendChild(s); };
+      ['pointerdown','keydown','scroll'].forEach(function(e){ addEventListener(e,go,{once:true,passive:true}) });
+      setTimeout(go,4000);
+    })();
   </script>
-
+  <!-- Prefetch de la siguiente página al apuntar: navegación casi instantánea -->
+  <script type="speculationrules" is:inline>
+    {"prefetch":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}
+  </script>
 </head>
 <body>
   <slot />
 
-  <!-- ── Chat Widget ── -->
-  <div id="ms-chat-widget">
-    <button id="ms-chat-btn" aria-label="Abrir chat">
-      <i class="fa-solid fa-comment-dots" id="ms-chat-icon-open"></i>
-      <i class="fa-solid fa-xmark" id="ms-chat-icon-close"></i>
-    </button>
-
-    <div id="ms-chat-panel">
-      <div id="ms-chat-header">
-        <div class="ms-chat-avatar">MS</div>
-        <div>
-          <div class="ms-chat-name">Marcos Santiago</div>
-          <div class="ms-chat-status">Asistente virtual · En línea</div>
-        </div>
-      </div>
-
-      <div id="ms-chat-messages">
-        <div class="ms-msg ms-msg-bot">
-          <p>¡Hola! Soy el asistente virtual de Marcos. ¿En qué puedo ayudarte? 📷</p>
-        </div>
-        <div id="ms-quick-replies">
-          <button class="ms-quick-btn">Fotografía de boda</button>
-          <button class="ms-quick-btn">Video para evento</button>
-          <button class="ms-quick-btn">Quiero un logo</button>
-          <button class="ms-quick-btn">Proyecto web</button>
-          <button class="ms-quick-btn">Cotización</button>
-        </div>
-      </div>
-
-      <div id="ms-chat-input-row">
-        <input id="ms-chat-input" type="text" placeholder="Escribe tu pregunta..." autocomplete="off" />
-        <button id="ms-chat-send" aria-label="Enviar">
-          <i class="fa-solid fa-paper-plane"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <style>
-  #ms-chat-widget {
-    position: fixed; bottom: 24px; right: 24px;
-    z-index: 9000; display: flex; flex-direction: column;
-    align-items: flex-end; gap: 12px;
-  }
-  /* Ocultar widget flotante en /contacto/ */
-  body.page-contacto #ms-chat-widget { display: none }
-
-  #ms-chat-btn {
-    width: 56px; height: 56px; border-radius: 50%;
-    background: var(--accent); border: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 1.3rem;
-    box-shadow: 0 4px 24px rgba(74,108,247,.4);
-    transition: transform .2s, box-shadow .2s;
-  }
-  #ms-chat-btn:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(74,108,247,.55) }
-  #ms-chat-icon-close { display: none }
-
-  #ms-chat-panel {
-    width: 340px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    overflow: hidden;
-    display: none;
-    flex-direction: column;
-    box-shadow: 0 16px 64px rgba(0,0,0,.4);
-    max-height: 520px;
-  }
-  #ms-chat-panel.open { display: flex }
-
-  #ms-chat-header {
-    padding: 16px 20px;
-    background: var(--panel);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 12px;
-  }
-  .ms-chat-avatar {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: var(--accent); display: flex;
-    align-items: center; justify-content: center;
-    font-family: var(--mono); font-size: .55rem;
-    letter-spacing: 1px; color: #fff; flex-shrink: 0;
-  }
-  .ms-chat-name {
-    font-family: var(--mono); font-size: .58rem;
-    letter-spacing: 2px; text-transform: uppercase;
-    color: var(--white);
-  }
-  .ms-chat-status {
-    font-size: .72rem; color: var(--muted); margin-top: 2px;
-  }
-
-  #ms-chat-messages {
-    flex: 1; overflow-y: auto;
-    padding: 16px; display: flex;
-    flex-direction: column; gap: 10px;
-    scrollbar-width: thin;
-  }
-  .ms-msg { max-width: 85% }
-  .ms-msg p {
-    font-size: .88rem; line-height: 1.55;
-    padding: 10px 14px; border-radius: 14px; margin: 0;
-  }
-  .ms-msg-bot { align-self: flex-start }
-  .ms-msg-bot p {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    color: color-mix(in srgb, var(--white) 85%, transparent);
-    border-bottom-left-radius: 4px;
-  }
-  .ms-msg-user { align-self: flex-end }
-  .ms-msg-user p {
-    background: var(--accent);
-    color: #fff;
-    border-bottom-right-radius: 4px;
-  }
-  .ms-msg-typing p {
-    color: var(--muted);
-    font-style: italic;
-  }
-
-  #ms-chat-input-row {
-    padding: 12px 16px;
-    border-top: 1px solid var(--border);
-    display: flex; gap: 8px; align-items: center;
-    background: var(--panel);
-  }
-  #ms-chat-input {
-    flex: 1; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 10px;
-    padding: 9px 14px; font-size: .88rem;
-    color: var(--white); font-family: var(--body);
-    outline: none; transition: border-color .15s;
-  }
-  #ms-chat-input:focus { border-color: var(--accent) }
-  #ms-chat-input::placeholder { color: var(--muted) }
-  #ms-chat-send {
-    width: 36px; height: 36px; border-radius: 10px;
-    background: var(--accent); border: none;
-    color: #fff; cursor: pointer; font-size: .85rem;
-    display: flex; align-items: center; justify-content: center;
-    transition: opacity .15s; flex-shrink: 0;
-  }
-  #ms-chat-send:hover { opacity: .85 }
-  #ms-chat-send:disabled { opacity: .4; cursor: default }
-
-  .ms-lead-form {
-    display: flex; flex-direction: column; gap: 8px;
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 12px; padding: 14px;
-    margin-top: 4px;
-  }
-  .ms-field {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 8px; padding: 8px 12px;
-    font-size: .82rem; color: var(--white);
-    font-family: var(--body); outline: none;
-    transition: border-color .15s; width: 100%;
-    resize: none;
-  }
-  .ms-field:focus { border-color: var(--accent) }
-  .ms-field::placeholder { color: var(--muted) }
-  select.ms-field option { background: var(--surface); color: var(--white) }
-  .ms-form-submit {
-    background: #25d366; color: #fff; border: none;
-    border-radius: 8px; padding: 10px;
-    font-family: var(--mono); font-size: .58rem;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    cursor: pointer; display: flex; align-items: center;
-    justify-content: center; gap: 8px; transition: opacity .15s;
-  }
-  .ms-form-submit:hover { opacity: .88 }
-  .ms-form-thanks {
-    font-size: .85rem; color: #25d366;
-    text-align: center; padding: 8px 0; margin: 0;
-  }
-
-  #ms-quick-replies {
-    display: flex; flex-wrap: wrap; gap: 6px;
-    margin-top: 4px;
-  }
-  .ms-quick-btn {
-    font-size: .78rem; padding: 6px 12px;
-    border-radius: 20px; border: 1px solid var(--accent);
-    background: var(--accent-dim); color: var(--accent);
-    cursor: pointer; transition: .15s; white-space: nowrap;
-    font-family: var(--body);
-  }
-  .ms-quick-btn:hover { background: var(--accent); color: #fff }
-
-  @media (max-width: 400px) {
-    #ms-chat-panel { width: calc(100vw - 32px) }
-    #ms-chat-widget { right: 16px; bottom: 16px }
-  }
-  </style>
-
   <script is:inline>
-  // Mark body with current page
-  (function() {
-    const path = window.location.pathname.replace(/\//g, '-').replace(/^-|-$/g, '') || 'home';
-    document.body.classList.add('page-' + path);
-  })();
-
   // ── Medición de conversiones de contacto ──
   // Listener delegado: cubre todo enlace tel:/wa.me/mailto: del sitio,
   // incluidos los que se inserten dinámicamente después.
@@ -347,144 +149,6 @@ const SOCIALS = [
         link_url: href,
       });
     }, true);
-  })();
-
-  (function() {
-    const btn     = document.getElementById('ms-chat-btn');
-    const panel   = document.getElementById('ms-chat-panel');
-    const input   = document.getElementById('ms-chat-input');
-    const send    = document.getElementById('ms-chat-send');
-    const msgs    = document.getElementById('ms-chat-messages');
-    const iconO   = document.getElementById('ms-chat-icon-open');
-    const iconC   = document.getElementById('ms-chat-icon-close');
-
-    let history = [];
-    let isOpen  = false;
-
-    btn.addEventListener('click', () => {
-      isOpen = !isOpen;
-      panel.classList.toggle('open', isOpen);
-      iconO.style.display = isOpen ? 'none'  : '';
-      iconC.style.display = isOpen ? ''      : 'none';
-      if (isOpen) input.focus();
-    });
-
-    // Wizard conversacional (mismo patrón que /contacto/): cuando el bot
-    // devuelve [SHOW_FORM] pedimos 3 datos uno a uno por mensaje y enviamos
-    // el lead al final. Nunca se inyecta un form estático en la burbuja.
-    let wizard = null; // null | { step, data: { servicio, nombre, fecha, contacto } }
-    const WIZARD_STEPS = [
-      { key: 'nombre',   q: '¿Cuál es tu nombre?' },
-      { key: 'fecha',    q: '¿Fecha del evento? (escribe "skip" si no aplica)' },
-      { key: 'contacto', q: '¿Teléfono o email para contactarte?' },
-    ];
-
-    function addMsg(role, text) {
-      const clean = (text || '').replace('[SHOW_FORM]', '').trim();
-      const div = document.createElement('div');
-      div.className = 'ms-msg ms-msg-' + (role === 'user' ? 'user' : 'bot');
-      const p = document.createElement('p');
-      p.textContent = clean;
-      div.appendChild(p);
-      msgs.appendChild(div);
-      msgs.scrollTop = msgs.scrollHeight;
-      return div;
-    }
-
-    function startWizard(service) {
-      wizard = { step: 0, data: { servicio: service || 'Por definir' } };
-      setTimeout(() => addMsg('bot', WIZARD_STEPS[0].q), 380);
-    }
-
-    async function handleWizardInput(text) {
-      const step  = WIZARD_STEPS[wizard.step];
-      const value = (text || '').trim();
-      const skip  = value === '' || value.toLowerCase() === 'skip';
-      wizard.data[step.key] = skip ? (step.key === 'fecha' ? 'Por coordinar' : '') : value;
-      wizard.step++;
-
-      if (wizard.step < WIZARD_STEPS.length) {
-        setTimeout(() => addMsg('bot', WIZARD_STEPS[wizard.step].q), 320);
-        return;
-      }
-
-      // Todos los campos recolectados — enviar lead
-      const { nombre, servicio, fecha, contacto } = wizard.data;
-      wizard = null;
-      try {
-        await fetch('/ms-chat/lead', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nombre, servicio, fecha: fecha || 'Por coordinar', contacto, mensaje: '' }),
-        });
-        addMsg('bot', `¡Listo, ${nombre}! Marcos te contactará pronto al ${contacto}.`);
-        if (typeof gtag === 'function') {
-          gtag('event', 'form_submit', { event_category: 'engagement', event_label: 'chat-wizard' });
-        }
-      } catch {
-        addMsg('bot', 'No pude enviar el mensaje. Escríbeme directo por WhatsApp al (787) 243-9670.');
-      }
-    }
-
-    async function sendMsg() {
-      const text = input.value.trim();
-      if (!text) return;
-      input.value = '';
-      send.disabled = true;
-
-      addMsg('user', text);
-
-      // Si hay wizard activo, las respuestas siguientes alimentan los pasos
-      if (wizard) {
-        await handleWizardInput(text);
-        send.disabled = false;
-        input.focus();
-        return;
-      }
-
-      history.push({ role: 'user', content: text });
-      const typing = addMsg('bot', '...');
-      typing.classList.add('ms-msg-typing');
-
-      try {
-        const res  = await fetch('/ms-chat/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: history }),
-        });
-        const data = await res.json();
-        typing.remove();
-        const reply = data.reply || '';
-        const triggerWizard = reply.includes('[SHOW_FORM]');
-        addMsg('bot', reply);
-        history.push({ role: 'assistant', content: reply });
-
-        if (triggerWizard) {
-          // El "servicio" se infiere de lo último que escribió el usuario
-          const lastUser = history.filter(m => m.role === 'user').slice(-1)[0]?.content || 'Por definir';
-          startWizard(lastUser);
-        }
-      } catch {
-        typing.remove();
-        addMsg('bot', 'Hubo un error. Por favor contáctame directamente por WhatsApp: (787) 243-9670');
-      }
-
-      send.disabled = false;
-      input.focus();
-    }
-
-    // Quick reply buttons
-    document.querySelectorAll('.ms-quick-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const quickReplies = document.getElementById('ms-quick-replies');
-        if (quickReplies) quickReplies.remove();
-        input.value = btn.textContent.replace(/^[^\w]+/, '').trim();
-        sendMsg();
-      });
-    });
-
-    send.addEventListener('click', sendMsg);
-    input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMsg() });
   })();
   </script>
 </body>

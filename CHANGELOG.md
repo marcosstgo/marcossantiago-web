@@ -2,6 +2,17 @@
 
 Cambios notables al sitio. Más reciente primero.
 
+## 2026-11-04 — Rediseño y Astro 7
+
+- Astro 6 → 7.4.5; fuera `astro-compress` y sus 5 alertas altas (los SVG se optimizaron una vez con svgo).
+- Sistema visual nuevo; trabajo real de Vimeo y Behance en todas las páginas.
+- Muro de logos interactivo: blanco, negro, azul, color de marca y prueba en cuatro fondos.
+- Portada, portafolio, video, foto, diseño, web, logos, servicios, contacto, blog y 404 reconstruidos. Las demás páginas toman el sistema visual por tokens.
+- Generador de logos eliminado (`/generador-de-logos/` y `/galeria-logos/` → 301 a `/portafolio/logos/`). `/shorts/` → 301 a `/reels/`.
+- En Git lo que solo estaba en producción: `functions/`, `_redirects`, `_headers`. Página 404 real.
+- Formulario de contacto nuevo: si el envío falla lo dice y ofrece WhatsApp.
+- Despliegue pasa de SSH a corillo-server a GitHub Actions → Cloudflare Pages.
+
 ## 2026-05-14 — Sub-landings PPC por servicio
 
 Tres landing pages dedicadas para campañas de Google Ads, una por servicio principal. Patrón compartido: header minimal sin nav de escape, hero full-width con video de fondo, precio visible above the fold, lead form con `servicio` pre-llenado, sección "Soy Marcos", FAQ con JSON-LD FAQPage + LocalBusiness, sticky CTA bar en mobile, GA4 tracking por landing. Todas en el sitemap automáticamente.

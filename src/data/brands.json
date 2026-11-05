@@ -1,0 +1,98 @@
+[
+ {
+  "slug": "el-chustruck",
+  "name": "El Chustruck",
+  "sector": "Food truck",
+  "url": "https://www.behance.net/gallery/234308151/El-Chustruck-FoodTruck",
+  "w": 1600,
+  "h": 1252
+ },
+ {
+  "slug": "tropical-paws",
+  "name": "Tropical Paws",
+  "sector": "Grooming",
+  "url": "https://www.behance.net/gallery/197881921/Tropical-Paws-Professional-Grooming",
+  "w": 1600,
+  "h": 1066
+ },
+ {
+  "slug": "blue-pineapple",
+  "name": "Blue Pineapple",
+  "sector": "Bebidas",
+  "url": "https://www.behance.net/gallery/140367135/Logo-Blue-Pineapple",
+  "w": 808,
+  "h": 632
+ },
+ {
+  "slug": "sangria",
+  "name": "Sangría",
+  "sector": "Latin Drinks",
+  "url": "https://www.behance.net/gallery/140600273/Latin-Drinks-Sangria-logo",
+  "w": 808,
+  "h": 632
+ },
+ {
+  "slug": "rustica",
+  "name": "Rústica",
+  "sector": "Bar & Tacos",
+  "url": "https://www.behance.net/gallery/197885145/Rustica-Logo",
+  "w": 1600,
+  "h": 1252
+ },
+ {
+  "slug": "jalda",
+  "name": "Jalda",
+  "sector": "Cream liqueur",
+  "url": "https://www.behance.net/gallery/153299389/Jalda-Cream-Liqueur",
+  "w": 936,
+  "h": 732
+ },
+ {
+  "slug": "pomelo",
+  "name": "Pomelo",
+  "sector": "Latin Drinks",
+  "url": "https://www.behance.net/gallery/140687351/Logo-Pomelo-Toronja-Rosada-%28Mejorado%29",
+  "w": 808,
+  "h": 632
+ },
+ {
+  "slug": "dj-andres",
+  "name": "DJ Andrés",
+  "sector": "Música",
+  "url": "https://www.behance.net/gallery/197880633/DJ-Andres-Puerto-Rico",
+  "w": 1600,
+  "h": 1252
+ },
+ {
+  "slug": "summer-lash",
+  "name": "Summer Lash",
+  "sector": "Belleza",
+  "url": "https://www.behance.net/gallery/197881483/Summer-Lash-Logo",
+  "w": 1600,
+  "h": 1252
+ },
+ {
+  "slug": "gules",
+  "name": "Gule’s Equipment",
+  "sector": "Construcción",
+  "url": "https://www.behance.net/gallery/197878111/Gules-Equipment",
+  "w": 1600,
+  "h": 1251
+ },
+ {
+  "slug": "fb-logistic",
+  "name": "FB Logistic",
+  "sector": "Food & Beverage",
+  "url": "https://www.behance.net/gallery/197881015/FB-Logistic-Logo",
+  "w": 1600,
+  "h": 1251
+ },
+ {
+  "slug": "maracuya",
+  "name": "Maracuyá",
+  "sector": "Latin Drinks",
+  "url": "https://www.behance.net/gallery/140771495/Logo-Latin-Drinks-Maracuya-%28Mejorado%29",
+  "w": 808,
+  "h": 632
+ }
+]

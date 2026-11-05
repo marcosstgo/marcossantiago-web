@@ -2,256 +2,61 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
-
-const services = [
-  {
-    label: 'Bodas',
-    desc: 'Video cinematográfico de tu boda — desde los preparativos hasta la última pieza de baile. Film destacado + cobertura completa del día.',
-  },
-  {
-    label: 'Quinceañeros',
-    desc: 'Video profesional del gran día: vals, court, sorpresas y celebración. Un recuerdo cinematográfico para siempre.',
-  },
-  {
-    label: 'Eventos y Conciertos',
-    desc: 'Cobertura multicámara de conciertos, festivales, activaciones y celebraciones. Entrega de highlight reel y cobertura completa.',
-  },
-  {
-    label: 'Video Corporativo',
-    desc: 'Videos institucionales, lanzamientos de producto, testimoniales y contenido para entrenar equipos. Calidad profesional lista para presentaciones.',
-  },
-  {
-    label: 'Reels y Redes Sociales',
-    desc: 'Contenido vertical y horizontal para Instagram, TikTok y YouTube. Cortos, dinámicos y optimizados para cada plataforma.',
-  },
-  {
-    label: 'Documental',
-    desc: 'Historias cortas sobre personas, proyectos y cultura puertorriqueña. Entrevistas, b-roll narrativo y edición de autor.',
-  },
-  {
-    label: 'Marcas y Publicidad',
-    desc: 'Spots publicitarios, videos de producto y campañas para negocios locales. Concepto, producción y entrega final.',
-  },
-  {
-    label: 'Color Grading y Post',
-    desc: 'Solo edición y color: corrección, grading cinematográfico, sound design y entrega en el formato que necesites.',
-  },
-];
+import WorkCard from '../../components/WorkCard.astro';
+import VideoDialog from '../../components/VideoDialog.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { videos } from '../../lib/media';
+const cats = ['Todo', ...new Set(videos.map(v => v.cat))];
+const cubro = ['Bodas y quinceañeros','Conciertos y festivales','Video corporativo','Reels para redes','Documental','Marcas y publicidad','Color grading y post'];
 ---
-<Base
-  title="Videografía — Marcos Santiago"
-  description="Videografía profesional en Puerto Rico — bodas, quinceañeros, eventos, video corporativo, reels y producción audiovisual. Basado en Aibonito, PR."
->
+<Base title="Videografía — Marcos Santiago" description="Videografía profesional en Puerto Rico: bodas, quinceañeros, conciertos, video corporativo, documental y reels. Basado en Aibonito, PR.">
   <Nav />
-  <main id="main" style="padding-top:120px">
-    <div class="container">
-
-      <p class="section-label">Portafolio · Videografía</p>
-      <h1 class="section-title">Videografía</h1>
-      <p class="section-sub">
-        Producción audiovisual para eventos, marcas y proyectos en Puerto Rico. Desde el concepto hasta la entrega final — con la narrativa y el cuidado visual que cada historia merece.
-      </p>
-
-      <!-- Showreel -->
-      <div class="showreel-wrap">
-        <video
-          class="showreel-video"
-          src="/short-videografy.mp4"
-          autoplay muted loop playsinline
-          controls
-        ></video>
+  <main id="main" class="pg">
+    <header class="full cab">
+      <h1 class="ti">Video</h1>
+      <p>Del concepto a la entrega final: música, eventos, marcas y documental en Puerto Rico. Pulsa cualquiera para verlo aquí mismo.</p>
+    </header>
+    <!-- Filtro sin JavaScript: radios + :has() -->
+    <div class="fl">
+      <div class="fl-b full sticky-bar" role="group" aria-label="Filtrar por categoría">
+        {cats.map((c, i) => <label><input type="radio" name="cat" value={c} checked={i === 0} /><span>{c}</span></label>)}
       </div>
-
-      <div class="portfolio-ctas">
-        <div class="portfolio-cta">
-          <div class="cta-icon">
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
-            </svg>
-          </div>
-          <p class="cta-tag">Producción profesional</p>
-          <h2 class="cta-title">Ver en Vimeo</h2>
-          <p class="cta-sub">
-            Portafolio completo de bodas, eventos, documentales y producción de marca en <strong>vimeo.com/marcosstgo</strong>.
-          </p>
-          <a href="https://vimeo.com/marcosstgo" target="_blank" rel="noopener" class="btn primary">
-            Abrir Vimeo →
-          </a>
-        </div>
-
-        <div class="portfolio-cta">
-          <div class="cta-icon">
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="9"/>
-              <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>
-              <line x1="12" y1="3" x2="12" y2="5"/>
-              <line x1="12" y1="19" x2="12" y2="21"/>
-              <line x1="3" y1="12" x2="5" y2="12"/>
-              <line x1="19" y1="12" x2="21" y2="12"/>
-            </svg>
-          </div>
-          <p class="cta-tag">Streams y contenido en vivo</p>
-          <h2 class="cta-title">Archivo CORILLO</h2>
-          <span class="cta-badge"><i class="fa-solid fa-star"></i> Plataforma propia · Fundador</span>
-          <p class="cta-sub">
-            Transmisiones del canal <strong>marcos</strong> en <strong>CORILLO</strong> — la plataforma de streaming independiente desde Puerto Rico que yo mismo diseñé y construí.
-          </p>
-          <a href="https://corillo.live/vods/?ch=marcos" target="_blank" rel="noopener" class="btn primary">
-            Ver transmisiones →
-          </a>
-        </div>
+      <h2 class="vh">Videos</h2>
+      <div class="gr full">
+        {videos.map((v, i) => <div class="gi" data-c={v.cat}><WorkCard v={v} eager={i < 2} sizes="(max-width:700px) 100vw, (max-width:1100px) 50vw, 33vw" /></div>)}
       </div>
-
-      <div style="margin-top:80px">
-        <p class="section-label">Servicios</p>
-        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">Qué produzco</h2>
-      </div>
-
-      <div class="services-grid">
-        {services.map(s => (
-          <div class="service-card">
-            <h3 class="service-label">{s.label}</h3>
-            <p class="service-desc">{s.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      <div class="includes-section">
-        <p class="section-label">Qué incluye</p>
-        <div class="includes-grid">
-          {[
-            'Reunión de pre-producción para entender tu visión',
-            'Grabación con equipo profesional 4K',
-            'Edición completa y color grading cinematográfico',
-            'Sound design y música licenciada',
-            'Revisiones incluidas hasta tu aprobación',
-            'Entrega en múltiples formatos y resoluciones',
-          ].map(item => (
-            <div class="include-item">
-              <span class="include-check">✓</span>
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div class="contact-cta">
-        <div>
-          <h2 class="cta-title">¿Tienes un proyecto?</h2>
-          <p class="cta-sub">Escríbeme para disponibilidad, paquetes y cotizaciones. Disponible en toda Puerto Rico.</p>
-        </div>
-        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
-          <i class="fab fa-whatsapp"></i> (787) 243-9670
-        </a>
-      </div>
-
     </div>
+    <section class="full mas">
+      <p>Hay más en <a class="link-a" href="https://vimeo.com/marcosstgo" target="_blank" rel="noopener">mi canal de Vimeo</a> y en <a class="link-a" href="/reels/">reels</a>.</p>
+      <ul>{cubro.map(c => <li>{c}</li>)}</ul>
+    </section>
   </main>
+  <CtaBand titulo="¿Grabamos?" texto="Cuéntame qué quieres contar y te digo cómo lo haría." waTexto="Hola Marcos, me interesa cotizar video." />
   <Footer />
+  <VideoDialog />
 </Base>
-
 <style>
-.portfolio-ctas {
-  margin-top: 56px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-@media (max-width: 720px) { .portfolio-ctas { grid-template-columns: 1fr } }
-.portfolio-cta {
-  display: flex; flex-direction: column;
-  padding: 36px; background: var(--surface);
-  border: 1px solid var(--border); border-radius: 20px;
-  transition: border-color .2s, transform .2s;
-}
-.portfolio-cta:hover {
-  border-color: color-mix(in srgb, var(--page-c) 45%, transparent);
-  transform: translateY(-3px);
-}
-:root { --page-c: var(--page-c) }
-.cta-icon { color: var(--page-c); margin-bottom: 22px }
-.cta-tag {
-  font-family: var(--mono); font-size: .62rem;
-  letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--page-c); margin-bottom: 10px;
-}
-.cta-title {
-  font-family: var(--display);
-  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-  letter-spacing: 2px; margin-bottom: 12px;
-}
-.cta-sub {
-  color: var(--muted); font-size: .9rem; line-height: 1.7;
-  margin-bottom: 22px;
-}
-.cta-sub strong { color: var(--white) }
-.portfolio-cta .btn { align-self: flex-start; margin-top: auto }
-.cta-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  align-self: flex-start;
-  padding: 6px 12px; border-radius: 100px;
-  background: color-mix(in srgb, var(--page-c) 14%, transparent);
-  border: 1px solid color-mix(in srgb, var(--page-c) 35%, transparent);
-  color: var(--page-c);
-  font-family: var(--mono); font-size: .65rem;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  margin-bottom: 14px;
-}
-.cta-badge i { font-size: .65rem }
-
-.services-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 12px; margin-top: 32px;
-}
-@media (max-width: 768px) { .services-grid { grid-template-columns: 1fr } }
-
-.service-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-left: 3px solid var(--page-c);
-  border-radius: 12px; padding: 28px 24px;
-}
-.service-label {
-  font-family: var(--mono); font-size: .6rem;
-  letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--page-c); margin-bottom: 10px;
-}
-.service-desc { font-size: .88rem; color: var(--muted); line-height: 1.65 }
-
-.includes-section {
-  margin-top: 72px; padding-top: 56px;
-  border-top: 1px solid var(--border);
-}
-.includes-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 16px; margin-top: 28px;
-}
-@media (max-width: 600px) { .includes-grid { grid-template-columns: 1fr } }
-.include-item {
-  display: flex; gap: 12px; align-items: flex-start;
-  font-size: .9rem; color: var(--muted);
-}
-.include-check {
-  color: var(--page-c); font-family: var(--mono);
-  font-size: .75rem; flex-shrink: 0; margin-top: 2px;
-}
-
-.contact-cta {
-  margin-top: 64px; padding: 48px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 20px;
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 32px; flex-wrap: wrap;
-}
-
-.showreel-wrap {
-  margin-top: 48px;
-  border-radius: 16px; overflow: hidden;
-  border: 1px solid var(--border);
-  background: #000;
-  aspect-ratio: 16/9;
-}
-.showreel-video {
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
-}
+  .pg { padding-top: 120px }
+  .cab { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 48px; padding-bottom: 28px }
+  .ti { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(5rem, 19vw, 20rem); line-height: .82 }
+  .cab p { max-width: 42ch; font-size: var(--text-lg); color: var(--muted) }
+  .fl-b { display: flex; gap: 4px; overflow-x: auto; padding-block: 14px; background: var(--ink); scrollbar-width: none }
+  .fl-b label { cursor: pointer; flex: none }
+  .fl-b input { position: absolute; opacity: 0 }
+  .fl-b span { display: block; padding: 10px 18px; border-radius: 99px; font-weight: 600; font-size: .9375rem; border: 1px solid transparent; transition: background .2s, color .2s, border-color .2s }
+  .fl-b span:hover { border-color: var(--border-h) }
+  .fl-b input:checked + span { background: var(--flame); color: #0d0c0b }
+  .fl-b input:focus-visible + span { outline: 2px solid var(--flame); outline-offset: 2px }
+  .gr { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px 16px; padding-top: 12px }
+  .gi :global(.wc-img) { aspect-ratio: 16/9 }
+  @media (max-width: 1100px) { .gr { grid-template-columns: 1fr 1fr } }
+  @media (max-width: 700px) { .gr { grid-template-columns: 1fr } }
+  .fl:has(input[value='Eventos']:checked) .gi:not([data-c='Eventos']),
+  .fl:has(input[value='Música']:checked) .gi:not([data-c='Música']),
+  .fl:has(input[value='Bodas']:checked) .gi:not([data-c='Bodas']),
+  .fl:has(input[value='Marcas']:checked) .gi:not([data-c='Marcas']),
+  .fl:has(input[value='Documental']:checked) .gi:not([data-c='Documental']) { display: none }
+  .mas { padding-block: var(--sec) calc(var(--sec) * .7); font-size: var(--text-lg) }
+  .mas ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px }
+  .mas li { padding: 8px 16px; border: 1px solid var(--border-h); border-radius: 99px; font-size: .9375rem }
 </style>

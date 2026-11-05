@@ -4,29 +4,32 @@ Instrucciones para Claude Code al trabajar en este proyecto.
 
 ## Stack
 
-- **Astro 6.0.5** — sitio estático, sin SSR
+- **Astro 7** — sitio estático. Requiere **Node ≥ 22.23.4** (en este servidor: copia aislada en `.tools/`, sin tocar el Node del sistema).
 - **MDX** — artículos del blog en `src/pages/blog/*.mdx`
-- **Nginx** (dentro del contenedor Docker) — `nginx.conf` en la raíz
-- **Docker** — imagen multi-stage: Node build → nginx:alpine
-- **Deploy:** push a `main` en GitHub → rebuild manual en el servidor
+- **Cloudflare Pages** (proyecto `marcossantiago-web`) — `.github/workflows/deploy.yml`: push a `main` compila y publica.
+- **Pages Function** `functions/ms-chat/lead.js` — todos los formularios mandan el lead a Telegram. Secretos: `TELEGRAM_TOKEN`, `TELEGRAM_CHAT_ID`.
+- `public/_redirects` y `public/_headers` — redirects 301 y caché.
+
+## Sistema visual (rediseño nov-2026)
+
+- Tokens en `src/styles/global.css`: tinta `--ink`, papel `--paper` (clase `.on-paper`), acento único `--flame`.
+- Fuentes propias: `ms-display.woff2` (Archivo condensada 800, 11 KB) y `ms-body.woff2` (26 KB), más Instrument Serif itálica (`.it`).
+- Datos: `src/data/site.ts` (contacto y menú), `servicios.ts` (precios), `videos.json`, `brands.json`, `logos.json`.
+- **Logo nuevo:** copiar el SVG a `public/logos-portfolio/`, agregar el nombre en `scripts/logos-nombres.json` y correr `node scripts/analizar-logos.mjs`. El script calcula en qué fondos se lee y su color de marca.
+- **Video nuevo:** imagen en `src/assets/video/<id de Vimeo>.jpg` y entrada en `videos.json`.
+- Sin JavaScript si CSS puede: filtros con `:has()`, menú con `popover`, animación con `animation-timeline`. Objetivo: Lighthouse 100 en velocidad.
+- Video e iframes solo se cargan al acercarse o al pulsar; nunca en el pintado inicial.
 
 ## Estructura del proyecto
 
 ```
-src/
-  pages/
-    blog/         ← artículos MDX
-    *.astro       ← páginas del sitio
-  layouts/
-    BlogPost.astro  ← layout de artículos
-    Base.astro      ← layout base
-  components/
-  styles/
-public/           ← assets estáticos
-blog-bot/         ← bot de Telegram para generar artículos (FastAPI)
-bot/              ← bot de respuestas automáticas (FastAPI)
-nginx.conf        ← nginx del contenedor (no del servidor)
-docker-compose.yml
+src/pages/        páginas y blog
+src/components/   Nav, Footer, WorkCard, VideoDialog, LogoWall, CtaBand
+src/layouts/      Base.astro, BlogPost.astro
+src/lib/media.ts  índice de imágenes optimizadas
+functions/        Pages Functions
+public/           assets estáticos
+blog-bot/, bot/   bots de Telegram (FastAPI, viven en corillo-server, sin migrar)
 ```
 
 ## Blog — formato de artículos MDX

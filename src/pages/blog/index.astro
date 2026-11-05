@@ -31,334 +31,53 @@ const posts = Object.entries(modules)
   })
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-const featured = posts[0];
-const rest     = posts.slice(1);
 const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
 ---
-<Base title="Blog — Marcos Santiago" description="Programación, diseño, fotografía, video y lo que me pase por la cabeza. Por Marcos Santiago desde Aibonito, Puerto Rico.">
+<Base title="Blog — Marcos Santiago" description="Video, fotografía, diseño, desarrollo web y lo que me pase por la cabeza. Por Marcos Santiago desde Aibonito, Puerto Rico.">
   <Nav />
-  <main id="main" style="padding-top:120px">
-    <div class="container">
-
-      <div class="blog-header">
-        <div>
-          <p class="section-label">Blog</p>
-          <h1 class="section-title">Escribo sobre<br>lo que hago</h1>
-        </div>
-        <p class="blog-count">{posts.length} posts</p>
-      </div>
-
-      {posts.length === 0 ? (
-        <div class="empty-state">
-          <div class="empty-icon">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-            </svg>
-          </div>
-          <h2 class="empty-title">Próximamente</h2>
-          <p class="empty-sub">Los posts están en camino. Vuelve pronto.</p>
-        </div>
-      ) : (
-        <>
-          <a href={`/blog/${featured.slug}/`} class="featured-card reveal">
-            <div class="featured-top">
-              <span class="featured-badge">Último post</span>
-              <div class="featured-meta">
-                <span>{fmtDate(featured.date)}</span>
-                <span class="meta-sep">·</span>
-                <span>{featured.minRead} min de lectura</span>
-              </div>
-            </div>
-            <h2 class="featured-title">{featured.title}</h2>
-            <p class="featured-desc">{featured.desc}</p>
-            <div class="featured-footer">
-              <div class="post-tags">
-                {featured.tags.map((t: string) => <span class="tag" data-cat={t}>{t}</span>)}
-              </div>
-              <span class="featured-arrow">Leer →</span>
-            </div>
-          </a>
-
-          {allTags.length > 0 && (
-            <div class="tag-filters">
-              <button class="filter-btn active" data-tag="all">Todos</button>
-              {allTags.map(t => (
-                <button class="filter-btn" data-tag={t} data-cat={t}>{t}</button>
-              ))}
-            </div>
-          )}
-
-          <div class="posts-grid">
-            {rest.map(p => (
-              <a href={`/blog/${p.slug}/`} class="post-card reveal" data-tags={p.tags.join(',')}>
-                <div class="post-card-top">
-                  <div class="post-card-meta">
-                    <span>{fmtDate(p.date)}</span>
-                    <span class="meta-sep">·</span>
-                    <span>{p.minRead} min</span>
-                  </div>
-                  <span class="post-arrow">→</span>
-                </div>
-                <h2 class="post-card-title">{p.title}</h2>
-                <p class="post-card-desc">{p.desc}</p>
-                <div class="post-tags">
-                  {p.tags.map((t: string) => <span class="tag" data-cat={t}>{t}</span>)}
-                </div>
-              </a>
-            ))}
-          </div>
-        </>
-      )}
-
+  <main id="main" class="pg">
+    <header class="full cab">
+      <h1 class="ti">Blog</h1>
+      <p>Lo que aprendo haciendo: video, foto, diseño, web. {posts.length} artículos.</p>
+    </header>
+    <div class="fl full sticky-bar" role="group" aria-label="Filtrar por tema">
+      <button class="on" data-t="">Todos</button>
+      {allTags.map(t => <button data-t={t}>{t}</button>)}
     </div>
+    <ul class="ls full">
+      {posts.map(p => (
+        <li data-tags={p.tags.join('|')}><a href={`/blog/${p.slug}/`}>
+          <h2>{p.title}</h2>
+          <p>{p.desc}</p>
+          <small>{fmtDate(p.date)} · {p.minRead} min</small>
+        </a></li>
+      ))}
+    </ul>
   </main>
   <Footer />
 </Base>
-
-<script>
-  // Marca la página como JS-capaz para que las animaciones de entrada solo
-  // oculten las tarjetas cuando hay JS que las va a revelar.
-  document.documentElement.classList.add('js-reveal');
-
-  const filters = document.querySelectorAll('.filter-btn') as NodeListOf<HTMLButtonElement>;
-  const cards   = document.querySelectorAll('.post-card') as NodeListOf<HTMLElement>;
-  filters.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filters.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const tag = btn.dataset.tag ?? 'all';
-      cards.forEach(card => {
-        const tags = card.dataset.tags ?? '';
-        card.style.display = (tag === 'all' || tags.split(',').includes(tag)) ? '' : 'none';
-      });
-    });
-  });
-
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // ── Entrada escalonada (fade-up) al entrar en viewport ──
-  const reveals = document.querySelectorAll('.reveal') as NodeListOf<HTMLElement>;
-  if (reduce || !('IntersectionObserver' in window)) {
-    reveals.forEach(el => el.classList.add('in'));
-  } else {
-    const io = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target as HTMLElement;
-        const i  = Number(el.dataset.i ?? 0);
-        el.style.transitionDelay = Math.min(i * 70, 420) + 'ms';
-        el.classList.add('in');
-        obs.unobserve(el);
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    reveals.forEach((el, i) => { el.dataset.i = String(i); io.observe(el); });
-  }
-
-  // ── Spotlight que sigue el cursor sobre las tarjetas ──
-  if (!reduce && window.matchMedia('(hover: hover)').matches) {
-    const glowCards = document.querySelectorAll('.post-card, .featured-card') as NodeListOf<HTMLElement>;
-    glowCards.forEach(card => {
-      card.addEventListener('pointermove', e => {
-        const r = card.getBoundingClientRect();
-        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-        card.style.setProperty('--my', (e.clientY - r.top)  + 'px');
-      });
-    });
-  }
+<script is:inline>
+  (function () {
+    var bs = document.querySelectorAll('.fl button'), li = document.querySelectorAll('.ls li');
+    bs.forEach(function (b) { b.addEventListener('click', function () {
+      bs.forEach(function (x) { x.classList.toggle('on', x === b) });
+      li.forEach(function (l) { l.hidden = !!b.dataset.t && l.dataset.tags.split('|').indexOf(b.dataset.t) < 0 });
+    }) });
+  })();
 </script>
-
 <style>
-.blog-header {
-  display: flex; align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 48px; flex-wrap: wrap; gap: 16px;
-}
-.blog-count {
-  font-family: var(--mono); font-size: var(--text-xs);
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--muted); padding-bottom: 8px;
-}
-.featured-card {
-  display: block;
-  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
-  border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
-  border-radius: 20px; padding: 40px;
-  margin-bottom: 32px; position: relative; overflow: hidden;
-  transition: border-color .2s, box-shadow .2s;
-}
-.featured-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-}
-.featured-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
-  box-shadow: 0 8px 40px color-mix(in srgb, var(--accent) 8%, transparent);
-}
-.featured-top {
-  display: flex; align-items: center; gap: 16px;
-  margin-bottom: 20px; flex-wrap: wrap;
-}
-.featured-badge {
-  font-family: var(--mono); font-size: var(--text-2xs);
-  letter-spacing: 2px; text-transform: uppercase;
-  padding: 4px 12px; border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
-  color: var(--accent);
-}
-.featured-meta {
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: var(--text-2xs);
-  letter-spacing: 1.5px; color: var(--muted);
-}
-.featured-title {
-  font-family: var(--display);
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  letter-spacing: 2px; line-height: 1.05;
-  color: var(--white); margin-bottom: 16px; transition: color .2s;
-}
-.featured-card:hover .featured-title { color: var(--accent) }
-.featured-desc {
-  font-size: var(--text-base); color: var(--muted);
-  line-height: 1.7; max-width: 70ch; margin-bottom: 24px;
-}
-.featured-footer {
-  display: flex; align-items: center;
-  justify-content: space-between; flex-wrap: wrap; gap: 12px;
-}
-.featured-arrow {
-  font-family: var(--mono); font-size: var(--text-xs);
-  letter-spacing: 2px; color: var(--accent); transition: transform .2s;
-}
-.featured-card:hover .featured-arrow { transform: translateX(4px) }
-.tag-filters {
-  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px;
-}
-.filter-btn {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-family: var(--mono); font-size: var(--text-2xs);
-  letter-spacing: 2px; text-transform: uppercase;
-  padding: 7px 16px; border-radius: 999px;
-  border: 1px solid var(--border);
-  background: transparent; color: var(--muted);
-  cursor: pointer; transition: .2s ease;
-}
-.filter-btn[data-cat]::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--c, var(--accent)); flex-shrink: 0;
-}
-.filter-btn:hover { border-color: var(--border-h); color: var(--white) }
-.filter-btn.active {
-  background: color-mix(in srgb, var(--c, var(--accent)) 14%, transparent);
-  border-color: color-mix(in srgb, var(--c, var(--accent)) 45%, transparent);
-  color: var(--white);
-}
-.posts-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 16px; margin-bottom: 80px;
-}
-@media (max-width: 700px) { .posts-grid { grid-template-columns: 1fr } }
-.post-card {
-  position: relative; overflow: hidden;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 16px; padding: 28px;
-  display: flex; flex-direction: column; gap: 12px;
-  transition: border-color .2s, transform .2s, box-shadow .2s;
-}
-.post-card > * { position: relative; z-index: 1 }
-.post-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(0,0,0,.28);
-}
-/* Spotlight que sigue el cursor */
-.post-card::after,
-.featured-card::after {
-  content: ''; position: absolute; inset: 0; z-index: 0;
-  border-radius: inherit; pointer-events: none;
-  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in srgb, var(--accent) 14%, transparent), transparent 62%);
-  opacity: 0; transition: opacity .35s ease;
-}
-.post-card:hover::after,
-.featured-card:hover::after { opacity: 1 }
-.featured-card > * { position: relative; z-index: 1 }
-.post-card-top {
-  display: flex; align-items: center; justify-content: space-between;
-}
-.post-card-meta {
-  display: flex; align-items: center; gap: 6px;
-  font-family: var(--mono); font-size: var(--text-2xs);
-  letter-spacing: 1.5px; color: var(--muted);
-}
-.post-arrow { color: var(--muted); font-size: var(--text-sm); transition: transform .2s, color .2s }
-.post-card:hover .post-arrow { transform: translateX(4px); color: var(--white) }
-.post-card-title {
-  font-family: var(--display);
-  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
-  letter-spacing: 2px; line-height: 1.05;
-  color: var(--white); transition: color .2s; flex: 1;
-}
-.post-card:hover .post-card-title { color: var(--accent) }
-.post-card-desc { font-size: var(--text-sm); color: var(--muted); line-height: 1.6 }
-.post-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto }
-.tag {
-  --c: var(--accent);
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--mono); font-size: .6rem;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 999px;
-  background: color-mix(in srgb, var(--c) 11%, transparent);
-  border: 1px solid color-mix(in srgb, var(--c) 30%, var(--border));
-  color: var(--muted);
-}
-.tag::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--c); flex-shrink: 0;
-  box-shadow: 0 0 6px color-mix(in srgb, var(--c) 55%, transparent);
-}
-/* ── Colores por categoría (compartido por tags y filtros) ── */
-[data-cat="Video"]          { --c: #6366f1 }
-[data-cat="Audio"]          { --c: #f59e0b }
-[data-cat="Fotografía"]     { --c: #ec4899 }
-[data-cat="Diseño"]         { --c: #8b5cf6 }
-[data-cat="Diseño Web"]     { --c: #a855f7 }
-[data-cat="Recursos"]       { --c: #14b8a6 }
-[data-cat="Desarrollo Web"] { --c: #3b82f6 }
-[data-cat="Desarrollo"]     { --c: #3b82f6 }
-[data-cat="Impresión"]      { --c: #f97316 }
-[data-cat="OBS"]            { --c: #ef4444 }
-[data-cat="Artículo"]       { --c: #10b981 }
-[data-cat="Edición"]        { --c: #818cf8 }
-[data-cat="IA"]             { --c: #06b6d4 }
-[data-cat="Colores"]        { --c: #f43f5e }
-[data-cat="Creatividad"]    { --c: #eab308 }
-[data-cat="Instagram"]      { --c: #d946ef }
-[data-cat="Landscape"]      { --c: #22c55e }
-[data-cat="Games"]          { --c: #84cc16 }
-[data-cat="Técnicas"]       { --c: #64748b }
-[data-cat="LUTS"]           { --c: #0ea5e9 }
-
-/* ── Entrada escalonada (fade-up) ── */
-.js-reveal .reveal { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease }
-.reveal.in { opacity: 1; transform: none }
-@media (prefers-reduced-motion: reduce) {
-  .js-reveal .reveal { opacity: 1; transform: none; transition: none }
-}
-.meta-sep { opacity: .4 }
-.empty-state {
-  margin-top: 80px; display: flex; flex-direction: column;
-  align-items: center; text-align: center; padding: 80px 40px;
-  background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
-}
-.empty-icon { margin-bottom: 20px; color: var(--muted) }
-.empty-title {
-  font-family: var(--display); font-size: clamp(2rem, 4vw, 3.5rem);
-  letter-spacing: 2px; color: var(--white); margin-bottom: 12px;
-}
-.empty-sub { color: var(--muted); font-size: var(--text-base) }
+  .pg { padding-top: 120px; padding-bottom: var(--sec) }
+  .cab { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 48px; padding-bottom: 20px }
+  .ti { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(5rem, 19vw, 20rem); line-height: .82 }
+  .cab p { max-width: 36ch; font-size: var(--text-lg); color: var(--muted) }
+  .fl { display: flex; gap: 4px; overflow-x: auto; padding-block: 12px; background: var(--ink); scrollbar-width: none }
+  .fl button { flex: none; padding: 8px 15px; border-radius: 99px; font-weight: 600; font-size: .9375rem; border: 1px solid transparent; transition: border-color .2s, background .2s, color .2s }
+  .fl button:hover { border-color: var(--border-h) } .fl button.on { background: var(--flame); color: #0d0c0b }
+  .ls { list-style: none }
+  .ls a { display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,1fr) auto; gap: 6px 36px; align-items: baseline; padding-block: 20px; border-top: 1px solid var(--border) }
+  .ls h2 { font-size: clamp(1.25rem, 2vw, 1.75rem); font-weight: 600; line-height: 1.18; letter-spacing: -.018em; transition: color .2s }
+  .ls a:hover h2 { color: var(--flame) }
+  .ls p { color: var(--muted); font-size: .9688rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden }
+  .ls small { color: var(--dim); font-size: .875rem; white-space: nowrap }
+  @media (max-width: 800px) { .ls a { grid-template-columns: 1fr } }
 </style>

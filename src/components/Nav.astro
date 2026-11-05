@@ -1,315 +1,79 @@
 ---
-const links = [
-  { href: '/servicios/',  label: 'Servicios' },
-  { href: '/reels/',      label: 'Reels' },
-  { href: '/portafolio/', label: 'Portafolio' },
-  { href: '/galeria-logos/', label: 'Galería' },
-  { href: '/blog/',       label: 'Blog' },
-  { href: '/sobre-mi/',   label: 'Sobre mí' },
-  { href: '/contacto/',   label: 'Contacto' },
-];
+import { NAV, wa } from '../data/site';
 const current = Astro.url.pathname;
+const activo = (h: string) =>
+  h === '/portafolio/'
+    ? current.startsWith('/portafolio/') && !current.startsWith('/portafolio/logos')
+    : current.startsWith(h);
 ---
-<a href="#main" class="skip-link">Saltar al contenido</a>
-
-<header>
-  <div class="container">
-    <nav>
-      <a href="/" class="nav-brand" aria-label="Marcos Santiago">
-        <img src="/logos-home/logo-marcos.svg" alt="Marcos Santiago" class="nav-logo-img" />
-      </a>
-      <div class="nav-links" id="navLinks">
-        <span class="nav-badge" id="navBadge"></span>
-        {links.map(l => (
-          <a
-            href={l.href}
-            class:list={['nav-link', { active: current.startsWith(l.href) }]}
-          >{l.icon ? <i class={l.icon}></i> : ''} {l.label}</a>
-        ))}
-      </div>
-      <div class="nav-right">
-        <a href="/contacto/" class="nav-cta">Hablemos <span class="nav-cta-arrow">→</span></a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
-          <i class="fa-solid fa-sun"  id="iconSun"></i>
-          <i class="fa-solid fa-moon" id="iconMoon"></i>
-        </button>
-      </div>
-      <button class="nav-hamburger" id="navToggle" aria-label="Menú">
-        <span></span><span></span><span></span>
-      </button>
-    </nav>
-  </div>
+<a href="#main" class="skip">Saltar al contenido</a>
+<header class="nav">
+  <a href="/" class="nav-marca" aria-label="Marcos Santiago, inicio">
+    <img src="/logos-home/logo-marcos.svg" alt="" width="62" height="28" />
+  </a>
+  <nav class="nav-links" aria-label="Principal">
+    {NAV.map(l => <a href={l.href} aria-current={activo(l.href) ? 'page' : undefined}>{l.label}</a>)}
+  </nav>
+  <a href="/contacto/" class="nav-cta">Hablemos <span aria-hidden="true">→</span></a>
+  <button class="nav-abrir" popovertarget="nav-movil" aria-label="Abrir menú"><span></span><span></span></button>
 </header>
 
-<!-- Mobile nav -->
-<div class="mobile-nav" id="mobileNav">
-  <div class="mobile-nav-inner">
-    {links.map((l, i) => (
-      <a href={l.href} class="mobile-nav-link" style={`--i:${i}`}>
-        <span class="mnl-index">{String(i + 1).padStart(2, '0')}</span>
-        <span class="mnl-label">{l.icon ? <i class={l.icon}></i> : ''} {l.label}</span>
-        <span class="mnl-arrow">→</span>
-      </a>
-    ))}
-    <a href="/contacto/" class="mobile-nav-cta" style={`--i:${links.length}`}>Hablemos <span aria-hidden="true">→</span></a>
-  </div>
+<!-- Menú móvil con popover nativo: cero JavaScript -->
+<div id="nav-movil" popover="auto" class="nav-movil">
+  <button class="nav-cerrar" popovertarget="nav-movil" popovertargetaction="hide" aria-label="Cerrar menú">×</button>
+  <nav aria-label="Móvil">
+    {NAV.map(l => <a href={l.href}>{l.label}</a>)}
+    <a href="/contacto/">Hablemos</a>
+  </nav>
+  <a class="nav-wa" href={wa()} data-track="nav-whatsapp">WhatsApp · (787) 243-9670</a>
 </div>
 
+<script is:inline>
+  // Al bajar se esconde; al subir vuelve con fondo sólido para no pisar el contenido.
+  (function () {
+    var n = document.querySelector('.nav'), y0 = scrollY, pend = false;
+    function f() { pend = false; var y = scrollY;
+      n.classList.toggle('fijo', y > 40);
+      if (Math.abs(y - y0) > 6) { n.classList.toggle('oculto', y > y0 && y > 160); y0 = y; } }
+    addEventListener('scroll', function () { if (!pend) { pend = true; requestAnimationFrame(f); } }, { passive: true });
+    f();
+  })();
+</script>
+
 <style>
-  /* Bypass de bloques (WCAG 2.4.1): oculto hasta recibir foco por teclado */
-  .skip-link {
-    position: fixed; top: 8px; left: 8px; z-index: 200;
-    transform: translateY(-200%);
-    /* No usar --accent: el home lo redefine a blanco hueso y el texto
-       blanco se pierde. --white/--ink se invierten con el tema y garantizan contraste. */
-    background: var(--white); color: var(--ink);
-    border: 1px solid var(--ink);
-    padding: 12px 20px; border-radius: 8px;
-    font-family: var(--mono); font-size: .65rem;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    transition: transform .15s;
+  .skip { position: fixed; left: 12px; top: -60px; z-index: 300; background: var(--flame); color: #0d0c0b; padding: 10px 16px; font-weight: 600 }
+  .skip:focus { top: 12px }
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 100; height: 72px;
+    display: flex; align-items: center; gap: 28px; padding-inline: var(--gut);
+    color: #f3eee5; transition: translate .3s var(--ease), background-color .25s;
   }
-  .skip-link:focus,
-  .skip-link:focus-visible { transform: translateY(0) }
+  :global(body:has(main.on-paper)) .nav:not(:global(.fijo)) { color: #14120f }
+  :global(body:has(main.on-paper)) .nav:not(:global(.fijo)) img { filter: invert(1) }
+  :global(body:has(main.on-paper)) .nav:not(:global(.fijo)) .nav-cta:hover { background: #14120f; color: #f3eee5 }
+  .nav:global(.fijo) { background: #0d0c0b }
+  .nav:global(.oculto) { translate: 0 -100% }
+  .nav-marca { margin-right: auto; display: block }
+  .nav-marca img { height: 28px; width: auto }
+  .nav-links { display: flex; gap: 30px; font-size: .9375rem; font-weight: 500 }
+  .nav-links a { position: relative; padding: 8px 0; white-space: nowrap }
+  .nav-links a::after { content:''; position: absolute; left: 0; right: 0; bottom: 3px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease) }
+  .nav-links a:hover::after, .nav-links a[aria-current]::after { transform: scaleX(1) }
+  .nav-cta { font-weight: 600; font-size: .9375rem; padding: 9px 18px; border: 1px solid currentColor; border-radius: 99px; transition: background .2s, color .2s; white-space: nowrap }
+  .nav-cta:hover { background: #f3eee5; color: #0d0c0b }
+  .nav-abrir { display: none; width: 44px; height: 44px; position: relative }
+  .nav-abrir span { position: absolute; left: 9px; right: 9px; height: 2px; background: currentColor }
+  .nav-abrir span:first-child { top: 18px } .nav-abrir span:last-child { top: 26px }
 
-  header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    border-bottom: 1px solid transparent;
-    transition: background .3s, border-color .3s;
-  }
-  header.scrolled {
-    background: color-mix(in srgb, var(--ink) 92%, transparent);
-    border-color: var(--border);
-    backdrop-filter: blur(12px);
-  }
-  nav {
-    display: flex; align-items: center;
-    justify-content: space-between;
-    padding: 20px 0;
-    gap: 24px;
-  }
-  .nav-brand {
-    display: flex; align-items: center;
-  }
-  .nav-logo-img {
-    height: 36px; width: auto;
-    display: block;
-    transition: opacity .2s;
-  }
-  .nav-brand:hover .nav-logo-img { opacity: .8 }
-  :global([data-theme="light"]) .nav-logo-img { filter: invert(1) }
-  .nav-links {
-    display: flex; gap: 4px; align-items: center;
-    position: relative;
-  }
-  .nav-badge {
-    position: absolute;
-    top: 50%; transform: translateY(-50%);
-    height: 32px; border-radius: 8px;
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-    pointer-events: none;
-    opacity: 0;
-    transition: left .25s cubic-bezier(.4,0,.2,1),
-                width .25s cubic-bezier(.4,0,.2,1),
-                opacity .15s ease;
-    z-index: 0;
-  }
-  .nav-badge.visible { opacity: 1 }
-  .nav-link {
-    font-family: var(--mono);
-    font-size: .68rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 8px 14px;
-    border-radius: 6px;
-    position: relative;
-    z-index: 1;
-    transition: color .15s;
-  }
-  .nav-link:hover { color: var(--white) }
-  .nav-link.active { color: var(--white) }
-
-  .nav-right {
-    display: flex; align-items: center; gap: 10px;
-  }
-  .nav-cta {
-    font-family: var(--mono); font-size: .68rem;
-    letter-spacing: 2px; text-transform: uppercase;
-    padding: 8px 16px; border-radius: 8px;
-    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-    color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
-    transition: .2s ease; white-space: nowrap;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .nav-cta:hover {
-    background: color-mix(in srgb, var(--accent) 16%, transparent);
-    border-color: color-mix(in srgb, var(--accent) 70%, transparent);
-    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 12%, transparent);
-  }
-  .nav-cta-arrow { transition: transform .2s ease }
-  .nav-cta:hover .nav-cta-arrow { transform: translateX(3px) }
-  .nav-hamburger {
-    display: none;
-    flex-direction: column; gap: 5px;
-    background: none; border: none; cursor: pointer; padding: 4px;
-  }
-  .nav-hamburger span {
-    display: block; width: 22px; height: 1.5px;
-    background: var(--white); border-radius: 2px;
-    transition: .25s ease;
-  }
-  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg) }
-  .nav-hamburger.open span:nth-child(2) { opacity: 0 }
-  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg) }
-
-  .mobile-nav {
-    display: none;
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--ink);
-    z-index: 99;
-    overflow-y: auto;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity .28s ease, visibility .28s ease;
-  }
-  /* Ocultar el chat flotante mientras el menú móvil está abierto */
-  :global(body.nav-open #ms-chat-widget) { display: none }
-  .mobile-nav.open { visibility: visible; opacity: 1 }
-  .mobile-nav-inner {
-    display: flex; flex-direction: column;
-    padding: 92px 24px 40px;
-    min-height: 100%;
-  }
-  /* Filas numeradas gigantes con entrada escalonada */
-  .mobile-nav-link {
-    display: flex; align-items: center; gap: 16px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
-    color: inherit;
-    opacity: 0; transform: translateX(-26px);
-    transition: opacity .5s cubic-bezier(.16,.8,.3,1),
-                transform .5s cubic-bezier(.16,.8,.3,1);
-  }
-  .mobile-nav.open .mobile-nav-link {
-    opacity: 1; transform: none;
-    transition-delay: calc(.055s * var(--i) + .1s);
-  }
-  .mnl-index {
-    font-family: var(--mono); font-size: .7rem;
-    letter-spacing: 1px; color: var(--accent);
-    opacity: .55; width: 26px; flex-shrink: 0;
-    padding-top: .5em;
-  }
-  .mnl-label {
-    font-family: var(--display);
-    font-size: clamp(2.1rem, 9.5vw, 3rem);
-    letter-spacing: 2px; line-height: 1;
-    text-transform: uppercase;
-    color: color-mix(in srgb, var(--white) 68%, transparent);
-    flex: 1; transition: color .18s, transform .18s;
-  }
-  .mnl-label i { font-size: .7em; margin-right: 6px }
-  .mnl-arrow {
-    font-size: 1.15rem; color: var(--accent);
-    opacity: 0; transform: translateX(-8px);
-    transition: opacity .2s, transform .2s;
-  }
-  .mobile-nav-link:hover .mnl-label,
-  .mobile-nav-link:active .mnl-label { color: var(--white); transform: translateX(6px) }
-  .mobile-nav-link:hover .mnl-arrow,
-  .mobile-nav-link:active .mnl-arrow { opacity: 1; transform: none }
-  .mobile-nav-cta {
-    margin-top: 28px;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    background: var(--accent); color: #080808;
-    font-family: var(--mono); font-weight: 700;
-    letter-spacing: 2px; text-transform: uppercase; font-size: .8rem;
-    padding: 18px; border-radius: 10px;
-    opacity: 0; transform: translateY(12px);
-    transition: opacity .45s ease, transform .45s ease;
-  }
-  .mobile-nav.open .mobile-nav-cta {
-    opacity: 1; transform: none;
-    transition-delay: calc(.055s * var(--i) + .12s);
-  }
-  .mobile-nav-cta:hover { opacity: .9 }
-
-  .theme-toggle {
-    width: 34px; height: 34px;
-    display: flex; align-items: center; justify-content: center;
-    background: none; border: 1px solid var(--border);
-    border-radius: 8px; cursor: pointer;
-    color: var(--muted); font-size: .8rem;
-    transition: .15s; flex-shrink: 0;
-  }
-  .theme-toggle:hover { border-color: var(--border-h); color: var(--white) }
-  #iconSun  { display: none }
-  #iconMoon { display: block }
-  :global([data-theme="light"]) #iconSun  { display: block }
-  :global([data-theme="light"]) #iconMoon { display: none }
-
-  @media (max-width: 768px) {
-    .nav-links { display: none }
-    .nav-cta { display: none }
-    .nav-hamburger { display: flex }
-    .mobile-nav { display: block }
+  .nav-movil { position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; border: 0; padding: 88px var(--gut) 32px; background: var(--flame); color: #0d0c0b; flex-direction: column; justify-content: space-between }
+  .nav-movil:popover-open { display: flex; animation: entra .28s var(--ease) }
+  @keyframes entra { from { opacity: 0; translate: 0 16px } }
+  .nav-movil nav { display: grid; gap: 2px }
+  .nav-movil nav a { font-family: var(--display); font-weight: 800; font-size: clamp(3rem, 15vw, 5rem); line-height: 1.02; text-transform: uppercase }
+  .nav-cerrar { position: absolute; right: var(--gut); top: 16px; width: 44px; height: 44px; font-size: 2.25rem; line-height: 1 }
+  .nav-wa { font-weight: 600 }
+  @media (max-width: 900px) {
+    .nav-links, .nav-cta { display: none }
+    .nav-abrir { display: block }
   }
 </style>
-
-<script>
-  // Sliding badge
-  const navLinks = document.getElementById('navLinks');
-  const badge = document.getElementById('navBadge');
-  const linkEls = navLinks?.querySelectorAll('.nav-link');
-
-  function moveBadge(el: Element) {
-    if (!navLinks || !badge) return;
-    const navRect = navLinks.getBoundingClientRect();
-    const rect = el.getBoundingClientRect();
-    (badge as HTMLElement).style.left = (rect.left - navRect.left) + 'px';
-    (badge as HTMLElement).style.width = rect.width + 'px';
-    badge.classList.add('visible');
-  }
-
-  linkEls?.forEach(link => {
-    link.addEventListener('mouseenter', () => moveBadge(link));
-  });
-  navLinks?.addEventListener('mouseleave', () => {
-    badge?.classList.remove('visible');
-  });
-
-  // Theme toggle
-  const themeBtn = document.getElementById('themeToggle');
-  themeBtn?.addEventListener('click', () => {
-    const isLight = document.documentElement.dataset.theme === 'light';
-    document.documentElement.dataset.theme = isLight ? 'dark' : 'light';
-    localStorage.setItem('ms-theme', isLight ? 'dark' : 'light');
-  });
-
-  // Scroll header
-  const header = document.querySelector('header');
-  window.addEventListener('scroll', () => {
-    header?.classList.toggle('scrolled', window.scrollY > 20);
-  });
-
-  // Mobile nav toggle
-  const toggle = document.getElementById('navToggle');
-  const mobileNav = document.getElementById('mobileNav');
-  toggle?.addEventListener('click', () => {
-    const open = toggle.classList.toggle('open');
-    mobileNav?.classList.toggle('open', open);
-    document.body.classList.toggle('nav-open', open);
-    document.body.style.overflow = open ? 'hidden' : '';
-  });
-  mobileNav?.querySelectorAll('a').forEach(a =>
-    a.addEventListener('click', () => {
-      toggle?.classList.remove('open');
-      mobileNav.classList.remove('open');
-      document.body.classList.remove('nav-open');
-      document.body.style.overflow = '';
-    })
-  );
-</script>

@@ -1,0 +1,195 @@
+---
+// Muro de logos. Cada logo trae calculado (scripts/analizar-logos.mjs) si se lee sobre
+// cada fondo; cuando no, pasa a monocromo con un filtro CSS. Sin imágenes extra.
+import { logos } from '../lib/media';
+interface Props { limite?: number; buscador?: boolean; auto?: boolean }
+const { limite, buscador = false, auto = false } = Astro.props;
+
+const lum = (h: string) => { const n = [1,3,5].map(i => parseInt(h.slice(i,i+2),16)/255).map(c => c<=.03928?c/12.92:((c+.055)/1.055)**2.4); return .2126*n[0]+.7152*n[1]+.0722*n[2]; };
+const NEG = 'brightness(0)', BLA = 'brightness(0) invert(1)';
+const sup = ['blanco','negro','azul','papel'] as const;
+
+// Orden estable y variado: los de color primero, sin caer en orden alfabético.
+const hash = (s: string) => [...s].reduce((a,c) => (a*31 + c.charCodeAt(0)) >>> 0, 7);
+const orden = [...logos].sort((a,b) => (+!!b.marca - +!!a.marca) || hash(a.slug)-hash(b.slug));
+const lista = (limite ? orden.slice(0, limite) : orden).map((l, i) => {
+  const SOM = 'drop-shadow(0 6px 16px rgba(0,0,0,.25))', HALO = 'drop-shadow(0 0 1px rgba(255,255,255,.7))';
+  const f = l.macizo ? {
+    blanco: l.lee.blanco < .6 ? SOM : 'none', papel: l.lee.papel < .6 ? SOM : 'none',
+    negro: l.lee.negro < .6 ? HALO : 'none', azul: l.lee.azul < .6 ? HALO : 'none', marca: 'none',
+  } : {
+    blanco: l.lee.blanco < .6 ? NEG : 'none',
+    negro:  l.lee.negro  < .6 ? BLA : 'none',
+    azul:   l.lee.azul   < .6 ? BLA : 'none',
+    papel:  l.lee.papel  < .6 ? NEG : 'none',
+    marca:  l.marca ? (lum(l.marca) > .45 ? NEG : BLA) : (l.lee.papel < .6 ? NEG : 'none'),
+  };
+  // En la mezcla, un fondo donde el logo conserve sus colores; cada tercero, su color de marca.
+  let s: string = (l.marca && !l.macizo && i % 3 === 0) ? 'marca' : sup[i % 4];
+  if (s !== 'marca' && f[s as keyof typeof f] !== 'none') { const ok = sup.filter(x => f[x] === 'none'); s = ok[i % (ok.length || 1)] ?? s; }
+  return { ...l, f, s, i, m: l.macizo ? '#f2ede4' : (l.marca ?? '#f2ede4') };
+});
+const fondos = [['mezcla','Mezcla'],['blanco','Blanco'],['negro','Negro'],['azul','Azul'],['marca','Su color']];
+---
+<div class="lw" data-fondo="mezcla" data-auto={auto ? '' : undefined}>
+  <div class="lw-bar full">
+    <div class="lw-fondos" role="radiogroup" aria-label="Fondo de los logos">
+      {fondos.map(([k, t]) => (
+        <button role="radio" aria-checked={k === 'mezcla' ? 'true' : 'false'} data-k={k}>
+          <i class={`pt pt-${k}`} aria-hidden="true"></i>{t}
+        </button>
+      ))}
+    </div>
+    {buscador && (
+      <label class="lw-busca"><span class="vh">Buscar logo</span>
+        <input type="search" placeholder={`Buscar entre ${logos.length} logos`} autocomplete="off" />
+      </label>
+    )}
+  </div>
+  <ul class="lw-grid">
+    {lista.map(l => (
+      <li class="lg" data-s={l.s} data-n={l.name.toLowerCase()} data-slug={l.slug}
+          style={`--i:${l.i};--m:${l.m};--fb:${l.f.blanco};--fn:${l.f.negro};--fa:${l.f.azul};--fp:${l.f.papel};--fm:${l.f.marca}`}>
+        <button aria-label={`Ver el logo de ${l.name} en distintos fondos`}>
+          <img src={`/logos-portfolio/${l.slug}.svg`} alt="" width={l.w} height={l.h} loading="lazy" decoding="async" />
+          <span class="lg-n">{l.name}</span>
+        </button>
+      </li>
+    ))}
+    {!limite && <li class="lg-fin"><a href="/contacto/?servicio=Dise%C3%B1o%20gr%C3%A1fico%20o%20logo"><span>¿El próximo<br />es el tuyo?</span></a></li>}
+  </ul>
+  <p class="lw-vacio full" hidden>Ningún logo con ese nombre.</p>
+
+  <dialog class="lp" aria-label="Logo en distintos fondos">
+    <div class="lp-top">
+      <p class="lp-n"></p>
+      <div class="lp-nav">
+        <button data-d="-1" aria-label="Logo anterior">←</button>
+        <button data-d="1" aria-label="Logo siguiente">→</button>
+        <button data-x aria-label="Cerrar">×</button>
+      </div>
+    </div>
+    <div class="lp-grid">
+      <figure style="background:#fff"><img alt="" data-f="fb" /><figcaption style="color:#14120f">Blanco</figcaption></figure>
+      <figure style="background:#0c0c0e"><img alt="" data-f="fn" /><figcaption style="color:#f3eee5">Negro</figcaption></figure>
+      <figure style="background:#1a3cff"><img alt="" data-f="fa" /><figcaption style="color:#fff">Azul</figcaption></figure>
+      <figure class="lp-marca"><img alt="" data-f="fm" /><figcaption>Su color</figcaption></figure>
+    </div>
+  </dialog>
+</div>
+
+<script>
+  // ~1 KB: cambiar fondo, buscar, y la prueba de fondos.
+  document.querySelectorAll<HTMLElement>('.lw').forEach(w => {
+    const botones = [...w.querySelectorAll<HTMLButtonElement>('.lw-fondos button')];
+    const pon = (k: string) => {
+      w.dataset.fondo = k;
+      botones.forEach(b => b.setAttribute('aria-checked', String(b.dataset.k === k)));
+    };
+    botones.forEach(b => b.addEventListener('click', () => { parar(); pon(b.dataset.k!); }));
+    w.querySelector('.lw-fondos')!.addEventListener('keydown', (e: any) => {
+      if (!['ArrowRight','ArrowLeft'].includes(e.key)) return;
+      const i = botones.indexOf(document.activeElement as any);
+      const n = botones[(i + (e.key === 'ArrowRight' ? 1 : -1) + botones.length) % botones.length];
+      n.focus(); n.click();
+    });
+
+    // Demostración sola mientras está en pantalla, hasta que la persona toque algo.
+    let t: any = 0, tocado = false;
+    const parar = () => { tocado = true; clearInterval(t); };
+    if (w.dataset.auto !== undefined && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      new IntersectionObserver(([e]) => {
+        clearInterval(t);
+        if (e.isIntersecting && !tocado) t = setInterval(() => {
+          const i = botones.findIndex(b => b.getAttribute('aria-checked') === 'true');
+          pon(botones[(i + 1) % botones.length].dataset.k!);
+        }, 3200);
+      }, { threshold: .3 }).observe(w);
+    }
+
+    const inp = w.querySelector<HTMLInputElement>('.lw-busca input');
+    const tiles = [...w.querySelectorAll<HTMLElement>('.lg')];
+    const vacio = w.querySelector<HTMLElement>('.lw-vacio')!;
+    inp?.addEventListener('input', () => {
+      const q = inp.value.trim().toLowerCase(); let n = 0;
+      tiles.forEach(el => { const ok = el.dataset.n!.includes(q); el.hidden = !ok; if (ok) n++; });
+      vacio.hidden = n > 0;
+      const fin = w.querySelector<HTMLElement>('.lg-fin'); if (fin) fin.hidden = !!q;
+    });
+
+    const d = w.querySelector('dialog')!;
+    let actual = 0;
+    const abrir = (i: number) => {
+      const vis = tiles.filter(el => !el.hidden);
+      actual = (i + vis.length) % vis.length;
+      const el = vis[actual];
+      d.querySelector('.lp-n')!.textContent = el.querySelector('.lg-n')!.textContent;
+      d.querySelector<HTMLElement>('.lp-marca')!.style.background = el.style.getPropertyValue('--m');
+      d.querySelector<HTMLElement>('.lp-marca figcaption')!.style.color = el.style.getPropertyValue('--fm').includes('invert') ? '#fff' : '#14120f';
+      d.querySelectorAll<HTMLImageElement>('img').forEach(img => {
+        img.src = `/logos-portfolio/${el.dataset.slug}.svg`;
+        img.style.filter = el.style.getPropertyValue('--' + img.dataset.f);
+      });
+      if (!d.open) d.showModal();
+    };
+    tiles.forEach(el => el.querySelector('button')!.addEventListener('click', () => { parar(); abrir(tiles.filter(x => !x.hidden).indexOf(el)); }));
+    d.querySelectorAll<HTMLButtonElement>('[data-d]').forEach(b => b.addEventListener('click', () => abrir(actual + +b.dataset.d!)));
+    d.querySelector('[data-x]')!.addEventListener('click', () => d.close());
+    d.addEventListener('click', e => { if (e.target === d) d.close(); });
+    d.addEventListener('keydown', e => { if (e.key === 'ArrowRight') abrir(actual + 1); if (e.key === 'ArrowLeft') abrir(actual - 1); });
+  });
+</script>
+
+<style>
+  .lw-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; padding-block: 16px }
+  .lw-fondos { display: flex; flex-wrap: wrap; gap: 4px }
+  .lw-fondos button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 16px 8px 10px; border-radius: 99px; border: 1px solid transparent; font-weight: 600; font-size: .9375rem; transition: border-color .2s, background .2s }
+  .lw-fondos button:hover { border-color: var(--border-h) }
+  .lw-fondos button[aria-checked='true'] { border-color: currentColor }
+  .pt { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(128,128,128,.5) }
+  .pt-blanco { background: #fff } .pt-negro { background: #0c0c0e } .pt-azul { background: #1a3cff }
+  .pt-marca { background: conic-gradient(#ff4f1f, #ffcf33, #1fa971, #1a3cff, #d33fb0, #ff4f1f) }
+  .pt-mezcla { background: conic-gradient(#fff 0 25%, #0c0c0e 0 50%, #1a3cff 0 75%, #ff4f1f 0) }
+  .lw-busca input { width: min(320px, 78vw); min-height: 44px; padding: 8px 18px; border-radius: 99px; border: 1px solid var(--border-h); background: transparent; color: inherit; font: inherit; font-size: 1rem }
+
+  .lw-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(150px, 16.6vw, 280px), 1fr)) }
+  .lg {
+    --bg: #fff; --fl: none; aspect-ratio: 1; position: relative;
+    background: var(--bg);
+    transition: background-color .5s ease; transition-delay: calc(var(--i) * 14ms);
+  }
+  [data-fondo='blanco'] .lg { --bg: #fff; --fl: var(--fb) }
+  [data-fondo='negro'] .lg { --bg: #0c0c0e; --fl: var(--fn) }
+  [data-fondo='azul'] .lg { --bg: #1a3cff; --fl: var(--fa) }
+  [data-fondo='marca'] .lg { --bg: var(--m); --fl: var(--fm) }
+  [data-fondo='mezcla'] .lg[data-s='blanco'] { --bg: #fff; --fl: var(--fb) }
+  [data-fondo='mezcla'] .lg[data-s='negro'] { --bg: #0c0c0e; --fl: var(--fn) }
+  [data-fondo='mezcla'] .lg[data-s='azul'] { --bg: #1a3cff; --fl: var(--fa) }
+  [data-fondo='mezcla'] .lg[data-s='papel'] { --bg: #f2ede4; --fl: var(--fp) }
+  [data-fondo='mezcla'] .lg[data-s='marca'] { --bg: var(--m); --fl: var(--fm) }
+  .lg button { position: absolute; inset: 0; display: grid; place-items: center; width: 100%; overflow: hidden }
+  .lg img { width: 62%; height: 54%; object-fit: contain; filter: var(--fl); transition: filter .5s ease, scale .5s var(--ease); transition-delay: calc(var(--i) * 14ms), 0s }
+  .lg button:hover img, .lg button:focus-visible img { scale: 1.1 }
+  .lg-n { position: absolute; left: 10px; right: 10px; bottom: 8px; font-size: .75rem; font-weight: 600; text-align: left; color: #fff; mix-blend-mode: difference; opacity: 0; translate: 0 6px; transition: opacity .25s, translate .25s }
+  .lg button:hover .lg-n, .lg button:focus-visible .lg-n { opacity: 1; translate: 0 0 }
+  .lg-fin { grid-column: span 3; background: var(--flame); color: #0d0c0b }
+  .lg-fin a { display: flex; align-items: flex-end; height: 100%; padding: clamp(14px, 2vw, 28px); font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.75rem, 4.6vw, 5rem); line-height: .94; transition: background .2s, color .2s }
+  .lg-fin a:hover { background: #0d0c0b; color: #f3eee5 }
+  @media (max-width: 520px) { .lg-fin { grid-column: span 1; aspect-ratio: 1 } .lg-fin a { font-size: 1.5rem } }
+  .lw-vacio { padding-block: 48px; color: var(--muted) }
+
+  .lp { position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; border: 0; background: #0d0c0b; color: #f3eee5; padding: 0 }
+  .lp[open] { display: flex; flex-direction: column }
+  .lp::backdrop { background: #0d0c0b }
+  .lp-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px var(--gut) }
+  .lp-n { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 4vw, 2.75rem); text-transform: uppercase; line-height: 1 }
+  .lp-nav { display: flex; gap: 4px }
+  .lp-nav button { width: 48px; height: 48px; font-size: 1.5rem; border-radius: 50%; transition: background .2s, color .2s }
+  .lp-nav button:hover { background: #f3eee5; color: #0d0c0b }
+  .lp-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr }
+  .lp-grid figure { position: relative; display: grid; place-items: center; min-height: 0; animation: lp-in .45s var(--ease) both }
+  .lp-grid figure:nth-child(2) { animation-delay: .05s } .lp-grid figure:nth-child(3) { animation-delay: .1s } .lp-grid figure:nth-child(4) { animation-delay: .15s }
+  @keyframes lp-in { from { opacity: 0; scale: .97 } }
+  .lp-grid img { width: 56%; height: 56%; object-fit: contain }
+  .lp-grid figcaption { position: absolute; left: 14px; bottom: 10px; font-size: .8125rem; font-weight: 600 }
+</style>

@@ -1,0 +1,37 @@
+---
+// Pieza de trabajo: video (abre el reproductor sin salir de la página) o marca.
+import { Picture } from 'astro:assets';
+import { dur } from '../lib/media';
+interface Props { v?: any; b?: any; sizes?: string; eager?: boolean; class?: string; }
+const { v, b, sizes = '(max-width: 700px) 100vw, 50vw', eager = false, class: cl = '' } = Astro.props;
+const img = v ? v.img : b.img;
+const widths = [480, 800, 1200, 1600].filter(w => w <= img.width);
+---
+{v ? (
+  <a class:list={['wc', cl]} href={`https://vimeo.com/${v.id}`} data-video={v.id} data-title={v.title} target="_blank" rel="noopener">
+    <div class="wc-img">
+      <Picture src={img} formats={['avif','webp']} widths={widths} sizes={sizes} alt={`${v.title}, video de Marcos Santiago`} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+      <span class="wc-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></span>
+    </div>
+    <div class="wc-txt"><h3>{v.title}</h3><p>{v.cat} · {v.year} · {dur(v.duration)}</p></div>
+  </a>
+) : (
+  <a class:list={['wc', cl]} href={b.url} target="_blank" rel="noopener">
+    <div class="wc-img">
+      <Picture src={img} formats={['avif','webp']} widths={widths} sizes={sizes} alt={`Identidad de ${b.name}, diseñada por Marcos Santiago`} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    </div>
+    <div class="wc-txt"><h3>{b.name}</h3><p>Identidad · {b.sector}</p></div>
+  </a>
+)}
+<style>
+  .wc { display: block; min-width: 0 }
+  .wc-img { position: relative; overflow: hidden; background: var(--surface); border-radius: var(--radius) }
+  .wc-img :global(picture) { display: block; height: 100% }
+  .wc-img :global(img) { width: 100%; height: 100%; object-fit: cover; transition: scale .9s var(--ease) }
+  .wc:hover .wc-img :global(img) { scale: 1.035 }
+  .wc-play { position: absolute; right: 14px; bottom: 14px; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--flame); color: #0d0c0b; transition: scale .35s var(--ease) }
+  .wc:hover .wc-play { scale: 1.15 }
+  .wc-txt { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 18px; padding-top: 12px }
+  .wc-txt h3 { font-family: var(--body); font-size: 1.0625rem; font-weight: 600; line-height: 1.3 }
+  .wc-txt p { color: var(--dim); font-size: .875rem; white-space: nowrap }
+</style>

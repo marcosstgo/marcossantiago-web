@@ -2,401 +2,84 @@
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-
-const channels = [
-  {
-    label: 'WhatsApp',
-    handle: '+1 (787) 243-9670',
-    href: 'https://wa.me/17872439670',
-    icon: 'fab fa-whatsapp',
-    color: '#25d366',
-    desc: 'Escríbeme directo para cotizaciones o consultas.',
-  },
-  {
-    label: 'Telegram',
-    handle: '+1 (787) 243-9670',
-    href: 'https://t.me/+17872439670',
-    icon: 'fab fa-telegram',
-    color: '#2aabee',
-    desc: 'También puedes encontrarme por Telegram.',
-  },
-];
+import { TEL, TEL_TXT, EMAIL, wa } from '../data/site';
+const opciones = ['Diseño gráfico o logo','Fotografía','Video','360 Video Booth','Web o plataforma','Otra cosa'];
 ---
-<Base title="Contacto — Marcos Santiago" description="Contacta a Marcos Santiago — Artista Gráfico, Fotógrafo, Videógrafo y Desarrollador desde Aibonito, Puerto Rico.">
+<Base title="Contacto — Marcos Santiago" description="Escríbele a Marcos Santiago para cotizar diseño, fotografía, video o web en Puerto Rico. WhatsApp, teléfono, correo o formulario.">
   <Nav />
-  <main id="main" style="padding-top:120px">
-    <div class="container">
-
-      <p class="section-label">Contacto</p>
-      <h1 class="section-title">Hablemos</h1>
-      <p class="section-sub" style="max-width:52ch">
-        ¿Tienes un proyecto en mente? ¿Necesitas diseño, fotos, video o desarrollo?
-        Encuéntrame en cualquiera de estos canales o escríbeme directamente abajo.
-      </p>
-
-      <div class="channels-grid">
-        {channels.map(c => (
-          <a href={c.href} target="_blank" rel="noopener" class="channel-card" style={`--c:${c.color}`}>
-            <div class="channel-top">
-              <i class={c.icon + ' channel-icon'}></i>
-              <span class="channel-arrow">↗</span>
-            </div>
-            <div class="channel-label">{c.label}</div>
-            <div class="channel-handle">{c.handle}</div>
-            <p class="channel-desc">{c.desc}</p>
-          </a>
-        ))}
+  <main id="main" class="pg on-paper">
+    <div class="full gr">
+      <div>
+        <h1 class="ti">Hablemos</h1>
+        <p class="sub">Hablas directo conmigo. Por WhatsApp suele ser lo más rápido.</p>
+        <ul class="ch">
+          <li><a href={wa()} target="_blank" rel="noopener" data-track="contacto-whatsapp"><span>WhatsApp</span><strong>{TEL_TXT}</strong></a></li>
+          <li><a href={`tel:${TEL}`} data-track="contacto-tel"><span>Teléfono</span><strong>{TEL_TXT}</strong></a></li>
+          <li><a href={`mailto:${EMAIL}`} data-track="contacto-email"><span>Correo</span><strong>{EMAIL}</strong></a></li>
+          <li class="nl"><span>Base</span><strong>Aibonito · toda Puerto Rico</strong></li>
+        </ul>
       </div>
-
-      <!-- ── Terminal Bot ── -->
-      <div class="terminal-section">
-        <p class="section-label">Asistente</p>
-        <h2 class="section-title" style="font-size:clamp(1.8rem,3.5vw,2.8rem);margin-bottom:8px">
-          ¿Prefiere escribir aquí?
-        </h2>
-        <p class="section-sub" style="margin-bottom:32px">
-          Cuéntame tu proyecto y te oriento en lo que necesitas.
-        </p>
-
-        <div class="terminal">
-          <!-- Title bar -->
-          <div class="term-bar">
-            <div class="term-dots">
-              <span class="dot dot-r"></span>
-              <span class="dot dot-y"></span>
-              <span class="dot dot-g"></span>
-            </div>
-            <span class="term-title">marcos@contacto:~</span>
-            <span></span>
-          </div>
-
-          <!-- Output -->
-          <div class="term-output" id="term-output">
-            <div class="term-line">
-              <span class="term-prompt">marcos@contacto:~$</span>
-              <span class="term-cmd"> ./asistente --start</span>
-            </div>
-            <div class="term-bot-line" id="term-welcome">
-              <span class="term-gt">›</span>
-              <span>¡Hola! ¿En qué puedo ayudarte hoy? Pregúntame sobre fotografía, video, diseño o desarrollo.</span>
-            </div>
-            <div id="term-quick" class="term-quick-wrap">
-              <span class="term-gt">›</span>
-              <div class="term-quick-btns">
-                <button class="term-q-btn">Fotografía de boda</button>
-                <button class="term-q-btn">Video para evento</button>
-                <button class="term-q-btn">Diseño de logo</button>
-                <button class="term-q-btn">Proyecto web</button>
-                <button class="term-q-btn">Cotización</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Input -->
-          <div class="term-input-row">
-            <span class="term-prompt">marcos@contacto:~$</span>
-            <input id="term-input" type="text" autocomplete="off" spellcheck="false"
-              placeholder="escribe tu mensaje y presiona Enter" />
-          </div>
-        </div>
-      </div>
-
-      <div class="location-note">
-        <p class="section-label">Ubicación</p>
-        <p class="loc-text">Aibonito, Puerto Rico — disponible para proyectos remotos y locales.</p>
-      </div>
-
+      <form id="f" class="fo" novalidate>
+        <h2>Cuéntame del proyecto</h2>
+        <label>Tu nombre<input name="nombre" required autocomplete="name" /></label>
+        <label>WhatsApp, teléfono o correo<input name="contacto" required autocomplete="email" /></label>
+        <label>¿Qué necesitas?
+          <select name="servicio">{opciones.map(o => <option>{o}</option>)}</select>
+        </label>
+        <label>Fecha, si la tienes<input name="fecha" placeholder="Por ejemplo, 15 de marzo" /></label>
+        <label>Mensaje<textarea name="mensaje" rows="4"></textarea></label>
+        <input class="hp" name="sitio" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <button class="btn primary" type="submit">Enviar</button>
+        <p class="st" role="status" aria-live="polite"></p>
+      </form>
     </div>
   </main>
   <Footer />
 </Base>
-
-<style>
-.channels-grid {
-  display: grid; grid-template-columns: repeat(2,1fr);
-  gap: 12px; margin-top: 56px;
-}
-@media (max-width: 600px) { .channels-grid { grid-template-columns: 1fr } }
-
-.channel-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 16px; padding: 32px;
-  display: flex; flex-direction: column; gap: 8px;
-  position: relative; overflow: hidden;
-  transition: border-color .2s, transform .2s;
-}
-.channel-card::after {
-  content: ''; position: absolute;
-  top: 0; left: 0; right: 0; height: 2px;
-  background: var(--c); opacity: 0; transition: opacity .2s;
-}
-.channel-card:hover { border-color: color-mix(in srgb, var(--white) 20%, transparent); transform: translateY(-3px) }
-.channel-card:hover::after { opacity: 1 }
-.channel-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px }
-.channel-icon { font-size: 1.6rem; color: var(--c) }
-.channel-arrow { font-size: 1rem; color: var(--muted); transition: transform .2s }
-.channel-card:hover .channel-arrow { transform: translate(3px,-3px); color: var(--white) }
-.channel-label {
-  font-family: var(--mono); font-size: .65rem;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
-}
-.channel-handle {
-  font-family: var(--display);
-  font-size: clamp(1.4rem, 3vw, 2.2rem);
-  letter-spacing: 2px; color: var(--white);
-}
-.channel-desc { font-size: .83rem; color: var(--muted); margin-top: 4px }
-
-/* ── Terminal ── */
-.terminal-section { margin-top: 80px; padding-top: 64px; border-top: 1px solid var(--border) }
-
-.terminal {
-  background: var(--ink);
-  border: 1px solid var(--border);
-  border-radius: 14px; overflow: hidden;
-  font-family: var(--mono);
-}
-
-.term-bar {
-  display: grid; grid-template-columns: auto 1fr auto;
-  align-items: center;
-  padding: 12px 16px;
-  background: var(--panel);
-  border-bottom: 1px solid var(--border);
-}
-.term-dots { display: flex; gap: 6px }
-.dot { width: 12px; height: 12px; border-radius: 50% }
-.dot-r { background: #ff5f57 }
-.dot-y { background: #febc2e }
-.dot-g { background: #28c840 }
-.term-title {
-  text-align: center; font-size: .65rem;
-  letter-spacing: 2px; color: var(--muted);
-}
-
-.term-output {
-  padding: 20px 20px 8px;
-  min-height: 200px; max-height: 420px;
-  overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
-  scrollbar-width: thin;
-}
-
-.term-line { display: flex; gap: 8px; font-size: .78rem }
-.term-prompt { color: var(--accent); white-space: nowrap; flex-shrink: 0 }
-.term-cmd { color: color-mix(in srgb, var(--white) 60%, transparent) }
-
-.term-user-line { display: flex; gap: 8px; font-size: .82rem }
-.term-user-line .term-prompt { color: #88e0b0 }
-.term-user-text { color: var(--white) }
-
-.term-bot-line {
-  display: flex; gap: 8px; font-size: .82rem;
-  color: color-mix(in srgb, var(--white) 80%, transparent);
-  line-height: 1.6;
-}
-.term-gt { color: var(--accent); flex-shrink: 0; margin-top: 1px }
-
-.term-typing .term-gt { animation: blink-cursor .8s step-end infinite }
-@keyframes blink-cursor { 0%,100%{opacity:1} 50%{opacity:0} }
-
-.term-quick-wrap { display: flex; gap: 8px; align-items: flex-start }
-.term-quick-btns { display: flex; flex-wrap: wrap; gap: 6px }
-.term-q-btn {
-  font-family: var(--mono); font-size: .68rem;
-  letter-spacing: 1px;
-  padding: 4px 12px; border-radius: 4px;
-  border: 1px solid var(--accent);
-  background: transparent; color: var(--accent);
-  cursor: pointer; transition: .15s;
-}
-.term-q-btn:hover { background: var(--accent); color: #0a0c10 }
-
-.term-input-row {
-  display: flex; align-items: center; gap: 10px;
-  padding: 14px 20px;
-  border-top: 1px solid var(--border);
-  background: var(--surface);
-}
-#term-input {
-  flex: 1; background: transparent; border: none; outline: none;
-  font-family: var(--mono); font-size: .82rem;
-  color: var(--white); caret-color: var(--accent);
-}
-#term-input::placeholder { color: var(--dim) }
-
-.term-wa-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: #25d366; color: #fff;
-  padding: 8px 16px; border-radius: 6px;
-  font-family: var(--mono); font-size: .62rem;
-  letter-spacing: 1.5px; text-decoration: none;
-  transition: opacity .15s; margin-top: 2px;
-}
-.term-wa-btn:hover { opacity: .88 }
-
-.location-note {
-  margin-top: 64px; padding-top: 40px;
-  border-top: 1px solid var(--border);
-}
-.loc-text { color: var(--muted); font-size: .9rem; margin-top: 8px }
-
-</style>
-
-<script>
-(function () {
-  const output  = document.getElementById('term-output');
-  const input   = document.getElementById('term-input');
-  const history = [];
-
-  // ── Wizard ────────────────────────────────────────────────────────
-  let wizard = null; // null | { step, data }
-
-  const STEPS = [
-    { key: 'nombre',   q: '¿Cuál es tu nombre?' },
-    { key: 'fecha',    q: '¿Fecha del evento? (Enter para omitir)' },
-    { key: 'contacto', q: '¿Teléfono o email para contactarte?' },
-  ];
-
-  function startWizard(service) {
-    wizard = { step: 0, data: { servicio: service } };
-    input.disabled = false;
-    input.focus();
-    setTimeout(() => addBotLine(STEPS[0].q), 380);
-  }
-
-  async function handleWizardInput(text) {
-    const step = STEPS[wizard.step];
-    wizard.data[step.key] = text || (step.key === 'fecha' ? 'Por coordinar' : '');
-    wizard.step++;
-
-    if (wizard.step < STEPS.length) {
-      setTimeout(() => addBotLine(STEPS[wizard.step].q), 300);
-      return;
-    }
-
-    // All answers collected
-    const { nombre, servicio, fecha, contacto } = wizard.data;
-    wizard = null;
-
-    try {
-      await fetch('/ms-chat/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, servicio, fecha: fecha || 'Por coordinar', contacto, mensaje: '' }),
-      });
-    } catch (e) { console.error('[lead error]', e); }
-
-    addBotLine(`Mensaje enviado a Marcos Santiago. Te contactará pronto al ${contacto}.`);
-
-    input.disabled = false;
-    input.focus();
-  }
-
-  // ── Helpers ───────────────────────────────────────────────────────
-  function stripMd(t) {
-    return t
-      .replace(/\*\*(.+?)\*\*/g, '$1')
-      .replace(/\*(.+?)\*/g,     '$1')
-      .replace(/`(.+?)`/g,       '$1')
-      .replace(/^#{1,3}\s+/gm,   '')
-      .trim();
-  }
-
-  function addUserLine(text) {
-    const div = document.createElement('div');
-    div.className = 'term-user-line';
-    div.innerHTML = `<span class="term-prompt">marcos@contacto:~$</span><span class="term-user-text"> ${text}</span>`;
-    output.appendChild(div);
-    scrollBottom();
-  }
-
-  function addBotLine(text) {
-    const clean = stripMd(text);
-    const div = document.createElement('div');
-    div.className = 'term-bot-line';
-    const gt  = document.createElement('span');
-    gt.className = 'term-gt';
-    gt.textContent = '›';
-    const msg = document.createElement('span');
-    div.appendChild(gt);
-    div.appendChild(msg);
-    output.appendChild(div);
-    scrollBottom();
-    let i = 0;
-    const timer = setInterval(() => {
-      msg.textContent += clean[i++];
-      scrollBottom();
-      if (i >= clean.length) clearInterval(timer);
-    }, 14);
-  }
-
-  function addTyping() {
-    const div = document.createElement('div');
-    div.className = 'term-bot-line term-typing';
-    div.innerHTML = '<span class="term-gt">›</span><span>_</span>';
-    div.id = 'term-typing-indicator';
-    output.appendChild(div);
-    scrollBottom();
-  }
-
-  function scrollBottom() {
-    output.scrollTop = output.scrollHeight;
-  }
-
-  // ── Chat ──────────────────────────────────────────────────────────
-  async function sendMsg(text) {
-    if (!text) return;
-    input.value = '';
-    addUserLine(text);
-
-    // In wizard mode — collect answers locally
-    if (wizard !== null) {
-      handleWizardInput(text);
-      return;
-    }
-
-    input.disabled = true;
-
-    const quick = document.getElementById('term-quick');
-    if (quick) quick.remove();
-
-    history.push({ role: 'user', content: text });
-    addTyping();
-
-    try {
-      const res  = await fetch('/ms-chat/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history }),
-      });
-      const data = await res.json();
-      document.getElementById('term-typing-indicator')?.remove();
-
-      const triggerWizard = data.reply.includes('[SHOW_FORM]');
-      const clean = data.reply.replace('[SHOW_FORM]', '').trim();
-      addBotLine(clean);
-      history.push({ role: 'assistant', content: data.reply });
-
-      if (triggerWizard) {
-        const service = history.filter(m => m.role === 'user').slice(-1)[0]?.content || 'Por definir';
-        startWizard(service);
-        return; // wizard re-enables input
+<script is:inline define:vars={{ waBase: 'https://wa.me/17872439670' }}>
+  (function () {
+    var f = document.getElementById('f'), st = f.querySelector('.st'), bt = f.querySelector('button');
+    var q = new URLSearchParams(location.search).get('servicio');
+    if (q) { var s = f.servicio; for (var i = 0; i < s.options.length; i++) if (s.options[i].text === q) s.selectedIndex = i; }
+    f.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var d = Object.fromEntries(new FormData(f));
+      if (!d.nombre.trim() || !d.contacto.trim()) { st.className = 'st mal'; st.textContent = 'Necesito tu nombre y cómo contactarte.'; return; }
+      if (d.sitio) return;
+      bt.disabled = true; st.className = 'st'; st.textContent = 'Enviando…';
+      try {
+        var r = await fetch('/ms-chat/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) });
+        if (!r.ok) throw 0;
+        if (typeof gtag === 'function') gtag('event', 'form_submit', { event_category: 'engagement', event_label: 'contacto' });
+        f.reset(); st.className = 'st ok'; st.textContent = '¡Recibido! Te escribo pronto.';
+      } catch (_) {
+        // Nunca se pierde un lead en silencio: si falla el envío, se ofrece WhatsApp con el mensaje listo.
+        var t = 'Hola Marcos, soy ' + d.nombre + '. Me interesa: ' + d.servicio + '. ' + (d.fecha ? 'Fecha: ' + d.fecha + '. ' : '') + d.mensaje;
+        st.className = 'st mal'; st.textContent = 'No se pudo enviar. ';
+        var a = document.createElement('a'); a.href = waBase + '?text=' + encodeURIComponent(t); a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Envíalo por WhatsApp con un toque →';
+        st.appendChild(a);
       }
-    } catch {
-      document.getElementById('term-typing-indicator')?.remove();
-      addBotLine('Error de conexión. Escríbeme directo: wa.me/17872439670');
-    }
-
-    input.disabled = false;
-    input.focus();
-  }
-
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') sendMsg(input.value.trim());
-  });
-
-  document.querySelectorAll('.term-q-btn').forEach(btn => {
-    btn.addEventListener('click', () => sendMsg(btn.textContent));
-  });
-})();
+      bt.disabled = false;
+    });
+  })();
 </script>
+<style>
+  .pg { padding-block: 120px var(--sec); min-height: 100svh }
+  .gr { display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); gap: 40px clamp(32px, 6vw, 112px); align-items: start }
+  .ti { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(4.25rem, 11.5vw, 12.5rem); line-height: .84 }
+  .sub { font-size: var(--text-lg); margin-block: 20px 28px; color: var(--muted) }
+  .ch { list-style: none; border-top: 1px solid var(--border) }
+  .ch a, .nl { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 20px; padding-block: 15px; border-bottom: 1px solid var(--border) }
+  .ch a { transition: padding .3s var(--ease), color .2s } .ch a:hover { padding-left: 10px; color: #c93208 }
+  .ch span { color: var(--muted) } .ch strong { font-weight: 600 }
+  .fo { display: grid; gap: 14px; background: #fff; padding: clamp(20px, 3vw, 40px); border-radius: var(--radius) }
+  .fo h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -.015em }
+  .fo label { display: grid; gap: 6px; font-weight: 600; font-size: .9375rem }
+  .fo input, .fo select, .fo textarea { font: inherit; font-weight: 400; font-size: 1rem; width: 100%; min-height: 48px; padding: 10px 12px; border: 1px solid rgba(20,18,15,.3); border-radius: var(--radius); background: #fff; color: #14120f }
+  .fo input:focus, .fo select:focus, .fo textarea:focus { outline: 2px solid var(--flame); outline-offset: 0; border-color: transparent }
+  .fo .btn { justify-self: start }
+  .fo .btn:disabled { opacity: .5 }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; min-height: 0 !important }
+  .st { font-weight: 600; min-height: 1.5em } .st.ok { color: #0a7a3d } .st.mal { color: #b3260a } .st a { text-decoration: underline }
+  @media (max-width: 860px) { .gr { grid-template-columns: 1fr } }
+</style>

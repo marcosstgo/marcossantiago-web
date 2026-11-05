@@ -1,183 +1,50 @@
 ---
+import { SOCIAL, TEL, TEL_TXT, EMAIL, wa } from '../data/site';
 const year = new Date().getFullYear();
-const links = [
-  { href: 'https://github.com/marcosstgo',         icon: 'fab fa-github',    label: 'GitHub' },
-  { href: 'https://vimeo.com/marcosstgo',           icon: 'fab fa-vimeo-v',   label: 'Vimeo' },
-  { href: 'https://www.behance.net/marcossantiago', icon: 'fab fa-behance',   label: 'Behance' },
-  { href: 'https://instagram.com/m4rcos',           icon: 'fab fa-instagram', label: 'Instagram' },
-  { href: 'https://x.com/Marc0sSantiago',           icon: 'fab fa-x-twitter', label: 'X' },
-  { href: 'https://wa.me/17872439670',              icon: 'fab fa-whatsapp',  label: 'WhatsApp' },
-  { href: 'https://t.me/+17872439670',              icon: 'fab fa-telegram',  label: 'Telegram' },
-];
-
 const cols = [
-  {
-    title: 'Servicios',
-    items: [
-      { href: '/fotografo-bodas-pr/',        label: 'Fotografía de bodas' },
-      { href: '/videografia-corporativa-pr/', label: 'Video corporativo' },
-      { href: '/diseno-grafico-pr/',          label: 'Diseño gráfico y logos' },
-      { href: '/360-booth-pr/',               label: '360 Video Booth' },
-      { href: '/reels/',                      label: 'Reels y contenido' },
-      { href: '/servicios/',                  label: 'Ver todos los servicios' },
-    ],
-  },
-  {
-    title: 'Trabajo',
-    items: [
-      { href: '/portafolio/foto/',   label: 'Portafolio de fotografía' },
-      { href: '/portafolio/video/',  label: 'Portafolio de video' },
-      { href: '/portafolio/logos/',  label: 'Logos e identidad' },
-      { href: '/portafolio/dev/',    label: 'Desarrollo web' },
-      { href: '/galeria-logos/',     label: 'Galería de logos' },
-    ],
-  },
-  {
-    title: 'Más',
-    items: [
-      { href: '/blog/',        label: 'Blog' },
-      { href: '/sobre-mi/',    label: 'Sobre mí' },
-      { href: '/contacto/',    label: 'Contacto' },
-      { href: '/terminos/',    label: 'Términos' },
-      { href: '/privacidad/',  label: 'Privacidad' },
-    ],
-  },
+  { t: 'Trabajo', i: [['/portafolio/video/','Video'],['/portafolio/foto/','Fotografía'],['/portafolio/diseno/','Diseño gráfico'],['/portafolio/logos/','Logos'],['/portafolio/dev/','Desarrollo web'],['/reels/','Reels']] },
+  { t: 'Servicios', i: [['/fotografo-bodas-pr/','Fotografía de bodas'],['/videografia-corporativa-pr/','Video corporativo'],['/diseno-grafico-pr/','Diseño gráfico y logos'],['/360-booth-pr/','360 Video Booth'],['/servicios/','Todos los servicios']] },
+  { t: 'Más', i: [['/sobre-mi/','Sobre mí'],['/resume/','Currículum'],['/blog/','Blog'],['/contacto/','Contacto'],['/terminos/','Términos'],['/privacidad/','Privacidad']] },
 ];
 ---
-<footer>
-  <div class="container">
-
-    <div class="footer-cols">
-      <!-- NAP — debe coincidir palabra por palabra con el Google Business Profile -->
-      <div class="footer-nap">
-        <span class="footer-name">MARCOS SANTIAGO</span>
-        <p class="footer-tagline">Fotografía, video y diseño desde Aibonito para toda la isla.</p>
-        <address class="footer-address">
+<footer class="pie">
+  <div class="full">
+    <div class="pie-top">
+      <address class="pie-nap">
+        <p class="pie-nombre">Marcos Santiago</p>
+        <p>Diseño, fotografía y video desde Aibonito para toda la isla.</p>
+        <p class="pie-datos">
           <span>Aibonito, Puerto Rico</span>
-          <a href="tel:+17872439670" data-track="footer-tel">(787) 243-9670</a>
-          <a href="mailto:hello@marcossantiago.com" data-track="footer-email">hello@marcossantiago.com</a>
-        </address>
-        <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20un%20proyecto."
-           target="_blank" rel="noopener" class="footer-wa" data-track="footer-whatsapp">
-          <i class="fab fa-whatsapp" aria-hidden="true"></i> Cotizar por WhatsApp
-        </a>
-      </div>
-
-      {cols.map(col => (
-        <nav class="footer-col" aria-label={col.title}>
-          <h2 class="footer-col-title">{col.title}</h2>
-          <ul>
-            {col.items.map(i => (
-              <li><a href={i.href}>{i.label}</a></li>
-            ))}
-          </ul>
+          <a href={`tel:${TEL}`} data-track="footer-tel">{TEL_TXT}</a>
+          <a href={`mailto:${EMAIL}`} data-track="footer-email">{EMAIL}</a>
+          <a href={wa()} target="_blank" rel="noopener" data-track="footer-whatsapp">WhatsApp</a>
+        </p>
+      </address>
+      {cols.map(c => (
+        <nav class="pie-col" aria-label={c.t}>
+          <p class="pie-t">{c.t}</p>
+          {c.i.map(([h, l]) => <a href={h}>{l}</a>)}
         </nav>
       ))}
     </div>
-
-    <div class="footer-bottom">
-      <span class="footer-copy">© {year} Marcos Santiago · Aibonito, Puerto Rico</span>
-      <div class="footer-social">
-        {links.map(l => (
-          <a href={l.href} target="_blank" rel="noopener" aria-label={l.label} class="social-btn">
-            <i class={l.icon} aria-hidden="true"></i>
-          </a>
-        ))}
-      </div>
+    <div class="pie-bajo">
+      <span>© {year} Marcos Santiago</span>
+      <span class="pie-red">{SOCIAL.map(s => <a href={s.href} target="_blank" rel="noopener">{s.label}</a>)}</span>
     </div>
-
   </div>
 </footer>
-
 <style>
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 56px 0 28px;
-    margin-top: 64px;
-  }
-
-  .footer-cols {
-    display: grid;
-    grid-template-columns: 1.4fr repeat(3, 1fr);
-    gap: 40px;
-    padding-bottom: 40px;
-  }
-
-  /* ── NAP ── */
-  .footer-name {
-    font-family: var(--display);
-    font-size: 1.15rem;
-    letter-spacing: 4px;
-    display: block;
-  }
-  .footer-tagline {
-    color: var(--muted);
-    font-size: .88rem;
-    margin: 10px 0 16px;
-    max-width: 30ch;
-  }
-  .footer-address {
-    font-style: normal;
-    display: flex; flex-direction: column; gap: 5px;
-    font-size: .88rem; color: var(--muted);
-  }
-  .footer-address a { color: var(--muted); transition: color .15s }
-  .footer-address a:hover { color: var(--white) }
-  .footer-wa {
-    display: inline-flex; align-items: center; gap: 8px;
-    margin-top: 18px; padding: 9px 16px;
-    border: 1px solid var(--border-h); border-radius: 8px;
-    font-family: var(--mono); font-size: .58rem;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    color: var(--white); transition: .15s;
-    align-self: flex-start; width: fit-content;
-  }
-  .footer-wa:hover { background: #25d366; border-color: #25d366; color: #fff }
-
-  /* ── Columnas de enlaces ── */
-  .footer-col-title {
-    font-family: var(--mono); font-size: .58rem;
-    letter-spacing: 2px; text-transform: uppercase;
-    color: var(--dim); font-weight: 400;
-    margin-bottom: 14px;
-  }
-  .footer-col ul { list-style: none }
-  .footer-col li { margin-bottom: 9px }
-  .footer-col a {
-    color: var(--muted); font-size: .88rem;
-    transition: color .15s;
-  }
-  .footer-col a:hover { color: var(--white) }
-
-  /* ── Barra inferior ── */
-  .footer-bottom {
-    border-top: 1px solid var(--border);
-    padding-top: 22px;
-    display: flex; align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap; gap: 16px;
-  }
-  .footer-copy {
-    font-family: var(--mono); font-size: .5rem;
-    letter-spacing: 2px; text-transform: uppercase;
-    color: var(--muted);
-  }
-  .footer-social { display: flex; gap: 4px; flex-wrap: wrap }
-  .social-btn {
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    border: 1px solid var(--border); border-radius: 8px;
-    color: var(--muted); font-size: .85rem;
-    transition: .15s;
-  }
-  .social-btn:hover { border-color: var(--border-h); color: var(--white) }
-
-  @media (max-width: 900px) {
-    .footer-cols { grid-template-columns: 1fr 1fr; gap: 32px }
-    .footer-nap { grid-column: 1 / -1 }
-  }
-  @media (max-width: 520px) {
-    .footer-cols { grid-template-columns: 1fr; gap: 28px }
-    .footer-bottom { flex-direction: column; align-items: flex-start }
-  }
+  .pie { border-top: 1px solid var(--border); padding-block: clamp(48px, 7vw, 88px) 28px; background: var(--ink); color: var(--white); font-size: .9375rem }
+  .pie-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px }
+  .pie-nap { font-style: normal; color: var(--muted); max-width: 36ch }
+  .pie-nombre { font-family: var(--display); font-weight: 800; font-size: 1.75rem; text-transform: uppercase; color: var(--white); line-height: 1; margin-bottom: 12px }
+  .pie-datos { display: grid; gap: 4px; margin-top: 18px }
+  .pie-datos a, .pie-col a, .pie-red a { transition: color .2s }
+  .pie-datos a:hover, .pie-col a:hover, .pie-red a:hover { color: var(--flame) }
+  .pie-col { display: grid; gap: 4px; align-content: start }
+  .pie-col a { padding-block: 3px; color: var(--muted) }
+  .pie-t { font-size: var(--text-xs); font-weight: 600; letter-spacing: .09em; text-transform: uppercase; margin-bottom: 8px; color: var(--white) }
+  .pie-bajo { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--dim); font-size: .875rem }
+  .pie-red { display: flex; flex-wrap: wrap; gap: 6px 20px }
+  @media (max-width: 800px) { .pie-top { grid-template-columns: 1fr 1fr } .pie-nap { grid-column: 1 / -1 } }
 </style>

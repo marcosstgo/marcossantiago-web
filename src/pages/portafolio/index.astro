@@ -1,297 +1,63 @@
 ---
+import { Picture } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
-
+import WorkCard from '../../components/WorkCard.astro';
+import VideoDialog from '../../components/VideoDialog.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { videos, brands, video, brand, logos } from '../../lib/media';
 const areas = [
-  { label: 'Diseño Gráfico', href: '/portafolio/diseno/', color: '#e8c84a', count: 'Behance →' },
-  { label: 'Fotografía',     href: '/portafolio/foto/',   color: '#a0c4ff', count: 'Gallery →' },
-  { label: 'Videografía',    href: '/portafolio/video/',  color: '#ff9f7f', count: 'Vimeo →' },
-  { label: 'Desarrollo',     href: '/portafolio/dev/',    color: '#88e0b0', count: 'GitHub →' },
+  { t: 'Video', n: `${videos.length} piezas`, h: '/portafolio/video/', i: video('832286606').img },
+  { t: 'Fotografía', n: 'Bodas, eventos, retratos', h: '/portafolio/foto/', i: video('1052549620').img },
+  { t: 'Diseño', n: `${brands.length} identidades`, h: '/portafolio/diseno/', i: brand('rustica').img },
+  { t: 'Logos', n: `${logos.length} marcas`, h: '/portafolio/logos/', i: brand('sangria').img },
 ];
-
-const featuredProjects = [
-  {
-    name: 'KIOSKKO',
-    tagline: 'E-commerce para negocios en Puerto Rico',
-    desc: 'Plataforma SaaS con tienda online, carrito, pagos con Stripe y ATH Móvil, panel admin completo y configuración sin código.',
-    href: 'https://kioskko.com',
-    tags: ['Astro', 'PocketBase', 'Stripe', 'ATH Móvil', 'Docker'],
-    status: 'Live',
-    color: '#4a6cf7',
-    year: '2025',
-  },
-  {
-    name: 'FACTURAPR',
-    tagline: 'Facturación para negocios en Puerto Rico',
-    desc: 'SaaS de facturación sobre Manager.io con bot de Telegram, app web y asistentes de IA que crean facturas y cotizaciones por voz o texto.',
-    href: 'https://facturapr.com',
-    tags: ['FastAPI', 'Manager.io', 'Telegram', 'MCP'],
-    status: 'Live',
-    color: '#10b981',
-    year: '2026',
-  },
-  {
-    name: 'FLASHEALO',
-    tagline: 'Fotos colaborativas para eventos',
-    desc: 'Los asistentes suben y comparten sus fotos en un espacio centralizado por evento. Sin apps, sin cuentas, solo escanear y subir.',
-    href: 'https://flashealo.com',
-    tags: ['React', 'Supabase', 'Storage', 'QR'],
-    status: 'Beta',
-    color: '#a855f7',
-    year: '2025',
-  },
-];
-
-const otherProjects = [
-  {
-    name: 'CORILLO',
-    desc: 'Plataforma de streaming en vivo independiente para Puerto Rico.',
-    href: 'https://corillo.live',
-    tags: ['HTML', 'JS', 'MediaMTX', 'HLS'],
-    year: '2026',
-  },
-  {
-    name: 'STREAMER PRO',
-    desc: 'App de escritorio para streaming RTMP multi-plataforma con FFmpeg.',
-    href: 'https://corillo.live/streamer-pro/',
-    tags: ['C#', 'WPF', 'FFmpeg'],
-    year: '2026',
-  },
-  {
-    name: 'STREAMER LITE',
-    desc: 'Versión ligera de Streamer Pro. Pipeline ddagrab+NVENC optimizado para bajo consumo de CPU.',
-    href: 'https://corillo.live',
-    tags: ['C#', 'WPF', 'NVENC', 'ddagrab'],
-    year: '2026',
-  },
-  {
-    name: 'NATCHECK',
-    desc: 'Diagnóstico de NAT type, MTU y puertos para gaming. 10 perfiles de juego, fix UPnP automático.',
-    href: 'https://corillo.live/natcheck/',
-    tags: ['C#', 'WinForms', 'STUN', 'UPnP'],
-    year: '2026',
-  },
-  {
-    name: 'ANTI-BUFFERBLOAT PRO',
-    desc: 'Optimizador de red para Windows: reduce latencia y bufferbloat en tiempo real.',
-    href: 'https://corillo.live/antibufferbloat-pro/',
-    tags: ['C#', 'WPF', 'Windows'],
-    year: '2026',
-  },
-];
+const sel = ['676644299','1084774680','1214473531','944305796','1053857501','1089156960'].map(video);
 ---
-<Base title="Portafolio — Marcos Santiago">
+<Base title="Portafolio — Marcos Santiago" description="Video, fotografía, diseño gráfico, logos y desarrollo web de Marcos Santiago, desde Aibonito para toda Puerto Rico.">
   <Nav />
-  <main id="main" style="padding-top:120px">
-    <div class="container">
-      <p class="section-label">Trabajo</p>
-      <h1 class="section-title">Portafolio</h1>
-      <p class="section-sub">Selecciona un área para explorar el trabajo.</p>
-
-      <div class="areas-grid">
-        {areas.map(a => (
-          <a href={a.href} class="area-card" style={`--c:${a.color}`}>
-            <span class="area-count">{a.count}</span>
-            <h2 class="area-label">{a.label}</h2>
-            <div class="area-bar"></div>
-          </a>
-        ))}
-      </div>
-
-      <!-- Dev projects -->
-      <div class="dev-section">
-        <div class="dev-section-header">
-          <p class="section-label">Desarrollo</p>
-          <a href="/portafolio/dev/" class="dev-section-link">Ver todos →</a>
-        </div>
-
-        <div class="featured-grid">
-          {featuredProjects.map(p => (
-            <a href={p.href} target="_blank" rel="noopener" class="featured-card" style={`--c:${p.color}`}>
-              <div class="featured-top">
-                <div class="featured-meta">
-                  <span class="featured-year">{p.year}</span>
-                  <span class:list={['featured-status', p.status.toLowerCase()]}>{p.status}</span>
-                </div>
-                <span class="featured-arrow">↗</span>
-              </div>
-              <h3 class="featured-name">{p.name}</h3>
-              <p class="featured-tagline">{p.tagline}</p>
-              <p class="featured-desc">{p.desc}</p>
-              <div class="dev-tags">
-                {p.tags.map(t => <span class="tag">{t}</span>)}
-              </div>
-            </a>
-          ))}
-        </div>
-
-        <p class="other-label">Más proyectos</p>
-        <div class="dev-list">
-          {otherProjects.map(p => (
-            <a href={p.href} target="_blank" rel="noopener" class="dev-row">
-              <div>
-                <div class="dev-row-top">
-                  <span class="dev-name">{p.name}</span>
-                  <span class="dev-year">{p.year}</span>
-                </div>
-                <div class="dev-desc">{p.desc}</div>
-                <div class="dev-tags">
-                  {p.tags.map(t => <span class="tag">{t}</span>)}
-                </div>
-              </div>
-              <span class="dev-arrow">↗</span>
-            </a>
-          ))}
-        </div>
-      </div>
-
+  <main id="main">
+    <header class="full cab"><h1 class="ti">Trabajo</h1></header>
+    <div class="ar full">
+      {areas.map((a, i) => (
+        <a class="ar-c" href={a.h}>
+          <Picture src={a.i} formats={['avif','webp']} widths={[640,1000,1400]} sizes="(max-width:700px) 100vw, 50vw" alt="" loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
+          <span class="ar-t"><strong>{a.t}</strong><small>{a.n}</small></span>
+        </a>
+      ))}
     </div>
+    <section class="full dv">
+      <a href="/portafolio/dev/"><span>Desarrollo web</span><small>Plataformas, tiendas y herramientas →</small></a>
+    </section>
+    <section class="full se">
+      <h2 class="h2">Una selección</h2>
+      <div class="se-g">{sel.map(v => <WorkCard v={v} sizes="(max-width:700px) 100vw, 50vw" />)}</div>
+    </section>
   </main>
+  <CtaBand />
   <Footer />
+  <VideoDialog />
 </Base>
-
 <style>
-/* ── Dev section ── */
-.dev-section { margin-top: 80px }
-.dev-section-header {
-  display: flex; align-items: baseline; justify-content: space-between;
-  margin-bottom: 32px;
-}
-.dev-section-link {
-  font-family: var(--mono); font-size: var(--text-2xs);
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--muted); transition: color .15s;
-}
-.dev-section-link:hover { color: var(--white) }
-
-/* Featured cards */
-.featured-grid {
-  display: grid; grid-template-columns: repeat(3,1fr);
-  gap: 16px; margin-bottom: 48px;
-}
-@media (max-width: 900px) { .featured-grid { grid-template-columns: 1fr } }
-
-.featured-card {
-  display: flex; flex-direction: column;
-  background: color-mix(in srgb, var(--c) 6%, var(--surface));
-  border: 1px solid color-mix(in srgb, var(--c) 20%, var(--border));
-  border-top: 3px solid var(--c);
-  border-radius: 14px; padding: 24px;
-  transition: transform .2s, box-shadow .2s;
-}
-.featured-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px color-mix(in srgb, var(--c) 15%, transparent);
-}
-.featured-top {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  margin-bottom: 20px;
-}
-.featured-meta { display: flex; align-items: center; gap: 8px }
-.featured-year {
-  font-family: var(--mono); font-size: var(--text-2xs);
-  letter-spacing: 2px; color: var(--dim);
-}
-.featured-status {
-  font-family: var(--mono); font-size: .68rem;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 2px 7px; border-radius: 20px;
-}
-.featured-status.live {
-  background: color-mix(in srgb, #4ade80 12%, transparent);
-  border: 1px solid color-mix(in srgb, #4ade80 30%, transparent);
-  color: #4ade80;
-}
-.featured-status.beta {
-  background: color-mix(in srgb, #facc15 10%, transparent);
-  border: 1px solid color-mix(in srgb, #facc15 30%, transparent);
-  color: #facc15;
-}
-.featured-arrow { font-size: 1.1rem; color: var(--muted); transition: color .2s }
-.featured-card:hover .featured-arrow { color: var(--c) }
-.featured-name {
-  font-family: var(--display);
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  letter-spacing: 2px; color: var(--white);
-  margin-bottom: 4px;
-}
-.featured-tagline {
-  font-family: var(--mono); font-size: var(--text-2xs);
-  letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--c); margin-bottom: 12px;
-}
-.featured-desc {
-  font-size: var(--text-base); color: var(--muted); line-height: 1.6;
-  flex: 1; margin-bottom: 16px;
-}
-.dev-tags { display: flex; flex-wrap: wrap; gap: 6px }
-.tag {
-  font-family: var(--mono); font-size: .68rem;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 2px 7px; border-radius: 4px;
-  background: color-mix(in srgb, var(--white) 4%, transparent);
-  border: 1px solid var(--border); color: var(--dim);
-}
-
-/* Other projects list */
-.other-label {
-  font-family: var(--mono); font-size: var(--text-2xs);
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--dim); margin-bottom: 8px;
-}
-.dev-list { display: flex; flex-direction: column }
-.dev-row {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  gap: 16px; padding: 20px 0;
-  border-bottom: 1px solid var(--border);
-  transition: .2s;
-}
-.dev-row:first-child { border-top: 1px solid var(--border) }
-.dev-row-top { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px }
-.dev-name {
-  font-family: var(--display);
-  font-size: clamp(1.2rem, 2vw, 1.6rem);
-  letter-spacing: 2px; color: var(--white);
-  transition: color .2s;
-}
-.dev-row:hover .dev-name { color: var(--accent) }
-.dev-year {
-  font-family: var(--mono); font-size: var(--text-2xs);
-  letter-spacing: 1.5px; color: var(--dim);
-}
-.dev-desc { font-size: var(--text-base); color: var(--muted); line-height: 1.5; margin-bottom: 8px }
-.dev-arrow { font-size: 1rem; color: var(--muted); padding-top: 4px; flex-shrink: 0; transition: transform .2s, color .2s }
-.dev-row:hover .dev-arrow { transform: translate(3px,-3px); color: var(--white) }
-
-/* ── Areas grid ── */
-.areas-grid {
-  display: grid; grid-template-columns: repeat(2,1fr);
-  gap: 12px; margin-top: 56px;
-}
-@media (max-width: 600px) { .areas-grid { grid-template-columns: 1fr } }
-
-.area-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 16px; padding: 40px 32px;
-  display: flex; flex-direction: column; gap: 12px;
-  position: relative; overflow: hidden;
-  transition: border-color .2s, transform .2s;
-}
-.area-card:hover { border-color: color-mix(in srgb, var(--white) 20%, transparent); transform: translateY(-3px) }
-.area-card:hover .area-bar { transform: scaleX(1) }
-.area-count {
-  font-family: var(--mono); font-size: .65rem;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--c);
-}
-.area-label {
-  font-family: var(--display);
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  letter-spacing: 2px; color: var(--white);
-}
-.area-bar {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
-  background: var(--c); transform: scaleX(0);
-  transform-origin: left; transition: transform .3s ease;
-}
+  .cab { padding-top: 120px; padding-bottom: clamp(20px, 3vw, 40px) }
+  .ti { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(5rem, 19vw, 20rem); line-height: .82 }
+  .ar { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(8px, 1.2vw, 18px) }
+  .ar-c { position: relative; display: block; aspect-ratio: 16/10; overflow: hidden; border-radius: var(--radius); background: var(--surface); isolation: isolate }
+  .ar-c :global(picture) { display: contents }
+  .ar-c :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: scale .9s var(--ease) }
+  .ar-c:hover :global(img) { scale: 1.04 }
+  .ar-c::after { content:''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(13,12,11,.82)) }
+  .ar-t { position: absolute; z-index: 1; left: clamp(14px,2vw,28px); right: clamp(14px,2vw,28px); bottom: clamp(12px,1.6vw,22px); display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px; color: #f3eee5 }
+  .ar-t strong { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.75rem, 7vw, 7.5rem); line-height: .9 }
+  .ar-t small { font-size: .9375rem; font-weight: 500 }
+  .dv { padding-top: clamp(8px, 1.2vw, 18px) }
+  .dv a { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 24px; padding: clamp(20px, 3vw, 40px) clamp(14px, 2vw, 28px); background: var(--flame); color: #0d0c0b; border-radius: var(--radius) }
+  .dv span { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.75rem, 7vw, 7.5rem); line-height: .9 }
+  .dv small { font-weight: 600; font-size: 1rem }
+  .se { padding-block: var(--sec) }
+  .h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.5rem, 6vw, 6rem); line-height: .95; margin-bottom: 28px }
+  .se-g { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 16px }
+  .se-g :global(.wc-img) { aspect-ratio: 16/9 }
+  @media (max-width: 700px) { .ar, .se-g { grid-template-columns: 1fr } }
 </style>

@@ -1,0 +1,28 @@
+---
+import { wa, TEL, TEL_TXT } from '../data/site';
+interface Props { titulo?: string; texto?: string; waTexto?: string }
+const { titulo = '¿Tienes algo en mente?', texto = 'Cuéntame de tu marca, tu evento o tu proyecto. Hablas directo conmigo, sin intermediarios.', waTexto } = Astro.props;
+---
+<section class="cta">
+  <div class="full">
+    <h2 class="cta-t">{titulo}</h2>
+    <div class="cta-b">
+      <p>{texto}</p>
+      <div class="cta-a">
+        <a class="cta-btn neg" href={wa(waTexto)} target="_blank" rel="noopener" data-track="cta-whatsapp">Escríbeme por WhatsApp</a>
+        <a class="cta-btn" href="/contacto/">Pedir cotización</a>
+        <a class="cta-btn" href={`tel:${TEL}`} data-track="cta-tel">{TEL_TXT}</a>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .cta { background: var(--flame); color: #0d0c0b; padding-block: clamp(56px, 8vw, 120px) }
+  .cta-t { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(3.25rem, 12.5vw, 13rem); line-height: .9 }
+  .cta-b { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px 48px; margin-top: clamp(24px, 4vw, 56px) }
+  .cta-b p { max-width: 40ch; font-size: 1.1875rem; font-weight: 500; line-height: 1.4 }
+  .cta-a { display: flex; flex-wrap: wrap; gap: 10px }
+  .cta-btn { display: inline-flex; align-items: center; min-height: 50px; padding: 12px 24px; border-radius: 99px; border: 1.5px solid #0d0c0b; font-weight: 600; transition: background .2s, color .2s }
+  .cta-btn:hover, .cta-btn.neg { background: #0d0c0b; color: #f3eee5 }
+  .cta-btn.neg:hover { background: transparent; color: #0d0c0b }
+</style>
