@@ -26,7 +26,7 @@ const lista = (limite ? orden.slice(0, limite) : orden).map((l, i) => {
     marca:  l.marca ? (lum(l.marca) > .45 ? NEG : BLA) : (l.lee.papel < .9 ? NEG : 'none'),
   };
   // Ajuste a mano: Sentidos es círculo oscuro con S y texto blancos; el monocromo se comería la S.
-  if (l.slug === 'sentidos') Object.assign(f, { blanco: 'invert(1)', papel: 'invert(1)', negro: 'none', azul: 'none' });
+  if (l.slug === 'sentidos') Object.assign(f, { blanco: 'invert(1)', papel: 'invert(1)', marca: 'invert(1)', negro: 'none', azul: 'none' });
   // En la mezcla, un fondo donde el logo conserve sus colores; cada tercero, su color de marca.
   let s: string = (l.marca && !l.macizo && i % 3 === 0) ? 'marca' : sup[i % 4];
   if (s !== 'marca' && f[s as keyof typeof f] !== 'none') { const ok = sup.filter(x => f[x] === 'none'); s = ok[i % (ok.length || 1)] ?? s; }
