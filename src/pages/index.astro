@@ -199,7 +199,7 @@ const areas = [
   @media (max-width: 760px) { .h-nombre { font-size: calc((100vw - 2 * var(--gut)) / 4.1); white-space: normal } }
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: scroll()) {
-      .h-media { animation: h-par linear both; animation-timeline: scroll(root); animation-range: 0 100vh }
+      .h-media { animation: h-par linear both; --tl: scroll(root); animation-timeline: var(--tl); animation-range: 0 100vh }
       @keyframes h-par { to { translate: 0 14%; scale: 1.08 } }
     }
   }
