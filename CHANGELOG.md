@@ -11,8 +11,8 @@ Cambios notables al sitio. Más reciente primero.
 - Jalda como logo protagonista: sección propia en la portada con cambio de fondo y pieza doble en el muro.
 - Quitados 22 logos con texto sin convertir a curvas o incompletos; `scripts/analizar-logos.mjs` ahora rechaza los que traigan texto vivo.
 - Generador de logos eliminado (`/generador-de-logos/` y `/galeria-logos/` → 301 a `/portafolio/logos/`). `/shorts/` → 301 a `/reels/`.
-- En Git lo que solo estaba en producción: `functions/`, `_redirects`, `_headers`. Página 404 real.
-- Formulario de contacto nuevo: si el envío falla lo dice y ofrece WhatsApp.
+- En Git lo que solo estaba en producción: `_redirects`, `_headers`. Página 404 real.
+- Contacto por WhatsApp: frase para completar con burbuja en vivo en `/contacto/`, barra de chat en toda franja final y formularios de landings que abren WhatsApp. Se elimina el envío a Telegram.
 - Despliegue pasa de SSH a corillo-server a GitHub Actions → Cloudflare Pages.
 
 ## 2026-05-14 — Sub-landings PPC por servicio

@@ -91,7 +91,7 @@ import Footer from '../../components/Footer.astro';
         <ul class="hero-bullets">
           <li><i class="fa-solid fa-rotate"></i> Air-39 Automatic 360 Pro — gira automáticamente</li>
           <li><i class="fa-solid fa-qrcode"></i> Clips por QR al instante — sin app</li>
-          <li><i class="fa-solid fa-location-dot"></i> Toda Puerto Rico · setup incluido</li>
+          <li><i class="fa-solid fa-location-dot"></i> Todo Puerto Rico · setup incluido</li>
         </ul>
         <div class="hero-price-strip">
           <span class="price-badge">Desde <strong>$350</strong></span>
@@ -114,7 +114,7 @@ import Footer from '../../components/Footer.astro';
           </a>
         </div>
         <div class="hero-meta">
-          <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> Toda Puerto Rico</span>
+          <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> Todo Puerto Rico</span>
           <span class="meta-pill"><i class="fa-regular fa-clock"></i> Respondo en &lt;1 hora</span>
           <a href="tel:+17872439670" class="meta-pill meta-pill-call" data-track="call">
             <i class="fa-solid fa-phone"></i> (787) 243-9670
@@ -196,21 +196,20 @@ import Footer from '../../components/Footer.astro';
     <!-- ── Lead form ── -->
     <section class="lead-section" id="cotizar">
       <div class="container">
-        <div class="lead-grid">
+        <div class="lead-grid" style="grid-template-columns:1fr">
           <div class="lead-intro">
             <p class="section-label">Reserva tu fecha</p>
             <h2 class="lead-title">Te respondo en <span class="accent">menos de 1 hora</span></h2>
             <p class="lead-sub">Sin spam. Sin compromiso. Te contesto directo yo, no un asistente.</p>
             <ul class="lead-trust">
               <li><i class="fa-solid fa-check"></i> Cotización gratis</li>
-              <li><i class="fa-solid fa-check"></i> Disponible en toda Puerto Rico</li>
+              <li><i class="fa-solid fa-check"></i> Disponible en todo Puerto Rico</li>
               <li><i class="fa-solid fa-check"></i> Respuesta personal de Marcos</li>
             </ul>
           </div>
           <form class="lead-form" id="leadForm" novalidate>
             <div class="lead-row">
               <input type="text" required class="lead-field" name="nombre" placeholder="Tu nombre *" autocomplete="name" />
-              <input type="tel" required class="lead-field" name="contacto" placeholder="Teléfono o WhatsApp *" autocomplete="tel" />
             </div>
             <input type="hidden" name="servicio" value="360 Booth" />
             <select class="lead-field" name="tipo_evento">
@@ -225,15 +224,13 @@ import Footer from '../../components/Footer.astro';
             <input type="text" class="lead-field" name="fecha" placeholder="Fecha aproximada del evento (opcional)" />
             <textarea class="lead-field" name="mensaje" rows="2" placeholder="¿Dónde es el evento? (opcional)"></textarea>
             <button type="submit" class="lead-submit" data-track="form">
-              <i class="fa-solid fa-paper-plane"></i> Reservar mi fecha
+              <i class="fab fa-whatsapp"></i> Reservar por WhatsApp
             </button>
             <p class="lead-note">¿Prefieres directo? <a href="tel:+17872439670" data-track="call"><i class="fa-solid fa-phone"></i> Llamar</a> o <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20el%20360%20Booth." target="_blank" rel="noopener" data-track="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>.</p>
             <p class="lead-success" id="leadSuccess" hidden>
-              <i class="fa-solid fa-circle-check"></i> Mensaje recibido. Te respondo en menos de 1 hora.
+              <i class="fa-solid fa-circle-check"></i> Se abrió WhatsApp: solo falta pulsar enviar.
             </p>
-            <p class="lead-error" id="leadError" hidden>
-              <i class="fa-solid fa-triangle-exclamation"></i> No pude enviar el mensaje. Escríbeme por WhatsApp al (787) 243-9670.
-            </p>
+            <p class="lead-error" id="leadError" hidden></p>
           </form>
         </div>
       </div>
@@ -251,7 +248,7 @@ import Footer from '../../components/Footer.astro';
             <p class="section-label">Quién opera el equipo en tu evento</p>
             <h2 class="meet-title">Soy Marcos.</h2>
             <p class="meet-bio">
-              Opero el Air-39 Automatic 360 Pro en eventos por toda Puerto Rico. Llego temprano, configuro el equipo, opero durante el evento y me aseguro de que cada invitado tenga su clip. No mando a nadie — voy yo.
+              Opero el Air-39 Automatic 360 Pro en eventos por todo Puerto Rico. Llego temprano, configuro el equipo, opero durante el evento y me aseguro de que cada invitado tenga su clip. No mando a nadie — voy yo.
             </p>
             <div class="meet-facts">
               <div class="meet-fact"><span class="meet-fact-num">360°</span><span class="meet-fact-label">cobertura total</span></div>
@@ -583,24 +580,16 @@ import Footer from '../../components/Footer.astro';
     const success = document.getElementById('leadSuccess');
     const error   = document.getElementById('leadError');
     if (!form) return;
-    form.addEventListener('submit', async function(e) {
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const data = Object.fromEntries(new FormData(form));
-      try {
-        const r = await fetch('/ms-chat/lead', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        if (!r.ok) throw new Error();
-        form.reset();
-        success.hidden = false;
-        error.hidden   = true;
-        if (typeof gtag === 'function') gtag('event', 'form_submit', { event_category: 'engagement', event_label: '360-booth-pr' });
-      } catch {
-        error.hidden   = false;
-        success.hidden = true;
-      }
+      const d = Object.fromEntries(new FormData(form));
+      const extra = Object.entries(d).filter(([k, v]) => !['nombre','contacto','servicio','mensaje'].includes(k) && String(v).trim()).map(([k, v]) => k.charAt(0).toUpperCase() + k.slice(1) + ': ' + String(v).trim() + '.');
+      const t = ['Hola Marcos' + (d.nombre ? ', soy ' + d.nombre : '') + '.', d.servicio && 'Me interesa: ' + d.servicio + '.', ...extra, d.mensaje].filter(Boolean).join(' ');
+      window.open('https://wa.me/17872439670?text=' + encodeURIComponent(t), '_blank');
+      form.reset();
+      success.hidden = false;
+      error.hidden = true;
+      if (typeof gtag === 'function') gtag('event', 'whatsapp_click', { event_category: 'contacto', event_label: 'landing-form', page_path: location.pathname });
     });
   })();
 

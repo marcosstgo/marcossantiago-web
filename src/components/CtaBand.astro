@@ -1,28 +1,46 @@
 ---
 import { wa, TEL, TEL_TXT } from '../data/site';
 interface Props { titulo?: string; texto?: string; waTexto?: string }
-const { titulo = '¿Tienes algo en mente?', texto = 'Cuéntame de tu marca, tu evento o tu proyecto. Hablas directo conmigo, sin intermediarios.', waTexto } = Astro.props;
+const { titulo = '¿Tienes algo en mente?', texto = 'Escríbelo aquí y me llega a WhatsApp. Hablas directo conmigo, sin intermediarios.', waTexto = 'Hola Marcos, me interesa cotizar un proyecto.' } = Astro.props;
 ---
 <section class="cta">
   <div class="full">
     <h2 class="cta-t">{titulo}</h2>
-    <div class="cta-b">
-      <p>{texto}</p>
-      <div class="cta-a">
-        <a class="cta-btn neg" href={wa(waTexto)} target="_blank" rel="noopener" data-track="cta-whatsapp">Escríbeme por WhatsApp</a>
-        <a class="cta-btn" href="/contacto/">Pedir cotización</a>
-        <a class="cta-btn" href={`tel:${TEL}`} data-track="cta-tel">{TEL_TXT}</a>
-      </div>
-    </div>
+    <p class="cta-p">{texto}</p>
+    <!-- Barra de chat: sin JavaScript también funciona, porque wa.me recibe ?text= -->
+    <form class="cta-f" action="https://wa.me/17872439670" target="_blank" data-def={waTexto}>
+      <input name="text" aria-label="Tu mensaje para Marcos por WhatsApp" placeholder="Escríbeme tu idea…" autocomplete="off" />
+      <button type="submit" aria-label="Enviar por WhatsApp" data-track="cta-whatsapp">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.27.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.57-.35zM12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88zM20.46 3.49A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.31-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.18-1.24-6.16-3.49-8.41z" /></svg>
+        <span>Enviar</span>
+      </button>
+    </form>
+    <p class="cta-a"><a href={`tel:${TEL}`} data-track="cta-tel">Llamar al {TEL_TXT}</a><a href="/contacto/">Armar el mensaje paso a paso →</a></p>
   </div>
 </section>
+<script is:inline>
+  document.querySelectorAll('.cta-f').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var t = f.text.value.trim();
+      window.open('https://wa.me/17872439670?text=' + encodeURIComponent(t ? 'Hola Marcos. ' + t : f.dataset.def), '_blank');
+      if (typeof gtag === 'function') gtag('event', 'whatsapp_click', { event_category: 'contacto', event_label: 'cta-barra', page_path: location.pathname });
+      f.reset();
+    });
+  });
+</script>
 <style>
-  .cta { background: var(--flame); color: #0d0c0b; padding-block: clamp(56px, 8vw, 120px) }
+  .cta { background: var(--flame); color: #0d0c0b; padding-block: clamp(56px, 8vw, 120px) clamp(36px, 5vw, 64px) }
   .cta-t { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(3.25rem, 12.5vw, 13rem); line-height: .9 }
-  .cta-b { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px 48px; margin-top: clamp(24px, 4vw, 56px) }
-  .cta-b p { max-width: 40ch; font-size: 1.1875rem; font-weight: 500; line-height: 1.4 }
-  .cta-a { display: flex; flex-wrap: wrap; gap: 10px }
-  .cta-btn { display: inline-flex; align-items: center; min-height: 50px; padding: 12px 24px; border-radius: 99px; border: 1.5px solid #0d0c0b; font-weight: 600; transition: background .2s, color .2s }
-  .cta-btn:hover, .cta-btn.neg { background: #0d0c0b; color: #f3eee5 }
-  .cta-btn.neg:hover { background: transparent; color: #0d0c0b }
+  .cta-p { max-width: 46ch; font-size: 1.1875rem; font-weight: 500; line-height: 1.35; margin-top: clamp(16px, 2.5vw, 32px) }
+  .cta-f { display: flex; align-items: center; gap: 8px; margin-top: 16px; padding: 8px 8px 8px clamp(16px, 2.2vw, 30px); background: #0d0c0b; border-radius: 99px; transition: box-shadow .25s }
+  .cta-f:focus-within { box-shadow: 0 0 0 4px rgba(13,12,11,.28) }
+  .cta-f input { flex: 1; min-width: 0; min-height: 60px; background: none; border: 0; outline: 0; color: #f3eee5; font: inherit; font-size: clamp(1.125rem, 2.3vw, 2rem); font-weight: 500; letter-spacing: -.015em }
+  .cta-f input::placeholder { color: rgba(243,238,229,.68); opacity: 1 }
+  .cta-f button { flex: none; display: flex; align-items: center; gap: 10px; min-height: 60px; padding: 0 clamp(16px, 2vw, 28px); border-radius: 99px; background: #25d366; color: #06230f; font-weight: 700; font-size: 1.0625rem; transition: background .2s, scale .2s var(--ease) }
+  .cta-f button:hover { background: #f3eee5; scale: 1.03 }
+  .cta-a { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 28px; margin-top: 18px; font-weight: 600 }
+  .cta-a a { border-bottom: 1.5px solid currentColor; padding-block: 3px 1px }
+  .cta-a a:hover { border-color: transparent }
+  @media (max-width: 480px) { .cta-f button span { display: none } .cta-f button { width: 60px; padding: 0; justify-content: center } }
 </style>

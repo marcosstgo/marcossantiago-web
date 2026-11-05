@@ -7,7 +7,7 @@ Instrucciones para Claude Code al trabajar en este proyecto.
 - **Astro 7** — sitio estático. Requiere **Node ≥ 22.23.4** (en este servidor: copia aislada en `.tools/`, sin tocar el Node del sistema).
 - **MDX** — artículos del blog en `src/pages/blog/*.mdx`
 - **Cloudflare Pages** (proyecto `marcossantiago-web`) — `.github/workflows/deploy.yml`: push a `main` compila y publica.
-- **Pages Function** `functions/ms-chat/lead.js` — todos los formularios mandan el lead a Telegram. Secretos: `TELEGRAM_TOKEN`, `TELEGRAM_CHAT_ID`.
+- **Contacto:** todo formulario abre WhatsApp con el mensaje armado (`/contacto/`, barra de `CtaBand`, landings). Sin servidor.
 - `public/_redirects` y `public/_headers` — redirects 301 y caché.
 
 ## Sistema visual (rediseño nov-2026)
@@ -27,7 +27,6 @@ src/pages/        páginas y blog
 src/components/   Nav, Footer, WorkCard, VideoDialog, LogoWall, CtaBand
 src/layouts/      Base.astro, BlogPost.astro
 src/lib/media.ts  índice de imágenes optimizadas
-functions/        Pages Functions
 public/           assets estáticos
 blog-bot/, bot/   bots de Telegram (FastAPI, viven en corillo-server, sin migrar)
 ```

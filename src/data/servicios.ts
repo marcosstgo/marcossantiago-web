@@ -6,7 +6,7 @@ export const categories = [
     color: '#a0c4ff',
     icon: 'fa-camera',
     tagline: 'Cada momento, eterno.',
-    desc: 'Cobertura profesional de eventos con ojo artístico y entrega rápida. Trabajo en toda Puerto Rico.',
+    desc: 'Cobertura profesional de eventos con ojo artístico y entrega rápida. Trabajo en todo Puerto Rico.',
     from: 'Desde $450',
     services: [
       {
