@@ -16,7 +16,7 @@ Instrucciones para Claude Code al trabajar en este proyecto.
 - Fuentes propias: `ms-display.woff2` (Archivo condensada 800, 11 KB) y `ms-body.woff2` (26 KB), más Instrument Serif itálica (`.it`).
 - Datos: `src/data/site.ts` (contacto y menú), `servicios.ts` (precios), `videos.json`, `brands.json`, `logos.json`.
 - **Logo nuevo:** el SVG debe tener el texto convertido a curvas; el script rechaza los que no. Copiar el SVG a `public/logos-portfolio/`, agregar el nombre en `scripts/logos-nombres.json` y correr `node scripts/analizar-logos.mjs`. El script calcula en qué fondos se lee y su color de marca.
-- **Video nuevo:** imagen en `src/assets/video/<id de Vimeo>.jpg` y entrada en `videos.json`.
+- **Video nuevo:** imagen en `src/assets/video/<id de Vimeo>.jpg` y entrada en `videos.json`. El orden de ese archivo es el del portafolio: los mejores montados arriba, a criterio de Marcos.
 - Sin JavaScript si CSS puede: filtros con `:has()`, menú con `popover`, animación con `animation-timeline`. Objetivo: Lighthouse 100 en velocidad.
 - Video e iframes solo se cargan al acercarse o al pulsar; nunca en el pintado inicial.
 
