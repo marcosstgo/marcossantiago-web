@@ -56,7 +56,7 @@ const fondos = [['mezcla','Mezcla'],['blanco','Blanco'],['negro','Negro'],['azul
         </button>
       </li>
     ))}
-    {!limite && <li class="lg-fin"><a href="/contacto/?servicio=Dise%C3%B1o%20gr%C3%A1fico%20o%20logo"><span>¿El próximo<br />es el tuyo?</span></a></li>}
+    {!limite && <li class="lg-fin"><a href="/contacto/?servicio=Dise%C3%B1o%20gr%C3%A1fico%20o%20logo"><span>¿El próximo es el tuyo?</span></a></li>}
   </ul>
   <p class="lw-vacio full" hidden>Ningún logo con ese nombre.</p>
 
@@ -172,10 +172,9 @@ const fondos = [['mezcla','Mezcla'],['blanco','Blanco'],['negro','Negro'],['azul
   .lg button:hover img, .lg button:focus-visible img { scale: 1.1 }
   .lg-n { position: absolute; left: 10px; right: 10px; bottom: 8px; font-size: .75rem; font-weight: 600; text-align: left; color: #fff; mix-blend-mode: difference; opacity: 0; translate: 0 6px; transition: opacity .25s, translate .25s }
   .lg button:hover .lg-n, .lg button:focus-visible .lg-n { opacity: 1; translate: 0 0 }
-  .lg-fin { grid-column: span 3; background: var(--flame); color: #0d0c0b }
-  .lg-fin a { display: flex; align-items: flex-end; height: 100%; padding: clamp(14px, 2vw, 28px); font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.75rem, 4.6vw, 5rem); line-height: .94; transition: background .2s, color .2s }
+  .lg-fin { grid-column: 1 / -1; background: var(--flame); color: #0d0c0b }
+  .lg-fin a { display: flex; align-items: flex-end; min-height: clamp(120px, 15vw, 240px); padding: clamp(14px, 2vw, 28px); font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.75rem, 4.6vw, 5rem); line-height: .94; transition: background .2s, color .2s }
   .lg-fin a:hover { background: #0d0c0b; color: #f3eee5 }
-  @media (max-width: 520px) { .lg-fin { grid-column: span 1; aspect-ratio: 1 } .lg-fin a { font-size: 1.5rem } }
   .lw-vacio { padding-block: 48px; color: var(--muted) }
 
   .lp { position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; border: 0; background: #0d0c0b; color: #f3eee5; padding: 0 }

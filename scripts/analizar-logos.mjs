@@ -9,6 +9,9 @@ const lum = ([r,g,b]) => { const f = c => { c/=255; return c<=.03928?c/12.92:((c
 const contraste = (a,b) => { const [x,y]=[lum(a),lum(b)].sort((p,q)=>q-p); return (x+.05)/(y+.05) };
 const sat = ([r,g,b]) => { const M=Math.max(r,g,b),m=Math.min(r,g,b); return M? (M-m)/M : 0 };
 const nombres = JSON.parse(readFileSync('scripts/logos-nombres.json','utf8'));
+// Un logo con texto vivo cambia de fuente en cada dispositivo: debe llegar convertido a curvas.
+const vivos = readdirSync(DIR).filter(n => n.endsWith('.svg') && /<(text|tspan)\b/.test(readFileSync(DIR + n, 'utf8')));
+if (vivos.length) { console.error('Logos con texto sin convertir a curvas:', vivos.join(', ')); process.exit(1); }
 const out = [];
 for (const f of readdirSync(DIR).filter(n=>n.endsWith('.svg')).sort()) {
   const { data, info } = await sharp(DIR+f, { density: 200 }).resize(160,160,{fit:'inside'}).ensureAlpha().raw().toBuffer({ resolveWithObject:true });
