@@ -38,7 +38,10 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
   <main id="main" class="pg">
     <header class="full cab">
       <h1 class="ti">Blog</h1>
-      <p>Lo que aprendo haciendo: video, foto, diseño, web. {posts.length} artículos.</p>
+      <div class="cab-d">
+        <p>Lo que aprendo haciendo: video, foto, diseño, web.</p>
+        <label class="bs"><span class="vh">Buscar artículos</span><input id="bs" type="search" placeholder={`Busca entre ${posts.length} artículos`} autocomplete="off" /></label>
+      </div>
     </header>
     <div class="fl full barra-pegada" role="group" aria-label="Filtrar por tema">
       <button class="on" data-t="">Todos</button>
@@ -46,23 +49,28 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
     </div>
     <ul class="ls full">
       {posts.map(p => (
-        <li data-tags={p.tags.join('|')}><a href={`/blog/${p.slug}/`}>
+        <li data-tags={p.tags.join('|')} data-q={(p.title + ' ' + p.desc).toLowerCase()}><a href={`/blog/${p.slug}/`}>
           <h2>{p.title}</h2>
           <p>{p.desc}</p>
           <small>{fmtDate(p.date)} · {p.minRead} min</small>
         </a></li>
       ))}
     </ul>
+    <p class="vc full" id="vc" hidden>Nada con esa búsqueda. <a class="link-a" href="/contacto/">Cuéntame qué buscas →</a></p>
   </main>
   <Footer />
 </Base>
 <script is:inline>
   (function () {
-    var bs = document.querySelectorAll('.fl button'), li = document.querySelectorAll('.ls li');
+    var bs = document.querySelectorAll('.fl button'), li = document.querySelectorAll('.ls li'), inp = document.getElementById('bs'), vc = document.getElementById('vc'), tag = '';
+    var nor = function (t) { return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') };
+    function ap() { var q = nor(inp.value.trim()), n = 0;
+      li.forEach(function (l) { var ok = (!tag || l.dataset.tags.split('|').indexOf(tag) >= 0) && nor(l.dataset.q).indexOf(q) >= 0; l.hidden = !ok; if (ok) n++ });
+      vc.hidden = n > 0; }
     bs.forEach(function (b) { b.addEventListener('click', function () {
-      bs.forEach(function (x) { x.classList.toggle('on', x === b) });
-      li.forEach(function (l) { l.hidden = !!b.dataset.t && l.dataset.tags.split('|').indexOf(b.dataset.t) < 0 });
+      bs.forEach(function (x) { x.classList.toggle('on', x === b) }); tag = b.dataset.t; ap();
     }) });
+    inp.addEventListener('input', ap);
   })();
 </script>
 <style>
@@ -70,6 +78,10 @@ const allTags  = [...new Set(posts.flatMap(p => p.tags))].sort();
   .cab { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 48px; padding-bottom: 20px }
   .ti { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(5rem, 19vw, 20rem); line-height: .82 }
   .cab p { max-width: 36ch; font-size: var(--text-lg); color: var(--muted) }
+  .cab-d { display: grid; gap: 12px; flex: 0 1 380px }
+  .bs input { width: 100%; min-height: 50px; padding: 8px 20px; border-radius: 99px; border: 1px solid var(--border-h); background: transparent; color: inherit; font: inherit }
+  .bs input:focus { outline: 2px solid var(--flame); outline-offset: 1px }
+  .vc { padding-block: 40px; font-size: var(--text-lg) }
   .fl { display: flex; gap: 4px; overflow-x: auto; padding-block: 12px; background: var(--ink); scrollbar-width: none }
   .fl button { flex: none; padding: 8px 15px; border-radius: 99px; font-weight: 600; font-size: .9375rem; border: 1px solid transparent; transition: border-color .2s, background .2s, color .2s }
   .fl button:hover { border-color: var(--border-h) } .fl button.on { background: var(--flame); color: #0d0c0b }

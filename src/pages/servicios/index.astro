@@ -48,7 +48,7 @@ const cats = orden.map(id => categories.find(c => c.id === id)!);
               <div class="s-t"><h3>{s.name}</h3><p class="s-p">{s.price}</p></div>
               <p class="s-d">{s.desc}</p>
               <p class="s-i">{s.includes.join(' · ')}</p>
-              <a class="s-a" href={wa(s.wa)} target="_blank" rel="noopener" data-track={`servicio-${c.id}`}>Cotizar →</a>
+              <a class="s-a" href={wa(s.wa)} target="_blank" rel="noopener" data-track={`servicio-${c.id}`} data-n={s.name} data-p={s.price} role="button" aria-pressed="false"><span class="s-m">+</span> <span class="s-l">Agregar a mi cotización</span></a>
             </li>
           ))}
         </ul>
@@ -65,7 +65,47 @@ const cats = orden.map(id => categories.find(c => c.id === id)!);
   </main>
   <CtaBand titulo="Cotiza sin compromiso" />
   <Footer />
+  <!-- Cotizador: se arma en vivo, como la burbuja de /contacto/ -->
+  <aside class="tk" id="tk" aria-label="Tu cotización" aria-hidden="true">
+    <div class="tk-i">
+      <div class="tk-t"><p><span id="tk-n">0</span> en tu cotización</p><strong id="tk-s">Desde $0</strong></div>
+      <p class="tk-b" id="tk-b" aria-live="polite"></p>
+      <div class="tk-a"><button type="button" id="tk-x">Vaciar</button><button type="button" id="tk-e" class="tk-e">Enviar por WhatsApp</button></div>
+      <p class="tk-n">Precios de partida. La cotización final la hablamos contigo.</p>
+    </div>
+  </aside>
 </Base>
+<script is:inline>
+  (function () {
+    var tk = document.getElementById('tk'), sel = new Map(), as = document.querySelectorAll('.s-a');
+    function num(p) { var m = /\$([\d,]+)/.exec(p); return m ? +m[1].replace(/,/g, '') : 0 }
+    function msg() {
+      var l = []; sel.forEach(function (p, n) { l.push(n + ' (' + p.toLowerCase() + ')') });
+      return 'Hola Marcos. Me interesa cotizar: ' + l.join(', ') + '.';
+    }
+    function pinta() {
+      var t = 0, c = sel.size; sel.forEach(function (p) { t += num(p) });
+      document.getElementById('tk-n').textContent = c === 1 ? '1 servicio' : c + ' servicios';
+      document.getElementById('tk-s').textContent = t ? 'Desde $' + t.toLocaleString('en-US') : 'Por cotización';
+      document.getElementById('tk-b').textContent = msg();
+      tk.classList.toggle('on', c > 0); tk.setAttribute('aria-hidden', c === 0);
+      document.body.classList.toggle('con-tk', c > 0);
+    }
+    as.forEach(function (a) { a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var n = a.dataset.n; if (sel.has(n)) sel.delete(n); else sel.set(n, a.dataset.p);
+      var on = sel.has(n); a.setAttribute('aria-pressed', on); a.querySelector('.s-m').textContent = on ? '✓' : '+'; a.querySelector('.s-l').textContent = on ? 'En tu cotización' : 'Agregar a mi cotización';
+      a.closest('li').classList.toggle('sel', on); pinta();
+    }) });
+    document.getElementById('tk-x').addEventListener('click', function () {
+      sel.clear(); as.forEach(function (a) { a.setAttribute('aria-pressed', false); a.querySelector('.s-m').textContent = '+'; a.querySelector('.s-l').textContent = 'Agregar a mi cotización'; a.closest('li').classList.remove('sel') }); pinta();
+    });
+    document.getElementById('tk-e').addEventListener('click', function () {
+      window.open('https://wa.me/17872439670?text=' + encodeURIComponent(msg()), '_blank');
+      if (typeof gtag === 'function') gtag('event', 'whatsapp_click', { event_category: 'contacto', event_label: 'cotizador', page_path: location.pathname });
+    });
+  })();
+</script>
 <style>
   html { scroll-padding-top: 72px }
   .pg { padding-top: 120px }
@@ -86,8 +126,24 @@ const cats = orden.map(id => categories.find(c => c.id === id)!);
   .s-p { font-weight: 600; white-space: nowrap }
   .s-d { color: var(--muted); max-width: 62ch }
   .s-i { color: var(--dim); font-size: .9375rem }
-  .s-a { justify-self: start; font-weight: 600; margin-top: 6px; padding-block: 6px; border-bottom: 1px solid var(--border-h); transition: color .2s, border-color .2s }
-  .s-a:hover { color: var(--flame); border-color: var(--flame) }
+  .s-a { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; margin-top: 6px; min-height: 44px; padding: 6px 18px 6px 8px; border: 1px solid var(--border-h); border-radius: 99px; transition: background .2s, color .2s, border-color .2s, scale .2s var(--ease) }
+  .s-a:hover { border-color: #25d366; scale: 1.02 }
+  .s-m { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--flame); color: #0d0c0b; font-weight: 700 }
+  .s-a[aria-pressed='true'] { background: #25d366; border-color: #25d366; color: #06230f }
+  .s-a[aria-pressed='true'] .s-m { background: #06230f; color: #25d366 }
+  .ca-l li.sel h3 { color: #25d366 }
+  .ca-l li h3 { transition: color .2s }
+  .tk { position: fixed; right: var(--gut); bottom: 18px; z-index: 80; width: min(430px, calc(100vw - 2 * var(--gut))); translate: 0 calc(100% + 24px); visibility: hidden; transition: translate .4s var(--ease), visibility .4s }
+  .tk.on { translate: 0 0; visibility: visible }
+  .tk-i { background: #0b141a; color: #e9edef; border-radius: 18px; padding: 16px; box-shadow: 0 24px 70px rgba(0,0,0,.6); display: grid; gap: 10px }
+  .tk-t { display: flex; justify-content: space-between; align-items: baseline; gap: 12px } .tk-t p { font-size: .9375rem; color: #c4ced3 }
+  .tk-t strong { font-family: var(--display); font-weight: 800; font-size: 1.875rem; line-height: 1 }
+  .tk-b { background: #005c4b; border-radius: 10px 10px 2px 10px; padding: 9px 11px; font-size: .9375rem; line-height: 1.3; max-height: 7.8em; overflow: auto }
+  .tk-a { display: flex; gap: 8px } .tk-a button { min-height: 48px; padding: 0 14px; border-radius: 12px; font-weight: 700 }
+  #tk-x { color: #c4ced3 } #tk-x:hover { color: #fff }
+  .tk-e { flex: 1; background: #25d366; color: #06230f; transition: background .2s } .tk-e:hover { background: #f3eee5 }
+  .tk-n { font-size: .75rem; color: #aab6bc }
+  :global(body.con-tk) { padding-bottom: 230px }
   @media (max-width: 800px) { .ca { grid-template-columns: 1fr } .ca-h { position: static } }
   .fq { padding-block: var(--sec) }
   .fq-g { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.7fr); gap: 24px clamp(24px, 5vw, 96px) }

@@ -1,0 +1,35 @@
+<!-- Una sola imagen que sigue al cursor sobre cualquier [data-fig]. Carga cada imagen solo al pedirla. -->
+<figure id="ff" class="ff" aria-hidden="true"><img alt="" decoding="async" /></figure>
+<script is:inline>
+  (function () {
+    var f = document.getElementById('ff'), im = f.firstElementChild, x = 0, y = 0, on = false, pend = false;
+    function pinta() { pend = false;
+      var w = f.offsetWidth, h = f.offsetHeight;
+      f.style.translate = Math.min(innerWidth - w - 12, Math.max(12, x + 24)) + 'px ' + Math.min(innerHeight - h - 12, Math.max(12, y - h / 2)) + 'px'; }
+    function mueve(e) { x = e.clientX; y = e.clientY; if (!pend) { pend = true; requestAnimationFrame(pinta); } }
+    function muestra(el, e) { im.src = el.dataset.fig; f.classList.add('on'); on = true; if (e && e.clientX !== undefined) mueve(e); else { var r = el.getBoundingClientRect(); x = r.left; y = r.bottom + 120; pinta(); } }
+    function oculta() { f.classList.remove('on'); on = false; }
+    document.querySelectorAll('[data-fig]').forEach(function (el) {
+      el.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') muestra(el, e) });
+      el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') oculta() });
+      el.addEventListener('pointermove', function (e) { if (on && e.pointerType === 'mouse') mueve(e) });
+      el.addEventListener('focus', function () { muestra(el) });
+      el.addEventListener('blur', oculta);
+      // En táctil, las palabras enseñan primero; el segundo toque entra.
+      if (el.classList.contains('pal')) el.addEventListener('click', function (e) {
+        if (el.dataset.visto || !matchMedia('(hover: none)').matches) return;
+        e.preventDefault();
+        document.querySelectorAll('.pal[data-visto]').forEach(function (o) { delete o.dataset.visto });
+        el.dataset.visto = '1'; im.src = el.dataset.fig; f.classList.add('on');
+        var r = el.getBoundingClientRect(); x = 0; y = Math.min(r.bottom + 130, innerHeight - 120); pinta();
+        clearTimeout(f._t); f._t = setTimeout(function () { oculta(); delete el.dataset.visto }, 3500);
+      });
+    });
+    addEventListener('scroll', function () { if (on) oculta() }, { passive: true });
+  })();
+</script>
+<style is:global>
+  .ff { position: fixed; left: 0; top: 0; z-index: 90; width: min(400px, 62vw); aspect-ratio: 16/10; overflow: hidden; border-radius: 6px; background: #151412; pointer-events: none; opacity: 0; scale: .92; rotate: -2deg; transition: opacity .2s, scale .3s var(--ease), rotate .4s var(--ease); box-shadow: 0 24px 60px rgba(0,0,0,.5) }
+  .ff.on { opacity: 1; scale: 1; rotate: 0deg }
+  .ff img { width: 100%; height: 100%; object-fit: cover; object-position: top }
+</style>

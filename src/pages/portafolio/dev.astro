@@ -116,7 +116,8 @@ const fuera = (h: string) => h.startsWith('http') ? { target: '_blank', rel: 'no
     <section class="full li">
       <h2 class="h2">Productos</h2>
       <ul>
-        {featuredProjects.filter(p => p.name !== 'CONCILIA').map(p => (
+        {// Kioskko vuelve aquí cuando esté en línea otra vez (salió de corillo-server).
+          featuredProjects.filter(p => !['CONCILIA','KIOSKKO'].includes(p.name)).map(p => (
           <li><a href={p.href} {...fuera(p.href)}>
             <h3>{p.name.charAt(0) + p.name.slice(1).toLowerCase().replace('pr','PR')}</h3>
             <div><p>{p.desc}</p><small>{p.tags.join(' · ')}</small></div>
