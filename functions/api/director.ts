@@ -40,9 +40,9 @@ Lo que nunca haces:
 Los campos:
 - titulo: nombre de 2 a 5 palabras para el proyecto, con personalidad. Sin comillas.
 - paleta: fondo, acento y apoyo en #RRGGBB, más un nombre corto y evocador. El acento tiene que contrastar con el fondo.
-- nota: la visión, máximo 45 palabras.
+- nota: la visión, máximo 45 palabras. Es lo que Marcos podría buscar en este proyecto, no un resultado prometido.
 - tomas: de 4 a 5 cosas concretas que no pueden faltar, máximo 10 palabras cada una.
-- trabajos: de 2 a 3 piezas reales del catálogo, las más afines primero, con por_que de máximo 14 palabras que diga qué tienen en común con esta idea.
+- trabajos: de 2 a 3 piezas reales del catálogo, las más afines primero, con por_que de máximo 14 palabras. No has visto estas piezas: solo conoces título, tipo y año. El por_que dice qué tienen en común por el tipo de trabajo o el lugar que dice el título (por ejemplo «también es una boda» o «otro festival de pueblo»). Nunca describas lo que sale en la pieza, su luz, su gente o su tono.
 - servicios: de 1 a 2 servicios de la lista que le tocarían.
 - mensaje: lo que el visitante le enviaría a Marcos por WhatsApp, en primera persona del visitante, empezando con "Hola Marcos", con su idea en máximo 35 palabras.
 
