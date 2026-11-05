@@ -8,6 +8,7 @@ import VideoDialog from '../components/VideoDialog.astro';
 import LogoWall from '../components/LogoWall.astro';
 import CtaBand from '../components/CtaBand.astro';
 import FiguraFlotante from '../components/FiguraFlotante.astro';
+import Director from '../components/Director.astro';
 import { video, brand, logos, videos } from '../lib/media';
 import heroImg from '../assets/hero/hero.jpg';
 
@@ -64,6 +65,7 @@ const areas = [
         <span class="h-nombre"><span>Marcos</span> <span>Santiago</span></span>
       </h1>
       <div class="h-cred">
+        <a class="h-dir" href="#director">¿Qué tienes en mente? →</a>
         <div class="h-ch" role="group" aria-label="Cambiar el video de fondo">
           {canales.map((c, i) => (
             <button type="button" aria-pressed={i === 0 ? 'true' : 'false'} aria-label={`Canal ${c.n}`} data-src={c.src} data-m={c.m ?? c.src} data-t={c.t.join('<br />')}>{c.n}</button>
@@ -80,6 +82,8 @@ const areas = [
         <a class="btn" href="/servicios/">Servicios y precios</a>
       </div>
     </section>
+
+    <Director />
 
     <section class="ja" aria-labelledby="ja-t">
       <input type="radio" name="ja" id="ja-p" class="vh" checked aria-label="Fondo papel" />
@@ -251,6 +255,8 @@ const areas = [
   .h-video { filter: blur(.8px) saturate(1.12) contrast(1.06); object-fit: cover; opacity: 0; transition: opacity 1s }
   .h-video:global(.on) { opacity: 1 }
   .h-t { position: relative; z-index: 3; width: 100%; padding: 0 var(--gut) clamp(14px, 2vw, 26px); font-weight: inherit }
+  .h-dir { display: block; width: fit-content; margin: 0 0 10px auto; padding: 10px 16px; border-radius: 99px; background: var(--flame); color: #0d0c0b; font-size: .9375rem; font-weight: 700; line-height: 1.1; transition: scale .2s var(--ease), background .4s }
+  .h-dir:hover { scale: 1.04 }
   .h-ch { display: inline-flex; gap: 4px; margin-bottom: 8px; padding: 3px; border-radius: 99px; background: rgba(13,12,11,.55) }
   .h-ch button { width: 38px; height: 38px; border-radius: 50%; font-weight: 700; font-size: .875rem; color: #f3eee5; transition: background .2s, color .2s, scale .2s var(--ease) }
   .h-ch button:hover { background: rgba(243,238,229,.22); scale: 1.08 }

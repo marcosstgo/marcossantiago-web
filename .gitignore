@@ -46,3 +46,4 @@ public/obs-setting.png
 # Cloudflare y herramientas locales
 .wrangler/
 .tools/
+.dev.vars
