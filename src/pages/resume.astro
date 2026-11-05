@@ -496,7 +496,7 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
     background: linear-gradient(180deg, var(--sys), var(--vis));
     transform: scaleY(1); transform-origin: top;
   }
-  @supports (--tl: view(); animation-timeline: var(--tl)) {
+  @supports (animation-timeline: view()) {
     .cv-tl-fill {
       animation: cv-fill linear both;
       --tl: view(); animation-timeline: var(--tl);
