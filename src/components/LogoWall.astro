@@ -18,12 +18,15 @@ const lista = (limite ? orden.slice(0, limite) : orden).map((l, i) => {
     blanco: l.lee.blanco < .6 ? SOM : 'none', papel: l.lee.papel < .6 ? SOM : 'none',
     negro: l.lee.negro < .6 ? HALO : 'none', azul: l.lee.azul < .6 ? HALO : 'none', marca: 'none',
   } : {
-    blanco: l.lee.blanco < .6 ? NEG : 'none',
-    negro:  l.lee.negro  < .6 ? BLA : 'none',
-    azul:   l.lee.azul   < .6 ? BLA : 'none',
-    papel:  l.lee.papel  < .6 ? NEG : 'none',
-    marca:  l.marca ? (lum(l.marca) > .45 ? NEG : BLA) : (l.lee.papel < .6 ? NEG : 'none'),
+    // .9: si se pierde más del 10 % del logo (una letra blanca, por ejemplo), pasa a monocromo.
+    blanco: l.lee.blanco < .9 ? NEG : 'none',
+    negro:  l.lee.negro  < .9 ? BLA : 'none',
+    azul:   l.lee.azul   < .9 ? BLA : 'none',
+    papel:  l.lee.papel  < .9 ? NEG : 'none',
+    marca:  l.marca ? (lum(l.marca) > .45 ? NEG : BLA) : (l.lee.papel < .9 ? NEG : 'none'),
   };
+  // Ajuste a mano: Sentidos es círculo oscuro con S y texto blancos; el monocromo se comería la S.
+  if (l.slug === 'sentidos') Object.assign(f, { blanco: 'invert(1)', papel: 'invert(1)', negro: 'none', azul: 'none' });
   // En la mezcla, un fondo donde el logo conserve sus colores; cada tercero, su color de marca.
   let s: string = (l.marca && !l.macizo && i % 3 === 0) ? 'marca' : sup[i % 4];
   if (s !== 'marca' && f[s as keyof typeof f] !== 'none') { const ok = sup.filter(x => f[x] === 'none'); s = ok[i % (ok.length || 1)] ?? s; }

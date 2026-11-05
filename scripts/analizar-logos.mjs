@@ -20,7 +20,7 @@ for (const f of readdirSync(DIR).filter(n=>n.endsWith('.svg')).sort()) {
   let x0=1e9,y0=1e9,x1=-1,y1=-1,op=0;
   for (let y=0;y<info.height;y++) for (let x=0;x<info.width;x++) if (data[(y*info.width+x)*4+3]>200){op++;x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y)}
   const macizo = op/((x1-x0+1)*(y1-y0+1)) >= .6;
-  const lee={}; for (const [k,bg] of Object.entries(FONDOS)) lee[k]=+(px.filter(p=>contraste(p,bg)>=2).length/(px.length||1)).toFixed(2);
+  const lee={}; for (const [k,bg] of Object.entries(FONDOS)) lee[k]=+(px.filter(p=>contraste(p,bg)>=2.6).length/(px.length||1)).toFixed(2);
   const cubos=new Map();
   for (const p of px){ if (sat(p)<.3) continue; const l=lum(p); if(l<.02||l>.9) continue; const k=p.map(c=>c>>4).join(); const e=cubos.get(k)||{n:0,s:[0,0,0]}; e.n++; p.forEach((c,i)=>e.s[i]+=c); cubos.set(k,e); }
   const top=[...cubos.values()].sort((a,b)=>b.n-a.n)[0];
