@@ -4,6 +4,8 @@
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
+/grano.webp
+  Cache-Control: public, max-age=31536000, immutable
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 /videos/*

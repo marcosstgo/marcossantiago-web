@@ -38,6 +38,7 @@ const areas = [
       <div class="h-media">
         <Picture class="h-poster" src={heroImg} formats={['avif','webp']} widths={[640,1280]} sizes="100vw" alt="" loading="eager" fetchpriority="high" />
         <video class="h-video" muted loop playsinline preload="none" aria-hidden="true" data-src="/hero-bg.mp4" data-src-m="/hero-bg-480.mp4"></video>
+        <div class="h-grano" aria-hidden="true"></div>
       </div>
       <h1 class="h-t">
         <span class="h-desc">Diseño gráfico, fotografía y video <em class="it">desde Aibonito, Puerto Rico</em></span>
@@ -181,10 +182,15 @@ const areas = [
 <style>
   .h { position: relative; height: 100svh; min-height: 560px; display: flex; align-items: flex-end; overflow: clip; background: #06121f }
   .h-media { position: absolute; inset: 0 }
-  .h-media::after { content:''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13,12,11,.34) 0, rgba(13,12,11,0) 22%, rgba(13,12,11,0) 48%, rgba(13,12,11,.82) 100%) }
+  .h-media::after { content:''; position: absolute; inset: 0; z-index: 2; background: linear-gradient(180deg, rgba(13,12,11,.34) 0, rgba(13,12,11,0) 22%, rgba(13,12,11,0) 48%, rgba(13,12,11,.82) 100%) }
   .h-poster, .h-video { position: absolute; inset: 0; width: 100%; height: 100% }
   .h-poster { object-fit: cover }
-  .h-video { object-fit: cover; opacity: 0; transition: opacity 1s }
+  /* Grano de película: disimula bloques y franjas de la compresión. Un mosaico de 12 KB,
+     movido por el compositor (sin mix-blend ni repintado), así no pesa sobre el video. */
+  .h-media { overflow: clip }
+  .h-grano { position: absolute; inset: -160px; z-index: 1; background: url(/grano.webp) 0 0 / 160px; pointer-events: none; will-change: translate; animation: h-grano .7s steps(1) infinite }
+  @keyframes h-grano { 0% { translate: 0 0 } 20% { translate: -47px 31px } 40% { translate: 62px -58px } 60% { translate: -83px -24px } 80% { translate: 29px 76px } }
+  .h-video { filter: blur(.8px) saturate(1.12) contrast(1.06); object-fit: cover; opacity: 0; transition: opacity 1s }
   .h-video:global(.on) { opacity: 1 }
   .h-t { position: relative; z-index: 1; width: 100%; padding: 0 var(--gut) clamp(14px, 2vw, 26px); font-weight: inherit }
   .h-desc { display: block; font-family: var(--body); font-size: clamp(1.0625rem, 1.8vw, 1.625rem); font-weight: 500; line-height: 1.25; margin-bottom: clamp(8px, 1.2vw, 16px); max-width: 30ch }
