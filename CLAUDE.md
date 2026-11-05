@@ -20,6 +20,12 @@ Instrucciones para Claude Code al trabajar en este proyecto.
 - Sin JavaScript si CSS puede: filtros con `:has()`, menú con `popover`, animación con `animation-timeline`. Objetivo: Lighthouse 100 en velocidad.
 - Video e iframes solo se cargan al acercarse o al pulsar; nunca en el pintado inicial.
 
+## Modo Director (IA en la portada)
+
+- `src/components/Director.astro` (frase, sale en el HTML y sin JS va a WhatsApp), `public/director.js` (se baja al acercarse), `functions/api/director.ts` (Pages Function, SDK de Anthropic), `src/pages/director-catalogo.json.ts` (imágenes y precios).
+- El modelo solo escoge ids del catálogo: precios e imágenes los pone la página. Colores validados por contraste en el navegador.
+- Secreto `ANTHROPIC_API_KEY` en Cloudflare Pages. Modelo por variable `DIRECTOR_MODEL` (por omisión `claude-opus-5-5`, esfuerzo bajo). Sin llave o si falla, la página ofrece enviar la idea por WhatsApp.
+
 ## Estructura del proyecto
 
 ```
@@ -239,10 +245,4 @@ Para grids visuales dentro del artículo, usar `color-mix(in srgb, var(--white) 
 
 ## Deploy
 
-No hay CI/CD para este proyecto. El flujo es:
-
-1. Editar localmente en `C:\marcos-santiago`
-2. `git push origin main`
-3. En el servidor: `git pull && docker compose build marcossantiago-web && docker compose up -d marcossantiago-web`
-
-El blog-bot (`blog-bot/server.py`) puede crear artículos automáticamente via Telegram, pero requiere que el límite de API de Anthropic esté disponible.
+Push a `main`: GitHub Actions compila, publica y comprueba el sitio. Vista previa de una rama: `npm run build` y `CLOUDFLARE_API_TOKEN=$CLOUDFLARE_PAGES_TOKEN CLOUDFLARE_ACCOUNT_ID=6a569761d94d8b3feecac2358df2bac5 npx wrangler@4 pages deploy dist --project-name marcossantiago-web --branch <rama>`.

@@ -1,0 +1,104 @@
+---
+// Modo Director: frase de la portada que, con IA, arma un plan y recolora la página.
+// El HTML estático se indexa y funciona sin JavaScript (va a WhatsApp); director.js llega al acercarse.
+const sentires = ['íntimo', 'brutal', 'elegante', 'bien boricua', 'divertido', 'de cine'];
+const ejemplos = ['una boda en Aibonito', 'el cumpleaños de mi mamá', 'un quinceañero', 'un festival de pueblo', 'el video de mi banda', 'un café que está abriendo'];
+---
+<section class="dr full" id="director" aria-labelledby="dr-t">
+  <p class="dr-k">Modo Director</p>
+  <h2 id="dr-t" class="dr-t">Cuéntame la idea.</h2>
+  <form class="dr-f" id="dr-f" action="https://wa.me/17872439670" target="_blank">
+    <div class="dr-fr">
+      <span>Tengo </span>
+      <input name="text" id="dr-i" aria-label="Tu idea" placeholder="una boda en Aibonito" maxlength="300" autocomplete="off" required size="20" />
+      <span> y quiero que se sienta </span>
+      <fieldset class="dr-ch">
+        <legend class="vh">Cómo quieres que se sienta</legend>
+        {sentires.map(s => <label><input type="radio" name="sentir" value={s} /><b>{s}</b></label>)}
+      </fieldset>
+    </div>
+    <div class="dr-ej" id="dr-ej" aria-label="Ideas de ejemplo">
+      {ejemplos.map(e => <button type="button" data-e={e}>{e}</button>)}
+    </div>
+    <div class="dr-go">
+      <button class="dr-b" type="submit">Dirígelo →</button>
+      <p>Una IA lee tu idea, busca en mi trabajo real y te arma un plan con colores, tomas y precios de mi lista. Lo demás lo hablamos tú y yo.</p>
+    </div>
+  </form>
+  <div class="dr-r" id="dr-r" aria-live="polite" hidden></div>
+</section>
+<script is:inline>
+  (function () {
+    var s = document.getElementById('director');
+    if (!('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (e, o) {
+      if (!e[0].isIntersecting) return; o.disconnect();
+      var j = document.createElement('script'); j.src = '/director.js'; j.defer = true; document.head.appendChild(j);
+    }, { rootMargin: '500px' }).observe(s);
+  })();
+</script>
+<style is:global>
+  .dr { --d-bg: var(--flame); --d-tx: #0d0c0b; --d-ac: #0d0c0b; background: var(--d-bg); color: var(--d-tx); padding-block: clamp(56px, 8vw, 120px); transition: background-color .9s var(--ease), color .9s var(--ease); scroll-margin-top: 64px }
+  .dr-k { font-weight: 600; font-size: .9375rem }
+  .dr-t { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(3.5rem, 13vw, 14rem); line-height: .86; margin-top: 8px }
+  .dr-fr { font-size: clamp(2rem, 4.5vw, 4.75rem); font-weight: 500; line-height: 1.22; letter-spacing: -.025em; margin-top: clamp(20px, 3vw, 44px); max-width: 24em }
+  .dr-fr > input { font: inherit; font-family: var(--serif); font-style: italic; letter-spacing: -.01em; color: inherit; background: none; border: 0; border-bottom: .05em solid currentColor; border-radius: 0; padding: 0 .08em; max-width: 100%; min-width: 2ch; transition: background .2s }
+  .dr-fr > input::placeholder { color: inherit; opacity: .8 }
+  .dr-fr > input:focus { outline: 0; background: rgba(255,255,255,.22) }
+  .dr-ch { display: inline; border: 0 }
+  .dr-ch label { display: inline-block; cursor: pointer; margin: .08em .1em .08em 0; vertical-align: .12em }
+  .dr-ch input { position: absolute; opacity: 0 }
+  .dr-ch b { display: block; font-size: clamp(1.0625rem, 1.75vw, 1.75rem); font-weight: 600; letter-spacing: -.01em; line-height: 1; padding: .55em .85em; border: 2px solid currentColor; border-radius: 99px; transition: background .18s, color .18s, scale .25s var(--ease) }
+  .dr-ch label:hover b { background: rgba(255,255,255,.22) }
+  .dr-ch input:checked + b { background: var(--d-tx); color: var(--d-bg); scale: 1.04 }
+  .dr-ch input:focus-visible + b { outline: 3px solid currentColor; outline-offset: 2px }
+  .dr-ej { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 18px; font-size: .9375rem }
+  .dr-ej button { min-height: 32px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px }
+  .dr-ej button:hover { text-decoration-thickness: 2px }
+  .dr-go { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; margin-top: clamp(20px, 3vw, 36px) }
+  .dr-go p { flex: 1 1 280px; max-width: 46ch; font-size: .9375rem; line-height: 1.4; font-weight: 500 }
+  .dr-b { min-height: 64px; padding-inline: 34px; border-radius: 14px; background: var(--d-tx); color: var(--d-bg); font-size: 1.25rem; font-weight: 700; transition: scale .2s var(--ease), opacity .2s }
+  .dr-b:hover { scale: 1.02 } .dr-b:active { scale: .98 } .dr-b[disabled] { opacity: .55; cursor: progress }
+
+  .dr-r { margin-top: clamp(40px, 6vw, 88px); padding-top: 18px; border-top: 2px solid currentColor; scroll-margin-top: 80px }
+  .dr-st { font-size: 1.125rem; font-weight: 600; min-height: 1.6em }
+  .dr-st:empty { display: none }
+  .dr-st.anda::after { content: '…'; animation: dr-p 1s steps(2) infinite }
+  @keyframes dr-p { 50% { opacity: .2 } }
+  .dr-ti { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.75rem, 9vw, 10rem); line-height: .9; overflow-wrap: anywhere }
+  .dr-no { font-family: var(--serif); font-style: italic; font-size: clamp(1.625rem, 3.4vw, 3.5rem); line-height: 1.14; margin-top: 16px; max-width: 26em }
+  .dr-g { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px clamp(28px, 5vw, 88px); margin-top: clamp(28px, 4vw, 56px) }
+  .dr-h { font-size: .9375rem; font-weight: 600; padding-bottom: 8px; border-bottom: 1px solid currentColor; margin-bottom: 12px }
+  .dr-to { list-style: none; counter-reset: t }
+  .dr-to li { counter-increment: t; display: grid; grid-template-columns: 2.2em minmax(0,1fr); padding-block: 9px; font-size: clamp(1.125rem, 1.7vw, 1.5rem); font-weight: 500; line-height: 1.25; letter-spacing: -.01em }
+  .dr-to li::before { content: counter(t); font-family: var(--display); font-weight: 800; color: var(--d-ac) }
+  .dr-pa { display: flex; gap: 8px; align-items: stretch }
+  .dr-pa button { flex: 1; height: 72px; border-radius: 10px; border: 2px solid currentColor; transition: scale .2s var(--ease) }
+  .dr-pa button:hover { scale: 1.04 }
+  .dr-pn { margin-top: 8px; font-size: .9375rem; font-weight: 500 }
+  .dr-pz { list-style: none; display: grid; gap: 8px }
+  .dr-pz li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 16px; font-weight: 600 }
+  .dr-pz a { text-decoration: underline; text-underline-offset: 3px }
+  .dr-tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 12px }
+  .dr-c { display: block; min-width: 0 }
+  .dr-c img { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 8px; transition: scale .5s var(--ease) }
+  .dr-c:hover img { scale: 1.025 }
+  .dr-c strong { display: block; margin-top: 8px; font-weight: 600; line-height: 1.25 }
+  .dr-c small { display: block; font-size: .875rem; line-height: 1.3; margin-top: 2px }
+  .dr-en { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 16px 28px; margin-top: clamp(28px, 4vw, 56px) }
+  .dr-bu { background: #005c4b; color: #e9edef; padding: 10px 14px; border-radius: 12px 12px 2px 12px; font-size: 1.0625rem; line-height: 1.35; max-width: 42em; overflow-wrap: anywhere }
+  .dr-wa { display: inline-flex; align-items: center; justify-content: center; min-height: 64px; padding-inline: 28px; border-radius: 14px; background: #25d366; color: #06230f; font-size: 1.125rem; font-weight: 700; transition: scale .2s var(--ease) }
+  .dr-wa:hover { scale: 1.02 }
+  .dr-aj { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 22px }
+  .dr-aj span { font-size: .9375rem; font-weight: 500; margin-right: 4px }
+  .dr-aj button { min-height: 44px; padding-inline: 16px; border: 2px solid currentColor; border-radius: 99px; font-weight: 600; transition: scale .2s var(--ease) }
+  .dr-aj button:hover { scale: 1.04 } .dr-aj button[disabled] { opacity: .5; cursor: progress }
+  .dr-le { margin-top: 18px; font-size: .8125rem; line-height: 1.4; max-width: 62ch }
+  @media (max-width: 800px) {
+    .dr-g { grid-template-columns: minmax(0, 1fr) }
+    .dr-tr { grid-template-columns: minmax(0, 1fr) }
+    .dr-en { grid-template-columns: minmax(0, 1fr) }
+    .dr-wa { width: 100% }
+    .dr-b { width: 100% }
+  }
+</style>
