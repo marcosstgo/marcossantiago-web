@@ -42,3 +42,7 @@ __pycache__/
 # versionen; si no hacen falta, borrarlas del disco.
 public/Screenshot*.png
 public/obs-setting.png
+
+# Cloudflare y herramientas locales
+.wrangler/
+.tools/

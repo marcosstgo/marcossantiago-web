@@ -68,8 +68,7 @@ const proyectos = [
     nombre: 'marcossantiago.com',
     rol: 'Diseño, código e infraestructura',
     url: '/', dominio: 'marcossantiago.com',
-    desc: `Este mismo sitio: 54 páginas en Astro, blog en MDX y un generador de propuestas
-           de logo con su propio servicio. Diseño, front-end, servidor y despliegue continuo.`,
+    desc: `Este mismo sitio: portafolio interactivo en Astro y blog en MDX, con diseño, front-end, Cloudflare Pages y despliegue continuo.`,
     datos: ['Lighthouse móvil 100 · 100 · 100 · 100', 'LCP 1.5 s', 'Portada: 37.8 MB → 2.8 MB por visita'],
   },
   {
@@ -91,7 +90,7 @@ const proyectos = [
   {
     nombre: 'Kioskko',
     rol: 'Producto completo',
-    url: 'https://demo.kioskko.com', dominio: 'demo.kioskko.com',
+    url: '/portafolio/dev/', dominio: 'Temporalmente fuera de línea',
     desc: `Tiendas en línea para negocios de Puerto Rico: catálogo, carrito y cobro con
            ATH Móvil, cada tienda con su propio dominio.`,
     datos: ['Astro con render en servidor', 'PocketBase', 'ATH Móvil'],
@@ -499,7 +498,7 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
   @supports (animation-timeline: view()) {
     .cv-tl-fill {
       animation: cv-fill linear both;
-      animation-timeline: view();
+      --tl: view(); animation-timeline: var(--tl);
       animation-range: cover 12% cover 68%;
     }
     @keyframes cv-fill { from { transform: scaleY(0) } to { transform: scaleY(1) } }

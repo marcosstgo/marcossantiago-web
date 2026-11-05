@@ -1,0 +1,31 @@
+<!-- Reproductor único: el iframe de Vimeo solo se crea al pulsar play. -->
+<dialog id="vd" class="vd" aria-label="Reproductor de video">
+  <button class="vd-x" aria-label="Cerrar video">×</button>
+  <div class="vd-marco"></div>
+  <p class="vd-t"></p>
+</dialog>
+<script is:inline>
+  (function () {
+    var d = document.getElementById('vd'), marco = d.querySelector('.vd-marco'), t = d.querySelector('.vd-t');
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[data-video]');
+      if (!a || e.metaKey || e.ctrlKey) return;
+      e.preventDefault();
+      var f = document.createElement('iframe');
+      f.src = 'https://player.vimeo.com/video/' + a.dataset.video + '?autoplay=1&dnt=1&title=0&byline=0&portrait=0&color=ff4f1f';
+      f.allow = 'autoplay; fullscreen; picture-in-picture'; f.allowFullscreen = true; f.title = a.dataset.title;
+      marco.replaceChildren(f); t.textContent = a.dataset.title; d.showModal();
+    });
+    d.querySelector('.vd-x').addEventListener('click', function () { d.close() });
+    d.addEventListener('click', function (e) { if (e.target === d) d.close() });
+    d.addEventListener('close', function () { marco.replaceChildren() });
+  })();
+</script>
+<style is:global>
+  .vd { position: fixed; inset: 0; margin: auto; width: min(1280px, 94vw); max-height: 94dvh; background: transparent; border: 0; color: #f3eee5; overflow: visible }
+  .vd::backdrop { background: rgba(8,7,6,.94) }
+  .vd-marco { aspect-ratio: 16/9; background: #000; max-height: 82dvh; width: 100% }
+  .vd-marco iframe { width: 100%; height: 100%; border: 0; display: block }
+  .vd-t { margin-top: 12px; font-weight: 600 }
+  .vd-x { position: absolute; right: 0; top: -50px; width: 44px; height: 44px; font-size: 2.25rem; line-height: 1; color: #f3eee5 }
+</style>

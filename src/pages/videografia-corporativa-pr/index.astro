@@ -55,7 +55,7 @@ import Footer from '../../components/Footer.astro';
           },
           {
             "@type": "Question",
-            "name": "¿Cubren toda Puerto Rico?",
+            "name": "¿Cubren todo Puerto Rico?",
             "acceptedAnswer": { "@type": "Answer", "text": "Sí, produzco video corporativo en toda la isla — San Juan, Ponce, Mayagüez, Bayamón, Carolina y cualquier municipio. No hay cargo adicional de desplazamiento dentro de PR." }
           },
           {
@@ -82,7 +82,7 @@ import Footer from '../../components/Footer.astro';
     <!-- ── Hero ── -->
     <section class="hero-section">
       <video class="hero-video-bg" autoplay muted loop playsinline preload="metadata" poster="/videos/marcos-video-poster.webp" aria-hidden="true">
-        <source src="/short-videografy.mp4" type="video/mp4" />
+        <source src="/hero-bg.mp4" type="video/mp4" />
       </video>
       <div class="hero-overlay" aria-hidden="true"></div>
       <div class="container hero-content">
@@ -90,7 +90,7 @@ import Footer from '../../components/Footer.astro';
         <h1 class="hero-title">Video que<br><span class="accent">vende tu marca.</span></h1>
         <ul class="hero-bullets">
           <li><i class="fa-solid fa-video"></i> Institucionales, testimoniales, reels y campañas</li>
-          <li><i class="fa-solid fa-location-dot"></i> Toda Puerto Rico — un solo profesional</li>
+          <li><i class="fa-solid fa-location-dot"></i> Todo Puerto Rico — un solo profesional</li>
           <li><i class="fa-solid fa-bolt"></i> Cotización gratis en menos de 1 hora</li>
         </ul>
         <div class="hero-price-strip">
@@ -115,7 +115,7 @@ import Footer from '../../components/Footer.astro';
           </a>
         </div>
         <div class="hero-meta">
-          <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> Toda Puerto Rico</span>
+          <span class="meta-pill"><i class="fa-solid fa-location-dot"></i> Todo Puerto Rico</span>
           <span class="meta-pill"><i class="fa-regular fa-clock"></i> Respondo en &lt;1 hora</span>
           <a href="tel:+17872439670" class="meta-pill meta-pill-call" data-track="call">
             <i class="fa-solid fa-phone"></i> (787) 243-9670
@@ -203,21 +203,20 @@ import Footer from '../../components/Footer.astro';
     <!-- ── Lead form ── -->
     <section class="lead-section" id="cotizar">
       <div class="container">
-        <div class="lead-grid">
+        <div class="lead-grid" style="grid-template-columns:1fr">
           <div class="lead-intro">
             <p class="section-label">Cotización de Video Corporativo</p>
             <h2 class="lead-title">Te respondo en <span class="accent">menos de 1 hora</span></h2>
             <p class="lead-sub">Sin spam. Sin compromiso. Te contesto directo yo, no un asistente.</p>
             <ul class="lead-trust">
               <li><i class="fa-solid fa-check"></i> Cotización gratis</li>
-              <li><i class="fa-solid fa-check"></i> Disponible en toda Puerto Rico</li>
+              <li><i class="fa-solid fa-check"></i> Disponible en todo Puerto Rico</li>
               <li><i class="fa-solid fa-check"></i> Respuesta personal de Marcos</li>
             </ul>
           </div>
           <form class="lead-form" id="leadForm" novalidate>
             <div class="lead-row">
               <input type="text" required class="lead-field" name="nombre" placeholder="Tu nombre *" autocomplete="name" />
-              <input type="tel" required class="lead-field" name="contacto" placeholder="Teléfono o WhatsApp *" autocomplete="tel" />
             </div>
             <input type="hidden" name="servicio" value="Videografía Corporativa" />
             <select class="lead-field" name="tipo_video">
@@ -232,15 +231,13 @@ import Footer from '../../components/Footer.astro';
             <input type="text" name="empresa" class="lead-field" placeholder="Nombre de tu empresa (opcional)" />
             <textarea class="lead-field" name="mensaje" rows="2" placeholder="Cuéntame brevemente qué necesitas (opcional)"></textarea>
             <button type="submit" class="lead-submit" data-track="form">
-              <i class="fa-solid fa-paper-plane"></i> Pedir cotización gratis
+              <i class="fab fa-whatsapp"></i> Enviar por WhatsApp
             </button>
             <p class="lead-note">¿Prefieres directo? <a href="tel:+17872439670" data-track="call"><i class="fa-solid fa-phone"></i> Llamar</a> o <a href="https://wa.me/17872439670?text=Hola%2C%20me%20interesa%20cotizar%20video%20corporativo." target="_blank" rel="noopener" data-track="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>.</p>
             <p class="lead-success" id="leadSuccess" hidden>
-              <i class="fa-solid fa-circle-check"></i> Mensaje recibido. Te respondo en menos de 1 hora.
+              <i class="fa-solid fa-circle-check"></i> Se abrió WhatsApp: solo falta pulsar enviar.
             </p>
-            <p class="lead-error" id="leadError" hidden>
-              <i class="fa-solid fa-triangle-exclamation"></i> No pude enviar el mensaje. Escríbeme por WhatsApp al (787) 243-9670.
-            </p>
+            <p class="lead-error" id="leadError" hidden></p>
           </form>
         </div>
       </div>
@@ -346,7 +343,7 @@ import Footer from '../../components/Footer.astro';
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 10px; font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; font-weight: 700; transition: .15s }
   .hero-cta-call { background: var(--white); color: #040d16 }
   .hero-cta-call:hover { background: #ff9f7f }
-  .hero-cta-wa { background: #25d366; color: #fff }
+  .hero-cta-wa { background: #25d366; color: #06230f }
   .hero-cta-wa:hover { opacity: .88 }
   .hero-cta-form { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,.25) }
   .hero-cta-form:hover { border-color: #ff9f7f; color: #ff9f7f }
@@ -365,7 +362,7 @@ import Footer from '../../components/Footer.astro';
   .service-card h3 { font-family: var(--mono); font-size: .72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--white); margin: 0 }
   .service-card p { font-size: .88rem; color: var(--muted); margin: 0; line-height: 1.55 }
   .service-price { font-family: var(--mono); font-size: .68rem; letter-spacing: 1px; color: #ff9f7f; margin-top: auto; padding-top: 8px }
-  .service-wa-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #25d366; color: #fff; text-decoration: none; padding: 10px 16px; border-radius: 8px; font-family: var(--mono); font-size: .6rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; transition: opacity .15s; margin-top: auto }
+  .service-wa-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #25d366; color: #06230f; text-decoration: none; padding: 10px 16px; border-radius: 8px; font-family: var(--mono); font-size: .6rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; transition: opacity .15s; margin-top: auto }
   .service-wa-btn:hover { opacity: .88 }
   .includes-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 20px 24px; border-radius: 12px; background: color-mix(in srgb, var(--white) 2%, transparent); border: 1px solid var(--border) }
   .includes-label { font-family: var(--mono); font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--white) }
@@ -428,14 +425,14 @@ import Footer from '../../components/Footer.astro';
   .faq-item[open] summary::after { transform: rotate(45deg) }
   .faq-item p { padding: 0 24px 18px; font-size: .88rem; color: var(--muted); line-height: 1.65; margin: 0 }
   .faq-cta { text-align: center }
-  .faq-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #25d366; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 10px; font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: opacity .15s }
+  .faq-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #25d366; color: #06230f; text-decoration: none; padding: 12px 24px; border-radius: 10px; font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: opacity .15s }
   .faq-wa-btn:hover { opacity: .88 }
 
   /* Sticky bar */
   .sticky-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 700; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: rgba(4,13,22,.96); backdrop-filter: blur(8px); border-top: 1px solid var(--border); gap: 10px }
   .sticky-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px; border-radius: 10px; text-decoration: none; font-family: var(--mono); font-size: .65rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: opacity .15s }
   .sticky-call { background: var(--white); color: #040d16 }
-  .sticky-wa { background: #25d366; color: #fff }
+  .sticky-wa { background: #25d366; color: #06230f }
   .sticky-call:hover, .sticky-wa:hover { opacity: .88 }
 
   /* Responsive */
@@ -467,24 +464,16 @@ import Footer from '../../components/Footer.astro';
     const success = document.getElementById('leadSuccess');
     const error   = document.getElementById('leadError');
     if (!form) return;
-    form.addEventListener('submit', async function(e) {
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const data = Object.fromEntries(new FormData(form));
-      try {
-        const r = await fetch('/ms-chat/lead', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        if (!r.ok) throw new Error();
-        form.reset();
-        success.hidden = false;
-        error.hidden   = true;
-        if (typeof gtag === 'function') gtag('event', 'form_submit', { event_category: 'engagement', event_label: 'videografia-corporativa-pr' });
-      } catch {
-        error.hidden   = false;
-        success.hidden = true;
-      }
+      const d = Object.fromEntries(new FormData(form));
+      const extra = Object.entries(d).filter(([k, v]) => !['nombre','contacto','servicio','mensaje'].includes(k) && String(v).trim()).map(([k, v]) => k.charAt(0).toUpperCase() + k.slice(1) + ': ' + String(v).trim() + '.');
+      const t = ['Hola Marcos' + (d.nombre ? ', soy ' + d.nombre : '') + '.', d.servicio && 'Me interesa: ' + d.servicio + '.', ...extra, d.mensaje].filter(Boolean).join(' ');
+      window.open('https://wa.me/17872439670?text=' + encodeURIComponent(t), '_blank');
+      form.reset();
+      success.hidden = false;
+      error.hidden = true;
+      if (typeof gtag === 'function') gtag('event', 'whatsapp_click', { event_category: 'contacto', event_label: 'landing-form', page_path: location.pathname });
     });
   })();
 

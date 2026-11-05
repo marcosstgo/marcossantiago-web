@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+<Base title="Página no encontrada — Marcos Santiago" description="Esta página no existe.">
+  <meta slot="head" name="robots" content="noindex" />
+  <Nav />
+  <main id="main" class="p">
+    <h1>404</h1>
+    <p>Esa página no existe o se movió.</p>
+    <div class="a"><a class="btn primary" href="/">Ir al inicio</a><a class="btn" href="/portafolio/">Ver el trabajo</a><a class="btn" href="/contacto/">Contacto</a></div>
+  </main>
+  <Footer />
+</Base>
+<style>
+  .p { min-height: 82svh; display: flex; flex-direction: column; justify-content: flex-end; padding: 120px var(--gut) 48px }
+  h1 { font-family: var(--display); font-weight: 800; font-size: clamp(9rem, 38vw, 42rem); line-height: .78; color: var(--flame) }
+  p { font-size: clamp(1.25rem, 2.4vw, 2rem); margin-block: 24px 20px }
+  .a { display: flex; flex-wrap: wrap; gap: 10px }
+</style>

@@ -2,6 +2,22 @@
 
 Cambios notables al sitio. Más reciente primero.
 
+## 2026-11-04 — Rediseño y Astro 7
+
+- Astro 6 → 7.4.5; fuera `astro-compress` y sus 5 alertas altas (los SVG se optimizaron una vez con svgo).
+- Sistema visual nuevo; trabajo real de Vimeo y Behance en todas las páginas.
+- Muro de logos interactivo: blanco, negro, azul, color de marca y prueba en cuatro fondos.
+- Portada, portafolio, video, foto, diseño, web, logos, servicios, contacto, blog y 404 reconstruidos. Las demás páginas toman el sistema visual por tokens.
+- Jalda como logo protagonista: sección propia en la portada con cambio de fondo y pieza doble en el muro.
+- Quitados 22 logos con texto sin convertir a curvas o incompletos; `scripts/analizar-logos.mjs` ahora rechaza los que traigan texto vivo.
+- Menú con grano de TV en movimiento, cápsula que sigue el cursor, parpadeo de canal y línea de avance; en móvil se enciende como un televisor.
+- Interacciones: canales de TV en la portada, palabras con imagen, giro del booth, línea de tiempo, previas de proyectos, cotizador en `/servicios/`, búsqueda en el blog.
+- `/sobre-mi/` nueva: visor con enfoque y disparador, foto impresa, capítulos que se apilan, simulador de apertura/velocidad/ISO y paleta que pinta la página.
+- Generador de logos eliminado (`/generador-de-logos/` y `/galeria-logos/` → 301 a `/portafolio/logos/`). `/shorts/` → 301 a `/reels/`.
+- En Git lo que solo estaba en producción: `_redirects`, `_headers`. Página 404 real.
+- Contacto por WhatsApp: frase para completar con burbuja en vivo en `/contacto/`, barra de chat en toda franja final y formularios de landings que abren WhatsApp. Se elimina el envío a Telegram.
+- Despliegue pasa de SSH a corillo-server a GitHub Actions → Cloudflare Pages.
+
 ## 2026-05-14 — Sub-landings PPC por servicio
 
 Tres landing pages dedicadas para campañas de Google Ads, una por servicio principal. Patrón compartido: header minimal sin nav de escape, hero full-width con video de fondo, precio visible above the fold, lead form con `servicio` pre-llenado, sección "Soy Marcos", FAQ con JSON-LD FAQPage + LocalBusiness, sticky CTA bar en mobile, GA4 tracking por landing. Todas en el sitemap automáticamente.

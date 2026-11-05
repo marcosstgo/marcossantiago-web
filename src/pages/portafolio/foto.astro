@@ -1,233 +1,72 @@
 ---
+import { Picture } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
-
-const services = [
-  {
-    label: 'Bodas',
-    desc: 'Cobertura completa del día: preparativos, ceremonia, recepción y momentos espontáneos. Entrega de galería editada en alta resolución.',
-  },
-  {
-    label: 'Quinceañeros',
-    desc: 'Sesión de retratos, cobertura del evento, court, waltz y celebración. Recuerdos que duran toda la vida.',
-  },
-  {
-    label: 'Eventos Corporativos',
-    desc: 'Conferencias, lanzamientos de productos, activaciones de marca y actividades de empresa. Fotos listas para uso en prensa y redes.',
-  },
-  {
-    label: 'Conciertos y Festivales',
-    desc: 'Fotografía de artistas en vivo, backstage, audiencia y ambiente. Manejo de condiciones de baja luz y acción rápida.',
-  },
-  {
-    label: 'Fiestas Patronales y Cultura',
-    desc: 'Documentación de la cultura puertorriqueña — fiestas patronales, tradiciones, carnavales y celebraciones locales.',
-  },
-  {
-    label: 'Retratos y Branding Personal',
-    desc: 'Sesiones para profesionales, artistas y creadores. Fotos de perfil, headshots y contenido visual para tu marca personal.',
-  },
-  {
-    label: 'Productos y Comercial',
-    desc: 'Fotografía de productos para e-commerce, catálogos y publicidad. Luz de estudio o ambientada según el producto.',
-  },
-  {
-    label: 'Fotografía de Calle',
-    desc: 'Proyectos personales y documentales del día a día en Puerto Rico — personas, lugares y momentos auténticos.',
-  },
+import CtaBand from '../../components/CtaBand.astro';
+import { video } from '../../lib/media';
+const servicios = [
+  ['Bodas','Cobertura completa del día, con galería editada en alta resolución.'],
+  ['Quinceañeros','Sesión de retratos y cobertura del evento: court, waltz y celebración.'],
+  ['Eventos corporativos','Conferencias, lanzamientos y actividades, con fotos listas para prensa y redes.'],
+  ['Conciertos y festivales','Artistas en vivo, backstage y ambiente, en poca luz y acción rápida.'],
+  ['Fiestas patronales y cultura','Tradiciones, carnavales y celebraciones de Puerto Rico.'],
+  ['Retratos y marca personal','Headshots y contenido visual para profesionales, artistas y creadores.'],
+  ['Productos y comercial','Catálogos, e-commerce y publicidad, con luz de estudio o ambientada.'],
+  ['Fotografía de calle','Proyectos personales del día a día en Puerto Rico.'],
 ];
+// Mientras llegan las fotos finales: escenas de coberturas reales.
+const esc = ['1075437696','822843800','873793066','1052549620','797698487','1214473531'].map(video);
 ---
-<Base
-  title="Fotografía — Marcos Santiago"
-  description="Fotografía profesional en Puerto Rico — bodas, quinceañeros, eventos corporativos, conciertos, retratos y más. Basado en Aibonito, PR."
->
+<Base title="Fotografía — Marcos Santiago" description="Fotografía profesional en Puerto Rico: bodas, quinceañeros, eventos corporativos, conciertos, retratos y más. Basado en Aibonito, PR.">
   <Nav />
-  <main id="main" style="padding-top:120px">
-    <div class="container">
-
-      <p class="section-label">Portafolio · Fotografía</p>
-      <h1 class="section-title">Fotografía</h1>
-      <p class="section-sub">
-        Más de una década capturando momentos en Puerto Rico — desde bodas íntimas en las montañas hasta conciertos multitudinarios. Cada evento es único y lo trato como tal.
-      </p>
-
-      <div class="portfolio-ctas">
-        <div class="portfolio-cta">
-          <div class="cta-icon">
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2zM12 17a4 4 0 100-8 4 4 0 000 8z"/>
-            </svg>
-          </div>
-          <p class="cta-tag">Galerías de clientes</p>
-          <h2 class="cta-title">Pixieset</h2>
-          <span class="cta-badge"><i class="fa-solid fa-images"></i> Acceso directo a tus fotos</span>
-          <p class="cta-sub">
-            Todas las galerías de bodas, eventos y sesiones viven en <strong>fotos.marcossantiago.com</strong> — entrega con descargas, favoritos y compartir con familia.
-          </p>
-          <a href="https://fotos.marcossantiago.com" target="_blank" rel="noopener" class="btn primary">
-            Abrir galería →
-          </a>
-        </div>
-
-        <div class="portfolio-cta">
-          <div class="cta-icon">
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2"/>
-              <line x1="3" y1="12" x2="21" y2="12"/>
-              <circle cx="8" cy="7.5" r="1.5" fill="currentColor" stroke="none"/>
-              <circle cx="16" cy="16.5" r="1.5" fill="currentColor" stroke="none"/>
-            </svg>
-          </div>
-          <p class="cta-tag">Trabajo diario</p>
-          <h2 class="cta-title">Instagram</h2>
-          <p class="cta-sub">
-            Highlights, behind-the-scenes y los últimos eventos que cubrí en <strong>@m4rcos</strong>.
-          </p>
-          <a href="https://instagram.com/m4rcos" target="_blank" rel="noopener" class="btn primary">
-            Ver en Instagram →
-          </a>
-        </div>
-      </div>
-
-      <div style="margin-top:80px">
-        <p class="section-label">Servicios</p>
-        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">Lo que cubro</h2>
-      </div>
-
-      <div class="services-grid">
-        {services.map(s => (
-          <div class="service-card">
-            <h3 class="service-label">{s.label}</h3>
-            <p class="service-desc">{s.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      <div class="includes-section">
-        <p class="section-label">Qué incluye</p>
-        <div class="includes-grid">
-          {[
-            'Consulta previa para entender tu visión',
-            'Cobertura completa del evento',
-            'Edición profesional de todas las fotos',
-            'Galería digital en alta resolución',
-            'Licencia de uso personal y comercial',
-            'Entrega en 7–14 días hábiles (varía según el proyecto)',
-          ].map(item => (
-            <div class="include-item">
-              <span class="include-check">✓</span>
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div class="contact-cta">
-        <div>
-          <h2 class="cta-title">¿Tienes un evento?</h2>
-          <p class="cta-sub">Escríbeme directamente para disponibilidad, paquetes y cotizaciones. Basado en Aibonito — disponible en toda Puerto Rico.</p>
-        </div>
-        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
-          <i class="fab fa-whatsapp"></i> (787) 243-9670
-        </a>
-      </div>
-
+  <main id="main" class="pg">
+    <header class="full cab">
+      <h1 class="ti">Fotografía</h1>
+      <p>Bodas íntimas en las montañas, conciertos multitudinarios y todo lo que pasa entre medio. Cada evento lo trato como único.</p>
+    </header>
+    <div class="full mos">
+      {esc.map((v, i) => (
+        <figure class={`m m${i}`}>
+          <Picture src={v.img} formats={['avif','webp']} widths={[640,1000,1400]} sizes="(max-width:700px) 100vw, 50vw" alt={v.title} loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
+        </figure>
+      ))}
     </div>
+    <section class="full ga">
+      <h2 class="h2">Galerías completas</h2>
+      <div class="ga-a">
+        <p>Las galerías de bodas, eventos y sesiones viven en Pixieset, con descargas, favoritos y para compartir con la familia.</p>
+        <a class="btn primary" href="https://fotos.marcossantiago.com" target="_blank" rel="noopener">Abrir galerías →</a>
+        <a class="btn" href="https://www.instagram.com/m4rcos" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </section>
+    <section class="full sv">
+      <h2 class="h2">Lo que cubro</h2>
+      <dl>{servicios.map(([t, d]) => <div><dt>{t}</dt><dd>{d}</dd></div>)}</dl>
+      <p class="sv-m"><a class="link-a" href="/servicios/#fotografia">Ver precios →</a></p>
+    </section>
   </main>
+  <CtaBand titulo="¿Tienes un evento?" texto="Dime la fecha y el lugar, y te contesto con disponibilidad." waTexto="Hola Marcos, me interesa cotizar fotografía." />
   <Footer />
 </Base>
-
 <style>
-.portfolio-ctas {
-  margin-top: 56px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-@media (max-width: 720px) { .portfolio-ctas { grid-template-columns: 1fr } }
-.portfolio-cta {
-  display: flex; flex-direction: column;
-  padding: 36px; background: var(--surface);
-  border: 1px solid var(--border); border-radius: 20px;
-  transition: border-color .2s, transform .2s;
-}
-.portfolio-cta:hover {
-  border-color: color-mix(in srgb, var(--page-c) 45%, transparent);
-  transform: translateY(-3px);
-}
-:root { --page-c: var(--page-c) }
-.cta-icon { color: var(--page-c); margin-bottom: 22px }
-.cta-tag {
-  font-family: var(--mono); font-size: .62rem;
-  letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--page-c); margin-bottom: 10px;
-}
-.cta-title {
-  font-family: var(--display);
-  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-  letter-spacing: 2px; margin-bottom: 12px;
-}
-.cta-sub {
-  color: var(--muted); font-size: .9rem; line-height: 1.7;
-  margin-bottom: 22px;
-}
-.cta-sub strong { color: var(--white) }
-.portfolio-cta .btn { align-self: flex-start; margin-top: auto }
-.cta-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  align-self: flex-start;
-  padding: 6px 12px; border-radius: 100px;
-  background: color-mix(in srgb, var(--page-c) 14%, transparent);
-  border: 1px solid color-mix(in srgb, var(--page-c) 35%, transparent);
-  color: var(--page-c);
-  font-family: var(--mono); font-size: .65rem;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  margin-bottom: 14px;
-}
-.cta-badge i { font-size: .65rem }
-
-.services-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 12px; margin-top: 32px;
-}
-@media (max-width: 768px) { .services-grid { grid-template-columns: 1fr } }
-
-.service-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-left: 3px solid var(--page-c);
-  border-radius: 12px; padding: 28px 24px;
-}
-.service-label {
-  font-family: var(--mono); font-size: .6rem;
-  letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--page-c); margin-bottom: 10px;
-}
-.service-desc { font-size: .88rem; color: var(--muted); line-height: 1.65 }
-
-.includes-section {
-  margin-top: 72px; padding-top: 56px;
-  border-top: 1px solid var(--border);
-}
-.includes-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 16px; margin-top: 28px;
-}
-@media (max-width: 600px) { .includes-grid { grid-template-columns: 1fr } }
-.include-item {
-  display: flex; gap: 12px; align-items: flex-start;
-  font-size: .9rem; color: var(--muted);
-}
-.include-check {
-  color: var(--page-c); font-family: var(--mono);
-  font-size: .75rem; flex-shrink: 0; margin-top: 2px;
-}
-
-.contact-cta {
-  margin-top: 64px; padding: 48px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 20px;
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 32px; flex-wrap: wrap;
-}
+  .pg { padding-top: 120px }
+  .cab { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 48px; padding-bottom: 28px }
+  .ti { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(3.75rem, 15vw, 17rem); line-height: .84 }
+  .cab p { max-width: 42ch; font-size: var(--text-lg); color: var(--muted) }
+  .mos { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(8px, 1vw, 14px) }
+  .m { overflow: hidden; border-radius: var(--radius); background: var(--surface); height: clamp(220px, 34vw, 560px) }
+  .m :global(picture) { display: contents }
+  .m :global(img) { width: 100%; height: 100%; object-fit: cover }
+  .m0 { grid-column: span 7 } .m1 { grid-column: span 5 } .m2 { grid-column: span 4 } .m3 { grid-column: span 8 } .m4 { grid-column: span 6 } .m5 { grid-column: span 6 }
+  @media (max-width: 700px) { .m { grid-column: 1 / -1 } }
+  .h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.5rem, 6vw, 6rem); line-height: .95; margin-bottom: 24px }
+  .ga { padding-top: var(--sec) }
+  .ga-a { display: flex; flex-wrap: wrap; align-items: center; gap: 12px } .ga-a p { flex-basis: 100%; max-width: 56ch; color: var(--muted); font-size: var(--text-lg); margin-bottom: 8px }
+  .sv { padding-block: var(--sec) }
+  .sv dl { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(24px, 4vw, 64px); border-top: 1px solid var(--border) }
+  .sv dl > div { padding-block: 16px; border-bottom: 1px solid var(--border) }
+  .sv dt { font-weight: 600; font-size: 1.1875rem } .sv dd { color: var(--muted); margin-top: 2px }
+  .sv-m { margin-top: 28px }
+  @media (max-width: 700px) { .sv dl { grid-template-columns: 1fr } }
 </style>

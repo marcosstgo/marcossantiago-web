@@ -2,351 +2,66 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
-
-const logos = [
-  { name: 'Candi',             file: 'candi.svg' },
-  { name: 'Celebrate Dogs',    file: 'celebrate-dogs.svg' },
-  { name: 'EduActivo',         file: 'eduactivo.svg' },
-  { name: 'Jappening',         file: 'jappening.svg' },
-  { name: 'Karuna',            file: 'karuna.svg' },
-  { name: 'Milo',              file: 'milo.svg' },
-  { name: 'Olimpolab',         file: 'olimpolab.svg' },
-  { name: 'Power Refresh',     file: 'power-refresh.svg' },
-  { name: 'PromoVer',          file: 'promover.svg' },
-  { name: 'RutaSmart PR',      file: 'rutasmart.svg' },
-  { name: 'SDKALM',            file: 'sdkalm.svg' },
-  { name: "Salud Pa' Educar",  file: 'salud-pa-educar.svg' },
-  { name: 'Sentidos',          file: 'sentidos.svg' },
-  { name: 'Zorzal',            file: 'zorzal.svg' },
-  { name: 'Zutto',             file: 'zutto.svg' },
-  { name: 'myChefMD',          file: 'mychefmd.svg' },
-];
-
-const services = [
-  {
-    label: 'Logotipos',
-    desc: 'Diseño de logo desde cero — concepto, variantes, uso en negro/blanco y entrega en todos los formatos (SVG, PNG, PDF).',
-  },
-  {
-    label: 'Identidad Visual Completa',
-    desc: 'Sistema de marca completo: logo, paleta de colores, tipografía, iconografía y guía de uso. Todo lo que necesitas para ser consistente.',
-  },
-  {
-    label: 'Branding para Negocios',
-    desc: 'Estrategia visual para negocios locales en Puerto Rico — restaurants, salones, boutiques, clínicas y cualquier negocio que quiera verse profesional.',
-  },
-  {
-    label: 'Branding para Eventos',
-    desc: 'Identidad visual para bodas, quinceañeros, fiestas y eventos corporativos — flyers, programas, señalización y materiales coordinados.',
-  },
-  {
-    label: 'Diseño para Redes Sociales',
-    desc: 'Templates, posts, stories y banners para Instagram, Facebook y LinkedIn. Diseño adaptado a tu marca y listo para usar.',
-  },
-  {
-    label: 'Material Impreso',
-    desc: 'Tarjetas de presentación, flyers, afiches, menús, brochures y cualquier material impreso. Archivos listos para imprenta.',
-  },
-  {
-    label: 'Diseño Editorial',
-    desc: 'Revistas, catálogos, libros, programas y publicaciones. Composición tipográfica y diagramación profesional.',
-  },
-  {
-    label: 'UI / Diseño Web',
-    desc: 'Diseño de interfaces, prototipos y activos visuales para sitios web y aplicaciones. Trabajo en Figma con entrega de especificaciones para desarrollo.',
-  },
+import WorkCard from '../../components/WorkCard.astro';
+import LogoWall from '../../components/LogoWall.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { brands, logos } from '../../lib/media';
+const servicios = [
+  ['Logotipos','Concepto, variantes y uso en negro y blanco, con entrega en SVG, PNG y PDF.'],
+  ['Identidad visual completa','Logo, paleta, tipografía, iconografía y guía de uso.'],
+  ['Branding para negocios','Para restaurantes, salones, boutiques, clínicas y más.'],
+  ['Branding para eventos','Flyers, programas y señalización coordinados.'],
+  ['Diseño para redes','Plantillas, posts, stories y banners listos para usar.'],
+  ['Material impreso','Tarjetas, flyers, afiches, menús y brochures listos para imprenta.'],
+  ['Diseño editorial','Revistas, catálogos, libros y programas.'],
+  ['UI y diseño web','Interfaces y prototipos en Figma, con especificaciones para desarrollo.'],
 ];
 ---
-<Base
-  title="Diseño Gráfico — Marcos Santiago"
-  description="Diseño gráfico profesional en Puerto Rico — logos, identidad visual, branding, material impreso y diseño digital. Basado en Aibonito, PR."
->
+<Base title="Diseño Gráfico — Marcos Santiago" description="Diseño gráfico e identidad de marca en Puerto Rico: logos, branding, material impreso y digital. Por Marcos Santiago, artista gráfico en Aibonito.">
   <Nav />
-  <main id="main" style="padding-top:120px">
-    <div class="container">
-
-      <p class="section-label">Portafolio · Diseño Gráfico</p>
-      <h1 class="section-title">Diseño Gráfico</h1>
-      <p class="section-sub">
-        Identidades visuales, branding y experiencias digitales para negocios y proyectos en Puerto Rico. El diseño bien hecho no solo se ve bien — comunica, convierte y se recuerda.
-      </p>
-
-      <div style="margin-top:56px">
-        <p class="section-label">Logotipos</p>
-        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">Identidades visuales</h2>
-        <p class="section-sub" style="margin-bottom:0">Una selección de logos diseñados para negocios y proyectos en Puerto Rico.</p>
-      </div>
-
-      <div class="carousel-wrap">
-        <button class="carr-btn carr-prev" aria-label="Anterior">&#8249;</button>
-        <div class="carousel-track" id="logoTrack">
-          {logos.map(logo => (
-            <div class="logo-card">
-              <div class="logo-img-wrap">
-                <img src={`/logos/${logo.file}`} alt={`Logo ${logo.name}`} loading="lazy" />
-              </div>
-              <span class="logo-name">{logo.name}</span>
-            </div>
-          ))}
-        </div>
-        <button class="carr-btn carr-next" aria-label="Siguiente">&#8250;</button>
-      </div>
-
-
-      <div class="behance-cta" style="margin-top:64px">
-        <div class="cta-icon">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-          </svg>
-        </div>
-        <div>
-          <h2 class="cta-title">Ver en Behance</h2>
-          <p class="cta-sub">
-            El portafolio completo de diseño está en <strong>behance.net/marcossantiago</strong> —
-            identidad visual, branding, diseño editorial y proyectos digitales.
-          </p>
-          <a href="https://www.behance.net/marcossantiago" target="_blank" rel="noopener" class="btn primary" style="margin-top:24px">
-            Abrir Behance →
-          </a>
-        </div>
-      </div>
-
-      <div style="margin-top:80px">
-        <p class="section-label">Servicios</p>
-        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">Qué diseño</h2>
-      </div>
-
-      <div class="services-grid">
-        {services.map(s => (
-          <div class="service-card">
-            <h3 class="service-label">{s.label}</h3>
-            <p class="service-desc">{s.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      <div class="includes-section">
-        <p class="section-label">Proceso</p>
-        <div class="includes-grid">
-          {[
-            'Brief inicial para entender tu negocio y objetivos',
-            'Investigación y conceptualización',
-            'Presentación de propuestas con justificación',
-            'Revisiones hasta lograr el resultado correcto',
-            'Entrega en todos los formatos necesarios',
-            'Manual de uso de marca incluido',
-          ].map(item => (
-            <div class="include-item">
-              <span class="include-check">✓</span>
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div class="contact-cta">
-        <div>
-          <h2 class="cta-title">¿Necesitas diseño?</h2>
-          <p class="cta-sub">Escríbeme para cotizaciones y disponibilidad. Trabajo con negocios de todos los tamaños en Puerto Rico.</p>
-        </div>
-        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
-          <i class="fab fa-whatsapp"></i> (787) 243-9670
-        </a>
-      </div>
-
+  <main id="main" class="pg">
+    <header class="full cab">
+      <h1 class="ti">Diseño <em class="it">gráfico</em></h1>
+      <p>Identidades que se reconocen de lejos y funcionan en cualquier tamaño, de la tarjeta al food truck.</p>
+    </header>
+    <div class="full gr">
+      {brands.map((b, i) => <WorkCard class={i % 5 === 0 ? 'gran' : ''} b={b} eager={i < 2} sizes="(max-width:700px) 100vw, 50vw" />)}
     </div>
+    <p class="full mas"><a class="link-a" href="https://www.behance.net/marcossantiago" target="_blank" rel="noopener">Más proyectos en Behance →</a></p>
+    <section class="on-paper lg">
+      <div class="full lg-h">
+        <h2 class="h2">{logos.length} logos</h2>
+        <a class="btn" href="/portafolio/logos/">Abrir el muro completo →</a>
+      </div>
+      <LogoWall limite={12} />
+    </section>
+    <section class="full sv">
+      <h2 class="h2">Lo que hago</h2>
+      <dl>{servicios.map(([t, d]) => <div><dt>{t}</dt><dd>{d}</dd></div>)}</dl>
+      <p class="sv-m"><a class="link-a" href="/servicios/#diseno">Ver precios →</a></p>
+    </section>
   </main>
+  <CtaBand titulo="¿Hablamos de tu marca?" texto="Desde un logo hasta el sistema completo." waTexto="Hola Marcos, me interesa cotizar diseño gráfico." />
   <Footer />
 </Base>
-
-<script>
-  const track = document.getElementById('logoTrack') as HTMLElement;
-  const prevBtn = document.querySelector('.carr-prev') as HTMLElement;
-  const nextBtn = document.querySelector('.carr-next') as HTMLElement;
-
-  if (track && prevBtn && nextBtn) {
-    const CARD_W = 200 + 16;
-    const SPEED = 0.4;
-    let paused = false;
-    let dragging = false;
-    let dragStartX = 0;
-    let dragScrollLeft = 0;
-    let acc = 0;
-
-    function tick() {
-      if (!paused && !dragging) {
-        acc += SPEED;
-        if (acc >= 1) {
-          track.scrollLeft += Math.floor(acc);
-          acc -= Math.floor(acc);
-        }
-        if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 1) {
-          track.scrollLeft = 0;
-        }
-      }
-      requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-
-    track.addEventListener('mouseenter', () => { paused = true; });
-    track.addEventListener('mouseleave', () => { paused = false; dragging = false; track.style.cursor = ''; });
-
-    prevBtn.addEventListener('click', () => {
-      paused = true;
-      track.scrollBy({ left: -CARD_W * 2, behavior: 'smooth' });
-      setTimeout(() => { paused = false; }, 600);
-    });
-    nextBtn.addEventListener('click', () => {
-      paused = true;
-      track.scrollBy({ left: CARD_W * 2, behavior: 'smooth' });
-      setTimeout(() => { paused = false; }, 600);
-    });
-
-    track.addEventListener('mousedown', (e) => {
-      dragging = true;
-      dragStartX = e.pageX - track.offsetLeft;
-      dragScrollLeft = track.scrollLeft;
-      track.style.cursor = 'grabbing';
-    });
-    track.addEventListener('mousemove', (e) => {
-      if (!dragging) return;
-      e.preventDefault();
-      track.scrollLeft = dragScrollLeft - (e.pageX - track.offsetLeft - dragStartX);
-    });
-    track.addEventListener('mouseup', () => { dragging = false; track.style.cursor = ''; });
-  }
-</script>
-
 <style>
-.behance-cta {
-  margin-top: 56px;
-  display: flex; gap: 40px; align-items: flex-start;
-  padding: 48px; background: var(--surface);
-  border: 1px solid var(--border); border-radius: 20px;
-}
-@media (max-width: 600px) { .behance-cta { flex-direction: column; gap: 24px } }
-.cta-icon { color: var(--accent); flex-shrink: 0; margin-top: 4px }
-.cta-title {
-  font-family: var(--display);
-  font-size: clamp(2rem, 4vw, 3rem);
-  letter-spacing: 2px; margin-bottom: 12px;
-}
-.cta-sub { color: var(--muted); font-size: .9rem; line-height: 1.7 }
-.cta-sub strong { color: var(--white) }
-
-.services-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 12px; margin-top: 32px;
-}
-@media (max-width: 768px) { .services-grid { grid-template-columns: 1fr } }
-
-.service-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: 12px; padding: 28px 24px;
-}
-.service-label {
-  font-family: var(--mono); font-size: .6rem;
-  letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 10px;
-}
-.service-desc { font-size: .88rem; color: var(--muted); line-height: 1.65 }
-
-.includes-section {
-  margin-top: 72px; padding-top: 56px;
-  border-top: 1px solid var(--border);
-}
-.includes-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 16px; margin-top: 28px;
-}
-@media (max-width: 600px) { .includes-grid { grid-template-columns: 1fr } }
-.include-item {
-  display: flex; gap: 12px; align-items: flex-start;
-  font-size: .9rem; color: var(--muted);
-}
-.include-check {
-  color: var(--accent); font-family: var(--mono);
-  font-size: .75rem; flex-shrink: 0; margin-top: 2px;
-}
-
-.contact-cta {
-  margin-top: 64px; padding: 48px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 20px;
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 32px; flex-wrap: wrap;
-}
-
-.carousel-wrap {
-  position: relative;
-  margin-top: 40px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.carousel-track {
-  display: flex;
-  gap: 16px;
-  overflow-x: scroll;
-  cursor: grab;
-  flex: 1;
-  /* hide scrollbar */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.carousel-track::-webkit-scrollbar { display: none; }
-
-.carr-btn {
-  flex-shrink: 0;
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  border: 1px solid var(--border-h);
-  background: var(--surface);
-  color: var(--white);
-  font-size: 1.4rem;
-  line-height: 1;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background .15s, border-color .15s;
-  user-select: none;
-}
-.carr-btn:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #000;
-}
-
-.logo-card {
-  flex-shrink: 0;
-  width: 200px;
-  background: #111820;
-  border-radius: 14px;
-  padding: 28px 20px 20px;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 14px;
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-.logo-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,.3);
-}
-.logo-img-wrap {
-  width: 100%; aspect-ratio: 1;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-}
-.logo-img-wrap img {
-  max-width: 100%; max-height: 100%;
-  width: auto; height: auto;
-  object-fit: contain;
-}
-.logo-name {
-  font-family: var(--mono);
-  font-size: .6rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #6a8a9a;
-  text-align: center;
-}
+  .pg { padding-top: 120px }
+  .cab { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 48px; padding-bottom: 28px }
+  .ti { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(3.75rem, 12.5vw, 14rem); line-height: .88 }
+  .ti .it { font-size: 1.04em }
+  .cab p { max-width: 40ch; font-size: var(--text-lg); color: var(--muted) }
+  .gr { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px 16px }
+  .gr :global(.wc-img) { aspect-ratio: 5/4 }
+  .mas { padding-block: 28px var(--sec) }
+  .h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.5rem, 6vw, 6rem); line-height: .95 }
+  .lg { padding-top: clamp(48px, 7vw, 96px) }
+  .lg-h { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 32px; padding-bottom: 8px }
+  .lg :global(.lw-grid) { grid-template-columns: repeat(6, 1fr) }
+  @media (max-width: 900px) { .lg :global(.lw-grid) { grid-template-columns: repeat(3, 1fr) } }
+  .sv { padding-block: var(--sec) } .sv .h2 { margin-bottom: 24px }
+  .sv dl { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(24px, 4vw, 64px); border-top: 1px solid var(--border) }
+  .sv dl > div { padding-block: 16px; border-bottom: 1px solid var(--border) }
+  .sv dt { font-weight: 600; font-size: 1.1875rem } .sv dd { color: var(--muted); margin-top: 2px }
+  .sv-m { margin-top: 28px }
+  @media (max-width: 700px) { .gr, .sv dl { grid-template-columns: 1fr } }
 </style>
