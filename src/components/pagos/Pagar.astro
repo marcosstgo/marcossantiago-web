@@ -30,6 +30,12 @@ interface Props {
   api?: string;
   /** Demostración: no llama a ningún servidor ni cobra nada; el pago se "aprueba" solo en unos segundos. */
   demo?: boolean;
+  /**
+   * Firma "Funciona con Ventanilla" al pie, con enlace a la página del servicio. Sale por defecto.
+   * Quitarla (`firma={false}`) va con la mensualidad (ver docs/servicio.md). `origen` marca de qué sitio
+   * vienen las visitas en Analytics (utm_source); por defecto, el dominio de la página.
+   */
+  firma?: false | { url?: string; origen?: string };
 }
 
 const {
@@ -42,7 +48,17 @@ const {
   turnstileKey,
   api = '/api/pago/ath/',
   demo = false,
+  firma = {},
 } = Astro.props;
+
+const firmaHref = (() => {
+  if (!firma) return null;
+  const u = new URL(firma.url ?? 'https://marcossantiago.com/ventanilla/');
+  u.searchParams.set('utm_source', firma.origen ?? Astro.site?.hostname ?? Astro.url.hostname);
+  u.searchParams.set('utm_medium', 'ventanilla');
+  u.searchParams.set('utm_campaign', 'firma');
+  return u.toString();
+})();
 ---
 
 <div
@@ -169,6 +185,16 @@ const {
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
     Pagos procesados por ATH Móvil{paypal && ' y PayPal'}. Este sitio no guarda datos de su cuenta.
   </p>
+  {
+    firmaHref && (
+      <p class="firma">
+        <a href={firmaHref} target="_blank" rel="noopener" title="Ventanilla: pagos con ATH Móvil para tu página web">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V8a8 8 0 0 1 16 0v13"></path><path d="M2 21h20M12 2v19M4 12h16"></path></svg>
+          Funciona con <b>Ventanilla</b>
+        </a>
+      </p>
+    )
+  }
 </div>
 
 <script>
@@ -945,6 +971,29 @@ const {
   }
   .secure svg {
     flex: none;
+  }
+  /* Firma: discreta, pero que se lea */
+  .firma {
+    margin: -0.75rem 0 0;
+    text-align: center;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+  }
+  .firma a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--pay-muted, var(--muted, #9a968d));
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.2s, color 0.2s;
+  }
+  .firma a:hover {
+    opacity: 1;
+    color: var(--pay-accent, var(--gold, #c4a76c));
+  }
+  .firma b {
+    font-weight: 600;
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -20,6 +20,8 @@ export const pagos = {
   whatsapp: wa('Hola Marcos, tuve un problema pagando por la página.'),
   // Sin clave, no se carga Turnstile (el Worker solo lo exige si tiene TURNSTILE_SECRET)
   turnstileKey: import.meta.env.PUBLIC_TURNSTILE_SITEKEY as string | undefined,
+  // En el propio sitio no hace falta "Funciona con Ventanilla" (la demo de /ventanilla/ sí la enseña)
+  firma: false as const,
 };
 
 export const NAV = [
