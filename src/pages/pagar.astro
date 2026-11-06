@@ -1,0 +1,49 @@
+---
+// /pagar/: para enlaces directos con la cantidad ya puesta y para quien llega sin JavaScript.
+// Ejemplo: /pagar/?monto=250&concepto=deposito&ref=Boda%20Rivera
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Pagar from '../components/pagos/Pagar.astro';
+import { pagos } from '../data/site';
+---
+
+<Base
+  title="Pagar en línea — Marcos Santiago"
+  description="Págale a Marcos Santiago con ATH Móvil desde tu celular: depósitos de reserva y pagos de proyectos."
+  payDialog={false}
+>
+  <Nav />
+  <main id="main" class="pg-pagar">
+    <div class="caja">
+      <Pagar {...pagos} />
+    </div>
+    <p class="nota">
+      ¿Quieres esto en tu página? <a href="/ventanilla/">Conoce Ventanilla →</a>
+    </p>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .pg-pagar {
+    padding: 128px var(--gut) 96px;
+  }
+  .caja {
+    width: min(460px, 100%);
+    margin-inline: auto;
+    padding: clamp(24px, 5vw, 40px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+  }
+  .nota {
+    margin-top: 28px;
+    text-align: center;
+    color: var(--dim);
+    font-size: var(--text-xs);
+  }
+  .nota a {
+    color: var(--flame);
+  }
+</style>

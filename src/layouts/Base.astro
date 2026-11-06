@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import PagarHoja from '../components/pagos/PagarHoja.astro';
+import { pagos } from '../data/site';
 interface Props {
   title: string;
   description?: string;
@@ -7,12 +9,15 @@ interface Props {
   /** Las landings que declaran su propio LocalBusiness lo ponen en false
    *  para no emitir dos entidades de negocio en la misma página. */
   businessSchema?: boolean;
+  /** Hoja de pagos (Ventanilla). La página /pagar/ la tiene en la página misma. */
+  payDialog?: boolean;
 }
 const {
   title,
   description = 'Marcos Santiago — Fotógrafo, videógrafo, artista gráfico y desarrollador en Aibonito, Puerto Rico. Cobertura en toda la isla.',
   image = '/marcos-photo.jpg',
-  businessSchema = true
+  businessSchema = true,
+  payDialog = true
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
@@ -152,5 +157,6 @@ const SOCIALS = [
     }, true);
   })();
   </script>
+  {payDialog && <PagarHoja {...pagos} />}
 </body>
 </html>

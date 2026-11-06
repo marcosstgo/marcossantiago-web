@@ -96,6 +96,10 @@ const ld = {
             sigue los pasos: verás la espera y el recibo tal como salen en un pago real.
           </p>
           <p class="vt-note">Es una demostración: no se envía ninguna notificación ni se cobra nada.</p>
+          <p>
+            ¿Lo quieres ver de verdad? Esta misma página usa Ventanilla: con el botón de
+            <a href="/pagar/" class="vt-real">Pagar en línea</a> puedes pagarme con tu ATH Móvil.
+          </p>
           <a class="btn whatsapp vt-cta" href={wa(msg)} target="_blank" rel="noopener" data-track="ventanilla-demo">
             <i class="fab fa-whatsapp"></i> Lo quiero en mi página
           </a>
@@ -263,17 +267,11 @@ const ld = {
 </Base>
 
 <style>
-  /* Colores del panel de pagos con los del sitio */
-  .vt :global(.pay) {
-    --pay-accent: var(--flame);
-    --pay-on-accent: #0d0c0b;
-    --pay-fg: var(--paper);
-    --pay-muted: rgba(243, 238, 229, 0.72);
-    --pay-line: rgba(243, 238, 229, 0.13);
-    --pay-field: var(--ink);
-    --pay-soft: #2b2925;
-    --pay-serif: var(--serif);
-    --pay-sans: var(--body);
+  /* Los colores del panel de pagos están en global.css (.pay) */
+  .vt-real {
+    color: var(--c);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .back-link {

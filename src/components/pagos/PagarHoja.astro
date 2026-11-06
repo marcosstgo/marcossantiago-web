@@ -23,6 +23,8 @@ type Props = import('astro').ComponentProps<typeof Pagar>;
       if (dlg.open) return;
       dlg.showModal();
       document.documentElement.classList.add('sheet-open');
+      // El panel pregunta al servidor si ATH Móvil está activo solo cuando se abre
+      dlg.querySelector('[data-pay]')?.dispatchEvent(new CustomEvent('pay:shown'));
       (window as any).gtag?.('event', 'pago_abrir');
     };
     dlg.addEventListener('close', () => {
@@ -71,6 +73,8 @@ type Props = import('astro').ComponentProps<typeof Pagar>;
 
 <style>
   .sheet {
+    /* margin explícito: muchos sitios ponen margin: 0 a todo y la hoja quedaría en la esquina */
+    margin: auto;
     width: min(440px, 100% - 2rem);
     max-width: none;
     max-height: calc(100dvh - 3rem);
@@ -85,6 +89,11 @@ type Props = import('astro').ComponentProps<typeof Pagar>;
   }
   .sheet[open] {
     animation: popIn 0.35s var(--ease, ease);
+  }
+  /* La hoja recibe el foco al abrirse; el anillo de foco va en sus controles, no en todo el recuadro */
+  .sheet:focus,
+  .sheet:focus-visible {
+    outline: none;
   }
   .sheet::backdrop {
     background: rgb(0 0 0 / 0.6);

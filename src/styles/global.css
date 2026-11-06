@@ -137,3 +137,21 @@ hr { border: 0; border-top: 1px solid var(--border) }
 .barra-pegada { position: sticky; top: 0; z-index: 20; transition: top .3s var(--ease) }
 body:has(.nav:not(.oculto)) .barra-pegada { top: 72px }
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap }
+
+/* ── Ventanilla (pagos con ATH Móvil): colores del sitio ── */
+.pay {
+  --pay-accent: var(--flame);
+  --pay-on-accent: var(--ink);
+  --pay-fg: var(--paper);
+  --pay-muted: rgba(243,238,229,.72);
+  --pay-line: rgba(243,238,229,.13);
+  --pay-field: var(--ink);
+  --pay-soft: #2b2925;
+  --pay-serif: var(--serif);
+  --pay-sans: var(--body);
+}
+dialog#pagar {
+  --ink-2: var(--surface);
+  --ink-3: var(--panel);
+  --line: rgba(243,238,229,.13);
+}
