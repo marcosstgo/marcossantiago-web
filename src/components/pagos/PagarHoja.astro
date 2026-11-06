@@ -1,0 +1,170 @@
+---
+// Hoja flotante de pagos. Cualquier enlace a /pagar/ (o #pagar) la abre en vez de navegar;
+// si JavaScript no carga, el enlace lleva a la página /pagar/, que tiene el mismo panel.
+// Recibe las mismas propiedades que Pagar.astro.
+import Pagar from './Pagar.astro';
+type Props = import('astro').ComponentProps<typeof Pagar>;
+---
+
+<dialog class="sheet" id="pagar" aria-label="Pagar en línea">
+  <div class="sheet-inner">
+    <span class="grab" aria-hidden="true"></span>
+    <button type="button" class="close" data-close aria-label="Cerrar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    </button>
+    <Pagar {...Astro.props} />
+  </div>
+</dialog>
+
+<script>
+  const dlg = document.querySelector<HTMLDialogElement>('dialog#pagar');
+  if (dlg) {
+    const open = () => {
+      if (dlg.open) return;
+      dlg.showModal();
+      document.documentElement.classList.add('sheet-open');
+      (window as any).gtag?.('event', 'pago_abrir');
+    };
+    dlg.addEventListener('close', () => {
+      document.documentElement.classList.remove('sheet-open');
+      if (location.hash === '#pagar') history.replaceState(null, '', location.pathname + location.search);
+    });
+
+    document.addEventListener('click', (e) => {
+      const a = (e.target as Element).closest?.('a[href="/pagar/"], a[href="/pagar"], a[href="#pagar"]');
+      const m = e as MouseEvent;
+      if (!a || m.metaKey || m.ctrlKey || m.shiftKey || m.button !== 0) return;
+      e.preventDefault();
+      open();
+    });
+
+    // Tocar fuera de la hoja la cierra
+    dlg.addEventListener('click', (e) => {
+      if (e.target === dlg) dlg.close();
+    });
+    dlg.querySelector('[data-close]')!.addEventListener('click', () => dlg.close());
+
+    // Si un pago se completa con la hoja cerrada, se vuelve a abrir con el recibo
+    dlg.addEventListener('pay:open', open);
+
+    // Deslizar hacia abajo para cerrar (celular)
+    const inner = dlg.querySelector<HTMLElement>('.sheet-inner')!;
+    let y0 = 0;
+    let dy = 0;
+    inner.addEventListener('touchstart', (e) => {
+      y0 = inner.scrollTop <= 0 ? e.touches[0].clientY : NaN;
+      dy = 0;
+    }, { passive: true });
+    inner.addEventListener('touchmove', (e) => {
+      if (Number.isNaN(y0)) return;
+      dy = Math.max(0, e.touches[0].clientY - y0);
+      dlg.style.transform = dy ? `translateY(${dy}px)` : '';
+    }, { passive: true });
+    inner.addEventListener('touchend', () => {
+      dlg.style.transform = '';
+      if (dy > 110) dlg.close();
+    });
+
+    if (location.hash === '#pagar') open();
+  }
+</script>
+
+<style>
+  .sheet {
+    width: min(440px, 100% - 2rem);
+    max-width: none;
+    max-height: calc(100dvh - 3rem);
+    padding: 0;
+    border: 1px solid var(--line, #ffffff1a);
+    border-radius: 16px;
+    background: var(--ink-2, #16161a);
+    color: var(--paper, #f3efe7);
+    overflow: hidden;
+    box-shadow: 0 40px 80px -20px rgb(0 0 0 / 0.7);
+    transition: transform 0.2s var(--ease, ease);
+  }
+  .sheet[open] {
+    animation: popIn 0.35s var(--ease, ease);
+  }
+  .sheet::backdrop {
+    background: rgb(0 0 0 / 0.6);
+    backdrop-filter: blur(6px);
+  }
+  .sheet[open]::backdrop {
+    animation: fade 0.3s var(--ease, ease);
+  }
+  .sheet-inner {
+    position: relative;
+    max-height: inherit;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 2.25rem 1.75rem 1.75rem;
+  }
+  .grab {
+    display: none;
+  }
+  .close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    background: var(--ink-3, #222228);
+    border: 0;
+    border-radius: 50%;
+    color: var(--paper, #f3efe7);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .close:hover {
+    background: var(--ink, #0c0c0d);
+  }
+  @keyframes popIn {
+    from {
+      opacity: 0;
+      transform: translateY(1rem) scale(0.98);
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* Celular: hoja que sube desde abajo, como en una app */
+  @media (max-width: 600px) {
+    .sheet {
+      width: 100%;
+      margin: auto 0 0;
+      max-height: 94dvh;
+      border-radius: 20px 20px 0 0;
+      border-bottom: 0;
+    }
+    .sheet[open] {
+      animation: slideUp 0.4s var(--ease, ease);
+    }
+    .sheet-inner {
+      padding: 1.75rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom));
+    }
+    .grab {
+      display: block;
+      width: 2.5rem;
+      height: 4px;
+      margin: -0.75rem auto 1rem;
+      border-radius: 999px;
+      background: var(--ink-3, #222228);
+    }
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+    }
+  }
+
+  :global(html.sheet-open) {
+    overflow: hidden;
+  }
+</style>

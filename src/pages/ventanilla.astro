@@ -1,0 +1,677 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Pagar from '../components/pagos/Pagar.astro';
+import { wa } from '../data/site';
+
+// Ventanilla: el módulo de pagos con ATH Móvil (repositorio privado marcosstgo/pagos-athmovil).
+// Precios aprobados el 2026-11-06 (pagos-athmovil/docs/servicio.md).
+const stack = ['ATH Móvil Business', 'Cloudflare Workers', 'Astro', 'Turnstile'];
+const msg = 'Hola Marcos, me interesa Ventanilla para cobrar con ATH Móvil en mi página.';
+
+const pasos = [
+  { n: '1', t: 'Toca Pagar', d: 'En tu página, o en un enlace que le mandas por WhatsApp con la cantidad ya puesta.' },
+  { n: '2', t: 'Escribe su ATH Móvil', d: 'La cantidad, de qué es el pago y el número de su celular. Nada más.' },
+  { n: '3', t: 'Aprueba en la app', d: 'Le llega una notificación de ATH Móvil y la confirma ahí, como siempre.' },
+  { n: '4', t: 'Recibo y aviso', d: 'Ve su recibo en pantalla y a ti te llega un correo con el pago y su referencia.' },
+];
+
+const faq = [
+  {
+    q: '¿Qué necesito para empezar?',
+    a: 'Una cuenta de ATH Business activa (la abres desde la app ATH Business) y tu página web. Las llaves de tu cuenta las ponemos juntos el día de la instalación: nunca pasan por correo ni por chat.',
+  },
+  {
+    q: 'Mi página está en Wix, WordPress o Squarespace. ¿Funciona?',
+    a: 'Sí. Te monto una página de pagos propia, como pagos.tunegocio.com, con tu logo y tus colores. En tu página solo pones un botón de Pagar que lleva ahí.',
+  },
+  {
+    q: '¿Ventanilla cobra comisión por cada pago?',
+    a: 'No. Pagas la instalación y una cuota mensual fija. Las comisiones de cada transacción son las de tu cuenta de ATH Business.',
+  },
+  {
+    q: '¿Qué pasa si el cliente aprueba en la app y cierra la página?',
+    a: 'El pago se completa igual. El servidor revisa cada minuto los pagos aprobados y los termina de cobrar, aunque nadie tenga la página abierta.',
+  },
+  {
+    q: '¿Es seguro?',
+    a: 'Las llaves de tu cuenta viven cifradas en el servidor y nunca llegan al navegador. Cada pago tiene su propia clave secreta, hay antispam y límites de intentos para que nadie use tu página para molestar a otra persona, y no se guarda ningún dato bancario: eso nunca sale de ATH Móvil.',
+  },
+  {
+    q: '¿Puedo tener PayPal también?',
+    a: 'Sí, como segunda opción en la misma pantalla, con la cantidad ya puesta.',
+  },
+];
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Service',
+      name: 'Ventanilla — pagos con ATH Móvil para tu página web',
+      provider: { '@type': 'Person', name: 'Marcos Santiago', url: 'https://marcossantiago.com/' },
+      areaServed: 'Puerto Rico',
+      url: 'https://marcossantiago.com/ventanilla/',
+      offers: { '@type': 'Offer', price: '299', priceCurrency: 'USD', description: 'Instalación; mantenimiento desde $15 al mes' },
+    },
+    { '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+  ],
+};
+---
+
+<Base
+  title="Ventanilla: pagos con ATH Móvil para tu página web — Marcos Santiago"
+  description="Tus clientes te pagan con ATH Móvil desde tu página web en segundos, con recibo en pantalla y aviso de cada pago. Instalación desde $299. Pruébalo en vivo."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <Nav />
+  <main id="main" class="case vt" style="--c:#ff4f1f; padding-top:120px">
+    <div class="container">
+      <a href="/servicios/#desarrollo" class="back-link">← Servicios</a>
+
+      <div class="case-head">
+        <div>
+          <p class="case-label">Producto propio · Pagos en línea</p>
+          <h1 class="case-title">Ventanilla</h1>
+          <p class="case-tagline">
+            Tus clientes te pagan con <strong>ATH Móvil</strong> desde tu página web, en segundos, con recibo en
+            pantalla y un aviso de cada pago. Sin "envíame un ATH al 787…" ni preguntar de qué era cada pago.
+          </p>
+        </div>
+        <div class="case-meta">
+          <span class="case-status live">Live</span>
+          <span class="case-year">2026</span>
+        </div>
+      </div>
+
+      <div class="case-tags">{stack.map((t) => <span class="tag">{t}</span>)}</div>
+
+      <!-- Demostración en vivo -->
+      <section class="vt-demo" aria-labelledby="t-demo">
+        <div class="vt-demo-txt">
+          <h2 class="case-h2" id="t-demo">Pruébalo aquí mismo</h2>
+          <p>
+            Esta es la pantalla que ven tus clientes. Escribe una cantidad, toca <strong>Pagar con ATH Móvil</strong> y
+            sigue los pasos: verás la espera y el recibo tal como salen en un pago real.
+          </p>
+          <p class="vt-note">Es una demostración: no se envía ninguna notificación ni se cobra nada.</p>
+          <a class="btn whatsapp vt-cta" href={wa(msg)} target="_blank" rel="noopener" data-track="ventanilla-demo">
+            <i class="fab fa-whatsapp"></i> Lo quiero en mi página
+          </a>
+        </div>
+        <div class="vt-phone">
+          <div class="vt-screen">
+            <Pagar
+              demo
+              negocio="Tu Negocio"
+              titulo="Pagar en línea"
+              ayuda="Escribe cualquier cantidad para probar."
+              conceptos={[
+                { value: 'servicio', label: 'Servicio' },
+                { value: 'abono', label: 'Abono' },
+                { value: 'otro', label: 'Otro' },
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      <div class="case-grid">
+        <section class="case-col">
+          <h2 class="case-h2">El reto</h2>
+          <p>
+            En Puerto Rico casi todo el mundo paga con ATH Móvil, pero en la web el cobro sigue siendo a mano: el
+            cliente te pide el número, te envía un ATH y después hay que adivinar de qué era cada pago. No recibe un
+            recibo de tu negocio y tú no tienes un registro ordenado.
+          </p>
+          <p>
+            Las plataformas más usadas para hacer páginas, como Wix, Squarespace o Shopify, no traen ATH Móvil. Y la
+            integración básica tiene un punto débil: si el cliente aprueba el pago y cierra la página antes de tiempo,
+            el pago se vence <strong>sin cobrarse</strong>.
+          </p>
+        </section>
+        <section class="case-col">
+          <h2 class="case-h2">La solución</h2>
+          <p>
+            Ventanilla pone un botón de <strong>Pagos</strong> en tu página que abre una pantalla tipo app. El cliente
+            paga con su ATH Móvil en segundos y recibe su recibo. A ti te llega un correo con la cantidad, el concepto,
+            su referencia y el número de confirmación de ATH.
+          </p>
+          <p>
+            El cobro lo completa el servidor, no el navegador: un proceso revisa <strong>cada minuto</strong> los pagos
+            aprobados y los termina de cobrar aunque el cliente haya cerrado la página. Y puedes mandar enlaces con la
+            cantidad ya puesta: "mira, págame por aquí".
+          </p>
+        </section>
+      </div>
+
+      <section class="vt-pasos" aria-labelledby="t-pasos">
+        <h2 class="case-h2" id="t-pasos">Así paga tu cliente</h2>
+        <ol>
+          {
+            pasos.map((p) => (
+              <li>
+                <span class="vt-n">{p.n}</span>
+                <h3>{p.t}</h3>
+                <p>{p.d}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <div class="case-grid case-grid-result">
+        <section class="case-col">
+          <h2 class="case-h2">El resultado</h2>
+          <p>
+            Ventanilla está en producción desde noviembre de 2026 en la página de un bufete de abogados en Puerto Rico.
+            La primera prueba con dinero real funcionó a la primera: notificación en la app, aprobación, recibo en la
+            página y aviso al negocio.
+          </p>
+          <p>
+            Está hecho como un módulo: se instala en páginas hechas conmigo o, si tu página está en otra plataforma,
+            como una página de pagos propia con tu marca.
+          </p>
+          <div class="case-stats">
+            <div class="case-stat">
+              <span class="case-stat-num">1 min</span>
+              <span class="case-stat-label">Revisión de pagos<br />pendientes</span>
+            </div>
+            <div class="case-stat">
+              <span class="case-stat-num">$1,500</span>
+              <span class="case-stat-label">Por pago<br />(límite de ATH)</span>
+            </div>
+            <div class="case-stat">
+              <span class="case-stat-num">0</span>
+              <span class="case-stat-label">Datos bancarios<br />guardados</span>
+            </div>
+          </div>
+        </section>
+        <section class="case-col vt-incluye">
+          <h2 class="case-h2">Qué incluye</h2>
+          <ul>
+            <li>Botón de Pagos en tu página y enlaces con la cantidad ya puesta</li>
+            <li>Pantalla tipo app con tus colores, hecha para el celular</li>
+            <li>Recibo en pantalla y correo por cada pago</li>
+            <li>Conceptos a tu medida (consulta, abono, servicio…)</li>
+            <li>PayPal como segunda opción, si lo quieres</li>
+            <li>Antispam, límites de intentos y llaves cifradas</li>
+            <li>Prueba real con tu cuenta antes de entregarlo</li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- Precios -->
+      <section class="vt-precios" aria-labelledby="t-precios">
+        <h2 class="case-h2" id="t-precios">Precios</h2>
+        <div class="vt-planes">
+          <article class="vt-plan">
+            <h3>Tu página hecha conmigo</h3>
+            <p class="vt-precio">$299 <span>instalación</span></p>
+            <p class="vt-mes">+ $15 al mes</p>
+            <p>Ventanilla integrada en tu página: botón en el menú, pantalla de pagos y avisos.</p>
+            <a class="vt-pedir" href={wa(`${msg} Mi página la hiciste tú.`)} target="_blank" rel="noopener" data-track="ventanilla-plan-propia">Cotizar</a>
+          </article>
+          <article class="vt-plan">
+            <h3>Tu página en otra plataforma</h3>
+            <p class="vt-precio">Desde $299 <span>instalación</span></p>
+            <p class="vt-mes">Desde $15 al mes</p>
+            <p>Wix, WordPress, Squarespace…: página de pagos propia (pagos.tunegocio.com) con tu logo y tus colores.</p>
+            <a class="vt-pedir" href={wa(`${msg} Mi página está en otra plataforma.`)} target="_blank" rel="noopener" data-track="ventanilla-plan-otra">Cotizar</a>
+          </article>
+          <article class="vt-plan">
+            <h3>Extras</h3>
+            <p class="vt-precio">Desde $150 <span>cada uno</span></p>
+            <p class="vt-mes">Pago único</p>
+            <p>Panel para ver tus pagos, devoluciones desde la página o enlaces de pago por factura.</p>
+            <a class="vt-pedir" href={wa(`${msg} Me interesan los extras.`)} target="_blank" rel="noopener" data-track="ventanilla-plan-extras">Cotizar</a>
+          </article>
+        </div>
+        <p class="vt-lanz"><strong>Precio de lanzamiento:</strong> instalación a $199 para los primeros clientes.</p>
+        <p class="vt-fine">
+          La cuota mensual cubre el hosting, la vigilancia de los pagos, los cambios de ATH Móvil y el soporte. Sin
+          comisión por pago: las de cada transacción son las de tu cuenta de ATH Business.
+        </p>
+      </section>
+
+      <section class="vt-faq" aria-labelledby="t-faq">
+        <h2 class="case-h2" id="t-faq">Preguntas frecuentes</h2>
+        {faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+      </section>
+
+      <div class="contact-cta">
+        <div>
+          <h2 class="cta-title">¿Cobras por ATH Móvil?</h2>
+          <p class="cta-sub">
+            Pon una ventanilla de pagos en tu página y deja de perseguir pagos por WhatsApp. Cuéntame qué cobras y te
+            digo cómo quedaría.
+          </p>
+        </div>
+        <a href={wa(msg)} target="_blank" rel="noopener" class="btn whatsapp" data-track="ventanilla-cta">
+          <i class="fab fa-whatsapp"></i> (787) 243-9670
+        </a>
+      </div>
+
+      <p class="vt-marca">
+        ATH Móvil y ATH Business son marcas registradas de Evertec. Ventanilla es un servicio independiente de Marcos
+        Santiago que se conecta con ATH Móvil Business; no está afiliado ni patrocinado por Evertec.
+      </p>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  /* Colores del panel de pagos con los del sitio */
+  .vt :global(.pay) {
+    --pay-accent: var(--flame);
+    --pay-on-accent: #0d0c0b;
+    --pay-fg: var(--paper);
+    --pay-muted: rgba(243, 238, 229, 0.72);
+    --pay-line: rgba(243, 238, 229, 0.13);
+    --pay-field: var(--ink);
+    --pay-soft: #2b2925;
+    --pay-serif: var(--serif);
+    --pay-sans: var(--body);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 40px;
+    transition: color 0.2s;
+  }
+  .back-link:hover {
+    color: var(--c);
+  }
+  .case-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .case-label {
+    font-family: var(--mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--c);
+    margin-bottom: 10px;
+  }
+  .case-title {
+    font-family: var(--display);
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .case-tagline {
+    color: var(--muted);
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    max-width: 58ch;
+  }
+  .case-tagline strong {
+    color: var(--white);
+  }
+  .case-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .case-status {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .case-status.live {
+    background: color-mix(in srgb, #4ade80 12%, transparent);
+    border: 1px solid color-mix(in srgb, #4ade80 30%, transparent);
+    color: #4ade80;
+  }
+  .case-year {
+    font-family: var(--mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 2px;
+    color: var(--dim);
+  }
+  .case-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 48px;
+  }
+  .case-tags .tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--c) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+    color: var(--c);
+  }
+  .case-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 64px;
+  }
+  @media (max-width: 800px) {
+    .case-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+  .case-h2 {
+    font-family: var(--display);
+    font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+    letter-spacing: 1.5px;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .case-col p {
+    color: var(--muted);
+    font-size: var(--text-base);
+    line-height: 1.75;
+    margin-bottom: 14px;
+  }
+  .case-col strong {
+    color: var(--white);
+  }
+  .case-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .case-stat-num {
+    font-family: var(--display);
+    font-size: clamp(2rem, 3.6vw, 2.7rem);
+    color: var(--c);
+    line-height: 1;
+    display: block;
+  }
+  .case-stat-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 1px;
+    color: var(--muted);
+    line-height: 1.5;
+    display: block;
+    margin-top: 8px;
+  }
+
+  /* Demostración */
+  .vt-demo {
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 400px);
+    align-items: center;
+    gap: clamp(32px, 6vw, 88px);
+    margin-bottom: 80px;
+    padding: clamp(28px, 5vw, 56px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+  }
+  .vt-demo-txt p {
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 14px;
+    max-width: 46ch;
+  }
+  .vt-demo-txt strong {
+    color: var(--white);
+  }
+  .vt-note {
+    font-size: var(--text-xs);
+    color: var(--dim) !important;
+  }
+  .vt-cta {
+    margin-top: 12px;
+  }
+  .vt-phone {
+    padding: 12px;
+    border-radius: 44px;
+    background: #050505;
+    border: 1px solid var(--border-h);
+    box-shadow: 0 40px 80px -30px rgba(255, 79, 31, 0.35);
+  }
+  .vt-screen {
+    padding: 34px 20px 22px;
+    border-radius: 34px;
+    background: #16150f;
+    min-height: 640px;
+  }
+  @media (max-width: 900px) {
+    .vt-demo {
+      grid-template-columns: 1fr;
+    }
+    .vt-phone {
+      max-width: 400px;
+      width: 100%;
+      margin-inline: auto;
+    }
+    .vt-screen {
+      min-height: 0;
+    }
+  }
+
+  /* Pasos */
+  .vt-pasos {
+    margin-bottom: 72px;
+  }
+  .vt-pasos ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .vt-pasos ol {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .vt-pasos ol {
+      grid-template-columns: 1fr;
+    }
+  }
+  .vt-pasos li {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+  }
+  .vt-n {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--c);
+    color: #0d0c0b;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .vt-pasos h3 {
+    color: var(--white);
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+  }
+  .vt-pasos p {
+    color: var(--muted);
+    font-size: var(--text-sm, 0.92rem);
+    line-height: 1.6;
+  }
+
+  .vt-incluye ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+  .vt-incluye li {
+    position: relative;
+    padding-left: 26px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .vt-incluye li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--c);
+    font-weight: 700;
+  }
+
+  /* Precios */
+  .vt-precios {
+    margin-bottom: 72px;
+  }
+  .vt-planes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .vt-planes {
+      grid-template-columns: 1fr;
+    }
+  }
+  .vt-plan {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+  }
+  .vt-plan h3 {
+    font-family: var(--mono);
+    font-size: var(--text-2xs);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--c);
+  }
+  .vt-precio {
+    font-family: var(--display);
+    font-size: clamp(2rem, 3.4vw, 2.6rem);
+    color: var(--white);
+    line-height: 1.05;
+  }
+  .vt-precio span,
+  .vt-mes {
+    font-family: var(--body);
+    font-size: var(--text-xs);
+    color: var(--dim);
+    letter-spacing: 0.5px;
+  }
+  .vt-plan p:not(.vt-precio):not(.vt-mes) {
+    color: var(--muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .vt-pedir {
+    align-self: flex-start;
+    margin-top: 8px;
+    padding: 10px 18px;
+    border: 1px solid var(--border-h);
+    border-radius: 999px;
+    color: var(--white);
+    font-size: var(--text-xs);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .vt-pedir:hover {
+    border-color: var(--c);
+    color: var(--c);
+  }
+  .vt-lanz {
+    margin-top: 20px;
+    color: var(--white);
+  }
+  .vt-lanz strong {
+    color: var(--c);
+  }
+  .vt-fine {
+    margin-top: 8px;
+    color: var(--dim);
+    font-size: var(--text-xs);
+    max-width: 70ch;
+    line-height: 1.6;
+  }
+
+  /* Preguntas */
+  .vt-faq {
+    margin-bottom: 64px;
+    max-width: 820px;
+  }
+  .vt-faq details {
+    border-top: 1px solid var(--border);
+    padding: 18px 0;
+  }
+  .vt-faq details:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+  .vt-faq summary {
+    cursor: pointer;
+    color: var(--white);
+    font-size: 1.05rem;
+  }
+  .vt-faq details p {
+    margin-top: 10px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .contact-cta {
+    margin-top: 24px;
+    padding: 48px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .cta-title {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .cta-sub {
+    color: var(--muted);
+    font-size: var(--text-base);
+    line-height: 1.7;
+    max-width: 48ch;
+  }
+  .vt-marca {
+    margin-top: 32px;
+    color: var(--dim);
+    font-size: var(--text-2xs);
+    line-height: 1.6;
+    max-width: 80ch;
+  }
+</style>
