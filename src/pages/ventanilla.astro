@@ -53,7 +53,7 @@ const ld = {
       provider: { '@type': 'Person', name: 'Marcos Santiago', url: 'https://marcossantiago.com/' },
       areaServed: 'Puerto Rico',
       url: 'https://marcossantiago.com/ventanilla/',
-      offers: { '@type': 'Offer', price: '299', priceCurrency: 'USD', description: 'Instalación; mantenimiento desde $15 al mes' },
+      offers: { '@type': 'Offer', price: '199', priceCurrency: 'USD', description: 'Instalación en una página hecha por Marcos Santiago; $10 al mes' },
     },
     { '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
   ],
@@ -62,7 +62,7 @@ const ld = {
 
 <Base
   title="Ventanilla: pagos con ATH Móvil para tu página web — Marcos Santiago"
-  description="Tus clientes te pagan con ATH Móvil desde tu página web en segundos, con recibo en pantalla y aviso de cada pago. Instalación desde $299. Pruébalo en vivo."
+  description="Tus clientes te pagan con ATH Móvil desde tu página web en segundos, con recibo en pantalla y aviso de cada pago. Instalación desde $199. Pruébalo en vivo."
 >
   <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   <Nav />
@@ -212,15 +212,15 @@ const ld = {
         <div class="vt-planes">
           <article class="vt-plan">
             <h3>Tu página hecha conmigo</h3>
-            <p class="vt-precio">$299 <span>instalación</span></p>
-            <p class="vt-mes">+ $15 al mes</p>
-            <p>Ventanilla integrada en tu página: botón en el menú, pantalla de pagos y avisos.</p>
+            <p class="vt-precio">$199 <span>instalación</span></p>
+            <p class="vt-mes">+ $10 al mes</p>
+            <p>Ventanilla integrada en tu página: botón en el menú, pantalla de pagos y avisos. Lo más económico: tu página ya la conozco.</p>
             <a class="vt-pedir" href={wa(`${msg} Mi página la hiciste tú.`)} target="_blank" rel="noopener" data-track="ventanilla-plan-propia">Cotizar</a>
           </article>
           <article class="vt-plan">
             <h3>Tu página en otra plataforma</h3>
-            <p class="vt-precio">Desde $299 <span>instalación</span></p>
-            <p class="vt-mes">Desde $15 al mes</p>
+            <p class="vt-precio">$349 <span>instalación</span></p>
+            <p class="vt-mes">+ $20 al mes</p>
             <p>Wix, WordPress, Squarespace…: página de pagos propia (pagos.tunegocio.com) con tu logo y tus colores.</p>
             <a class="vt-pedir" href={wa(`${msg} Mi página está en otra plataforma.`)} target="_blank" rel="noopener" data-track="ventanilla-plan-otra">Cotizar</a>
           </article>
@@ -232,7 +232,7 @@ const ld = {
             <a class="vt-pedir" href={wa(`${msg} Me interesan los extras.`)} target="_blank" rel="noopener" data-track="ventanilla-plan-extras">Cotizar</a>
           </article>
         </div>
-        <p class="vt-lanz"><strong>Precio de lanzamiento:</strong> instalación a $199 para los primeros clientes.</p>
+        <p class="vt-lanz"><strong>Precio de lanzamiento:</strong> tu página en otra plataforma a $199 de instalación para los primeros clientes.</p>
         <p class="vt-fine">
           La cuota mensual cubre el hosting, la vigilancia de los pagos, los cambios de ATH Móvil y el soporte. Sin
           comisión por pago: las de cada transacción son las de tu cuenta de ATH Business.

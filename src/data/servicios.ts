@@ -192,8 +192,8 @@ export const categories = [
       {
         name: 'Ventanilla · Pagos con ATH Móvil',
         desc: 'Tus clientes te pagan con ATH Móvil desde tu página web en segundos, con recibo en pantalla y aviso de cada pago. Pruébalo en marcossantiago.com/ventanilla.',
-        includes: ['Pantalla tipo app', 'Enlaces con la cantidad puesta', 'Aviso de cada pago', '+ $15/mes'],
-        price: 'Desde $299',
+        includes: ['Pantalla tipo app', 'Enlaces con la cantidad puesta', 'Aviso de cada pago', '+ $10/mes'],
+        price: 'Desde $199',
         wa: 'Hola Marcos, me interesa Ventanilla para cobrar con ATH Móvil en mi página.',
       },
     ],
