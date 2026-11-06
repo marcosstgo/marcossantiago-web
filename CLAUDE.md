@@ -26,6 +26,24 @@ Instrucciones para Claude Code al trabajar en este proyecto.
 - El modelo solo escoge ids del catálogo: precios e imágenes los pone la página. Colores validados por contraste en el navegador.
 - Secreto `ANTHROPIC_API_KEY` en Cloudflare Pages. Modelo por variable `DIRECTOR_MODEL` (por omisión `claude-opus-5-5`, esfuerzo bajo). Sin llave o si falla, la página ofrece enviar la idea por WhatsApp.
 
+## Ventanilla (pagos con ATH Móvil) — desde el 6-nov-2026
+
+Ventanilla es el servicio de Marcos de pagos con ATH Móvil para páginas web. El módulo vive en el repo privado
+`marcosstgo/pagos-athmovil` (README, `docs/` y CHANGELOG); aquí hay una copia. **Las mejoras se hacen primero en
+el kit** y después se copian aquí.
+
+- `/ventanilla/` (`src/pages/ventanilla.astro`): página de venta con demostración en vivo (`<Pagar demo />`, no cobra)
+  y precios: página hecha por Marcos $199 + $10/mes; otra plataforma $349 + $20/mes; extras desde $150.
+  Ventanilla también está en `src/data/servicios.ts` (Desarrollo) y en el pie de página.
+- Pagos reales a Marcos: `src/components/pagos/` (copia del kit); la hoja «Págale a Marcos» va en `Base.astro`
+  (`payDialog={false}` en `/pagar/`); textos y conceptos en `pagos` de `src/data/site.ts`; colores en
+  `global.css` (`.pay`). Cualquier enlace a `/pagar/` abre la hoja; con cantidad: `/pagar/?monto=250&concepto=deposito`.
+- `pagos/`: Worker aparte `marcossantiago-pagos` (ruta `marcossantiago.com/api/pago/ath/*`, D1, cron cada minuto,
+  aviso por Telegram) porque Pages no tiene cron. **No lo publica el workflow**: se publica a mano desde `pagos/`
+  (`pagos/README.md`). Mientras no esté en marcha, el botón real de ATH dice «Pronto».
+- La firma «Funciona con Ventanilla» sale en la demo y en los sitios de clientes (por ejemplo cabezudodeleon.com,
+  con `utm_source`), no en la hoja propia (`firma: false`).
+
 ## Estructura del proyecto
 
 ```
