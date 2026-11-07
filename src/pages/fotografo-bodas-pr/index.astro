@@ -82,7 +82,7 @@ import '../../styles/landing.css';
 
   <main id="main" class="lp">
     <!-- ── Hero ── -->
-    <section class="hero-section">
+    <section class="hero-section hero-boda">
       <img class="hero-bg-img hero-boda-img" src="/bodas/hero-boda.webp" srcset="/bodas/hero-boda-800.webp 800w, /bodas/hero-boda.webp 1418w" sizes="100vw" width="1418" height="1130" alt="" aria-hidden="true" fetchpriority="high" />
       <div class="hero-overlay" aria-hidden="true"></div>
       <div class="container hero-content">
@@ -290,6 +290,20 @@ import '../../styles/landing.css';
 
 <style>
   .hero-boda-img { object-position: 55% 30%; }
+  @media (max-width: 899px) {
+    /* En el celular la foto va sola arriba con el título encima de su borde de abajo;
+       lo demás (detalles y botones) queda debajo, sobre fondo oscuro, para dejar ver la foto */
+    .hero-boda { display: block; min-height: 0; padding: 0 0 48px; }
+    .hero-boda .hero-boda-img { height: 74svh; bottom: auto; object-position: 55% 30%; }
+    .hero-boda .hero-overlay {
+      height: 74svh; bottom: auto;
+      background: linear-gradient(180deg, rgba(13,12,11,.35) 0%, transparent 18%, transparent 38%, rgba(13,12,11,.65) 56%, rgba(13,12,11,.88) 80%, var(--ink) 100%);
+    }
+    .hero-boda .hero-content { padding-top: max(150px, calc(74svh - 250px)); }
+    .hero-boda .hero-title { margin-bottom: 36px; }
+    .hero-boda .hero-meta { display: none; }
+    .hero-boda .section-label, .hero-boda .hero-title { text-shadow: 0 2px 14px rgba(13,12,11,.7); }
+  }
   @media (min-width: 900px) {
     /* En pantalla ancha la pareja va a la derecha, al lado del título, no detrás */
     .hero-boda-img {
