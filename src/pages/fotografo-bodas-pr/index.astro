@@ -134,6 +134,7 @@ import '../../styles/landing.css';
           <figure><img src="/bodas/novia-padre-700.webp" srcset="/bodas/novia-padre-700.webp 700w, /bodas/novia-padre.webp 1573w" sizes="(min-width: 900px) 30vw, 80vw" width="1573" height="1043" alt="La novia sonríe del brazo de su papá antes de la ceremonia" loading="lazy" /></figure>
           <figure><img src="/bodas/muelle-700.webp" srcset="/bodas/muelle-700.webp 700w, /bodas/muelle.webp 1580w" sizes="(min-width: 900px) 30vw, 80vw" width="1580" height="1046" alt="Pareja de novios en un muelle frente a un lago al atardecer" loading="lazy" /></figure>
         </div>
+        <p class="gb-desliza" aria-hidden="true">Desliza para ver más <span>→</span></p>
       </div>
     </section>
 
@@ -306,7 +307,11 @@ import '../../styles/landing.css';
   .gb-alta { grid-row: span 2; }
   .gb-ancha { grid-column: span 2; aspect-ratio: 16 / 9; }
   .gb-grid figure:not(.gb-alta):not(.gb-ancha) { aspect-ratio: 3 / 2; }
+  .gb-desliza { display: none; }
+  @keyframes gb-empuja { 0%, 100% { transform: translateX(0) } 50% { transform: translateX(6px) } }
   @media (max-width: 899px) {
+    .gb-desliza { display: block; margin: 14px 0 0; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(245,240,232,.6); }
+    .gb-desliza span { display: inline-block; color: var(--flame); animation: gb-empuja 1.4s ease-in-out infinite; }
     /* En el celular, una fila que se desliza con el dedo */
     .gb-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -20px; padding: 0 20px 6px; scrollbar-width: none; }
     .gb-grid::-webkit-scrollbar { display: none; }
