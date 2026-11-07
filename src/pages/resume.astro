@@ -3,9 +3,8 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
-/* Los dos carriles son la estructura de toda la página: 'sys' (infraestructura)
-   y 'vis' (imagen). Las entradas que pertenecen a los dos se marcan 'ambos' y
-   se montan sobre el eje central — es la tesis: no son dos carreras, es una. */
+/* Carriles: 'sys' (infraestructura), 'vis' (imagen) y 'ambos'. La lente de la
+   página (Todo · Sistemas · Imagen) usa el carril para apagar lo que no es de ese lado. */
 
 const ACTUALIZADO = 'Julio 2026';
 
@@ -135,66 +134,69 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
 ---
 
 <Base title="Currículum — Marcos J. Santiago Santos, M.Cs." description={desc}>
-  <!-- El h1 es el LCP y va en Bricolage: precargarla desbloquea el render. -->
-  <link slot="head" rel="preload" href="/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin />
   <Nav />
 
   <main id="main" class="cv">
+    <!-- Lente: un solo grupo de radios; las etiquetas se repiten en la página (label for).
+         Escoger un lado cambia el lema y apaga lo que no es de ese lado. Solo CSS. -->
+    <div class="vh" role="radiogroup" aria-label="Ver el perfil de">
+      <input type="radio" name="lente" id="l-todo" checked aria-label="Todo" />
+      <input type="radio" name="lente" id="l-sys" aria-label="Sistemas" />
+      <input type="radio" name="lente" id="l-vis" aria-label="Imagen" />
+    </div>
 
-    <!-- ── Encabezado: el eje nace aquí y estructura el resto ── -->
-    <header class="cv-hero">
-      <div class="container cv-hero-in">
-        <p class="cv-kicker">Currículum · Actualizado {ACTUALIZADO}</p>
+    <!-- ── Portada ── -->
+    <header class="pg-hero container cv-hero">
+      <p class="label pg-eyebrow">Currículum · Actualizado {ACTUALIZADO}</p>
+      <h1 class="display pg-titulo cv-titulo">Marcos J. <span class="it">Santiago</span></h1>
 
-        <div class="cv-head">
-          <div class="cv-head-txt">
-            <h1 class="cv-name">Marcos J.<br />Santiago Santos<span class="cv-suffix">, M.Cs.</span></h1>
-            <p class="cv-role">Administrador de sistemas · Artista visual · Desarrollador</p>
+      <div class="cv-hero-grid">
+        <div>
+          <p class="pg-lema cv-lema">
+            <span class="lema lema--todo">Sistemas e imagen, <span class="it">en una sola persona.</span></span>
+            <span class="lema lema--sys">Servidores, redes y datos <span class="it">que no se caen.</span></span>
+            <span class="lema lema--vis">Diseño, foto y video <span class="it">que se recuerdan.</span></span>
+          </p>
+          <p class="pg-sub">
+            Marcos J. Santiago Santos, M.Cs. Administrador de sistemas, artista visual y desarrollador.
+            Más de veinte años ejerciendo los dos oficios, y casi siempre a la vez.
+          </p>
+
+          <div class="cv-lente" aria-hidden="true">
+            <span class="label">Ver el perfil de</span>
+            <span class="pg-switch">
+              <label for="l-todo"><span>Todo</span></label>
+              <label for="l-sys"><span>Sistemas</span></label>
+              <label for="l-vis"><span>Imagen</span></label>
+            </span>
           </div>
-          <img class="cv-portrait" src="/marcos-photo-280.webp" width="280" height="280"
-               alt="Retrato de Marcos J. Santiago Santos" loading="eager" decoding="async" />
+
+          <div class="pg-acciones">
+            <a class="btn primary" href="/Marcos-Santiago-CV.pdf" download data-track="cv-descarga">
+              Descargar el CV en PDF <span aria-hidden="true">↓</span>
+            </a>
+            <a class="btn ghost" href="/contacto/">Escríbeme</a>
+          </div>
         </div>
 
-        <div class="cv-axis" aria-hidden="true"><span class="cv-axis-line"></span></div>
-
-        <div class="cv-lanes">
-          <div class="cv-lane cv-lane--sys">
-            <span class="cv-lane-tag">Sistemas</span>
-            <p>Servidores · Redes · Bases de datos · Integración</p>
-          </div>
-          <div class="cv-lane cv-lane--vis">
-            <span class="cv-lane-tag">Imagen</span>
-            <p>Diseño · Fotografía · Video · Marca</p>
-          </div>
-        </div>
-
-        <p class="cv-thesis">
-          Dos oficios que casi nunca aparecen en la misma persona. Llevo más de veinte
-          años ejerciendo los dos, y casi siempre a la vez.
-        </p>
-
-        <div class="cv-actions">
-          <a class="cv-btn cv-btn--solid" href="/Marcos-Santiago-CV.pdf" download data-track="cv-descarga">
-            Descargar el CV en PDF
-          </a>
-          <a class="cv-btn" href="/contacto/">Escríbeme</a>
-        </div>
-
-        <dl class="cv-ficha">
-          {ficha.map(f => (
-            <div class="cv-ficha-item">
-              <dt>{f.k}</dt>
-              <dd>{f.v}</dd>
-            </div>
-          ))}
-        </dl>
+        <img class="cv-foto" src="/marcos-photo-280.webp" width="280" height="280"
+             alt="Retrato de Marcos J. Santiago Santos" loading="eager" decoding="async" fetchpriority="high" />
       </div>
+
+      <dl class="cv-ficha">
+        {ficha.map(f => (
+          <div>
+            <dt class="label">{f.k}</dt>
+            <dd>{f.v}</dd>
+          </div>
+        ))}
+      </dl>
     </header>
 
     <!-- ── Perfil ── -->
-    <section class="cv-sec" aria-labelledby="h-perfil">
-      <div class="container cv-grid">
-        <h2 class="cv-h2" id="h-perfil">Perfil</h2>
+    <section class="on-paper pg-sec" aria-labelledby="h-perfil">
+      <div class="container cv-perfil">
+        <h2 class="display pg-h2" id="h-perfil">Dos oficios, <span class="it">un solo trabajo</span></h2>
         <div class="cv-prose">
           <p>
             Por un lado está la infraestructura: servidores Windows y Linux, Active Directory,
@@ -213,56 +215,51 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
       </div>
     </section>
 
-    <!-- ── Trayectoria: el signature de la página ── -->
-    <section class="cv-sec cv-sec--tray" aria-labelledby="h-tray">
-      <div class="container">
-        <h2 class="cv-h2 cv-h2--wide" id="h-tray">Trayectoria</h2>
-        <p class="cv-note">
-          La formación es puramente técnica. Los tres trabajos montan el eje porque en
-          los tres ejercí las dos disciplinas a la vez.
-        </p>
-
-        <div class="cv-tl-wrap">
-        <span class="cv-tl-rail" aria-hidden="true"><span class="cv-tl-fill"></span></span>
-        <ol class="cv-tl">
-          {trayectoria.map(e => (
-            <li class={`cv-tl-item cv-tl-item--${e.carril}`}>
-              <span class="cv-tl-node" aria-hidden="true"></span>
-              <article class="cv-card">
-                <p class="cv-card-meta">
-                  <span class="cv-years">{e.desde} — {e.hasta}</span>
-                  <span class="cv-tipo">{e.tipo}</span>
-                </p>
-                <h3 class="cv-card-title">{e.titulo}</h3>
-                <p class="cv-card-where">{e.donde}</p>
-                <p class="cv-card-desc">{e.detalle}</p>
-              </article>
-            </li>
-          ))}
-        </ol>
-        </div>
+    <!-- ── Trayectoria ── -->
+    <section class="pg-sec container" aria-labelledby="h-tray">
+      <div class="cv-sec-head">
+        <h2 class="display pg-h2" id="h-tray">Trayec<span class="it">toria</span></h2>
+        <p class="pg-sub">La formación es técnica. Los tres trabajos tocan los dos lados porque en los tres ejercí las dos disciplinas a la vez.</p>
       </div>
+
+      <ol class="tl">
+        {trayectoria.map(e => (
+          <li class={`tl-item tl--${e.carril}`}>
+            <p class="tl-anos display">{e.desde}<span>—</span>{e.hasta}</p>
+            <div class="tl-txt">
+              <p class="label tl-tipo">{e.tipo}</p>
+              <h3 class="tl-titulo">{e.titulo}</h3>
+              <p class="tl-donde">{e.donde}</p>
+              <p class="tl-det">{e.detalle}</p>
+              <p class="tl-lados">
+                {(e.carril === 'sys' || e.carril === 'ambos') && <span class="chip chip--sys">Sistemas</span>}
+                {(e.carril === 'vis' || e.carril === 'ambos') && <span class="chip chip--vis">Imagen</span>}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </section>
 
-    <!-- ── Proyectos: la obra, con enlace para comprobarla ── -->
-    <section class="cv-sec" aria-labelledby="h-proy">
+    <!-- ── Proyectos ── -->
+    <section class="on-paper pg-sec" aria-labelledby="h-proy">
       <div class="container">
-        <h2 class="cv-h2 cv-h2--wide" id="h-proy">Proyectos</h2>
-        <p class="cv-note">
-          Todo lo de abajo está en línea. Cada enlace abre el proyecto funcionando.
-        </p>
+        <div class="cv-sec-head">
+          <h2 class="display pg-h2" id="h-proy">Obra <span class="it">en línea</span></h2>
+          <p class="pg-sub">Todo lo de abajo está funcionando. Cada enlace abre el proyecto.</p>
+        </div>
 
-        <div class="cv-proy">
+        <div class="proy">
           {proyectos.map(p => (
-            <a class={`cv-proy-card${p.destacado ? ' cv-proy-card--top' : ''}`}
+            <a class={`proy-card${p.destacado ? ' proy-card--top' : ''}`}
                href={p.url}
                target={p.url.startsWith('http') ? '_blank' : null}
                rel={p.url.startsWith('http') ? 'noopener' : null}>
-              <p class="cv-proy-rol">{p.rol}</p>
-              <h3 class="cv-proy-nombre">{p.nombre}</h3>
-              <p class="cv-proy-url">{p.dominio}</p>
-              <p class="cv-proy-desc">{p.desc}</p>
-              <ul class="cv-proy-datos">
+              <p class="label">{p.rol}</p>
+              <h3 class="display proy-nombre">{p.nombre}</h3>
+              <p class="proy-url">{p.dominio} <span aria-hidden="true">↗</span></p>
+              <p class="proy-desc">{p.desc}</p>
+              <ul class="proy-datos">
                 {p.datos.map(d => <li>{d}</li>)}
               </ul>
             </a>
@@ -272,81 +269,80 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
     </section>
 
     <!-- ── Capacidades ── -->
-    <section class="cv-sec" aria-labelledby="h-cap">
-      <div class="container">
-        <h2 class="cv-h2 cv-h2--wide" id="h-cap">Capacidades</h2>
-
-        <div class="cv-cols">
-          <div class="cv-col cv-col--sys">
-            <h3 class="cv-col-h">Sistemas</h3>
-            {capacidades.sys.map(c => (
-              <div class="cv-cap">
-                <h4>{c.t}</h4>
-                <p>{c.d}</p>
-              </div>
-            ))}
-          </div>
-
-          <div class="cv-col cv-col--vis">
-            <h3 class="cv-col-h">Imagen</h3>
-            {capacidades.vis.map(c => (
-              <div class="cv-cap">
-                <h4>{c.t}</h4>
-                <p>{c.d}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div class="cv-puente">
-          <span class="cv-puente-tag">En las dos columnas</span>
-          <h3>{capacidades.puente.t}</h3>
-          <p>{capacidades.puente.d}</p>
-        </div>
+    <section class="pg-sec container" aria-labelledby="h-cap">
+      <div class="cv-sec-head cv-sec-head--lente">
+        <h2 class="display pg-h2" id="h-cap">Capa<span class="it">cidades</span></h2>
+        <span class="pg-switch" aria-hidden="true">
+          <label for="l-todo"><span>Todo</span></label>
+          <label for="l-sys"><span>Sistemas</span></label>
+          <label for="l-vis"><span>Imagen</span></label>
+        </span>
       </div>
-    </section>
 
-    <!-- ── Herramientas ── -->
-    <section class="cv-sec" aria-labelledby="h-tools">
-      <div class="container cv-grid">
-        <h2 class="cv-h2" id="h-tools">Herramientas</h2>
-        <div class="cv-tools">
-          {herramientas.map(g => (
-            <div class="cv-tool-g">
-              <h3>{g.g}</h3>
-              <ul>
-                {g.items.map(i => <li>{i}</li>)}
-              </ul>
+      <div class="cols">
+        <div class="col col--sys">
+          <h3 class="display col-h">Sistemas</h3>
+          {capacidades.sys.map((c, i) => (
+            <div class="cap">
+              <span class="pg-num cap-n">{String(i + 1).padStart(2, '0')}</span>
+              <div><h4>{c.t}</h4><p>{c.d}</p></div>
+            </div>
+          ))}
+        </div>
+        <div class="col col--vis">
+          <h3 class="display col-h">Imagen</h3>
+          {capacidades.vis.map((c, i) => (
+            <div class="cap">
+              <span class="pg-num cap-n">{String(i + 1).padStart(2, '0')}</span>
+              <div><h4>{c.t}</h4><p>{c.d}</p></div>
             </div>
           ))}
         </div>
       </div>
+
+      <div class="puente">
+        <p class="label pg-eyebrow">En las dos columnas</p>
+        <h3 class="display">{capacidades.puente.t}</h3>
+        <p>{capacidades.puente.d}</p>
+      </div>
+
+      <div class="tools">
+        {herramientas.map(g => (
+          <div class="tool-g">
+            <h3 class="label">{g.g}</h3>
+            <ul>{g.items.map(i => <li>{i}</li>)}</ul>
+          </div>
+        ))}
+      </div>
     </section>
 
-    <!-- ── Contacto y cierre ── -->
-    <section class="cv-sec cv-sec--fin" aria-labelledby="h-contacto">
-      <div class="container cv-grid">
-        <h2 class="cv-h2" id="h-contacto">Contacto</h2>
-        <div>
-          <dl class="cv-contacto">
-            {contacto.map(c => (
-              <div class="cv-contacto-row">
-                <dt>{c.label}</dt>
-                <dd>
-                  {c.href
-                    ? <a href={c.href} data-track="cv-contacto" rel={c.href.startsWith('http') ? 'noopener' : null} target={c.href.startsWith('http') ? '_blank' : null}>{c.valor}</a>
-                    : c.valor}
-                </dd>
-              </div>
-            ))}
-          </dl>
+    <!-- ── Contacto ── -->
+    <section class="on-paper pg-sec" aria-labelledby="h-contacto">
+      <div class="container cv-perfil">
+        <h2 class="display pg-h2" id="h-contacto">Con<span class="it">tacto</span></h2>
+        <dl class="contacto">
+          {contacto.map(c => (
+            <div class="contacto-row">
+              <dt class="label">{c.label}</dt>
+              <dd>
+                {c.href
+                  ? <a href={c.href} data-track="cv-contacto" rel={c.href.startsWith('http') ? 'noopener' : null} target={c.href.startsWith('http') ? '_blank' : null}>{c.valor}</a>
+                  : c.valor}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
 
-          <div class="cv-actions cv-actions--fin">
-            <a class="cv-btn cv-btn--solid" href="/Marcos-Santiago-CV.pdf" download data-track="cv-descarga-fin">
-              Descargar el CV en PDF
-            </a>
-            <a class="cv-btn" href="/sobre-mi/">La versión en primera persona</a>
-          </div>
+    <section class="pg-cierre">
+      <div class="container">
+        <h2 class="display">¿Trabajamos <span class="it">juntos?</span></h2>
+        <p>El CV completo en una página para guardar o imprimir. O escríbeme y hablamos del proyecto.</p>
+        <div class="pg-acciones">
+          <a class="btn" href="/Marcos-Santiago-CV.pdf" download data-track="cv-descarga-fin">Descargar el CV en PDF <span aria-hidden="true">↓</span></a>
+          <a class="btn" href="https://wa.me/17872439670" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp · 787-243-9670</a>
+          <a class="btn" href="/sobre-mi/">La versión en primera persona</a>
         </div>
       </div>
     </section>
@@ -356,481 +352,169 @@ const desc = 'Currículum de Marcos J. Santiago Santos, M.Cs. — administrador 
 </Base>
 
 <style>
-  /* ── Paleta scoped: los dos carriles. Derivada del CV impreso de Marcos
-     (azul índigo + cyan). No toca --accent global. ── */
-  .cv {
-    --sys:      #7b8cff;
-    --vis:      #35c2f0;
-    --sys-soft: rgba(123,140,255,.13);
-    --vis-soft: rgba(53,194,240,.13);
-    --cv-display: 'Bricolage Grotesque', 'Bebas Neue', sans-serif;
-  }
-  /* En claro los dos acentos bajan de luminosidad para cumplir WCAG AA como
-     texto pequeño, incluso sobre --panel (el fondo más claro que los rodea):
-     --sys 5.24:1 y --vis 5.10:1 sobre panel. */
-  :global([data-theme="light"]) .cv {
-    --sys:      #3b45c9;
-    --vis:      #0a5f80;
-    --sys-soft: rgba(59,69,201,.10);
-    --vis-soft: rgba(10,95,128,.10);
+  /* ── Portada ── */
+  .cv-titulo { font-size: clamp(3.2rem, 11vw, 10rem) }
+  .cv-hero-grid { display: grid; grid-template-columns: 1fr auto; gap: clamp(24px, 5vw, 80px); align-items: start }
+  .cv-foto {
+    width: clamp(120px, 18vw, 240px); aspect-ratio: 1; object-fit: cover;
+    border-radius: 50%; filter: grayscale(1) contrast(1.06);
+    outline: 1px solid var(--border-h); outline-offset: 8px;
   }
 
-  /* ── Encabezado ── */
-  .cv-hero { padding: 132px 0 64px }
-  .cv-kicker {
-    font-family: var(--mono); font-size: var(--text-xs);
-    letter-spacing: 2.5px; text-transform: uppercase;
-    color: var(--dim); margin-bottom: 26px;
-  }
+  /* El lema cambia según la lente */
+  .cv-lema { display: grid; min-height: 2.3em }
+  .lema { grid-area: 1 / 1; transition: opacity .3s var(--ease), translate .3s var(--ease) }
+  .lema--sys, .lema--vis { opacity: 0; translate: 0 .3em; pointer-events: none }
+  .cv:has(#l-sys:checked) .lema--sys,
+  .cv:has(#l-vis:checked) .lema--vis { opacity: 1; translate: 0 0 }
+  .cv:has(#l-sys:checked) .lema--todo,
+  .cv:has(#l-vis:checked) .lema--todo { opacity: 0; translate: 0 -.3em }
+  .lema:not(.lema--todo) { visibility: hidden }
+  .cv:has(#l-sys:checked) .lema--sys, .cv:has(#l-vis:checked) .lema--vis { visibility: visible }
 
-  .cv-head {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    gap: 32px; flex-wrap: wrap;
-  }
-  .cv-name {
-    font-family: var(--cv-display);
-    font-weight: 800;
-    font-size: clamp(2.6rem, 8.5vw, 5.6rem);
-    line-height: .93;
-    letter-spacing: -.03em;
-    color: var(--white);
-  }
-  .cv-suffix {
-    font-weight: 300; letter-spacing: -.01em;
-    color: var(--dim);
-    font-size: .42em;
-  }
-  .cv-role {
-    margin-top: 16px;
-    font-size: var(--text-lg); color: var(--muted);
-    max-width: 48ch;
-  }
-  .cv-portrait {
-    width: 118px; height: 118px; border-radius: 50%;
-    object-fit: cover; filter: grayscale(1) contrast(1.06);
-    border: 1px solid var(--border-h);
-    flex-shrink: 0;
-  }
-
-  /* El eje: nace bajo el nombre y vuelve como raíl del timeline. */
-  .cv-axis { margin: 34px 0 20px; height: 2px; overflow: hidden }
-  .cv-axis-line {
-    display: block; height: 100%; width: 100%;
-    background: linear-gradient(90deg, var(--sys), var(--vis));
-    transform: scaleX(0); transform-origin: left;
-    animation: cv-axis 1.1s cubic-bezier(.2,.8,.2,1) .15s forwards;
-  }
-  @keyframes cv-axis { to { transform: scaleX(1) } }
-
-  .cv-lanes {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
-  }
-  .cv-lane p { font-size: var(--text-sm); color: var(--muted); margin-top: 6px }
-  .cv-lane--vis { text-align: right }
-  .cv-lane-tag {
-    font-family: var(--mono); font-size: var(--text-xs);
-    letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700;
-  }
-  .cv-lane--sys .cv-lane-tag { color: var(--sys) }
-  .cv-lane--vis .cv-lane-tag { color: var(--vis) }
-
-  .cv-thesis {
-    margin: 44px 0 30px; max-width: 46ch;
-    font-size: clamp(1.05rem, 2.4vw, 1.32rem);
-    line-height: 1.5; color: var(--white);
-  }
-
-  .cv-actions { display: flex; flex-wrap: wrap; gap: 12px }
-  .cv-btn {
-    display: inline-flex; align-items: center; gap: 9px;
-    padding: 12px 22px; border-radius: 8px;
-    border: 1px solid var(--border-h);
-    font-size: var(--text-sm); font-weight: 600;
-    color: var(--white);
-    transition: border-color .18s, background .18s, transform .18s;
-  }
-  .cv-btn:hover { border-color: var(--sys); transform: translateY(-1px) }
-  .cv-btn--solid {
-    background: var(--white); color: var(--ink); border-color: var(--white);
-  }
-  /* El texto del hover se queda en --ink: blanco sobre --sys da 2.98:1 en oscuro. */
-  .cv-btn--solid:hover { background: var(--sys); border-color: var(--sys); color: var(--ink) }
+  .cv-lente { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 28px }
+  /* Las etiquetas viven fuera de su input: el estado activo se lee desde .cv */
+  .cv:has(#l-todo:checked) label[for="l-todo"] span,
+  .cv:has(#l-sys:checked) label[for="l-sys"] span,
+  .cv:has(#l-vis:checked) label[for="l-vis"] span { background: var(--flame); color: var(--ink) }
+  .cv:has(#l-todo:focus-visible) label[for="l-todo"] span,
+  .cv:has(#l-sys:focus-visible) label[for="l-sys"] span,
+  .cv:has(#l-vis:focus-visible) label[for="l-vis"] span { outline: 2px solid var(--white); outline-offset: 2px }
 
   .cv-ficha {
-    margin-top: 52px; padding-top: 26px;
-    border-top: 1px solid var(--border);
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    margin-top: clamp(40px, 6vw, 72px); padding-top: 22px; border-top: 1px solid var(--border);
   }
-  .cv-ficha-item dt {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
-    margin-bottom: 6px;
-  }
-  .cv-ficha-item dd { font-size: var(--text-sm); color: var(--white) }
+  .cv-ficha dt { color: var(--dim); margin-bottom: 6px }
+  .cv-ficha dd { font-size: var(--text-lg); font-weight: 600 }
 
-  /* ── Secciones ── */
-  .cv-sec { padding: 68px 0; border-top: 1px solid var(--border); scroll-margin-top: 90px }
-  .cv-grid { display: grid; grid-template-columns: 210px 1fr; gap: 40px; align-items: start }
-  .cv-h2 {
-    font-family: var(--mono); font-size: var(--text-xs);
-    letter-spacing: 3px; text-transform: uppercase;
-    color: var(--dim); font-weight: 400;
-    padding-top: 6px;
-  }
-  .cv-h2--wide { padding-top: 0; margin-bottom: 10px }
-  .cv-note { font-size: var(--text-sm); color: var(--dim); max-width: 52ch; margin-bottom: 44px }
-  .cv-prose p { color: var(--muted); max-width: 62ch }
-  .cv-prose p + p { margin-top: 18px }
+  /* ── Perfil y contacto: título a un lado, texto al otro ── */
+  .cv-perfil { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 80px); align-items: start }
+  .cv-prose p { font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.65; color: var(--muted); max-width: 58ch }
+  .cv-prose p + p { margin-top: 1.1em }
+  .cv-prose p:first-child { color: var(--white) }
+
+  .cv-sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 40px; margin-bottom: clamp(28px, 4vw, 48px) }
+  .cv-sec-head .pg-h2 { margin-bottom: 0 }
+  .cv-sec-head .pg-sub { margin-bottom: 0; max-width: 46ch }
 
   /* ── Trayectoria ── */
-  .cv-tl-wrap { position: relative }
-  .cv-tl { list-style: none; padding: 0 }
-  .cv-tl-rail {
-    position: absolute; top: 0; bottom: 0; left: 50%;
-    width: 2px; margin-left: -1px;
-    background: var(--border);
+  .tl { list-style: none }
+  .tl-item {
+    display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 16px clamp(24px, 5vw, 80px);
+    padding: clamp(26px, 3.4vw, 40px) 0; border-top: 1px solid var(--border);
+    transition: opacity .35s var(--ease);
   }
-  .cv-tl-fill {
-    display: block; width: 100%; height: 100%;
-    background: linear-gradient(180deg, var(--sys), var(--vis));
-    transform: scaleY(1); transform-origin: top;
+  .tl-item:last-child { border-bottom: 1px solid var(--border) }
+  .tl-anos { font-size: clamp(2.4rem, 5.4vw, 4.6rem); line-height: .9; color: var(--white) }
+  .tl-anos span { color: var(--flame); margin-inline: .08em }
+  .tl-tipo { color: var(--flame); margin-bottom: 8px }
+  .tl-titulo { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.2 }
+  .tl-donde { color: var(--dim); margin-top: 4px }
+  .tl-det { color: var(--muted); line-height: 1.7; margin-top: 12px; max-width: 60ch }
+  .tl-lados { display: flex; gap: 8px; margin-top: 16px }
+  .chip {
+    font-size: var(--text-2xs); font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+    padding: 5px 11px; border-radius: 99px; border: 1px solid var(--border-h); color: var(--muted);
+    transition: background .25s, color .25s, border-color .25s;
   }
-  @supports (animation-timeline: view()) {
-    .cv-tl-fill {
-      animation: cv-fill linear both;
-      --tl: view(); animation-timeline: var(--tl);
-      animation-range: cover 12% cover 68%;
-    }
-    @keyframes cv-fill { from { transform: scaleY(0) } to { transform: scaleY(1) } }
-  }
-
-  .cv-tl-item {
-    position: relative; display: grid; align-items: center;
-    padding: 20px 0;
-    grid-template-columns: 1fr 1fr;
-  }
-  .cv-tl-node {
-    position: absolute; left: 50%; top: 50%;
-    width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px;
-    border-radius: 50%; background: var(--ink);
-    border: 2px solid var(--border-h);
-    transition: border-color .4s, box-shadow .4s;
-  }
-  .cv-tl-item--sys .cv-tl-node { border-color: var(--sys) }
-  .cv-tl-item--vis .cv-tl-node { border-color: var(--vis) }
-  .cv-tl-item--ambos .cv-tl-node {
-    width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px;
-    background: linear-gradient(135deg, var(--sys), var(--vis));
-    border-color: transparent;
-  }
-
-  .cv-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 22px 24px;
-  }
-  /* Un carril: la tarjeta se queda de su lado y no toca el eje. */
-  .cv-tl-item--sys .cv-card { grid-column: 1; margin-right: 46px; border-left: 2px solid var(--sys) }
-  .cv-tl-item--vis .cv-card { grid-column: 2; margin-left: 46px; border-right: 2px solid var(--vis) }
-  /* Los dos carriles: la tarjeta monta sobre el eje. La forma ES el dato. */
-  .cv-tl-item--ambos .cv-card {
-    grid-column: 1 / -1;
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(90deg, var(--sys), var(--vis)) border-box;
-    border: 1px solid transparent;
-    padding: 26px 28px;
-  }
-
-  .cv-card-meta {
-    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
-    margin-bottom: 10px;
-  }
-  .cv-years {
-    font-family: var(--mono); font-size: var(--text-sm);
-    letter-spacing: 1px; color: var(--white);
-  }
-  .cv-tipo {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
-    border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px;
-  }
-  .cv-card-title {
-    font-family: var(--cv-display); font-weight: 700;
-    font-size: clamp(1.15rem, 2.6vw, 1.5rem); line-height: 1.15;
-    letter-spacing: -.015em; color: var(--white);
-  }
-  .cv-card-where { margin-top: 5px; font-size: var(--text-sm); color: var(--muted) }
-  .cv-card-desc  { margin-top: 12px; font-size: var(--text-sm); color: var(--dim); max-width: 62ch }
-
-  /* La tarjeta que cruza reparte su contenido en los dos carriles: el puesto
-     del lado técnico, lo que hacía del lado visual. El hueco central cae justo
-     sobre el eje, así que el nodo nunca pisa texto. */
-  @media (min-width: 761px) {
-    .cv-tl-item--ambos .cv-card {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      column-gap: 44px; align-items: start;
-    }
-    .cv-tl-item--ambos .cv-card-desc {
-      grid-column: 2; grid-row: 1 / span 3;
-      margin-top: 0; padding-left: 2px;
-    }
-  }
-
-  /* Entrada al hacer scroll (la clase la pone el JS; sin JS nace visible). */
-  :global(html.cv-anim) .cv-tl-item { opacity: 0; transform: translateY(22px); transition: opacity .6s, transform .6s }
-  :global(html.cv-anim) .cv-tl-item--sys { transform: translate(-18px, 22px) }
-  :global(html.cv-anim) .cv-tl-item--vis { transform: translate(18px, 22px) }
-  :global(html.cv-anim) .cv-tl-item.is-in { opacity: 1; transform: none }
+  .cv:has(#l-sys:checked) .chip--sys,
+  .cv:has(#l-vis:checked) .chip--vis { background: var(--flame); border-color: var(--flame); color: var(--ink) }
+  /* La lente apaga lo que no es de ese lado */
+  .cv:has(#l-vis:checked) .tl--sys,
+  .cv:has(#l-sys:checked) .tl--vis { opacity: .28 }
 
   /* ── Proyectos ── */
-  .cv-proy { display: grid; grid-template-columns: 1fr 1fr; gap: 18px }
-  .cv-proy-card {
-    display: block; padding: 24px 26px;
-    border: 1px solid var(--border); border-radius: var(--radius);
-    background: var(--panel);
-    transition: border-color .2s, transform .2s;
+  .proy { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
+  .proy-card {
+    display: flex; flex-direction: column; gap: 6px;
+    padding: clamp(22px, 3vw, 34px); border: 1px solid var(--border-h); border-radius: var(--radius);
+    transition: background .25s, border-color .25s, translate .25s var(--ease);
   }
-  .cv-proy-card:hover { border-color: var(--border-h); transform: translateY(-2px) }
-  /* El sitio propio abre la sección: es el único proyecto que el lector ya
-     tiene abierto mientras lo lee. */
-  .cv-proy-card--top {
-    grid-column: 1 / -1;
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(90deg, var(--sys), var(--vis)) border-box;
-    border: 1px solid transparent;
-  }
-  .cv-proy-rol {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
-  }
-  .cv-proy-nombre {
-    margin-top: 8px;
-    font-family: var(--cv-display); font-weight: 700;
-    font-size: clamp(1.2rem, 2.6vw, 1.6rem); letter-spacing: -.02em; color: var(--white);
-  }
-  .cv-proy-url {
-    font-family: var(--mono); font-size: var(--text-xs);
-    color: var(--vis); margin-top: 3px;
-  }
-  .cv-proy-desc { margin-top: 12px; font-size: var(--text-sm); color: var(--muted); max-width: 68ch }
-  .cv-proy-datos {
-    list-style: none; display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px;
-  }
-  .cv-proy-datos li {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: .5px; color: var(--dim);
-    border: 1px solid var(--border); border-radius: 5px; padding: 4px 9px;
-  }
-  .cv-proy-card--top .cv-proy-datos li { color: var(--muted); border-color: var(--border-h) }
+  .proy-card:hover { background: var(--surface); border-color: var(--on-paper); translate: 0 -3px }
+  .proy-card .label { color: var(--dim) }
+  .proy-nombre { font-size: clamp(2rem, 3.6vw, 3rem); margin-top: 6px }
+  .proy-url { color: #c2360c; font-weight: 600; font-size: var(--text-sm) }
+  .proy-desc { color: var(--muted); line-height: 1.65; margin-top: 8px; max-width: 62ch }
+  .proy-datos { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 16px }
+  .proy-datos li { font-size: var(--text-xs); padding: 4px 10px; border-radius: 99px; border: 1px solid var(--border) }
+  .proy-card--top { grid-column: 1 / -1; background: var(--ink); color: var(--paper); border-color: var(--ink) }
+  .proy-card--top .label, .proy-card--top .proy-desc { color: rgba(243,238,229,.72) }
+  .proy-card--top .proy-url { color: var(--flame) }
+  .proy-card--top .proy-datos li { border-color: rgba(243,238,229,.3) }
+  .proy-card--top:hover { background: #000; border-color: var(--flame) }
+  .proy-card--top .proy-nombre { font-size: clamp(2.4rem, 6vw, 5rem) }
 
   /* ── Capacidades ── */
-  .cv-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 44px }
-  .cv-col-h {
-    font-family: var(--mono); font-size: var(--text-xs);
-    letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700;
-    padding-bottom: 12px; margin-bottom: 22px;
-    border-bottom: 1px solid var(--border);
-  }
-  .cv-col--sys .cv-col-h { color: var(--sys); border-bottom-color: var(--sys) }
-  .cv-col--vis .cv-col-h { color: var(--vis); border-bottom-color: var(--vis) }
-  .cv-cap + .cv-cap { margin-top: 22px }
-  .cv-cap h4 { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 5px }
-  .cv-cap p  { font-size: var(--text-sm); color: var(--dim); max-width: 52ch }
+  .cv-sec-head--lente { align-items: center }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 80px) }
+  .col { transition: opacity .35s var(--ease) }
+  .cv:has(#l-sys:checked) .col--vis,
+  .cv:has(#l-vis:checked) .col--sys,
+  .cv:has(#l-vis:checked) .tools { opacity: .28 }
+  .col-h { font-size: clamp(1.8rem, 3vw, 2.6rem); padding-bottom: 14px; border-bottom: 2px solid var(--flame); margin-bottom: 8px }
+  .cap { display: grid; grid-template-columns: 2.6rem 1fr; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--border) }
+  .cap-n { font-size: 1.6rem }
+  .cap h4 { font-size: 1.08rem; margin-bottom: 4px }
+  .cap p { color: var(--muted); line-height: 1.65; font-size: .97rem }
 
-  .cv-puente {
-    margin-top: 44px; padding: 28px 30px; border-radius: var(--radius);
-    background:
-      linear-gradient(var(--panel), var(--panel)) padding-box,
-      linear-gradient(90deg, var(--sys), var(--vis)) border-box;
-    border: 1px solid transparent;
+  .puente {
+    margin-top: clamp(36px, 5vw, 64px); padding: clamp(26px, 4vw, 48px);
+    border: 1px solid var(--flame); border-radius: var(--radius); background: var(--accent-dim);
   }
-  .cv-puente-tag {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
-  }
-  .cv-puente h3 {
-    margin: 8px 0 8px;
-    font-family: var(--cv-display); font-weight: 700;
-    font-size: clamp(1.3rem, 3vw, 1.75rem); letter-spacing: -.02em; color: var(--white);
-  }
-  .cv-puente p { font-size: var(--text-sm); color: var(--muted); max-width: 62ch }
+  .puente h3 { font-size: clamp(2rem, 4.4vw, 3.6rem); margin-bottom: 12px }
+  .puente p { color: var(--muted); font-size: var(--text-lg); line-height: 1.6; max-width: 60ch }
 
-  /* ── Herramientas ── */
-  .cv-tools { display: grid; gap: 26px }
-  .cv-tool-g h3 {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
-    font-weight: 400; margin-bottom: 10px;
-  }
-  .cv-tool-g ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px }
-  .cv-tool-g li {
-    font-size: var(--text-sm); color: var(--muted);
-    border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px;
-  }
+  .tools { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: clamp(36px, 5vw, 64px); transition: opacity .35s var(--ease) }
+  .tool-g h3 { color: var(--dim); margin-bottom: 12px }
+  .tool-g ul { list-style: none; display: flex; flex-wrap: wrap; gap: 6px }
+  .tool-g li { font-size: var(--text-sm); padding: 6px 12px; border-radius: 99px; border: 1px solid var(--border-h) }
 
   /* ── Contacto ── */
-  .cv-contacto { display: grid; gap: 0 }
-  .cv-contacto-row {
-    display: grid; grid-template-columns: 110px 1fr; gap: 16px;
-    padding: 11px 0; border-bottom: 1px solid var(--border);
-  }
-  .cv-contacto-row dt {
-    font-family: var(--mono); font-size: var(--text-2xs);
-    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
-    padding-top: 2px;
-  }
-  .cv-contacto-row dd { font-size: var(--text-sm); color: var(--white) }
-  .cv-contacto-row a { border-bottom: 1px solid var(--border-h); transition: border-color .18s }
-  .cv-contacto-row a:hover { border-color: var(--vis) }
-  .cv-actions--fin { margin-top: 30px }
-  .cv-sec--fin { padding-bottom: 90px }
+  .contacto-row { display: grid; grid-template-columns: 7.5rem 1fr; gap: 16px; padding: 16px 0; border-top: 1px solid var(--border); align-items: baseline }
+  .contacto-row:last-child { border-bottom: 1px solid var(--border) }
+  .contacto-row dt { color: var(--dim) }
+  .contacto-row dd { font-size: clamp(1.05rem, 1.8vw, 1.3rem); font-weight: 600; overflow-wrap: anywhere }
+  .contacto-row a { border-bottom: 1px solid currentColor; transition: color .2s }
+  .contacto-row a:hover { color: #c2360c }
 
-  /* ── Responsive ── */
+  /* ── Celular ── */
   @media (max-width: 900px) {
-    .cv-grid { grid-template-columns: 1fr; gap: 18px }
-    .cv-cols { grid-template-columns: 1fr; gap: 34px }
-    .cv-proy { grid-template-columns: 1fr }
-    .cv-ficha { grid-template-columns: 1fr 1fr; gap: 20px }
+    .cv-perfil, .cols { grid-template-columns: 1fr }
+    .cv-ficha { grid-template-columns: 1fr 1fr }
+    .tools { grid-template-columns: 1fr }
   }
-  @media (max-width: 760px) {
-    .cv-hero { padding: 112px 0 48px }
-    .cv-head { align-items: center; gap: 20px }
-    .cv-portrait { width: 84px; height: 84px }
-    .cv-lanes { grid-template-columns: 1fr; gap: 14px }
-    .cv-lane--vis { text-align: left }
-
-    /* Un solo carril: el eje se va a la izquierda y el color lo lleva la tarjeta. */
-    .cv-tl-rail { left: 6px }
-    .cv-tl-item { grid-template-columns: 1fr; padding: 14px 0 }
-    .cv-tl-node { left: 6px }
-    .cv-tl-item--ambos .cv-tl-node { left: 6px }
-    .cv-tl-item--sys .cv-card,
-    .cv-tl-item--vis .cv-card,
-    .cv-tl-item--ambos .cv-card {
-      grid-column: 1; margin: 0 0 0 30px; padding: 20px 20px;
-    }
-    :global(html.cv-anim) .cv-tl-item--sys,
-    :global(html.cv-anim) .cv-tl-item--vis { transform: translateY(22px) }
-    .cv-thesis { margin: 34px 0 26px }
-    .cv-btn { width: 100% ; justify-content: center }
+  @media (max-width: 700px) {
+    .cv-hero-grid { grid-template-columns: 1fr }
+    .cv-foto { grid-row: 1; width: 112px }
+    .tl-item { grid-template-columns: 1fr }
+    .proy { grid-template-columns: 1fr }
+    .contacto-row { grid-template-columns: 1fr; gap: 4px }
   }
 
-  /* ── Impresión: "Imprimir → Guardar como PDF" da un CV entregable ──
-     Ni el PDF técnico ni el creativo cubren las dos caras; esta vista sí.
-     Se imprime siempre en claro, sin cromo del sitio y sin cortar tarjetas. */
+  /* ── Imprimir (Ctrl+P): la página en papel blanco, sin cromo de pantalla ── */
   @media print {
     @page { margin: 14mm 13mm }
-
-    /* OJO: el hero también es un <header>; solo se oculta el del sitio. */
-    :global(header:not(.cv-hero)), :global(footer), :global(#ms-chat-btn),
-    :global(#ms-chat-panel), :global(.skip-link),
-    .cv-actions, .cv-axis, .cv-sec--tray .cv-note,
-    .cv-lanes { display: none !important }
-    :global(body)::after { display: none !important }
-    /* Sin color-scheme claro, Chrome pinta el canvas del PDF en oscuro. */
+    :global(nav), :global(.nav), :global(footer), :global(.skip-link),
+    .cv-lente, .cv-sec-head--lente .pg-switch, .pg-acciones, .pg-cierre, .lema:not(.lema--todo) { display: none !important }
     :global(html) { color-scheme: light; background: #fff !important }
     :global(body) { background: #fff !important }
-
-    /* Los tokens se reescriben para papel; el resto del CSS no cambia. */
-    .cv {
-      --ink: #fff; --surface: #fff; --panel: #fff;
-      --white: #111; --muted: #333; --dim: #444;
-      --border: #ccc; --border-h: #888;
-      --sys: #2a35a8; --vis: #0a5f80;
-      --text-2xs: 6.5pt; --text-xs: 7pt; --text-sm: 8.5pt;
-      --text-base: 9.5pt; --text-lg: 10pt;
-      color: #111; font-size: 9.5pt; line-height: 1.38;
+    .cv, .cv .on-paper, .proy-card--top {
+      --white: #111; --muted: #333; --dim: #555; --border: #ccc; --border-h: #999; --surface: #fff;
+      background: #fff !important; color: #111 !important;
     }
-    .cv-sec, .cv-hero { padding: 8px 0; border-top-color: #ddd }
-    .cv-hero { padding-top: 0 }
-    :global(.container) { max-width: none; padding: 0 }
-    .cv-name { font-size: 26pt; line-height: .95 }
-    .cv-suffix { font-size: .45em }
-    .cv-role { margin-top: 7px }
-    .cv-thesis { font-size: 9.5pt; margin: 12px 0 0; max-width: none }
-    .cv-portrait { width: 74px; height: 74px }
-    .cv-ficha { margin-top: 12px; padding-top: 10px; gap: 12px }
-    .cv-card-title { font-size: 11pt }
-    .cv-proy-nombre { font-size: 10.5pt }
-    .cv-puente h3 { font-size: 11pt }
-
-    /* Nada de tarjetas partidas entre páginas. */
-    .cv-tl-item, .cv-card, .cv-proy-card, .cv-cap, .cv-puente, .cv-tool-g,
-    .cv-contacto-row { break-inside: avoid; page-break-inside: avoid }
-    .cv-sec { break-inside: auto }
-    .cv-h2, .cv-col-h { break-after: avoid }
-
-    /* El raíl y los nodos son cromo de pantalla: en papel manda el texto. */
-    .cv-tl-rail, .cv-tl-node { display: none }
-    .cv-tl-item { grid-template-columns: 1fr; padding: 4px 0 }
-    .cv-tl-item--sys .cv-card, .cv-tl-item--vis .cv-card,
-    .cv-tl-item--ambos .cv-card {
-      grid-column: 1; margin: 0; padding: 9px 12px;
-      display: block; background: #fff; border: 1px solid #ddd;
-    }
-    .cv-tl-item--sys .cv-card { border-left: 2px solid var(--sys) }
-    .cv-tl-item--vis .cv-card { border-left: 2px solid var(--vis) }
-    .cv-tl-item--ambos .cv-card { border-left: 2px solid var(--sys); border-right: 2px solid var(--vis) }
-    .cv-card-desc, .cv-tl-item--ambos .cv-card-desc { margin-top: 8px; max-width: none }
-
-    .cv-proy { grid-template-columns: 1fr; gap: 7px }
-    .cv-proy-card, .cv-proy-card--top { background: #fff; border: 1px solid #ddd; padding: 9px 12px }
-    .cv-proy-card--top { border-left: 2px solid var(--sys) }
-    .cv-proy-card:hover { transform: none }
-    .cv-proy-desc { margin-top: 6px; max-width: none }
-    .cv-proy-datos { margin-top: 8px }
-
-    .cv-puente { background: #fff; border: 1px solid #ddd; margin-top: 14px; padding: 10px 12px }
-    .cv-note { margin-bottom: 11px }
-    .cv-cap + .cv-cap { margin-top: 12px }
-    /* Una carta mide ~816px, así que los media queries de ≤900px se activan al
-       imprimir y tumban las rejillas a una columna. En papel sí hay ancho:
-       se recuperan aquí (este bloque va después, así que gana). */
-    .cv-cols { grid-template-columns: 1fr 1fr; gap: 26px }
-    .cv-grid { grid-template-columns: 128px 1fr; gap: 22px }
-    .cv-cap p { max-width: none }
-    .cv-col-h { padding-bottom: 7px; margin-bottom: 12px }
-    .cv-tools { gap: 12px }
-    /* El contacto pasa a dos columnas: seis filas apiladas empujaban una página
-       entera solo para el pie. Y la sección no se parte. */
-    .cv-contacto { grid-template-columns: 1fr 1fr; column-gap: 26px }
-    .cv-contacto-row { padding: 4px 0; grid-template-columns: 76px 1fr; gap: 10px }
-    .cv-sec--fin { padding-bottom: 0; break-inside: avoid; page-break-inside: avoid }
-
-    /* Sin animaciones ni estados de entrada al imprimir. */
-    .cv-axis-line, .cv-tl-fill { animation: none !important; transform: none !important }
-    :global(html.cv-anim) .cv-tl-item { opacity: 1 !important; transform: none !important }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .cv-axis-line { animation: none; transform: scaleX(1) }
-    .cv-tl-fill   { animation: none !important; transform: scaleY(1) }
-    :global(html.cv-anim) .cv-tl-item { opacity: 1; transform: none; transition: none }
-    .cv-btn:hover { transform: none }
+    .cv .pg-sec, .cv .pg-hero { padding-block: 10px !important }
+    .cv-titulo { font-size: 34pt }
+    .pg-h2 { font-size: 20pt !important; margin-bottom: 10px }
+    .cv-lema { font-size: 13pt; min-height: 0 }
+    .cv-foto { width: 80px; outline: none }
+    .tl-anos { font-size: 16pt }
+    .tl-item, .proy-card, .cap, .puente, .tool-g, .contacto-row { break-inside: avoid }
+    .tl-item { padding: 8px 0; grid-template-columns: 1fr 3fr }
+    .proy { grid-template-columns: 1fr 1fr }
+    .proy-card--top .proy-nombre, .proy-nombre { font-size: 14pt }
+    .cols { grid-template-columns: 1fr 1fr }
+    .cv-perfil { grid-template-columns: 1fr }
+    * { opacity: 1 !important }
   }
 </style>
-
-<script>
-  /* La animación de entrada solo existe si hay JS y el usuario no pidió menos
-     movimiento. Sin esto, la página nace completa y legible. */
-  const menos = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const items = document.querySelectorAll('.cv-tl-item');
-
-  if (!menos && items.length && 'IntersectionObserver' in window) {
-    document.documentElement.classList.add('cv-anim');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e, i) => {
-        if (!e.isIntersecting) return;
-        const el = e.target as HTMLElement;
-        el.style.transitionDelay = `${Math.min(i, 3) * 70}ms`;
-        el.classList.add('is-in');
-        io.unobserve(el);
-      });
-    }, { rootMargin: '0px 0px -12% 0px', threshold: .18 });
-    items.forEach(el => io.observe(el));
-  }
-</script>
