@@ -444,7 +444,7 @@ const ld = {
     gap: 10px;
   }
   .vt-cinta span::after { content: '✦'; font-size: .6em; margin-left: 32px }
-  .vt-cinta b { font-weight: 800; opacity: .55 }
+  .vt-cinta b { font-family: var(--serif); font-style: italic; font-weight: 400; text-transform: none; font-size: 1.1em }
   @keyframes vt-cinta { to { translate: -50% 0 } }
 
   /* Antes / Con Ventanilla */
@@ -543,6 +543,8 @@ const ld = {
   .vt-pasos ol { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; counter-reset: p }
   .vt-pasos li { padding: 26px 24px 8px 0; border-top: 2px solid var(--on-paper); margin-right: 20px }
   .vt-n { display: block; font-family: var(--display); font-weight: 800; font-size: clamp(3.6rem, 6vw, 5.4rem); line-height: .9; color: var(--flame); margin-bottom: 18px }
+  /* Sobre papel, el naranja se oscurece para leerse bien (contraste 4:1) */
+  .vt-pasos .vt-n, .vt-pasos .it { color: #d93a10 }
   .vt-pasos h3 { font-size: 1.2rem; margin-bottom: 8px }
   .vt-pasos p { color: rgba(20, 18, 15, .72); line-height: 1.6 }
   @media (max-width: 900px) { .vt-pasos ol { grid-template-columns: 1fr 1fr; row-gap: 28px } }
