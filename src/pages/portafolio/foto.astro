@@ -17,22 +17,27 @@ const servicios = [
 // Fotos reales de Marcos. Para añadir una: ponerla en public/fotos/ (grande + versión -700) y sumarla aquí.
 const cats = [
   ['todas', 'Todas'], ['bodas', 'Bodas'], ['quince', 'Quinceañeros'], ['artistas', 'Artistas'],
-  ['modelaje', 'Modelaje'], ['deportes', 'Deportes'], ['detalles', 'Paisajes y detalles'],
+  ['modelaje', 'Modelaje'], ['deportes', 'Deportes'], ['eventos', 'Eventos'], ['detalles', 'Paisajes y detalles'],
 ] as const;
 const fotos = [
   { f: '/bodas/hero-boda', w: 1418, h: 1130, c: 'bodas', t: 'Boda', alt: 'El novio acaricia la cara de la novia frente al altar' },
-  { f: '/fotos/quince-rosas', w: 1580, h: 883, c: 'quince', t: 'Quinceañero', alt: 'Quinceañera sonriente ofrece un ramo de rosas rojas frente a una pared de rosas' },
+  { f: '/fotos/cantante-tarima', w: 1250, h: 983, c: 'artistas', t: 'Artista', alt: 'Cantante con camisa negra de malla y pantalón rojo frente a su banda' },
+  { f: '/fotos/quince-risa', w: 747, h: 1129, c: 'quince', t: 'Quinceañero', alt: 'Quinceañera con corona y guantes de encaje se ríe con un ramo de rosas blancas' },
   { f: '/fotos/carrera', w: 1418, h: 904, c: 'deportes', t: 'Carrera', alt: 'Corredor con el número 284 sube una cuesta adelante del grupo' },
+  { f: '/fotos/pasarela-roja', w: 753, h: 1133, c: 'modelaje', t: 'Modelaje', alt: 'Modelo en pasarela con vestido rojo pintado a mano y mangas transparentes' },
+  { f: '/fotos/publico', w: 1290, h: 1016, c: 'eventos', t: 'Público', alt: 'Público cantando en un concierto al aire libre, con gafas de sol' },
   { f: '/bodas/novia-salon', w: 754, h: 1137, c: 'bodas', t: 'Boda', alt: 'Novia de pie en el pasillo de un salón con candelabros y piso de mármol' },
-  { f: '/fotos/concierto', w: 1418, h: 1134, c: 'artistas', t: 'Artista', alt: 'Cantante con camisa a rayas canta con el brazo abierto hacia el público' },
+  { f: '/fotos/cantante-rubia', w: 1416, h: 1127, c: 'artistas', t: 'Artista', alt: 'Cantante rubia sonríe y extiende el micrófono hacia el público' },
   { f: '/fotos/vivero-amapola', w: 1582, h: 1053, c: 'detalles', t: 'Detalle', alt: 'Mujer en un vivero muestra una amapola amarilla en primer plano' },
+  { f: '/fotos/quince-rosas', w: 1580, h: 883, c: 'quince', t: 'Quinceañero', alt: 'Quinceañera sonriente ofrece un ramo de rosas rojas frente a una pared de rosas' },
+  { f: '/fotos/retrato-neon', w: 901, h: 1135, c: 'artistas', t: 'Artista', alt: 'Joven con camiseta blanca mira su celular bajo luz rosada y violeta' },
   { f: '/bodas/beso', w: 1574, h: 880, c: 'bodas', t: 'Boda', alt: 'Los novios se besan frente a un arco de flores blancas' },
   { f: '/fotos/corredora', w: 1411, h: 1130, c: 'deportes', t: 'Carrera', alt: 'Corredora con el número 39 sonríe antes de la carrera' },
-  { f: '/fotos/retrato-neon', w: 901, h: 1135, c: 'artistas', t: 'Artista', alt: 'Joven con camiseta blanca mira su celular bajo luz rosada y violeta' },
   { f: '/fotos/concierto-baile', w: 752, h: 1134, c: 'artistas', t: 'Artista', alt: 'Cantante con sombrero negro y gafas azules baila en tarima' },
-  { f: '/fotos/pasarela-roja', w: 753, h: 1133, c: 'modelaje', t: 'Modelaje', alt: 'Modelo en pasarela con vestido rojo pintado a mano y mangas transparentes' },
   { f: '/fotos/bandera', w: 1420, h: 1137, c: 'detalles', t: 'Paisaje', alt: 'Bandera de Puerto Rico ondeando frente a un árbol y un cielo nublado' },
+  { f: '/fotos/cantante-gafas', w: 1583, h: 1041, c: 'artistas', t: 'Artista', alt: 'Cantante calvo con gafas oscuras canta agarrado al micrófono' },
   { f: '/fotos/pasarela-novia', w: 743, h: 1134, c: 'modelaje', t: 'Modelaje', alt: 'Modelo con vestido de novia mira por encima del hombro frente a un arco iluminado' },
+  { f: '/fotos/concierto', w: 1418, h: 1134, c: 'artistas', t: 'Artista', alt: 'Cantante con camisa a rayas canta con el brazo abierto hacia el público' },
   { f: '/bodas/novia-padre', w: 1573, h: 1043, c: 'bodas', t: 'Boda', alt: 'La novia sonríe del brazo de su papá antes de la ceremonia' },
   { f: '/bodas/muelle', w: 1580, h: 1046, c: 'bodas', t: 'Boda', alt: 'Pareja de novios en un muelle frente a un lago al atardecer' },
 ];
@@ -43,7 +48,7 @@ const cuenta = (c: string) => (c === 'todas' ? fotos.length : fotos.filter((x) =
   <main id="main" class="pg">
     <header class="full cab">
       <h1 class="ti">Fotografía</h1>
-      <p>Bodas íntimas en las montañas, conciertos multitudinarios y todo lo que pasa entre medio. Cada evento lo trato como único.</p>
+      <p>Bodas, quinceañeros, tarimas, carreras, pasarelas y lo que llegue. Si se puede fotografiar, lo fotografío, y cada evento lo trato como único.</p>
     </header>
     <section class="full fg" aria-label="Galería de fotografía">
       <div class="fg-chips" role="radiogroup" aria-label="Filtrar por tipo">
@@ -51,24 +56,31 @@ const cuenta = (c: string) => (c === 'todas' ? fotos.length : fotos.filter((x) =
           <label class="fg-chip"><input type="radio" name="fg" value={c} checked={i === 0} />{t}<span>{cuenta(c)}</span></label>
         ))}
       </div>
+      <button type="button" class="fg-pres"><span aria-hidden="true">▶</span> Ver en presentación</button>
       <div class="fg-grid">
         {fotos.map((x, i) => (
           <figure class="fg-it" data-c={x.c}>
-            <button type="button" class="fg-b" data-full={`${x.f}.webp`} aria-label={`Ampliar: ${x.alt}`}>
+            <button type="button" class="fg-b" data-full={`${x.f}.webp`} data-th={`${x.f}-160.webp`} aria-label={`Ampliar: ${x.alt}`}>
               <img src={`${x.f}-700.webp`} srcset={`${x.f}-700.webp 700w, ${x.f}.webp ${x.w}w`} sizes="(max-width: 700px) 50vw, 33vw" width={x.w} height={x.h} alt={x.alt} loading={i < 3 ? 'eager' : 'lazy'} decoding="async" />
               <span class="fg-t">{x.t}</span>
             </button>
           </figure>
         ))}
       </div>
-      <p class="fg-pista">Toca una foto para verla en grande.</p>
+      <p class="fg-pista">Toca una foto para verla en grande, o mira todas en presentación.</p>
     </section>
     <dialog class="fg-lb" aria-label="Foto ampliada">
-      <img class="fg-lb-img" alt="" />
-      <p class="fg-lb-pie"><span class="fg-lb-t"></span><span class="fg-lb-n"></span></p>
-      <button type="button" class="fg-lb-x" aria-label="Cerrar">✕</button>
+      <img class="fg-lb-fondo" alt="" aria-hidden="true" />
+      <div class="fg-lb-barra" aria-hidden="true"><i></i></div>
+      <header class="fg-lb-top">
+        <p class="fg-lb-pie"><span class="fg-lb-t"></span><span class="fg-lb-n"></span></p>
+        <button type="button" class="fg-lb-play" aria-label="Reproducir presentación">▶</button>
+        <button type="button" class="fg-lb-x" aria-label="Cerrar">✕</button>
+      </header>
+      <div class="fg-lb-esc"><img class="fg-lb-img" alt="" /></div>
       <button type="button" class="fg-lb-ant" aria-label="Foto anterior">←</button>
       <button type="button" class="fg-lb-sig" aria-label="Foto siguiente">→</button>
+      <nav class="fg-lb-tira" aria-label="Todas las fotos"></nav>
     </dialog>
     <section class="full ga">
       <h2 class="h2">Galerías completas</h2>
@@ -114,7 +126,8 @@ const cuenta = (c: string) => (c === 'todas' ? fotos.length : fotos.filter((x) =
   .fg:has(input[value='artistas']:checked) .fg-it:not([data-c='artistas']),
   .fg:has(input[value='modelaje']:checked) .fg-it:not([data-c='modelaje']),
   .fg:has(input[value='deportes']:checked) .fg-it:not([data-c='deportes']),
-  .fg:has(input[value='detalles']:checked) .fg-it:not([data-c='detalles']) { display: none }
+  .fg:has(input[value='detalles']:checked) .fg-it:not([data-c='detalles']),
+  .fg:has(input[value='eventos']:checked) .fg-it:not([data-c='eventos']) { display: none }
   .fg-pista { margin-top: 6px; color: var(--muted); font-size: .9rem }
   @media (max-width: 700px) {
     .fg-grid { columns: 2 }
@@ -123,20 +136,45 @@ const cuenta = (c: string) => (c === 'todas' ? fotos.length : fotos.filter((x) =
     .fg-chip { flex: none }
     .fg-t { opacity: 1; transform: none; font-size: .66rem; left: 8px; bottom: 8px; padding: 4px 8px }
   }
-  /* Foto ampliada */
-  .fg-lb { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: var(--ink); color: var(--paper) }
-  .fg-lb[open] { display: grid; place-items: center }
+  .fg-pres { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 20px; padding: 0; border: 0; background: none; color: var(--paper); font-weight: 600; cursor: pointer }
+  .fg-pres span { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--flame); color: var(--ink); font-size: .8rem; transition: transform .2s }
+  .fg-pres:hover span { transform: scale(1.12) }
+  /* Foto ampliada: el fondo se tiñe con los colores de la foto; presentación con barra de tiempo y tira de miniaturas */
+  .fg-lb { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: var(--ink); color: var(--paper); overflow: hidden }
+  .fg-lb[open] { display: grid; grid-template-rows: auto 1fr auto }
   .fg-lb::backdrop { background: transparent }
-  .fg-lb-img { max-width: min(92vw, 1600px); max-height: 82dvh; object-fit: contain; border-radius: 8px; transition: opacity .2s }
-  .fg-lb-pie { position: absolute; left: 0; right: 0; bottom: 18px; display: flex; justify-content: center; gap: 14px; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase }
+  .fg-lb-fondo { position: absolute; inset: -10%; width: 120%; height: 120%; object-fit: cover; filter: blur(50px) saturate(1.5) brightness(.42); transition: opacity .5s; z-index: 0 }
+  .fg-lb > :not(.fg-lb-fondo) { position: relative; z-index: 1 }
+  .fg-lb-barra { position: absolute !important; top: 0; left: 0; right: 0; height: 3px; z-index: 3 !important }
+  .fg-lb-barra i { display: block; height: 100%; width: 0; background: var(--flame) }
+  .fg-lb.juega .fg-lb-barra i { animation: fg-barra var(--dur, 4.5s) linear forwards }
+  @keyframes fg-barra { to { width: 100% } }
+  .fg-lb-top { display: flex; align-items: center; gap: 10px; padding: 14px 16px }
+  .fg-lb-pie { flex: 1; display: flex; gap: 14px; margin: 0; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase }
   .fg-lb-n { opacity: .6 }
-  .fg-lb button { position: absolute; width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(245,240,232,.25); background: rgba(13,12,11,.6); color: var(--paper); font-size: 1.3rem; cursor: pointer }
+  .fg-lb-esc { display: grid; place-items: center; min-height: 0; overflow: hidden; padding: 0 clamp(12px, 6vw, 96px) }
+  .fg-lb-img { max-width: 100%; max-height: calc(100dvh - 170px); object-fit: contain; border-radius: 8px; box-shadow: 0 30px 80px rgba(0,0,0,.5) }
+  .fg-lb-img.entra { animation: fg-lb-entra .45s ease both }
+  @keyframes fg-lb-entra { from { opacity: 0; transform: scale(.97) } }
+  .fg-lb.juega .fg-lb-img.entra { animation: fg-lb-entra .45s ease both, fg-kb var(--dur, 4.5s) ease-out both }
+  @keyframes fg-kb { from { transform: scale(1) } to { transform: scale(1.05) } }
+  .fg-lb button { width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(245,240,232,.25); background: rgba(13,12,11,.5); color: var(--paper); font-size: 1.15rem; cursor: pointer; backdrop-filter: blur(6px) }
   .fg-lb button:hover { background: var(--flame); color: var(--ink); border-color: var(--flame) }
-  .fg-lb-x { top: 16px; right: 16px }
-  .fg-lb-ant { left: 16px; top: 50%; translate: 0 -50% }
-  .fg-lb-sig { right: 16px; top: 50%; translate: 0 -50% }
-  @media (max-width: 700px) { .fg-lb-ant, .fg-lb-sig { top: auto; bottom: 56px; translate: none } }
-  @media (prefers-reduced-motion: reduce) { .fg-it { animation: none } .fg-b img { transition: none } }
+  .fg-lb.juega .fg-lb-play { background: var(--flame); color: var(--ink); border-color: var(--flame) }
+  .fg-lb-ant, .fg-lb-sig { position: absolute !important; top: 50%; translate: 0 -50% }
+  .fg-lb-ant { left: 16px } .fg-lb-sig { right: 16px }
+  .fg-lb-tira { display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px 16px; scrollbar-width: none; justify-content: safe center }
+  .fg-lb-tira::-webkit-scrollbar { display: none }
+  .fg-lb-tira :global(button) { flex: none; width: 64px; height: 48px; padding: 0; border-radius: 6px; overflow: hidden; opacity: .45; border: 2px solid transparent; transition: opacity .2s, border-color .2s, transform .2s }
+  .fg-lb-tira :global(button:hover) { opacity: .85; background: none }
+  .fg-lb-tira :global(button[aria-current='true']) { opacity: 1; border-color: var(--flame); transform: translateY(-3px) }
+  .fg-lb-tira :global(img) { width: 100%; height: 100%; object-fit: cover; display: block }
+  @media (max-width: 700px) {
+    .fg-lb-ant, .fg-lb-sig { width: 40px !important; height: 40px !important; top: auto; bottom: 86px; translate: none }
+    .fg-lb-esc { padding: 0 8px 56px }
+    .fg-lb-tira :global(button) { width: 52px; height: 40px }
+  }
+  @media (prefers-reduced-motion: reduce) { .fg-it, .fg-lb-img.entra, .fg-lb.juega .fg-lb-img.entra { animation: none } .fg-b img { transition: none } }
   .h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.5rem, 6vw, 6rem); line-height: .95; margin-bottom: 24px }
   .ga { padding-top: var(--sec) }
   .ga-a { display: flex; flex-wrap: wrap; align-items: center; gap: 12px } .ga-a p { flex-basis: 100%; max-width: 56ch; color: var(--muted); font-size: var(--text-lg); margin-bottom: 8px }
@@ -148,40 +186,82 @@ const cuenta = (c: string) => (c === 'todas' ? fotos.length : fotos.filter((x) =
   @media (max-width: 700px) { .sv dl { grid-template-columns: 1fr } }
 </style>
 <script>
-  // Foto ampliada: recorre solo las fotos que se ven con el filtro puesto; flechas, teclado y deslizar con el dedo.
+  // Foto ampliada y presentación. Recorre solo las fotos que se ven con el filtro puesto.
   const lb = document.querySelector<HTMLDialogElement>('.fg-lb')!;
   const img = lb.querySelector<HTMLImageElement>('.fg-lb-img')!;
+  const fondo = lb.querySelector<HTMLImageElement>('.fg-lb-fondo')!;
+  const tira = lb.querySelector<HTMLElement>('.fg-lb-tira')!;
+  const play = lb.querySelector<HTMLButtonElement>('.fg-lb-play')!;
+  const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DUR = 4500;
   let lista: HTMLButtonElement[] = [];
   let i = 0;
+  let reloj = 0;
+
   const ver = (n: number) => {
     i = (n + lista.length) % lista.length;
     const b = lista[i];
     const chica = b.querySelector('img')!;
+    img.classList.remove('entra'); void img.offsetWidth; img.classList.add('entra');
     img.src = chica.currentSrc || chica.src; // lo que ya está cargado, al momento
     img.alt = chica.alt;
+    fondo.src = b.dataset.th!;
     const grande = new Image();
     grande.onload = () => { if (lista[i] === b) img.src = grande.src; };
     grande.src = b.dataset.full!;
     lb.querySelector('.fg-lb-t')!.textContent = b.querySelector('.fg-t')!.textContent;
     lb.querySelector('.fg-lb-n')!.textContent = `${i + 1} / ${lista.length}`;
+    tira.querySelectorAll('button').forEach((t, k) => t.setAttribute('aria-current', String(k === i)));
+    tira.children[i]?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: quieto ? 'auto' : 'smooth' });
+    if (lb.classList.contains('juega')) programar();
   };
-  document.querySelectorAll<HTMLButtonElement>('.fg-b').forEach((b) => b.addEventListener('click', () => {
+  const programar = () => {
+    clearTimeout(reloj);
+    const barra = lb.querySelector<HTMLElement>('.fg-lb-barra i')!;
+    barra.style.animation = 'none'; void barra.offsetWidth; barra.style.animation = '';
+    reloj = window.setTimeout(() => ver(i + 1), DUR);
+  };
+  const jugar = (si: boolean) => {
+    lb.classList.toggle('juega', si);
+    play.textContent = si ? '❚❚' : '▶';
+    play.setAttribute('aria-label', si ? 'Pausar presentación' : 'Reproducir presentación');
+    if (si) programar(); else clearTimeout(reloj);
+  };
+  const abrir = (desde: number, presentar: boolean) => {
     lista = [...document.querySelectorAll<HTMLButtonElement>('.fg-b')].filter((x) => x.offsetParent !== null);
-    ver(lista.indexOf(b));
+    tira.replaceChildren(...lista.map((b, k) => {
+      const t = document.createElement('button');
+      t.type = 'button';
+      t.setAttribute('aria-label', `Foto ${k + 1}`);
+      t.innerHTML = `<img src="${b.dataset.th}" alt="" loading="lazy">`;
+      t.addEventListener('click', () => ver(k));
+      return t;
+    }));
+    lb.style.setProperty('--dur', `${DUR}ms`);
     lb.showModal();
+    jugar(presentar);
+    ver(desde);
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('.fg-b').forEach((b) => b.addEventListener('click', () => {
+    abrir([...document.querySelectorAll<HTMLButtonElement>('.fg-b')].filter((x) => x.offsetParent !== null).indexOf(b), false);
   }));
+  document.querySelector('.fg-pres')!.addEventListener('click', () => abrir(0, true));
+  play.addEventListener('click', () => jugar(!lb.classList.contains('juega')));
   lb.querySelector('.fg-lb-x')!.addEventListener('click', () => lb.close());
   lb.querySelector('.fg-lb-ant')!.addEventListener('click', () => ver(i - 1));
   lb.querySelector('.fg-lb-sig')!.addEventListener('click', () => ver(i + 1));
-  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+  lb.addEventListener('close', () => jugar(false));
+  lb.addEventListener('click', (e) => { if (e.target === lb || (e.target as HTMLElement).classList.contains('fg-lb-esc')) lb.close(); });
   lb.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') ver(i - 1);
     if (e.key === 'ArrowRight') ver(i + 1);
+    if (e.key === ' ' && !(e.target instanceof HTMLButtonElement)) { e.preventDefault(); jugar(!lb.classList.contains('juega')); }
   });
   let x0 = 0;
   lb.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
   lb.addEventListener('touchend', (e) => {
     const dx = e.changedTouches[0].clientX - x0;
-    if (Math.abs(dx) > 50) ver(dx < 0 ? i + 1 : i - 1);
+    if (Math.abs(dx) > 50 && !tira.contains(e.target as Node)) ver(dx < 0 ? i + 1 : i - 1);
   });
 </script>
