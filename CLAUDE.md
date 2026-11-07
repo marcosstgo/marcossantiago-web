@@ -48,6 +48,24 @@ el kit** y después se copian aquí.
 - La firma «Funciona con Ventanilla» sale en la demo y en los sitios de clientes (por ejemplo cabezudodeleon.com,
   con `utm_source`), no en la hoja propia (`firma: false`).
 
+## Blog: portadas, ilustraciones y artículos automáticos (desde el 7-nov-2026)
+
+- **Portadas:** `scripts/blog-portadas.py` hace la ilustración de cada artículo (Gemini 2.5 flash image, sin letras, logos ni caras
+  reales), la lleva a la paleta del sitio (`a_paleta`: tinta, papel, flamboyán) y le pone grano. Salida: `src/assets/blog/<slug>.jpg`
+  (portada, la busca `src/lib/blog-portadas.ts` por slug) y `public/blog/compartir/<slug>.jpg` (1200x630 con el titular, og:image).
+  Crudas en `arte/blog-crudas/` (`--solo-color` reajusta sin volver a pagar). `--idea "scene"` da una escena propia; `IDEAS` en el
+  script guarda las de temas que el modelo insiste en dibujar con texto. ~4 centavos por imagen. Revisar siempre que no salga texto.
+- **Ilustraciones de páginas:** `scripts/ilustraciones.py <json> <carpeta>` con el mismo estilo. /servicios/ usa
+  `src/data/ilustraciones-servicios.json` → `src/assets/servicios/` (id `<categoría>` o `<categoría>--<slug del servicio>`).
+  Marcos: todo lo que necesite ilustración se hace así; lo que necesite foto real sale de sus fotos.
+- **Artículos automáticos:** `scripts/articulo-auto.py` (Claude Opus 5.5 con búsqueda y lectura web). Escoge tema en las áreas que
+  pidió Marcos, escribe, valida formato, exige ≥2 fuentes y ≤4 % de frases copiadas, una segunda pasada verifica en la web (sin
+  verificación no publica), hace la portada y la revisa, compila y hace push a `main`. Aviso a Marcos por Discord (publicado o por
+  qué no). Corre desde la copia `~/marcossantiago-blog-auto` (con su `.tools`, `.venv` y `node_modules`) con el crontab
+  `0 8 * * 2,5` (martes y viernes 8 AM). Llave en `~/.config/corillo/marcossantiago-web.env`. Registro: `logs/auto.log` de esa copia.
+  Costo medido: ~$2 por artículo. Probar sin publicar: `--dry-run`; tema propio: `--tema "idea"`.
+- La portada muestra los 5 artículos más nuevos con portada en una baraja que se baraja sola (`index.astro`, sección `.bl`).
+
 ## Estructura del proyecto
 
 ```
@@ -242,19 +260,9 @@ H2: Conclusión
 
 ## CSS disponible en artículos
 
-Los artículos heredan los estilos de `BlogPost.astro`. Los más útiles:
-
-| Variable CSS | Valor |
-|---|---|
-| `var(--accent)` | `#00bfff` — cyan |
-| `var(--white)` | `#e8f6ff` — texto claro |
-| `var(--muted)` | `#3a6070` — texto apagado |
-| `var(--border)` | `rgba(0,191,255,.08)` — bordes |
-| `var(--surface)` | `#071118` — fondo secundario |
-| `var(--mono)` | Space Mono |
-| `var(--display)` | Bebas Neue |
-
-Para grids visuales dentro del artículo, usar `color-mix(in srgb, var(--white) 3%, transparent)` como fondo y `var(--border)` para el borde — es el mismo look que los bloques de código.
+Los artículos heredan los estilos de `BlogPost.astro` (lenguaje nuevo: `--flame` para enlaces y acentos, subtítulos `<h2>` en
+`--display` mayúsculas, índice lateral que sale de los `<h2>`). Para bloques dentro del artículo usar `var(--surface)` de fondo y
+`var(--border)` de borde. El botón Copiar de abajo usa `var(--accent)`, que hoy es el mismo naranja.
 
 ---
 
