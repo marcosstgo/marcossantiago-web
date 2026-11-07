@@ -64,7 +64,7 @@ def ilustracion(meta):
         "used sparingly as a color only (do not draw flowers, flames or plants unless the topic is about them). "
         "The main subject must clearly show the article's topic. Tactile and cinematic: soft directional light, subtle film grain, "
         "bold simple composition with generous negative space, like a magazine cover photo-illustration: rich and detailed, not flat icons, pictograms or clip art. No neon, no blue, no purple. "
-        + (f"Scene: {meta['idea']}" if meta.get('idea') else f"Scene: {IDEAS[meta['slug']]}" if meta['slug'] in IDEAS else
+        + (f"Scene (draw it as a stylized editorial illustration, not a photograph; every object unbranded and blank): {meta['idea']}" if meta.get('idea') else f"Scene: {IDEAS[meta['slug']]}" if meta['slug'] in IDEAS else
            f"Topic (illustrate the idea, never write it): {_limpio(meta['titulo'])}. Context: {_limpio(meta['desc'])}"))
     for intento in range(3):  # a veces responde NO_IMAGE sin razón; al repetir sale
       r = httpx.post(f'https://generativelanguage.googleapis.com/v1beta/models/{MODELO}:generateContent',

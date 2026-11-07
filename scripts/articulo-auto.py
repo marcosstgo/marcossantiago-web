@@ -132,9 +132,9 @@ ESQUEMA_ART = {
         'tags': {'type': 'array', 'items': {'type': 'string'}},
         'tipo': {'type': 'string', 'enum': ['tutorial', 'recurso']},
         'busqueda': {'type': 'string', 'description': 'la búsqueda de Google que este artículo contesta'},
-        'escena_portada': {'type': 'string', 'description': 'in English: one concrete physical scene for the cover illustration '
-                           '(hands, tools, objects, places) that evokes the topic WITHOUT any text, labels, file names, letters, '
-                           'screens, logos or brand products'},
+        'escena_portada': {'type': 'string', 'description': 'in English: one simple, symbolic scene for an editorial cover '
+                           'illustration (hands, tools, objects, paper shapes) that evokes the topic WITHOUT any text, labels, file names, '
+                           'letters, screens, logos or branded products; think magazine illustration, not stock photo'},
         'fuentes': {'type': 'array', 'items': {'type': 'object', 'additionalProperties': False,
                     'required': ['url', 'titulo'], 'properties': {'url': {'type': 'string'}, 'titulo': {'type': 'string'}}}},
         'cuerpo_html': {'type': 'string'},
@@ -277,8 +277,9 @@ def portada(slug, escena):
         log('  portada:', r.stdout.strip() or r.stderr.strip()[-200:])
         img = REPO / 'src/assets/blog' / f'{slug}.jpg'
         if not img.exists(): continue
-        v = claude('Revisas portadas de un blog.', 'Esta ilustración va de portada. ¿Tiene letras, palabras, números, '
-                   'logotipos o marcas reconocibles, o la cara reconocible de una persona real? ok=true solo si no tiene nada de eso.',
+        v = claude('Revisas portadas de un blog.', 'Esta ilustración va de portada. Recházala (ok=false) solo si tiene palabras '
+                   'o letras que se puedan leer, números legibles, un logotipo o marca reconocible, o la cara reconocible de una '
+                   'persona real. Marquitas pequeñas, borrosas e ilegibles en un objeto no cuentan: esas se aceptan.',
                    ESQUEMA_PORTADA, herramientas=False, effort='low', imagen=base64.b64encode(img.read_bytes()).decode())
         log('  revisión de portada:', v)
         if v['ok']: return True
