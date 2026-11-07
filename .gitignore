@@ -47,3 +47,7 @@ public/obs-setting.png
 .wrangler/
 .tools/
 .dev.vars
+
+# Generador de artículos (copia ~/marcossantiago-blog-auto)
+.venv/
+logs/
