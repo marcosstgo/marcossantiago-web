@@ -1,9 +1,17 @@
-# Video de fotos tipo proyector de cine para el hero de marcossantiago.com
+# Video de fotos tipo proyector de cine («el efecto» que Marcos aprobó el 7-nov-2026 para el hero del inicio).
+# Acercamiento lento + paneo, vaivén de proyector, cambio que sube como cuadro de película con raya negra,
+# destello al encajar, manchas de luz naranja en algunos cambios, parpadeo y viñeta. El grano lo pone la página (CSS).
+# Uso: python3 -m venv /tmp/v && /tmp/v/bin/pip install numpy pillow
+#      /tmp/v/bin/python scripts/fotos-reel.py public/videos/fotos-reel.mp4 23
+#      ffmpeg -i public/videos/fotos-reel.mp4 -vf scale=854:480:flags=lanczos -c:v libx264 -preset slow -crf 25 \
+#        -pix_fmt yuv420p -movflags +faststart -an public/videos/fotos-reel-480.mp4
+# Para otro video: cambiar `shots` (fotos horizontales; foco x/y de 0 a 1) y `durs` (cuadros a 24 fps por foto).
 import sys, subprocess, random, math
 import numpy as np
 from PIL import Image, ImageFilter
 W, H, FPS = 1280, 720, 24
-R = '/home/corillo-adm/Proyectos/.ms-astro7/public'
+import os
+R = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'public')
 # (archivo, foco x, foco y, dirección del paneo)
 shots = [
   ('/bodas/hero-boda', .58, .38, 1),

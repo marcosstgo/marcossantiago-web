@@ -19,8 +19,8 @@ const figs = {
   video: await fig(video('1214473531').img),
 };
 const canales = [
-  { n: 1, src: '/hero-bg.mp4', m: '/hero-bg-480.mp4', t: ['Jowell &amp; Randy en vivo', 'Filmado con Lumix S5 IIX'] },
-  { n: 2, src: '/videos/fotos-reel.mp4', m: '/videos/fotos-reel-480.mp4', t: ['Fotografía', 'Bodas, tarimas y más'], nitido: true },
+  { n: 1, src: '/videos/fotos-reel.mp4', m: '/videos/fotos-reel-480.mp4', t: ['Fotografía', 'Bodas, tarimas y más'], nitido: true },
+  { n: 2, src: '/hero-bg.mp4', m: '/hero-bg-480.mp4', t: ['Jowell &amp; Randy en vivo', 'Filmado con Lumix S5 IIX'] },
   { n: 3, src: '/videos/marcos-video-web.mp4', t: ['Marcos Santiago', 'Manos a la obra'] },
   { n: 4, src: '/booth-360/360-Recap.mp4', t: ['360 Video Booth', 'En plena fiesta'] },
 ];
@@ -57,7 +57,7 @@ const areas = [
     <section class="h" data-hero>
       <div class="h-media">
         <Picture class="h-poster" src={heroImg} formats={['avif','webp']} widths={[640,1280]} sizes="100vw" alt="" loading="eager" fetchpriority="high" />
-        <video class="h-video" muted loop playsinline preload="none" aria-hidden="true" data-src="/hero-bg.mp4" data-src-m="/hero-bg-480.mp4"></video>
+        <video class:list={["h-video", { nitido: canales[0].nitido }]} muted loop playsinline preload="none" aria-hidden="true" data-src={canales[0].src} data-src-m={canales[0].m}></video>
         <div class="h-grano" aria-hidden="true"></div>
         <div class="h-static" aria-hidden="true"></div>
       </div>
