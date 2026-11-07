@@ -66,14 +66,15 @@ CLIENT = None
 COSTO = {'in': 0, 'out': 0, 'busquedas': 0}
 
 
-def claude(system, user, schema, herramientas=True, effort='high', imagen=None):
+def claude(system, user, schema, herramientas=True, effort='high', imagen=None, usos=5):
     """Una tarea con salida JSON. Con herramientas: búsqueda y lectura web del lado de Anthropic (se reanuda si pausa)."""
     contenido = [{'type': 'text', 'text': user}]
     if imagen:
         contenido.insert(0, {'type': 'image', 'source': {'type': 'base64', 'media_type': 'image/jpeg', 'data': imagen}})
     mensajes = [{'role': 'user', 'content': contenido}]
-    tools = [{'type': 'web_search_20260209', 'name': 'web_search', 'max_uses': 8},
-             {'type': 'web_fetch_20260209', 'name': 'web_fetch', 'max_uses': 8}] if herramientas else []
+    # Cada página leída se vuelve a mandar en cada paso: se recorta a 5 mil tokens y se limitan los usos.
+    tools = [{'type': 'web_search_20260209', 'name': 'web_search', 'max_uses': usos},
+             {'type': 'web_fetch_20260209', 'name': 'web_fetch', 'max_uses': usos, 'max_content_tokens': 5000}] if herramientas else []
     for _ in range(6):
         with CLIENT.beta.messages.stream(
             model=MODEL, max_tokens=64000, system=system, messages=mensajes,
@@ -139,8 +140,9 @@ ESQUEMA_ART = {
 
 ESQUEMA_REV = {
     'type': 'object', 'additionalProperties': False,
-    'required': ['aprobado', 'problemas', 'cuerpo_html', 'desc'],
+    'required': ['aprobado', 'problemas', 'titulo', 'cuerpo_html', 'desc'],
     'properties': {
+        'titulo': {'type': 'string', 'description': 'el título, corregido si ya no coincide con el cuerpo'},
         'aprobado': {'type': 'boolean', 'description': 'true si, con tus correcciones, todo lo que dice el artículo es correcto y se puede publicar'},
         'problemas': {'type': 'array', 'items': {'type': 'string'}},
         'cuerpo_html': {'type': 'string'}, 'desc': {'type': 'string'},
@@ -176,14 +178,15 @@ def revisar(a):
     user = f"""Eres el editor técnico. Verifica en la web cada dato comprobable de este artículo (versiones, precios,
 planes gratis y sus límites, requisitos, compatibilidad, nombres de menús y atajos, enlaces). Corrige lo que esté mal
 o desactualizado y quita lo que no se pueda confirmar. Mantén la voz, el formato HTML permitido y la extensión.
-Si el artículo no tiene arreglo (tema equivocado, mayormente falso, plagio evidente), aprobado=false.
+El título y la descripción tienen que coincidir con lo que quede en el cuerpo (si quitas un programa, quítalo también
+de ahí). Si el artículo no tiene arreglo (tema equivocado, mayormente falso, plagio evidente), aprobado=false.
 
 Título: {a['titulo']}
 Descripción: {a['desc']}
 Fuentes del autor: {json.dumps(a['fuentes'], ensure_ascii=False)}
 
 {a['cuerpo_html']}"""
-    return claude(ESTILO.format(hoy=dt.date.today().isoformat()), user, ESQUEMA_REV)
+    return claude(ESTILO.format(hoy=dt.date.today().isoformat()), user, ESQUEMA_REV, usos=4)
 
 
 # ───────────── comprobaciones locales ─────────────
@@ -250,7 +253,13 @@ def copia(a):
 def mdx(a):
     q = lambda s: json.dumps(s, ensure_ascii=False)
     return (f"---\nlayout: ../../layouts/BlogPost.astro\ntitle: {q(a['titulo'])}\ndate: {q(dt.date.today().isoformat())}\n"
-            f"desc: {q(a['desc'])}\ntags: {q(a['tags'])}\nslug: {q(a['slug'])}\n---\n\n{a['cuerpo_html'].strip()}\n")
+            f"desc: {q(a['desc'])}\ntags: {q(a['tags'])}\nslug: {q(a['slug'])}\n---\n\n{bloques(a['cuerpo_html'])}\n")
+
+
+def bloques(h):
+    """Un bloque por línea y línea en blanco entre bloques, como los artículos escritos a mano."""
+    h = re.sub(r'>\s*<(?=/?(p|h2|h3|ol|ul|li|table|thead|tbody|tr|blockquote)\b)', '>\n<', h.strip())
+    return re.sub(r'(</(p|h2|h3|ol|ul|table|blockquote)>)\n', r'\1\n\n', h)
 
 
 def portada(slug):
@@ -295,7 +304,7 @@ def main():
     r = revisar(a)
     for p in r['problemas']: log('   corregido:', p)
     if not r['aprobado']: raise RuntimeError('la revisión no lo aprobó: ' + '; '.join(r['problemas'])[:500])
-    a['cuerpo_html'], a['desc'] = r['cuerpo_html'], r['desc']
+    a['titulo'], a['cuerpo_html'], a['desc'] = r['titulo'], r['cuerpo_html'], r['desc']
     errores, palabras = validar(a)
     if errores: raise RuntimeError('formato tras revisión: ' + '; '.join(errores))
     ratio = copia(a)
