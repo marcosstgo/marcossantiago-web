@@ -6,6 +6,11 @@ import CtaBand from '../../components/CtaBand.astro';
 import { categories } from '../../data/servicios';
 import faq from '../../data/faq.json';
 import { wa } from '../../data/site';
+import { Image } from 'astro:assets';
+// Ilustraciones (scripts/ilustraciones.py + src/data/ilustraciones-servicios.json): <categoría> y <categoría>--<servicio>
+const ilus = import.meta.glob<{ default: ImageMetadata }>('../../assets/servicios/*.jpg', { eager: true });
+const slug = (t: string) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const img = (id: string) => ilus[`../../assets/servicios/${id}.jpg`]?.default;
 const ld = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -32,6 +37,14 @@ const cats = orden.map(id => categories.find(c => c.id === id)!);
       <h1 class="ti">Servicios</h1>
       <p>Precios de partida para que sepas por dónde empieza cada cosa. Cada proyecto lo cotizo contigo, directo y sin compromiso.</p>
     </header>
+    <ul class="fr full" aria-label="Categorías">
+      {cats.map((c, i) => img(c.id) && (
+        <li style={`--d:${i * 70}ms`}><a href={`#${c.id}`}>
+          <Image src={img(c.id)!} alt="" widths={[320, 560]} sizes="(max-width: 800px) 46vw, 20vw" loading={i < 3 ? 'eager' : 'lazy'} decoding="async" />
+          <span>{c.label}</span>
+        </a></li>
+      ))}
+    </ul>
     <nav class="sal full barra-pegada" aria-label="Ir a una categoría">
       {cats.map(c => <a href={`#${c.id}`}>{c.label}</a>)}
     </nav>
@@ -41,14 +54,20 @@ const cats = orden.map(id => categories.find(c => c.id === id)!);
           <h2 id={`t-${c.id}`}>{c.label}</h2>
           <p class="ca-tag">{c.tagline}</p>
           <p>{c.desc}</p>
+          {img(c.id) && (
+            <figure class="ca-f"><Image src={img(c.id)!} alt="" widths={[420, 760]} sizes="(max-width: 800px) 92vw, 30vw" loading="lazy" decoding="async" /></figure>
+          )}
         </div>
         <ul class="ca-l">
           {c.services.map(s => (
-            <li>
+            <li class={img(`${c.id}--${slug(s.name)}`) ? 'con-f' : undefined}>
+              {img(`${c.id}--${slug(s.name)}`) && <Image class="s-f" src={img(`${c.id}--${slug(s.name)}`)!} alt="" widths={[120, 240]} sizes="120px" loading="lazy" decoding="async" />}
+              <div class="s-c">
               <div class="s-t"><h3>{s.name}</h3><p class="s-p">{s.price}</p></div>
               <p class="s-d">{s.desc}</p>
               <p class="s-i">{s.includes.join(' · ')}</p>
               <a class="s-a" href={wa(s.wa)} target="_blank" rel="noopener" data-track={`servicio-${c.id}`} data-n={s.name} data-p={s.price} role="button" aria-pressed="false"><span class="s-m">+</span> <span class="s-l">Agregar a mi cotización</span></a>
+              </div>
             </li>
           ))}
         </ul>
@@ -121,6 +140,25 @@ const cats = orden.map(id => categories.find(c => c.id === id)!);
   .ca-tag { font-family: var(--serif); font-style: italic; font-size: 1.625rem; color: var(--flame); margin-bottom: 8px; line-height: 1.15 }
   .ca-l { list-style: none; border-top: 1px solid var(--border) }
   .ca-l li { padding-block: 22px; border-bottom: 1px solid var(--border); display: grid; gap: 6px }
+  .ca-l li.con-f { grid-template-columns: 120px minmax(0, 1fr); gap: 0 26px; align-items: start }
+  .s-c { display: grid; gap: 6px }
+  .s-f { width: 120px; height: 120px; object-fit: cover; border-radius: var(--radius); box-shadow: 0 0 0 1px var(--border); transition: scale .5s var(--ease), box-shadow .3s }
+  .ca-l li:hover .s-f { scale: 1.04; box-shadow: 0 0 0 1px var(--border-h) }
+  .ca-l li.sel .s-f { box-shadow: 0 0 0 2px #25d366 }
+  .ca-f { margin-top: 26px; max-width: 420px; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; box-shadow: 0 0 0 1px var(--border) }
+  .ca-f img { width: 100%; height: 100%; object-fit: cover }
+  /* Franja de arriba: las 5 categorías como banner que lleva a cada sección */
+  .fr { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding-bottom: 28px }
+  .fr a { position: relative; display: block; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; box-shadow: 0 0 0 1px var(--border) }
+  .fr img { width: 100%; height: 100%; object-fit: cover; transition: scale .7s var(--ease), filter .4s }
+  .fr a::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 45%, rgba(13, 12, 11, .85)) }
+  .fr span { position: absolute; left: 14px; bottom: 12px; z-index: 1; font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(1rem, 1.6vw, 1.5rem); line-height: 1; transition: color .2s }
+  .fr a:hover img { scale: 1.06 }
+  .fr a:hover span { color: var(--flame) }
+  @media (prefers-reduced-motion: no-preference) {
+    .fr li { animation: fr-entra .7s var(--ease) both; animation-delay: var(--d) }
+    @keyframes fr-entra { from { opacity: 0; translate: 0 18px } }
+  }
   .s-t { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 20px; align-items: baseline }
   .s-t h3 { font-size: clamp(1.25rem, 1.9vw, 1.625rem); font-weight: 600; letter-spacing: -.015em; line-height: 1.2 }
   .s-p { font-weight: 600; white-space: nowrap }
@@ -144,7 +182,14 @@ const cats = orden.map(id => categories.find(c => c.id === id)!);
   .tk-e { flex: 1; background: #25d366; color: #06230f; transition: background .2s } .tk-e:hover { background: #f3eee5 }
   .tk-n { font-size: .75rem; color: #aab6bc }
   :global(body.con-tk) { padding-bottom: 230px }
-  @media (max-width: 800px) { .ca { grid-template-columns: 1fr } .ca-h { position: static } }
+  @media (max-width: 800px) {
+    .ca { grid-template-columns: 1fr } .ca-h { position: static }
+    .ca-f { max-width: none; aspect-ratio: 16 / 9 }
+    .ca-l li.con-f { grid-template-columns: 76px minmax(0, 1fr); gap: 0 16px }
+    .s-f { width: 76px; height: 76px }
+    .fr { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut) }
+    .fr li { flex: 0 0 62%; scroll-snap-align: start }
+  }
   .fq { padding-block: var(--sec) }
   .fq-g { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.7fr); gap: 24px clamp(24px, 5vw, 96px) }
   .fq-t { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.5rem, 5vw, 5rem); line-height: .95 }

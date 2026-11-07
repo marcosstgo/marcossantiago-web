@@ -1,0 +1,107 @@
+{
+  "_nota": "Escenas para scripts/ilustraciones.py (ilustraciones de /servicios/). La clave es el id de la imagen: <categoría> o <categoría>--<servicio en slug>. Escenas en inglés, sin letras, pantallas ni marcas.",
+  "diseno": {
+    "aspecto": "4:3",
+    "escena": "A designer's desk seen from above: cut paper shapes, a pen nib, color swatch chips fanned out and a half-finished geometric emblem made of paper pieces, hands arranging the last piece."
+  },
+  "diseno--branding-identidad": {
+    "aspecto": "1:1",
+    "escena": "A single bold paper emblem (an abstract geometric mark) being stamped onto a cream card, with a small row of color chips beside it."
+  },
+  "diseno--diseno-digital": {
+    "aspecto": "1:1",
+    "escena": "Several floating rounded-square paper cards of different sizes arranged like a social media grid, one glowing in flame orange, a hand placing it."
+  },
+  "diseno--print-impresion": {
+    "aspecto": "1:1",
+    "escena": "A small stack of freshly printed cards and a folded flyer coming out of rollers of a press, ink droplet in flame orange."
+  },
+  "diseno--diseno-editorial": {
+    "aspecto": "1:1",
+    "escena": "An open magazine with blank columns and a large abstract photo block, pages fanned, a ribbon bookmark in flame orange."
+  },
+  "fotografia": {
+    "aspecto": "4:3",
+    "escena": "A modern mirrorless camera with a completely plain body (no nameplate, no writing) resting on a table in a beam of warm light, a few printed photographs scattered in front, a hand reaching for one."
+  },
+  "fotografia--fotografia-para-todo-tipo-de-eventos": {
+    "aspecto": "1:1",
+    "escena": "A camera lens reflecting string lights and confetti, silhouettes of people celebrating seen from behind."
+  },
+  "fotografia--quinceaneros": {
+    "aspecto": "1:1",
+    "escena": "A tiara resting on a folded ball gown fabric next to a camera, soft spotlight from above."
+  },
+  "fotografia--eventos-sociales": {
+    "aspecto": "1:1",
+    "escena": "A birthday cake with a single candle and a camera leaning beside it, balloons drawn as simple paper circles."
+  },
+  "fotografia--corporativo-marca": {
+    "aspecto": "1:1",
+    "escena": "A product box on a seamless paper backdrop lit by a softbox, a camera on a tripod pointing at it."
+  },
+  "fotografia--retratos": {
+    "aspecto": "1:1",
+    "escena": "A large window light falling on an empty wooden stool, a camera on a tripod waiting, a single flower in a vase."
+  },
+  "videografia": {
+    "aspecto": "4:3",
+    "escena": "A cinema camera on a small slider rail, a film reel and a clapperboard with blank slate, warm projector beam crossing the scene."
+  },
+  "videografia--video-de-boda": {
+    "aspecto": "1:1",
+    "escena": "Two wedding rings on a film strip, with a soft beam of projector light and petals."
+  },
+  "videografia--quinceaneros": {
+    "aspecto": "1:1",
+    "escena": "A cinema camera filming a spinning ball gown silhouette, motion trails drawn as paper ribbons."
+  },
+  "videografia--reels-contenido": {
+    "aspecto": "1:1",
+    "escena": "A smartphone shape made of blank cream paper standing vertical on a small tripod, a hand framing it, a flame orange play-shaped paper triangle floating."
+  },
+  "videografia--corporativo-marca": {
+    "aspecto": "1:1",
+    "escena": "Full-bleed scene, no border or frame: an empty office chair facing a cinema camera on a tripod, a softbox light glowing warm, a small microphone on a stand, dark room."
+  },
+  "videografia--documental": {
+    "aspecto": "1:1",
+    "escena": "Full-bleed scene: a videographer seen from behind with a camera on the shoulder, facing a winding mountain road at dusk; the landscape drawn only in near-black and cream tones with a flame orange sunset line, no green."
+  },
+  "booth360": {
+    "aspecto": "4:3",
+    "escena": "A round rotating platform with a camera arm sweeping around it, motion arcs drawn as glowing flame orange paper ribbons, party lights in the dark."
+  },
+  "booth360--360-video-booth-eventos": {
+    "aspecto": "1:1",
+    "escena": "A circular platform seen from above with a curved arm spinning around it, confetti and a light trail making a full circle."
+  },
+  "booth360--360-booth-bodas": {
+    "aspecto": "1:1",
+    "escena": "A couple's silhouettes holding hands on a round platform while a light trail circles them, petals in the air."
+  },
+  "booth360--360-booth-corporativo": {
+    "aspecto": "1:1",
+    "escena": "A round platform in front of a blank backdrop wall with geometric shapes, a light trail circling, stage spotlights."
+  },
+  "desarrollo": {
+    "aspecto": "4:3",
+    "escena": "Paper wireframe blocks being assembled into a website layout on a desk, a mechanical keyboard drawn as simple shapes, a flame orange thread connecting the blocks."
+  },
+  "desarrollo--plataformas-web": {
+    "aspecto": "1:1",
+    "escena": "Stacked layers of cream paper panels forming a layered website architecture, connected by thin flame orange lines."
+  },
+  "desarrollo--apps-herramientas": {
+    "aspecto": "1:1",
+    "escena": "A toolbox opened to reveal paper gears, sliders and toggle switches made of cut paper."
+  },
+  "desarrollo--e-commerce": {
+    "aspecto": "1:1",
+    "escena": "A small paper shopping bag next to a paper card and a tiny cardboard shipping box, a flame orange thread tying them."
+  },
+  "desarrollo--ventanilla-pagos-con-ath-movil": {
+    "aspecto": "1:1",
+    "escena": "A small shop window (ventanilla) with an awning made of paper, a hand passing a blank card through it, a flame orange spark of confirmation."
+  }
+}
