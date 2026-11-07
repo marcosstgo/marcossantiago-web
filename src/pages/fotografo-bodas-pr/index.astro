@@ -83,7 +83,7 @@ import '../../styles/landing.css';
   <main id="main" class="lp">
     <!-- ── Hero ── -->
     <section class="hero-section">
-      <img class="hero-bg-img" style="object-position: 52% 30%" src="/bodas/hero-boda.webp" srcset="/bodas/hero-boda-800.webp 800w, /bodas/hero-boda.webp 1418w" sizes="100vw" width="1418" height="1130" alt="" aria-hidden="true" fetchpriority="high" />
+      <img class="hero-bg-img hero-boda-img" src="/bodas/hero-boda.webp" srcset="/bodas/hero-boda-800.webp 800w, /bodas/hero-boda.webp 1418w" sizes="100vw" width="1418" height="1130" alt="" aria-hidden="true" fetchpriority="high" />
       <div class="hero-overlay" aria-hidden="true"></div>
       <div class="container hero-content">
         <p class="section-label">Fotógrafo de Bodas · Puerto Rico</p>
@@ -272,3 +272,15 @@ import '../../styles/landing.css';
 
   <LandingJs />
 </Base>
+
+<style>
+  .hero-boda-img { object-position: 55% 30%; }
+  @media (min-width: 900px) {
+    /* En pantalla ancha la pareja va a la derecha, al lado del título, no detrás */
+    .hero-boda-img {
+      left: auto; width: 64%; object-position: 50% 35%;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 35%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 35%);
+    }
+  }
+</style>
