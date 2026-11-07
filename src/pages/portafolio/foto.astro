@@ -16,23 +16,23 @@ const servicios = [
 ];
 // Fotos reales de Marcos. Para añadir una: ponerla en public/fotos/ (grande + versión -700) y sumarla aquí.
 const cats = [
-  ['todas', 'Todas'], ['bodas', 'Bodas'], ['quince', 'Quinceañeros'], ['conciertos', 'Conciertos'],
-  ['deportes', 'Deportes'], ['moda', 'Moda'], ['retratos', 'Retratos'], ['cultura', 'Cultura'], ['comercial', 'Comercial'],
+  ['todas', 'Todas'], ['bodas', 'Bodas'], ['quince', 'Quinceañeros'], ['artistas', 'Artistas'],
+  ['modelaje', 'Modelaje'], ['deportes', 'Deportes'], ['detalles', 'Paisajes y detalles'],
 ] as const;
 const fotos = [
   { f: '/bodas/hero-boda', w: 1418, h: 1130, c: 'bodas', t: 'Boda', alt: 'El novio acaricia la cara de la novia frente al altar' },
   { f: '/fotos/quince-rosas', w: 1580, h: 883, c: 'quince', t: 'Quinceañero', alt: 'Quinceañera sonriente ofrece un ramo de rosas rojas frente a una pared de rosas' },
   { f: '/fotos/carrera', w: 1418, h: 904, c: 'deportes', t: 'Carrera', alt: 'Corredor con el número 284 sube una cuesta adelante del grupo' },
   { f: '/bodas/novia-salon', w: 754, h: 1137, c: 'bodas', t: 'Boda', alt: 'Novia de pie en el pasillo de un salón con candelabros y piso de mármol' },
-  { f: '/fotos/concierto', w: 1418, h: 1134, c: 'conciertos', t: 'Concierto', alt: 'Cantante con camisa a rayas canta con el brazo abierto hacia el público' },
-  { f: '/fotos/vivero-amapola', w: 1582, h: 1053, c: 'comercial', t: 'Comercial', alt: 'Mujer en un vivero muestra una amapola amarilla en primer plano' },
+  { f: '/fotos/concierto', w: 1418, h: 1134, c: 'artistas', t: 'Artista', alt: 'Cantante con camisa a rayas canta con el brazo abierto hacia el público' },
+  { f: '/fotos/vivero-amapola', w: 1582, h: 1053, c: 'detalles', t: 'Detalle', alt: 'Mujer en un vivero muestra una amapola amarilla en primer plano' },
   { f: '/bodas/beso', w: 1574, h: 880, c: 'bodas', t: 'Boda', alt: 'Los novios se besan frente a un arco de flores blancas' },
   { f: '/fotos/corredora', w: 1411, h: 1130, c: 'deportes', t: 'Carrera', alt: 'Corredora con el número 39 sonríe antes de la carrera' },
-  { f: '/fotos/retrato-neon', w: 901, h: 1135, c: 'retratos', t: 'Retrato', alt: 'Joven con camiseta blanca mira su celular bajo luz rosada y violeta' },
-  { f: '/fotos/concierto-baile', w: 752, h: 1134, c: 'conciertos', t: 'Concierto', alt: 'Cantante con sombrero negro y gafas azules baila en tarima' },
-  { f: '/fotos/pasarela-roja', w: 753, h: 1133, c: 'moda', t: 'Moda', alt: 'Modelo en pasarela con vestido rojo pintado a mano y mangas transparentes' },
-  { f: '/fotos/bandera', w: 1420, h: 1137, c: 'cultura', t: 'Puerto Rico', alt: 'Bandera de Puerto Rico ondeando frente a un árbol y un cielo nublado' },
-  { f: '/fotos/pasarela-novia', w: 743, h: 1134, c: 'moda', t: 'Moda', alt: 'Modelo con vestido de novia mira por encima del hombro frente a un arco iluminado' },
+  { f: '/fotos/retrato-neon', w: 901, h: 1135, c: 'artistas', t: 'Artista', alt: 'Joven con camiseta blanca mira su celular bajo luz rosada y violeta' },
+  { f: '/fotos/concierto-baile', w: 752, h: 1134, c: 'artistas', t: 'Artista', alt: 'Cantante con sombrero negro y gafas azules baila en tarima' },
+  { f: '/fotos/pasarela-roja', w: 753, h: 1133, c: 'modelaje', t: 'Modelaje', alt: 'Modelo en pasarela con vestido rojo pintado a mano y mangas transparentes' },
+  { f: '/fotos/bandera', w: 1420, h: 1137, c: 'detalles', t: 'Paisaje', alt: 'Bandera de Puerto Rico ondeando frente a un árbol y un cielo nublado' },
+  { f: '/fotos/pasarela-novia', w: 743, h: 1134, c: 'modelaje', t: 'Modelaje', alt: 'Modelo con vestido de novia mira por encima del hombro frente a un arco iluminado' },
   { f: '/bodas/novia-padre', w: 1573, h: 1043, c: 'bodas', t: 'Boda', alt: 'La novia sonríe del brazo de su papá antes de la ceremonia' },
   { f: '/bodas/muelle', w: 1580, h: 1046, c: 'bodas', t: 'Boda', alt: 'Pareja de novios en un muelle frente a un lago al atardecer' },
 ];
@@ -111,12 +111,10 @@ const cuenta = (c: string) => (c === 'todas' ? fotos.length : fotos.filter((x) =
   @media (hover: hover) { .fg-grid:has(.fg-b:hover) .fg-b:not(:hover) img { filter: brightness(.45) saturate(.6) } }
   .fg:has(input[value='bodas']:checked) .fg-it:not([data-c='bodas']),
   .fg:has(input[value='quince']:checked) .fg-it:not([data-c='quince']),
-  .fg:has(input[value='conciertos']:checked) .fg-it:not([data-c='conciertos']),
+  .fg:has(input[value='artistas']:checked) .fg-it:not([data-c='artistas']),
+  .fg:has(input[value='modelaje']:checked) .fg-it:not([data-c='modelaje']),
   .fg:has(input[value='deportes']:checked) .fg-it:not([data-c='deportes']),
-  .fg:has(input[value='moda']:checked) .fg-it:not([data-c='moda']),
-  .fg:has(input[value='retratos']:checked) .fg-it:not([data-c='retratos']),
-  .fg:has(input[value='cultura']:checked) .fg-it:not([data-c='cultura']),
-  .fg:has(input[value='comercial']:checked) .fg-it:not([data-c='comercial']) { display: none }
+  .fg:has(input[value='detalles']:checked) .fg-it:not([data-c='detalles']) { display: none }
   .fg-pista { margin-top: 6px; color: var(--muted); font-size: .9rem }
   @media (max-width: 700px) {
     .fg-grid { columns: 2 }
