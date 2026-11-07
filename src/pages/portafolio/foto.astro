@@ -1,10 +1,8 @@
 ---
-import { Picture } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import CtaBand from '../../components/CtaBand.astro';
-import { video } from '../../lib/media';
 const servicios = [
   ['Bodas','Cobertura completa del día, con galería editada en alta resolución.'],
   ['Quinceañeros','Sesión de retratos y cobertura del evento: court, waltz y celebración.'],
@@ -16,8 +14,24 @@ const servicios = [
   ['Productos y comercial','Catálogos, e-commerce y publicidad, con luz de estudio o ambientada.'],
   ['Fotografía de calle','Proyectos personales del día a día en Puerto Rico.'],
 ];
-// Mientras llegan las fotos finales: escenas de coberturas reales.
-const esc = ['1075437696','822843800','873793066','1052549620','797698487','1214473531'].map(video);
+// Fotos reales de Marcos. Para añadir una: ponerla en public/fotos/ (grande + versión -700) y sumarla aquí.
+const cats = [
+  ['todas', 'Todas'], ['bodas', 'Bodas'], ['quince', 'Quinceañeros'], ['conciertos', 'Conciertos'],
+  ['deportes', 'Deportes'], ['comercial', 'Comercial'],
+] as const;
+const fotos = [
+  { f: '/bodas/hero-boda', w: 1418, h: 1130, c: 'bodas', t: 'Boda', alt: 'El novio acaricia la cara de la novia frente al altar' },
+  { f: '/fotos/quince-rosas', w: 1580, h: 883, c: 'quince', t: 'Quinceañero', alt: 'Quinceañera sonriente ofrece un ramo de rosas rojas frente a una pared de rosas' },
+  { f: '/fotos/carrera', w: 1418, h: 904, c: 'deportes', t: 'Carrera', alt: 'Corredor con el número 284 sube una cuesta adelante del grupo' },
+  { f: '/bodas/novia-salon', w: 754, h: 1137, c: 'bodas', t: 'Boda', alt: 'Novia de pie en el pasillo de un salón con candelabros y piso de mármol' },
+  { f: '/fotos/concierto', w: 1418, h: 1134, c: 'conciertos', t: 'Concierto', alt: 'Cantante con camisa a rayas canta con el brazo abierto hacia el público' },
+  { f: '/fotos/vivero-amapola', w: 1582, h: 1053, c: 'comercial', t: 'Comercial', alt: 'Mujer en un vivero muestra una amapola amarilla en primer plano' },
+  { f: '/bodas/beso', w: 1574, h: 880, c: 'bodas', t: 'Boda', alt: 'Los novios se besan frente a un arco de flores blancas' },
+  { f: '/fotos/corredora', w: 1411, h: 1130, c: 'deportes', t: 'Carrera', alt: 'Corredora con el número 39 sonríe antes de la carrera' },
+  { f: '/bodas/novia-padre', w: 1573, h: 1043, c: 'bodas', t: 'Boda', alt: 'La novia sonríe del brazo de su papá antes de la ceremonia' },
+  { f: '/bodas/muelle', w: 1580, h: 1046, c: 'bodas', t: 'Boda', alt: 'Pareja de novios en un muelle frente a un lago al atardecer' },
+];
+const cuenta = (c: string) => (c === 'todas' ? fotos.length : fotos.filter((x) => x.c === c).length);
 ---
 <Base title="Fotografía — Marcos Santiago" description="Fotografía profesional en Puerto Rico: bodas, quinceañeros, eventos corporativos, conciertos, retratos y más. Basado en Aibonito, PR.">
   <Nav />
@@ -26,13 +40,31 @@ const esc = ['1075437696','822843800','873793066','1052549620','797698487','1214
       <h1 class="ti">Fotografía</h1>
       <p>Bodas íntimas en las montañas, conciertos multitudinarios y todo lo que pasa entre medio. Cada evento lo trato como único.</p>
     </header>
-    <div class="full mos">
-      {esc.map((v, i) => (
-        <figure class={`m m${i}`}>
-          <Picture src={v.img} formats={['avif','webp']} widths={[640,1000,1400]} sizes="(max-width:700px) 100vw, 50vw" alt={v.title} loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
-        </figure>
-      ))}
-    </div>
+    <section class="full fg" aria-label="Galería de fotografía">
+      <div class="fg-chips" role="radiogroup" aria-label="Filtrar por tipo">
+        {cats.filter(([c]) => cuenta(c) > 0).map(([c, t], i) => (
+          <label class="fg-chip"><input type="radio" name="fg" value={c} checked={i === 0} />{t}<span>{cuenta(c)}</span></label>
+        ))}
+      </div>
+      <div class="fg-grid">
+        {fotos.map((x, i) => (
+          <figure class="fg-it" data-c={x.c}>
+            <button type="button" class="fg-b" data-full={`${x.f}.webp`} aria-label={`Ampliar: ${x.alt}`}>
+              <img src={`${x.f}-700.webp`} srcset={`${x.f}-700.webp 700w, ${x.f}.webp ${x.w}w`} sizes="(max-width: 700px) 50vw, 33vw" width={x.w} height={x.h} alt={x.alt} loading={i < 3 ? 'eager' : 'lazy'} decoding="async" />
+              <span class="fg-t">{x.t}</span>
+            </button>
+          </figure>
+        ))}
+      </div>
+      <p class="fg-pista">Toca una foto para verla en grande.</p>
+    </section>
+    <dialog class="fg-lb" aria-label="Foto ampliada">
+      <img class="fg-lb-img" alt="" />
+      <p class="fg-lb-pie"><span class="fg-lb-t"></span><span class="fg-lb-n"></span></p>
+      <button type="button" class="fg-lb-x" aria-label="Cerrar">✕</button>
+      <button type="button" class="fg-lb-ant" aria-label="Foto anterior">←</button>
+      <button type="button" class="fg-lb-sig" aria-label="Foto siguiente">→</button>
+    </dialog>
     <section class="full ga">
       <h2 class="h2">Galerías completas</h2>
       <div class="ga-a">
@@ -55,12 +87,50 @@ const esc = ['1075437696','822843800','873793066','1052549620','797698487','1214
   .cab { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 48px; padding-bottom: 28px }
   .ti { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(3.75rem, 15vw, 17rem); line-height: .84 }
   .cab p { max-width: 42ch; font-size: var(--text-lg); color: var(--muted) }
-  .mos { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(8px, 1vw, 14px) }
-  .m { overflow: hidden; border-radius: var(--radius); background: var(--surface); height: clamp(220px, 34vw, 560px) }
-  .m :global(picture) { display: contents }
-  .m :global(img) { width: 100%; height: 100%; object-fit: cover }
-  .m0 { grid-column: span 7 } .m1 { grid-column: span 5 } .m2 { grid-column: span 4 } .m3 { grid-column: span 8 } .m4 { grid-column: span 6 } .m5 { grid-column: span 6 }
-  @media (max-width: 700px) { .m { grid-column: 1 / -1 } }
+  /* Galería: los botones de arriba filtran al momento (sin JS); al pasar el ratón por una foto, las demás se apagan */
+  .fg-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px }
+  .fg-chip { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--border); border-radius: 999px; cursor: pointer; font-weight: 600; transition: background .2s, color .2s, border-color .2s }
+  .fg-chip input { position: absolute; opacity: 0; pointer-events: none }
+  .fg-chip span { font-size: .75em; opacity: .6 }
+  .fg-chip:hover { border-color: var(--flame) }
+  .fg-chip:has(input:checked) { background: var(--flame); border-color: var(--flame); color: var(--ink) }
+  .fg-chip:has(input:focus-visible) { outline: 2px solid var(--flame); outline-offset: 3px }
+  .fg-grid { columns: 3 300px; column-gap: clamp(8px, 1vw, 14px) }
+  .fg-it { break-inside: avoid; margin: 0 0 clamp(8px, 1vw, 14px); animation: fg-entra .45s ease both }
+  @keyframes fg-entra { from { opacity: 0; transform: translateY(14px) scale(.98) } }
+  .fg-b { position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--surface); border-radius: var(--radius); overflow: hidden; cursor: zoom-in }
+  .fg-b img { display: block; width: 100%; height: auto; transition: transform .6s ease, filter .3s }
+  .fg-t { position: absolute; left: 12px; bottom: 12px; padding: 5px 11px; border-radius: 999px; background: rgba(13,12,11,.72); color: var(--paper); font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s }
+  .fg-b:hover img, .fg-b:focus-visible img { transform: scale(1.04) }
+  .fg-b:hover .fg-t, .fg-b:focus-visible .fg-t { opacity: 1; transform: none }
+  @media (hover: hover) { .fg-grid:has(.fg-b:hover) .fg-b:not(:hover) img { filter: brightness(.45) saturate(.6) } }
+  .fg:has(input[value='bodas']:checked) .fg-it:not([data-c='bodas']),
+  .fg:has(input[value='quince']:checked) .fg-it:not([data-c='quince']),
+  .fg:has(input[value='conciertos']:checked) .fg-it:not([data-c='conciertos']),
+  .fg:has(input[value='deportes']:checked) .fg-it:not([data-c='deportes']),
+  .fg:has(input[value='comercial']:checked) .fg-it:not([data-c='comercial']) { display: none }
+  .fg-pista { margin-top: 6px; color: var(--muted); font-size: .9rem }
+  @media (max-width: 700px) {
+    .fg-grid { columns: 2 }
+    .fg-chips { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gut)); padding-inline: var(--gut); scrollbar-width: none }
+    .fg-chips::-webkit-scrollbar { display: none }
+    .fg-chip { flex: none }
+    .fg-t { opacity: 1; transform: none; font-size: .66rem; left: 8px; bottom: 8px; padding: 4px 8px }
+  }
+  /* Foto ampliada */
+  .fg-lb { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: var(--ink); color: var(--paper) }
+  .fg-lb[open] { display: grid; place-items: center }
+  .fg-lb::backdrop { background: transparent }
+  .fg-lb-img { max-width: min(92vw, 1600px); max-height: 82dvh; object-fit: contain; border-radius: 8px; transition: opacity .2s }
+  .fg-lb-pie { position: absolute; left: 0; right: 0; bottom: 18px; display: flex; justify-content: center; gap: 14px; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase }
+  .fg-lb-n { opacity: .6 }
+  .fg-lb button { position: absolute; width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(245,240,232,.25); background: rgba(13,12,11,.6); color: var(--paper); font-size: 1.3rem; cursor: pointer }
+  .fg-lb button:hover { background: var(--flame); color: var(--ink); border-color: var(--flame) }
+  .fg-lb-x { top: 16px; right: 16px }
+  .fg-lb-ant { left: 16px; top: 50%; translate: 0 -50% }
+  .fg-lb-sig { right: 16px; top: 50%; translate: 0 -50% }
+  @media (max-width: 700px) { .fg-lb-ant, .fg-lb-sig { top: auto; bottom: 56px; translate: none } }
+  @media (prefers-reduced-motion: reduce) { .fg-it { animation: none } .fg-b img { transition: none } }
   .h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.5rem, 6vw, 6rem); line-height: .95; margin-bottom: 24px }
   .ga { padding-top: var(--sec) }
   .ga-a { display: flex; flex-wrap: wrap; align-items: center; gap: 12px } .ga-a p { flex-basis: 100%; max-width: 56ch; color: var(--muted); font-size: var(--text-lg); margin-bottom: 8px }
@@ -71,3 +141,41 @@ const esc = ['1075437696','822843800','873793066','1052549620','797698487','1214
   .sv-m { margin-top: 28px }
   @media (max-width: 700px) { .sv dl { grid-template-columns: 1fr } }
 </style>
+<script>
+  // Foto ampliada: recorre solo las fotos que se ven con el filtro puesto; flechas, teclado y deslizar con el dedo.
+  const lb = document.querySelector<HTMLDialogElement>('.fg-lb')!;
+  const img = lb.querySelector<HTMLImageElement>('.fg-lb-img')!;
+  let lista: HTMLButtonElement[] = [];
+  let i = 0;
+  const ver = (n: number) => {
+    i = (n + lista.length) % lista.length;
+    const b = lista[i];
+    const chica = b.querySelector('img')!;
+    img.src = chica.currentSrc || chica.src; // lo que ya está cargado, al momento
+    img.alt = chica.alt;
+    const grande = new Image();
+    grande.onload = () => { if (lista[i] === b) img.src = grande.src; };
+    grande.src = b.dataset.full!;
+    lb.querySelector('.fg-lb-t')!.textContent = b.querySelector('.fg-t')!.textContent;
+    lb.querySelector('.fg-lb-n')!.textContent = `${i + 1} / ${lista.length}`;
+  };
+  document.querySelectorAll<HTMLButtonElement>('.fg-b').forEach((b) => b.addEventListener('click', () => {
+    lista = [...document.querySelectorAll<HTMLButtonElement>('.fg-b')].filter((x) => x.offsetParent !== null);
+    ver(lista.indexOf(b));
+    lb.showModal();
+  }));
+  lb.querySelector('.fg-lb-x')!.addEventListener('click', () => lb.close());
+  lb.querySelector('.fg-lb-ant')!.addEventListener('click', () => ver(i - 1));
+  lb.querySelector('.fg-lb-sig')!.addEventListener('click', () => ver(i + 1));
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+  lb.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') ver(i - 1);
+    if (e.key === 'ArrowRight') ver(i + 1);
+  });
+  let x0 = 0;
+  lb.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) ver(dx < 0 ? i + 1 : i - 1);
+  });
+</script>
