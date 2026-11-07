@@ -30,6 +30,8 @@ export const NAV = [
   { href: '/servicios/',        label: 'Servicios' },
   { href: '/sobre-mi/',         label: 'Sobre mí' },
   { href: '/blog/',             label: 'Blog' },
+  // Abre la hoja «Págale a Marcos» (Ventanilla) en cualquier página
+  { href: '/pagar/',            label: 'Pagar' },
 ];
 
 export const SOCIAL = [
