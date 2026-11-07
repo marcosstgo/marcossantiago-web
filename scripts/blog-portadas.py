@@ -11,7 +11,7 @@ Costo medido: ~4 centavos por ilustración (gemini-2.5-flash-image).
 
 Uso (venv con Pillow y httpx, p. ej. ~/corillo-news/venv/bin/python):
   set -a; . ~/.config/corillo/tokens.env; set +a
-  python scripts/blog-portadas.py [--forzar] [--solo-color] [--solo-compartir] slug1 slug2 ...   (sin slugs: todos los que faltan)
+  python scripts/blog-portadas.py [--forzar] [--solo-color] [--solo-compartir] [--idea "scene"] slug1 slug2 ...   (sin slugs: todos los que faltan)
 """
 import base64, io, json, os, random, re, sys
 from pathlib import Path
@@ -64,7 +64,7 @@ def ilustracion(meta):
         "used sparingly as a color only (do not draw flowers, flames or plants unless the topic is about them). "
         "The main subject must clearly show the article's topic. Tactile and cinematic: soft directional light, subtle film grain, "
         "bold simple composition with generous negative space, like a magazine cover photo-illustration: rich and detailed, not flat icons, pictograms or clip art. No neon, no blue, no purple. "
-        + (f"Scene: {IDEAS[meta['slug']]}" if meta['slug'] in IDEAS else
+        + (f"Scene: {meta['idea']}" if meta.get('idea') else f"Scene: {IDEAS[meta['slug']]}" if meta['slug'] in IDEAS else
            f"Topic (illustrate the idea, never write it): {_limpio(meta['titulo'])}. Context: {_limpio(meta['desc'])}"))
     for intento in range(3):  # a veces responde NO_IMAGE sin razón; al repetir sale
       r = httpx.post(f'https://generativelanguage.googleapis.com/v1beta/models/{MODELO}:generateContent',
@@ -170,10 +170,12 @@ def compartir(slug, meta):
 
 
 if __name__ == '__main__':
-    slugs = [a for a in sys.argv[1:] if not a.startswith('--')]
+    idea = sys.argv[sys.argv.index('--idea') + 1] if '--idea' in sys.argv else ''
+    slugs = [a for i, a in enumerate(sys.argv[1:], 1) if not a.startswith('--') and sys.argv[i - 1] != '--idea']
     archivos = [BLOG / f'{s}.mdx' for s in slugs] or sorted(BLOG.glob('*.mdx'))
     for a in archivos:
         meta = frontmatter(a)
+        if idea: meta['idea'] = idea  # escena que propone el generador de artículos (sin letras)
         try:
             estado = 'compartir' if '--solo-compartir' in sys.argv else portada(meta['slug'], meta, '--forzar' in sys.argv, '--solo-color' in sys.argv)
             print(f"{meta['slug'][:60]:60} {estado} · {compartir(meta['slug'], meta)}", flush=True)

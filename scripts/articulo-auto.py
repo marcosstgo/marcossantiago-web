@@ -73,7 +73,7 @@ def claude(system, user, schema, herramientas=True, effort='high', imagen=None, 
         contenido.insert(0, {'type': 'image', 'source': {'type': 'base64', 'media_type': 'image/jpeg', 'data': imagen}})
     mensajes = [{'role': 'user', 'content': contenido}]
     # Cada página leída se vuelve a mandar en cada paso: se recorta a 5 mil tokens y se limitan los usos.
-    tools = [{'type': 'web_search_20260209', 'name': 'web_search', 'max_uses': usos},
+    tools = [{'type': 'web_search_20260209', 'name': 'web_search', 'max_uses': usos + 3},
              {'type': 'web_fetch_20260209', 'name': 'web_fetch', 'max_uses': usos, 'max_content_tokens': 5000}] if herramientas else []
     for _ in range(6):
         with CLIENT.beta.messages.stream(
@@ -126,12 +126,15 @@ leíste. Si algo no lo pudiste confirmar, no lo afirmes. Fecha de hoy: {hoy}."""
 
 ESQUEMA_ART = {
     'type': 'object', 'additionalProperties': False,
-    'required': ['titulo', 'slug', 'desc', 'tags', 'tipo', 'busqueda', 'fuentes', 'cuerpo_html'],
+    'required': ['titulo', 'slug', 'desc', 'tags', 'tipo', 'busqueda', 'escena_portada', 'fuentes', 'cuerpo_html'],
     'properties': {
         'titulo': {'type': 'string'}, 'slug': {'type': 'string'}, 'desc': {'type': 'string'},
         'tags': {'type': 'array', 'items': {'type': 'string'}},
         'tipo': {'type': 'string', 'enum': ['tutorial', 'recurso']},
         'busqueda': {'type': 'string', 'description': 'la búsqueda de Google que este artículo contesta'},
+        'escena_portada': {'type': 'string', 'description': 'in English: one concrete physical scene for the cover illustration '
+                           '(hands, tools, objects, places) that evokes the topic WITHOUT any text, labels, file names, letters, '
+                           'screens, logos or brand products'},
         'fuentes': {'type': 'array', 'items': {'type': 'object', 'additionalProperties': False,
                     'required': ['url', 'titulo'], 'properties': {'url': {'type': 'string'}, 'titulo': {'type': 'string'}}}},
         'cuerpo_html': {'type': 'string'},
@@ -140,8 +143,9 @@ ESQUEMA_ART = {
 
 ESQUEMA_REV = {
     'type': 'object', 'additionalProperties': False,
-    'required': ['aprobado', 'problemas', 'titulo', 'cuerpo_html', 'desc'],
+    'required': ['aprobado', 'verificado_en_web', 'problemas', 'titulo', 'cuerpo_html', 'desc'],
     'properties': {
+        'verificado_en_web': {'type': 'boolean', 'description': 'true solo si de verdad pudiste buscar y leer fuentes en la web para comprobar los datos'},
         'titulo': {'type': 'string', 'description': 'el título, corregido si ya no coincide con el cuerpo'},
         'aprobado': {'type': 'boolean', 'description': 'true si, con tus correcciones, todo lo que dice el artículo es correcto y se puede publicar'},
         'problemas': {'type': 'array', 'items': {'type': 'string'}},
@@ -168,7 +172,8 @@ artículo claro en español gane. Varía el área respecto a los últimos artíc
 Artículos que ya existen (no repitas el tema ni un ángulo casi igual):
 {hechos}
 
-Investiga con la búsqueda y lee las páginas oficiales antes de escribir. Entre 900 y 1800 palabras.
+Investiga con la búsqueda y lee las páginas oficiales antes de escribir. Si la búsqueda no te da resultados, dilo
+dejando fuentes vacío: nunca escribas de memoria. Entre 900 y 1800 palabras.
 slug: minúsculas ASCII sin tildes ni ñ, con guiones, máximo 70 caracteres. desc: máximo 155 caracteres con la
 palabra clave. tags: 1 a 3 de esta lista: {', '.join(TAGS)}. fuentes: las URLs que de verdad leíste."""
     return claude(ESTILO.format(hoy=dt.date.today().isoformat()), user, ESQUEMA_ART)
@@ -264,10 +269,10 @@ def bloques(h):
     return re.sub(r'(</(p|h2|h3|ol|ul|table|blockquote)>)\n', r'\1\n\n', h)
 
 
-def portada(slug):
+def portada(slug, escena):
     py = sys.executable
     for intento in range(3):
-        r = subprocess.run([py, str(REPO / 'scripts/blog-portadas.py')] + (['--forzar'] if intento else []) + [slug],
+        r = subprocess.run([py, str(REPO / 'scripts/blog-portadas.py'), '--idea', escena] + (['--forzar'] if intento else []) + [slug],
                            text=True, capture_output=True, timeout=600, env=os.environ)
         log('  portada:', r.stdout.strip() or r.stderr.strip()[-200:])
         img = REPO / 'src/assets/blog' / f'{slug}.jpg'
@@ -297,6 +302,7 @@ def main():
     a = escribir(tema)
     log(f"   «{a['titulo']}» ({a['tipo']}) · busca: {a['busqueda']} · {len(a['fuentes'])} fuentes")
     errores, palabras = validar(a)
+    if len(a['fuentes']) < 2: errores.append(f"solo {len(a['fuentes'])} fuentes leídas")
     if errores: raise RuntimeError('formato: ' + '; '.join(errores))
     ratio = copia(a)
     log(f'2. formato bien ({palabras} palabras) · copia {ratio:.1%}')
@@ -305,6 +311,7 @@ def main():
     log('3. revisando datos…')
     r = revisar(a)
     for p in r['problemas']: log('   corregido:', p)
+    if not r['verificado_en_web']: raise RuntimeError('el revisor no pudo comprobar los datos en la web')
     if not r['aprobado']: raise RuntimeError('la revisión no lo aprobó: ' + '; '.join(r['problemas'])[:500])
     a['titulo'], a['cuerpo_html'], a['desc'] = r['titulo'], r['cuerpo_html'], r['desc']
     errores, palabras = validar(a)
@@ -315,7 +322,7 @@ def main():
     archivo = BLOG / f"{a['slug']}.mdx"
     archivo.write_text(mdx(a), encoding='utf-8')
     log('4. escrito', archivo.relative_to(REPO))
-    if not portada(a['slug']):
+    if not portada(a['slug'], a['escena_portada']):
         log('   portada sin aprobar: el artículo sale sin portada')
         for f in (REPO / 'src/assets/blog' / f"{a['slug']}.jpg", REPO / 'public/blog/compartir' / f"{a['slug']}.jpg"):
             f.unlink(missing_ok=True)
