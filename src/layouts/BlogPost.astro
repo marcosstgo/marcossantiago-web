@@ -22,6 +22,13 @@ const minRead    = Math.max(1, Math.ceil(
     .trim().split(/\s+/).filter(Boolean).length / 220
 ));
 
+// Índice: los <h2> del artículo (el script les pone id="s-1", "s-2"… en el mismo orden)
+const toc = [...rawContent.replace(/^---[\s\S]*?---/, '').matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>|^##\s+(.+)$/gm)]
+  .map(m => (m[1] ?? m[2]).replace(/<[^>]+>/g, '').trim()).filter(Boolean);
+const url = `https://marcossantiago.com/blog/${slug}/`;
+const waCompartir = `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}`;
+const waMarcos = `https://wa.me/17872439670?text=${encodeURIComponent(`Hola Marcos, leí «${title}» en tu blog y quiero cotizar un proyecto.`)}`;
+
 // Prev / Next
 const allModules = import.meta.glob('../pages/blog/*.mdx', { eager: true });
 const allPosts   = Object.values(allModules)
@@ -73,18 +80,30 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
         </figure>
       )}
 
-      <article class="post-body">
-        <slot />
-      </article>
+      <div class="post-grid">
+        <article class="post-body">
+          <slot />
+          <p class="post-autor">
+            <img src="/marcos-photo-280.webp" width="56" height="56" alt="" loading="lazy" decoding="async" />
+            <span><strong>Marcos Santiago</strong> Fotógrafo, videógrafo, diseñador y desarrollador en Aibonito, Puerto Rico. Escribo sobre lo que uso trabajando.</span>
+          </p>
+        </article>
 
-      <!-- Author card + CTA -->
-      <div class="author-card">
-        <div class="author-avatar">MS</div>
-        <div class="author-info">
-          <span class="author-name">Marcos Santiago</span>
-          <span class="author-bio">Diseñador, fotógrafo y desarrollador desde Aibonito, PR. Creando cosas visuales que comunican.</span>
-        </div>
-        <a href="/contacto/" class="author-cta">¿Trabajamos juntos? <span>→</span></a>
+        <aside class="post-aside">
+          <div class="aside-pega">
+            {toc.length > 1 && (
+              <nav class="toc" aria-label="En este artículo">
+                <p class="label">En este artículo</p>
+                <ol>{toc.map((t, i) => <li><a href={`#s-${i + 1}`}>{t}</a></li>)}</ol>
+              </nav>
+            )}
+            <div class="compartir">
+              <p class="label">Compartir</p>
+              <a class="btn whatsapp" href={waCompartir} target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+              <button class="btn ghost" type="button" data-copiar={url}>Copiar enlace</button>
+            </div>
+          </div>
+        </aside>
       </div>
 
       <!-- Prev / Next -->
@@ -108,6 +127,17 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
         </nav>
       )}
     </div>
+
+    <section class="pg-cierre">
+      <div class="container">
+        <h2 class="display">¿Lo hacemos <span class="it">juntos?</span></h2>
+        <p>Si prefieres que lo haga alguien que trabaja con esto todos los días, cuéntame tu proyecto: foto, video, diseño o web. Te cotizo sin compromiso.</p>
+        <div class="pg-acciones">
+          <a class="btn" href={waMarcos} target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp · 787-243-9670</a>
+          <a class="btn" href="/servicios/">Ver servicios →</a>
+        </div>
+      </div>
+    </section>
   </main>
   <Footer />
 </Base>
@@ -124,9 +154,7 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 }
 .read-progress span {
   display: block; height: 100%; width: 0;
-  background: linear-gradient(90deg,
-    var(--accent), color-mix(in srgb, var(--accent) 45%, #a855f7));
-  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 55%, transparent);
+  background: var(--flame);
   transition: width .1s linear;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -155,7 +183,7 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 .meta-sep { color: var(--dim); font-size: var(--text-2xs) }
 .post-tags { display: flex; gap: 6px; flex-wrap: wrap }
 .tag {
-  --c: var(--accent);
+  --c: var(--flame);
   display: inline-flex; align-items: center; gap: 6px;
   font-family: var(--mono); font-size: var(--text-2xs);
   letter-spacing: 1.5px; text-transform: uppercase;
@@ -167,28 +195,7 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 .tag::before {
   content: ''; width: 6px; height: 6px; border-radius: 50%;
   background: var(--c); flex-shrink: 0;
-  box-shadow: 0 0 6px color-mix(in srgb, var(--c) 55%, transparent);
 }
-[data-cat="Video"]          { --c: #6366f1 }
-[data-cat="Audio"]          { --c: #f59e0b }
-[data-cat="Fotografía"]     { --c: #ec4899 }
-[data-cat="Diseño"]         { --c: #8b5cf6 }
-[data-cat="Diseño Web"]     { --c: #a855f7 }
-[data-cat="Recursos"]       { --c: #14b8a6 }
-[data-cat="Desarrollo Web"] { --c: #3b82f6 }
-[data-cat="Desarrollo"]     { --c: #3b82f6 }
-[data-cat="Impresión"]      { --c: #f97316 }
-[data-cat="OBS"]            { --c: #ef4444 }
-[data-cat="Artículo"]       { --c: #10b981 }
-[data-cat="Edición"]        { --c: #818cf8 }
-[data-cat="IA"]             { --c: #06b6d4 }
-[data-cat="Colores"]        { --c: #f43f5e }
-[data-cat="Creatividad"]    { --c: #eab308 }
-[data-cat="Instagram"]      { --c: #d946ef }
-[data-cat="Landscape"]      { --c: #22c55e }
-[data-cat="Games"]          { --c: #84cc16 }
-[data-cat="Técnicas"]       { --c: #64748b }
-[data-cat="LUTS"]           { --c: #0ea5e9 }
 .post-title {
   font-family: var(--display); font-weight: 800;
   font-size: clamp(2.6rem, 6.4vw, 6rem);
@@ -204,18 +211,19 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 }
 
 /* :global() — slot content doesn't inherit Astro scoped classes */
-:global(.post-body h2),
-:global(.post-body h3) {
-  font-family: var(--display);
-  letter-spacing: 2px; color: var(--white);
-  margin: 48px 0 12px;
+:global(.post-body h2) {
+  font-family: var(--display); font-weight: 800; text-transform: uppercase;
+  font-size: clamp(2rem, 3.4vw, 3rem); line-height: .96; letter-spacing: -.005em; color: var(--white);
+  margin: 72px 0 20px;
 }
-:global(.post-body h2) { font-size: clamp(1.8rem, 3vw, 2.8rem) }
-:global(.post-body h3) { font-size: clamp(1.3rem, 2.2vw, 1.9rem) }
+:global(.post-body h3) {
+  font-family: var(--body); font-weight: 700; font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+  line-height: 1.25; letter-spacing: -.01em; color: var(--white); margin: 40px 0 12px;
+}
 :global(.post-body p)  { margin-bottom: 20px }
 :global(.post-body strong) { color: var(--white) }
 :global(.post-body em) { color: color-mix(in srgb, var(--white) 70%, transparent) }
-:global(.post-body a)  { color: var(--accent); text-decoration: underline; text-underline-offset: 3px }
+:global(.post-body a)  { color: var(--flame); text-decoration: underline; text-underline-offset: 3px }
 
 :global(.post-body ul),
 :global(.post-body ol) { list-style: none; padding-left: 0; margin-bottom: 24px }
@@ -283,50 +291,30 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 :global(.post-body tr:last-child td) { border-bottom: none }
 :global(.post-body tr:hover td) { background: color-mix(in srgb, var(--white) 3%, transparent) }
 
-/* ── Author card ── */
-.author-card {
-  max-width: 72ch;
-  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
-  margin-top: 56px; padding: 28px;
-  border-radius: var(--radius);
-  background: var(--surface); border: 1px solid var(--border);
-}
-.author-avatar {
-  width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--display); font-size: 1.1rem; letter-spacing: 2px;
-  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 60%, #7c3aed));
-  color: #fff;
-}
-.author-info {
-  display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0;
-}
-.author-name {
-  font-family: var(--mono); font-size: var(--text-xs);
-  letter-spacing: 2px; text-transform: uppercase; color: var(--white);
-}
-.author-bio {
-  font-size: var(--text-sm); color: var(--muted); line-height: 1.6;
-}
-.author-cta {
-  font-family: var(--mono); font-size: var(--text-xs);
-  letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
-  padding: 10px 20px; border-radius: 8px;
-  background: var(--accent); color: #080808;
-  white-space: nowrap; flex-shrink: 0;
-  transition: opacity .2s;
-}
-.author-cta:hover { opacity: .85 }
-.author-cta span { transition: transform .2s ease; display: inline-block }
-.author-cta:hover span { transform: translateX(3px) }
-@media (max-width: 600px) {
-  .author-card { flex-direction: column; align-items: flex-start }
-  .author-cta { width: 100%; text-align: center; justify-content: center }
+/* ── Columna lateral: índice que sigue la lectura y compartir ── */
+.post-grid { display: grid; grid-template-columns: minmax(0, 72ch) minmax(220px, 300px); justify-content: space-between; gap: 64px; align-items: start }
+.post-aside { height: 100% }
+.aside-pega { position: sticky; top: 100px; display: grid; gap: 36px }
+body:has(.nav.oculto) .aside-pega { top: 32px }
+.toc .label, .compartir .label { color: var(--dim); margin-bottom: 14px }
+.toc ol { list-style: none; border-left: 1px solid var(--border); display: grid }
+.toc a { display: block; padding: 7px 0 7px 16px; margin-left: -1px; border-left: 2px solid transparent; color: var(--muted); font-size: .9rem; line-height: 1.35; transition: color .2s, border-color .2s }
+.toc a:hover { color: var(--white) }
+.toc a[aria-current="true"] { color: var(--white); border-left-color: var(--flame) }
+.compartir { display: grid; gap: 10px; justify-items: start }
+.compartir .btn { min-height: 42px; padding: 9px 18px }
+.post-autor { display: flex; gap: 16px; align-items: center; margin-top: 56px !important; padding-top: 28px; border-top: 1px solid var(--border); font-size: var(--text-sm) !important; color: var(--muted) }
+.post-autor img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; filter: grayscale(1); flex-shrink: 0 }
+.post-autor strong { display: block; color: var(--white); font-size: 1rem; margin-bottom: 2px }
+@media (max-width: 1100px) {
+  .post-grid { grid-template-columns: minmax(0, 1fr) }
+  .post-aside { height: auto }
+  .aside-pega { position: static }
+  .toc { display: none }
 }
 
 /* ── Prev / Next ── */
 .post-nav {
-  max-width: 72ch;
   border-top: 1px solid var(--border);
   margin-top: 64px; padding-top: 40px; padding-bottom: 80px;
 }
@@ -336,12 +324,12 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 @media (max-width: 600px) { .post-nav-inner { grid-template-columns: 1fr } }
 .nav-post {
   display: flex; flex-direction: column; gap: 6px;
-  padding: 20px; border-radius: 12px;
+  padding: 20px; border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--surface);
   transition: border-color .2s, background .2s;
 }
-.nav-post:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--surface)) }
+.nav-post:hover { border-color: var(--flame); background: color-mix(in srgb, var(--flame) 6%, var(--surface)) }
 .nav-next { text-align: right }
 .nav-label {
   font-family: var(--mono); font-size: var(--text-2xs);
@@ -369,4 +357,24 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
     window.addEventListener('resize', update);
     update();
   }
+
+  // Índice: id a cada <h2> y marca la sección que se está leyendo.
+  const enlaces = [...document.querySelectorAll<HTMLAnchorElement>('.toc a')];
+  const hs = [...document.querySelectorAll<HTMLElement>('.post-body h2')];
+  hs.forEach((h, i) => { h.id ||= `s-${i + 1}`; h.style.scrollMarginTop = '100px' });
+  if (enlaces.length && 'IntersectionObserver' in window) {
+    const marca = (id: string) => enlaces.forEach(a => a.setAttribute('aria-current', String(a.hash === '#' + id)));
+    const io = new IntersectionObserver(es => {
+      const vis = es.filter(e => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (vis) marca(vis.target.id);
+    }, { rootMargin: '0px 0px -70% 0px' });
+    hs.forEach(h => io.observe(h));
+  }
+
+  // Copiar enlace
+  document.querySelectorAll<HTMLButtonElement>('[data-copiar]').forEach(b => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copiar!); b.textContent = '✓ Copiado' }
+    catch { b.textContent = b.dataset.copiar! }
+    setTimeout(() => { b.textContent = 'Copiar enlace' }, 2200);
+  }));
 </script>
