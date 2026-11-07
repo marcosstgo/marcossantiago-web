@@ -20,8 +20,9 @@ const figs = {
 };
 const canales = [
   { n: 1, src: '/hero-bg.mp4', m: '/hero-bg-480.mp4', t: ['Jowell &amp; Randy en vivo', 'Filmado con Lumix S5 IIX'] },
-  { n: 2, src: '/videos/marcos-video-web.mp4', t: ['Marcos Santiago', 'Manos a la obra'] },
-  { n: 3, src: '/booth-360/360-Recap.mp4', t: ['360 Video Booth', 'En plena fiesta'] },
+  { n: 2, src: '/videos/fotos-reel.mp4', m: '/videos/fotos-reel-480.mp4', t: ['Fotografía', 'Bodas, tarimas y más'], nitido: true },
+  { n: 3, src: '/videos/marcos-video-web.mp4', t: ['Marcos Santiago', 'Manos a la obra'] },
+  { n: 4, src: '/booth-360/360-Recap.mp4', t: ['360 Video Booth', 'En plena fiesta'] },
 ];
 const historia = [
   { a: '2001', t: 'El código primero.', d: 'Estudié Ciencias de Computadoras y una maestría en Comercio Electrónico. Aprendí a convertir ideas en soluciones que funcionan.' },
@@ -68,7 +69,7 @@ const areas = [
         <a class="h-dir" href="#director">¿Qué tienes en mente? →</a>
         <div class="h-ch" role="group" aria-label="Cambiar el video de fondo">
           {canales.map((c, i) => (
-            <button type="button" aria-pressed={i === 0 ? 'true' : 'false'} aria-label={`Canal ${c.n}`} data-src={c.src} data-m={c.m ?? c.src} data-t={c.t.join('<br />')}>{c.n}</button>
+            <button type="button" aria-pressed={i === 0 ? 'true' : 'false'} aria-label={`Canal ${c.n}`} data-src={c.src} data-m={c.m ?? c.src} data-t={c.t.join('<br />')} data-nitido={c.nitido ? '' : undefined}>{c.n}</button>
           ))}
         </div>
         <p id="h-cr"><Fragment set:html={canales[0].t.join('<br />')} /></p>
@@ -217,6 +218,7 @@ const areas = [
       bs.forEach(function (x) { x.setAttribute('aria-pressed', x === b) });
       st.classList.add('on'); cr.innerHTML = b.dataset.t;
       v.src = innerWidth < 760 ? b.dataset.m : b.dataset.src;
+      v.classList.toggle('nitido', 'nitido' in b.dataset); // las fotos van sin el desenfoque que lleva el video
       var fin = function () { v.classList.add('on'); setTimeout(function () { st.classList.remove('on') }, 180) };
       v.addEventListener('playing', fin, { once: true });
       v.play().catch(fin);
@@ -254,6 +256,7 @@ const areas = [
   @keyframes h-grano { 0% { translate: 0 0 } 20% { translate: -47px 31px } 40% { translate: 62px -58px } 60% { translate: -83px -24px } 80% { translate: 29px 76px } }
   .h-video { filter: blur(.8px) saturate(1.12) contrast(1.06); object-fit: cover; opacity: 0; transition: opacity 1s }
   .h-video:global(.on) { opacity: 1 }
+  .h-video:global(.nitido) { filter: saturate(1.05) }
   .h-t { position: relative; z-index: 3; width: 100%; padding: 0 var(--gut) clamp(14px, 2vw, 26px); font-weight: inherit }
   .h-dir { display: block; width: fit-content; margin: 0 0 10px auto; padding: 10px 16px; border-radius: 99px; background: var(--flame); color: #0d0c0b; font-size: .9375rem; font-weight: 700; line-height: 1.1; transition: scale .2s var(--ease), background .4s }
   .h-dir:hover { scale: 1.04 }
