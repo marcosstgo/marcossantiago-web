@@ -12,8 +12,8 @@
     {
       "binding": "DB",
       "database_name": "marcossantiago-pagos",
-      // Se llena después de: npx wrangler d1 create marcossantiago-pagos
-      "database_id": "PENDIENTE"
+      // Creada el 7-nov-2026 (npx wrangler d1 create marcossantiago-pagos)
+      "database_id": "7047898a-60e0-4826-94ff-0614b8e3ec4e"
     }
   ],
   // Cada minuto completa los pagos aprobados cuyo cliente cerró la página

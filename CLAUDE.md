@@ -40,7 +40,11 @@ el kit** y después se copian aquí.
   `global.css` (`.pay`). Cualquier enlace a `/pagar/` abre la hoja; con cantidad: `/pagar/?monto=250&concepto=deposito`.
 - `pagos/`: Worker aparte `marcossantiago-pagos` (ruta `marcossantiago.com/api/pago/ath/*`, D1, cron cada minuto,
   aviso por Telegram) porque Pages no tiene cron. **No lo publica el workflow**: se publica a mano desde `pagos/`
-  (`pagos/README.md`). Mientras no esté en marcha, el botón real de ATH dice «Pronto».
+  (`pagos/README.md`). **En marcha desde el 7-nov-2026**: D1 `marcossantiago-pagos`
+  (7047898a-60e0-4826-94ff-0614b8e3ec4e), llaves de ATH Business puestas, sin Telegram (Marcos ve el pago en su app
+  ATH Business con concepto y referencia). Token de Cloudflare `ventanilla-marcossantiago` (Workers, D1, rutas de
+  marcossantiago.com) en `~/.config/corillo/ventanilla-ms.env`; copia cifrada en `Corillo/server/secretos/ventanilla-marcossantiago.env.age`.
+  Publicar el Worker desde el servidor: `set -a; . ~/.config/corillo/ventanilla-ms.env; set +a; CLOUDFLARE_API_TOKEN=$CLOUDFLARE_WORKERS_TOKEN npx wrangler@4 deploy`.
 - La firma «Funciona con Ventanilla» sale en la demo y en los sitios de clientes (por ejemplo cabezudodeleon.com,
   con `utm_source`), no en la hoja propia (`firma: false`).
 
