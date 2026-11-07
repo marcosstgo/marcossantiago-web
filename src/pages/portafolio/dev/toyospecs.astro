@@ -3,181 +3,210 @@ import Base from '../../../layouts/Base.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/Footer.astro';
 
-const stack = ['WordPress', 'WooCommerce', 'LiveCanvas', 'WholesaleX B2B', 'SEO Técnico'];
+const stack = ["WordPress", "WooCommerce", "LiveCanvas", "WholesaleX B2B", "SEO Técnico"];
 ---
 <Base
   title="Caso de estudio: Toyo-Specs — Marcos Santiago"
   description="Modernización de la tienda en línea de un distribuidor de piezas genuinas Toyota en Puerto Rico — catálogo reorganizado por modelo y registro de cuentas mayoristas."
 >
   <Nav />
-  <main id="main" class="case" style="--c:#dc2626; padding-top:120px">
-    <div class="container">
-      <a href="/portafolio/dev/" class="back-link">← Portafolio</a>
+  <main id="main" class="cs" style="--marca:#dc2626">
+    <!-- ── Portada: título grande como el resto del sitio ── -->
+    <section class="cs-hero container">
+      <a href="/portafolio/dev/" class="cs-volver">← Portafolio</a>
+      <p class="label cs-eyebrow"><span class="cs-punto" aria-hidden="true"></span> Caso de estudio · Sitio web para cliente · En vivo · 2026</p>
+      <h1 class="display cs-titulo">Toyo-Specs</h1>
+      <p class="cs-lema">Modernización de la tienda en línea de un distribuidor de piezas genuinas, de reemplazo y japonesas <span class="it">para Toyota en Puerto Rico.</span></p>
+      <ul class="cs-stack" aria-label="Herramientas">
+        {stack.map(t => <li>{t}</li>)}
+      </ul>
+    </section>
 
-      <div class="case-head">
-        <div>
-          <p class="case-label">Caso de estudio · Sitio web para cliente</p>
-          <h1 class="case-title">Toyo-Specs</h1>
-          <p class="case-tagline">Modernización de la tienda en línea de un distribuidor de piezas genuinas, de reemplazo y japonesas para Toyota en Puerto Rico.</p>
-        </div>
-        <div class="case-meta">
-          <span class="case-status live">Live</span>
-          <span class="case-year">2026</span>
-        </div>
+    <!-- ── Visor: tocas una pestaña y cambia la pantalla ── -->
+    <section class="cs-visor container" aria-label="Pantallas del proyecto">
+      <div class="cs-tabs" role="radiogroup" aria-label="Ver pantalla">
+          <label><input type="radio" name="visor" value="inicio" checked /><span>Inicio</span></label>
+          <label><input type="radio" name="visor" value="tienda" /><span>Tienda</span></label>
+          <label><input type="radio" name="visor" value="producto" /><span>Producto</span></label>
+          <label><input type="radio" name="visor" value="movil" /><span>Celular</span></label>
       </div>
-
-      <div class="case-tags">
-        {stack.map(t => <span class="tag">{t}</span>)}
+      <div class="cs-vistas">
+          <figure class="cs-vista" data-v="inicio">
+            <div class="cs-nav"><span class="cs-bolas" aria-hidden="true"><i></i><i></i><i></i></span><span class="cs-url">Toyo-Specs</span></div>
+            <img src="/portfolio-cases/toyospecs/home-hero.webp" alt="Página de inicio de Toyo-Specs, rediseñada" width="1200" height="683" loading="eager" decoding="async" fetchpriority="high" />
+            <figcaption>La página de inicio, rediseñada.</figcaption>
+          </figure>
+          <figure class="cs-vista" data-v="tienda">
+            <div class="cs-nav"><span class="cs-bolas" aria-hidden="true"><i></i><i></i><i></i></span><span class="cs-url">Toyo-Specs</span></div>
+            <img src="/portfolio-cases/toyospecs/store.webp" alt="Catálogo de Toyo-Specs organizado por categoría" width="1200" height="683" loading="lazy" decoding="async" />
+            <figcaption>El catálogo, organizado por categoría.</figcaption>
+          </figure>
+          <figure class="cs-vista" data-v="producto">
+            <div class="cs-nav"><span class="cs-bolas" aria-hidden="true"><i></i><i></i><i></i></span><span class="cs-url">Toyo-Specs</span></div>
+            <img src="/portfolio-cases/toyospecs/product.webp" alt="Ficha de producto individual de Toyo-Specs" width="1200" height="683" loading="lazy" decoding="async" />
+            <figcaption>La ficha de cada pieza.</figcaption>
+          </figure>
+          <figure class="cs-vista cs-vista-movil" data-v="movil">
+            <div class="cs-tel"><img src="/portfolio-cases/toyospecs/home-mobile.webp" alt="Vista móvil de Toyo-Specs" width="600" height="1200" loading="lazy" decoding="async" /></div>
+            <figcaption>En el celular, donde ocurre la mayoría de las búsquedas.</figcaption>
+          </figure>
       </div>
+    </section>
 
-      <img
-        src="/portfolio-cases/toyospecs/home-hero.webp"
-        alt="Página de inicio de Toyo-Specs, rediseñada"
-        class="case-hero-img"
-        width="1200" height="683" loading="eager"
-      />
-
-      <div class="case-grid">
-        <section class="case-col">
-          <h2 class="case-h2">El reto</h2>
+    <!-- ── Reto y enfoque ── -->
+    <section class="cs-texto container">
+      <div class="cs-col">
+        <h2 class="display cs-h2">El <span class="it">reto</span></h2>
           <p>Toyo-Specs es un distribuidor de piezas genuinas, de reemplazo y japonesas para Toyota en Puerto Rico, con un catálogo de más de 400 productos. El sitio anterior organizaba las piezas por su origen de fabricación en vez de por modelo o tipo de pieza, así que encontrar la pieza correcta dependía de leer título por título — sin forma real de filtrar por compatibilidad con el vehículo.</p>
           <p>El negocio también necesitaba abrirle la puerta a talleres y compradores al por mayor, con un flujo de registro propio para cuentas de negocio, separado de la compra regular al detal.</p>
-        </section>
-        <section class="case-col">
-          <h2 class="case-h2">El enfoque</h2>
+      </div>
+      <div class="cs-col">
+        <h2 class="display cs-h2">El <span class="it">enfoque</span></h2>
           <p>El sitio se reconstruyó sobre WordPress, WooCommerce y LiveCanvas, partiendo de una reorganización completa del catálogo: se asignaron atributos reales de compatibilidad por modelo (39 modelos entre Toyota, Lexus y Scion que comparten piezas) y por tipo de pieza (original, de reemplazo, japonesa), permitiendo filtrar la tienda de la forma en que un mecánico realmente busca una pieza.</p>
           <p>Se diseñó una página de "Modelos Toyota" para navegar el catálogo por vehículo, y se optimizó el catálogo completo de imágenes a WebP para acelerar la carga en móvil, donde ocurre la mayoría de las búsquedas.</p>
           <p>Para el lado mayorista, se habilitó un flujo de registro de cuentas de negocio con aprobación manual — el taller o comprador solicita su cuenta con sus datos, y una vez aprobada accede a la tienda como cliente mayorista.</p>
-        </section>
       </div>
+    </section>
 
-      <div class="case-shots">
-        <img src="/portfolio-cases/toyospecs/store.webp" alt="Catálogo de Toyo-Specs organizado por categoría" loading="lazy" width="1200" height="683" />
-        <img src="/portfolio-cases/toyospecs/product.webp" alt="Ficha de producto individual de Toyo-Specs" loading="lazy" width="1200" height="683" />
-      </div>
-
-      <div class="case-grid case-grid-result">
-        <section class="case-col">
-          <h2 class="case-h2">El resultado</h2>
+    <!-- ── Resultado, en papel ── -->
+    <section class="cs-resultado on-paper">
+      <div class="container">
+        <h2 class="display cs-h2">El <span class="it">resultado</span></h2>
+        <div class="cs-res-grid">
+          <div class="cs-stats">
+          <div><b>409</b><span>Productos en el catálogo</span></div>
+          <div><b>39</b><span>Modelos con filtro de compatibilidad</span></div>
+          <div><b>80<small>/100</small></b><span>Rendimiento móvil (Lighthouse, en vivo)</span></div>
+          </div>
+          <div class="cs-res-txt">
           <p>El sitio nuevo ya está en producción, con los 409 productos del catálogo reorganizados bajo un sistema real de filtros por modelo y tipo de pieza. El flujo de registro mayorista quedó habilitado de punta a punta, desde la solicitud hasta la aprobación de la cuenta de negocio.</p>
           <p>El sitio en vivo mantiene un balance saludable entre diseño, funcionalidad y velocidad en las pruebas de rendimiento móvil de Lighthouse.</p>
-          <div class="case-stats">
-            <div class="case-stat">
-              <span class="case-stat-num">409</span>
-              <span class="case-stat-label">Productos en<br/>el catálogo</span>
-            </div>
-            <div class="case-stat">
-              <span class="case-stat-num">39</span>
-              <span class="case-stat-label">Modelos con filtro<br/>de compatibilidad</span>
-            </div>
-            <div class="case-stat">
-              <span class="case-stat-num">80<span class="case-stat-unit">/100</span></span>
-              <span class="case-stat-label">Rendimiento móvil<br/>(Lighthouse, en vivo)</span>
-            </div>
           </div>
-        </section>
-        <img src="/portfolio-cases/toyospecs/home-mobile.webp" alt="Vista móvil de Toyo-Specs" class="case-mobile-img" loading="lazy" width="600" height="1200" />
-      </div>
-
-      <div class="contact-cta">
-        <div>
-          <h2 class="cta-title">¿Tu tienda en línea necesita evolucionar?</h2>
-          <p class="cta-sub">Diseño y desarrollo tiendas en WordPress y WooCommerce pensadas para facilitar las ventas, mejorar la experiencia de compra y simplificar la administración diaria de tu negocio. Cuéntame sobre tu proyecto.</p>
         </div>
-        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
+      </div>
+    </section>
+
+    <!-- ── Cierre en el color del sitio ── -->
+    <section class="cs-cierre">
+      <div class="container">
+        <h2 class="display">¿Tu tienda en línea <span class="it">necesita evolucionar?</span></h2>
+        <p>Diseño y desarrollo tiendas en WordPress y WooCommerce pensadas para facilitar las ventas, mejorar la experiencia de compra y simplificar la administración diaria de tu negocio. Cuéntame sobre tu proyecto.</p>
+        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn cs-cierre-btn">
           <i class="fab fa-whatsapp"></i> (787) 243-9670
         </a>
       </div>
-    </div>
+    </section>
   </main>
   <Footer />
 </Base>
 
 <style>
-.back-link {
-  display: inline-block; font-family: var(--mono); font-size: var(--text-2xs);
-  letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted);
-  margin-bottom: 40px; transition: color .2s;
-}
-.back-link:hover { color: var(--c) }
+  /* Mismo lenguaje que /ventanilla/: título gigante, un acento (flame), papel y cierre naranja.
+     --marca (color del cliente) solo aparece en el punto del encabezado y la barra del navegador. */
+  .cs { overflow-x: clip }
+  .cs-h2 { font-size: clamp(2.6rem, 6.4vw, 5.6rem); margin-bottom: 28px }
+  .cs-h2 .it, .cs-lema .it, .cs-titulo .it { color: var(--flame) }
 
-.case-head {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  gap: 24px; flex-wrap: wrap; margin-bottom: 20px;
-}
-.case-label {
-  font-family: var(--mono); font-size: var(--text-2xs);
-  letter-spacing: 2px; text-transform: uppercase; color: var(--c); margin-bottom: 10px;
-}
-.case-title {
-  font-family: var(--display); font-size: clamp(2.4rem, 5vw, 4rem);
-  letter-spacing: 2px; color: var(--white); margin-bottom: 12px;
-}
-.case-tagline { color: var(--muted); font-size: var(--text-lg); line-height: 1.6; max-width: 56ch }
-.case-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0 }
-.case-status {
-  font-family: var(--mono); font-size: .68rem; letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 3px 10px; border-radius: 20px;
-}
-.case-status.live {
-  background: color-mix(in srgb, #4ade80 12%, transparent);
-  border: 1px solid color-mix(in srgb, #4ade80 30%, transparent);
-  color: #4ade80;
-}
-.case-year { font-family: var(--mono); font-size: var(--text-2xs); letter-spacing: 2px; color: var(--dim) }
+  /* Portada */
+  .cs-hero { padding-top: clamp(104px, 12vw, 150px); padding-bottom: clamp(36px, 5vw, 64px) }
+  .cs-volver { display: inline-block; color: var(--dim); font-size: var(--text-xs); letter-spacing: .09em; text-transform: uppercase; margin-bottom: 28px; transition: color .2s }
+  .cs-volver:hover { color: var(--flame) }
+  .cs-eyebrow { color: var(--flame); margin-bottom: 14px; line-height: 1.6 }
+  .cs-punto { display: inline-block; vertical-align: .05em; margin-right: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--marca); box-shadow: 0 0 0 3px color-mix(in srgb, var(--marca) 30%, transparent) }
+  .cs-titulo { font-size: clamp(4rem, 14vw, 11rem); line-height: .84; margin-left: -.04em; margin-bottom: 28px }
+  .cs-titulo-largo { font-size: clamp(3.4rem, 14vw, 8.6rem); max-width: 11ch }
+  .cs-titulo .it { text-transform: none; font-size: .92em }
+  .cs-lema { font-size: clamp(1.35rem, 2.5vw, 2.1rem); line-height: 1.2; max-width: 32ch; margin-bottom: 30px; text-wrap: balance }
+  .cs-stack { list-style: none; display: flex; flex-wrap: wrap; gap: 8px }
+  .cs-stack li { padding: 7px 14px; border: 1px solid var(--border-h); border-radius: 999px; color: var(--muted); font-size: var(--text-sm) }
 
-.case-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 40px }
-.case-tags .tag {
-  font-family: var(--mono); font-size: .68rem; letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 3px 9px; border-radius: 4px;
-  background: color-mix(in srgb, var(--c) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--c) 30%, transparent); color: var(--c);
-}
+  /* Visor */
+  .cs-visor { padding-bottom: clamp(80px, 11vw, 150px) }
+  .cs-tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 5px;
+    margin-bottom: 22px;
+    border: 1px solid var(--border-h);
+    border-radius: 999px;
+  }
+  .cs-tabs input { position: absolute; opacity: 0; pointer-events: none }
+  .cs-tabs label span {
+    display: block;
+    padding: 10px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--muted);
+    transition: background .25s var(--ease), color .25s;
+  }
+  .cs-tabs label:hover span { color: var(--white) }
+  .cs-tabs input:checked + span { background: var(--flame); color: var(--ink) }
+  .cs-tabs input:focus-visible + span { outline: 2px solid var(--white); outline-offset: 2px }
 
-.case-hero-img {
-  width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--border);
-  margin-bottom: 56px;
-}
+  .cs-vistas { display: grid; gap: 24px; position: relative }
+  .cs-vistas::before {
+    content: '';
+    position: absolute;
+    inset: 10% 5% -4%;
+    background: radial-gradient(closest-side, rgba(255, 79, 31, .26), transparent);
+    filter: blur(30px);
+    z-index: -1;
+  }
+  .cs-vista { margin: 0; border-radius: 18px; overflow: hidden; border: 1px solid var(--border-h); background: #0a0908; box-shadow: 0 50px 100px -50px rgba(0, 0, 0, .9) }
+  .cs-vista img { width: 100%; height: auto }
+  .cs-nav { display: flex; align-items: center; gap: 14px; padding: 11px 16px; background: #1b1916; border-bottom: 2px solid var(--marca) }
+  .cs-bolas { display: flex; gap: 6px }
+  .cs-bolas i { width: 10px; height: 10px; border-radius: 50%; background: rgba(243, 238, 229, .22) }
+  .cs-url { flex: 1; max-width: 360px; padding: 4px 14px; border-radius: 999px; background: rgba(243, 238, 229, .07); color: var(--dim); font-size: var(--text-2xs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+  .cs-vista figcaption { padding: 12px 16px; color: var(--dim); font-size: var(--text-sm); border-top: 1px solid var(--border) }
+  .cs-vista-movil { background: none; border: 0; box-shadow: none; display: grid; justify-items: center; gap: 14px }
+  .cs-vista-movil figcaption { border: 0; padding: 0; text-align: center }
+  .cs-tel { width: min(300px, 78vw); padding: 10px; border-radius: 40px; background: #050505; border: 1px solid var(--border-h); box-shadow: 0 40px 80px -30px rgba(255, 79, 31, .45) }
+  .cs-tel img { border-radius: 30px }
+  @keyframes cs-entra { from { opacity: 0; translate: 0 12px } }
 
-.case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 56px }
-@media (max-width: 800px) { .case-grid { grid-template-columns: 1fr; gap: 32px } }
-.case-h2 {
-  font-family: var(--display); font-size: clamp(1.5rem, 2.5vw, 1.9rem);
-  letter-spacing: 1.5px; color: var(--white); margin-bottom: 16px;
-}
-.case-col p { color: var(--muted); font-size: var(--text-base); line-height: 1.75; margin-bottom: 14px }
-.case-col strong { color: var(--white) }
+  /* Reto y enfoque */
+  .cs-texto { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 6vw, 96px); padding-bottom: clamp(80px, 11vw, 150px) }
+  .cs-col p { color: var(--muted); font-size: 1.05rem; line-height: 1.75; margin-bottom: 16px; max-width: 58ch }
+  .cs-col strong { color: var(--white) }
+  @media (max-width: 860px) { .cs-texto { grid-template-columns: 1fr } }
 
-.case-shots { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 56px }
-@media (max-width: 800px) { .case-shots { grid-template-columns: 1fr } }
-.case-shots img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border) }
+  /* Resultado en papel (el naranja se oscurece para leerse sobre papel) */
+  .cs-resultado { background: var(--paper); color: var(--on-paper); padding-block: clamp(80px, 11vw, 150px) }
+  .cs-resultado .it { color: #d93a10 }
+  .cs-res-grid { display: grid; grid-template-columns: minmax(0, .9fr) 1fr; gap: clamp(36px, 6vw, 96px); align-items: start }
+  .cs-stats { display: grid; gap: 28px }
+  .cs-stats div { border-top: 2px solid var(--on-paper); padding-top: 16px }
+  .cs-stats b { display: block; font-family: var(--display); font-weight: 800; font-size: clamp(3.6rem, 8vw, 6.6rem); line-height: .85; color: #d93a10 }
+  .cs-stats small { font-size: .38em; color: rgba(20, 18, 15, .6); margin-left: 4px }
+  .cs-stats span { display: block; margin-top: 10px; color: rgba(20, 18, 15, .75); font-size: var(--text-sm); letter-spacing: .06em; text-transform: uppercase; font-weight: 600 }
+  .cs-res-txt p { color: rgba(20, 18, 15, .8); font-size: 1.08rem; line-height: 1.75; margin-bottom: 16px; max-width: 56ch }
+  .cs-res-txt a { color: var(--on-paper); text-decoration: underline; text-decoration-color: #d93a10; text-underline-offset: 3px; text-decoration-thickness: 2px }
+  @media (max-width: 860px) {
+    .cs-res-grid { grid-template-columns: 1fr }
+    .cs-stats { grid-template-columns: repeat(3, 1fr); gap: 14px }
+    .cs-stats b { font-size: clamp(2.2rem, 10vw, 3.6rem) }
+    .cs-stats span { font-size: var(--text-2xs); letter-spacing: .03em }
+  }
 
-.case-grid-result { align-items: center }
-.case-mobile-img {
-  width: 100%; max-width: 280px; height: auto; border-radius: 16px;
-  border: 1px solid var(--border); margin: 0 auto; display: block;
-}
-.case-stats { display: flex; gap: 32px; margin-top: 28px; flex-wrap: wrap }
-.case-stat-num {
-  font-family: var(--display); font-size: clamp(2.2rem, 4vw, 3rem);
-  color: var(--c); line-height: 1; display: block;
-}
-.case-stat-unit { font-size: .5em; color: var(--dim) }
-.case-stat-label {
-  font-family: var(--mono); font-size: .68rem; letter-spacing: 1px;
-  color: var(--muted); line-height: 1.5; display: block; margin-top: 8px;
-}
+  /* Cierre */
+  .cs-cierre { background: var(--flame); color: var(--ink); padding-block: clamp(80px, 11vw, 150px) }
+  .cs-cierre h2 { font-size: clamp(2.8rem, 7.4vw, 7rem); line-height: .88; margin-bottom: 26px; max-width: 16ch }
+  .cs-cierre .it { color: var(--ink) }
+  .cs-cierre p { font-size: var(--text-lg); line-height: 1.6; max-width: 52ch; margin-bottom: 30px }
+  .cs-cierre-btn { background: var(--ink); color: var(--white); border-color: var(--ink) }
+  .cs-cierre-btn:hover { background: var(--white); color: var(--ink); border-color: var(--white) }
+  .cs-cierre-btn i { color: #25d366 }
 
-.contact-cta {
-  margin-top: 24px; padding: 48px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 20px;
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 32px; flex-wrap: wrap;
-}
-.cta-title {
-  font-family: var(--display); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  letter-spacing: 2px; margin-bottom: 8px;
-}
-.cta-sub { color: var(--muted); font-size: var(--text-base); line-height: 1.7; max-width: 48ch }
+  /* Una sola pantalla a la vez (sin :has(), se ven todas en fila) */
+  @supports selector(:has(a)) {
+    .cs-visor:has([value='inicio']:checked) .cs-vista:not([data-v='inicio']),
+    .cs-visor:has([value='tienda']:checked) .cs-vista:not([data-v='tienda']),
+    .cs-visor:has([value='producto']:checked) .cs-vista:not([data-v='producto']),
+    .cs-visor:has([value='movil']:checked) .cs-vista:not([data-v='movil']) { display: none }
+    .cs-vista { animation: cs-entra .4s var(--ease) }
+  }
 </style>
