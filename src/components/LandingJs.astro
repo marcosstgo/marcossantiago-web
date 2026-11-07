@@ -1,0 +1,87 @@
+---
+// Comportamiento común de las landings de Google Ads: formulario a WhatsApp, barra fija en el
+// celular, medición de botones y «Elegir» en las tarjetas (marca la tarjeta y la mete en el mensaje).
+---
+<script is:inline>
+  (function () {
+    var form = document.getElementById('leadForm');
+    var success = document.getElementById('leadSuccess');
+    var error = document.getElementById('leadError');
+    var servicio = form && form.querySelector('[name=servicio]');
+    var base = servicio ? servicio.value : '';
+    var eleccion = document.getElementById('lpEleccion');
+    var tarjetas = document.querySelectorAll('[data-elige]');
+
+    function limpiar() {
+      tarjetas.forEach(function (t) {
+        t.classList.remove('is-elegido');
+        var b = t.querySelector('.lp-elige');
+        if (b) { b.setAttribute('aria-pressed', 'false'); b.textContent = 'Elegir'; }
+      });
+      if (servicio) servicio.value = base;
+      if (eleccion) eleccion.hidden = true;
+    }
+
+    // Elegir: la tarjeta se marca y el servicio escogido va en el mensaje de WhatsApp
+    if (form && servicio && eleccion) {
+      tarjetas.forEach(function (t) {
+        var nombre = t.querySelector('h3').textContent.trim();
+        var p = t.querySelector('.include-price, .service-price');
+        var precio = p ? p.textContent.trim() : '';
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'lp-elige';
+        b.textContent = 'Elegir';
+        b.setAttribute('aria-pressed', 'false');
+        b.setAttribute('aria-label', 'Elegir ' + nombre);
+        t.appendChild(b);
+        b.addEventListener('click', function () {
+          var yaEstaba = b.getAttribute('aria-pressed') === 'true';
+          limpiar();
+          if (yaEstaba) return;
+          t.classList.add('is-elegido');
+          b.setAttribute('aria-pressed', 'true');
+          b.textContent = 'Elegido ✓';
+          servicio.value = base + ' — ' + nombre + (precio ? ' (' + precio + ')' : '');
+          eleccion.innerHTML = 'Elegiste <b></b>. Va en tu mensaje. <a href="#cotizar">Cotizar ahora ↓</a>';
+          eleccion.querySelector('b').textContent = nombre + (precio ? ' · ' + precio : '');
+          eleccion.hidden = false;
+          if (typeof gtag === 'function') gtag('event', 'landing_elegir', { event_category: 'engagement', event_label: nombre });
+        });
+      });
+    }
+
+    // Formulario: arma el mensaje y abre WhatsApp
+    if (form) form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var d = Object.fromEntries(new FormData(form));
+      var extra = Object.entries(d).filter(function (kv) { return ['nombre', 'contacto', 'servicio', 'mensaje'].indexOf(kv[0]) < 0 && String(kv[1]).trim(); })
+        .map(function (kv) { return kv[0].charAt(0).toUpperCase() + kv[0].slice(1) + ': ' + String(kv[1]).trim() + '.'; });
+      var t = ['Hola Marcos' + (d.nombre ? ', soy ' + d.nombre : '') + '.', d.servicio && 'Me interesa: ' + d.servicio + '.'].concat(extra, [d.mensaje]).filter(Boolean).join(' ');
+      window.open('https://wa.me/17872439670?text=' + encodeURIComponent(t), '_blank');
+      form.reset();
+      limpiar();
+      success.hidden = false;
+      error.hidden = true;
+      if (typeof gtag === 'function') gtag('event', 'whatsapp_click', { event_category: 'contacto', event_label: 'landing-form', page_path: location.pathname });
+    });
+
+    // Barra fija en el celular al bajar
+    var bar = document.getElementById('stickyBar');
+    if (bar) {
+      bar.setAttribute('aria-hidden', 'false');
+      var shown = false;
+      addEventListener('scroll', function () {
+        var past = scrollY > 300;
+        if (past !== shown) { shown = past; bar.style.display = past ? 'flex' : 'none'; }
+      }, { passive: true });
+    }
+
+    // Medición de botones
+    document.querySelectorAll('[data-track]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        if (typeof gtag === 'function') gtag('event', 'cta_click', { event_category: 'engagement', event_label: el.dataset.track });
+      });
+    });
+  })();
+</script>

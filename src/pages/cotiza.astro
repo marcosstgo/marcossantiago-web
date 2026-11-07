@@ -14,198 +14,99 @@
   <meta property="og:description" content="Bodas, quinceañeros, comercial, videografía y diseño gráfico. Desde $175. Aibonito, Puerto Rico." />
   <meta property="og:image" content="/marcos-photo.webp" />
   <meta property="og:type" content="website" />
-  <link rel="preload" href="/fonts/space-mono-400.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/fonts.css" />
+  <link rel="preload" href="/fonts/ms-display.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/ms-body.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/instrument-serif.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="/fa-subset.css" />
+  <meta name="theme-color" content="#0d0c0b" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
-      width: 100%; height: 100%;
-      background: #000;
-      font-family: 'Space Mono', monospace;
-      color: #fff;
+    /* Mismo lenguaje del sitio: tinta, papel, un solo acento (flamboyán) */
+    @font-face { font-family: 'MS Display'; font-weight: 800; font-display: swap; src: url('/fonts/ms-display.woff2') format('woff2') }
+    @font-face { font-family: 'MS Body'; font-weight: 400 700; font-display: swap; src: url('/fonts/ms-body.woff2') format('woff2') }
+    :root {
+      --ink: #0d0c0b; --paper: #f3eee5; --flame: #ff4f1f;
+      --muted: rgba(243,238,229,.74); --dim: rgba(243,238,229,.6);
+      --border: rgba(243,238,229,.14); --border-h: rgba(243,238,229,.32);
+      --display: 'MS Display', 'Arial Narrow', Impact, sans-serif;
+      --body: 'MS Body', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --serif: 'Instrument Serif', Georgia, serif;
+      color-scheme: dark;
     }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+    html, body { min-height: 100%; background: var(--ink); color: var(--paper); font-family: var(--body); -webkit-font-smoothing: antialiased }
+    a { color: inherit; text-decoration: none }
+    button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer }
+    :focus-visible { outline: 2px solid var(--flame); outline-offset: 3px }
 
-    /* ── Video fondo ── */
-    .video-bg {
-      position: fixed; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: brightness(0.22) saturate(1.3);
-      z-index: 0;
-    }
+    /* ── Video de fondo ── */
+    .video-bg { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(1.1); z-index: 0 }
     .video-overlay {
       position: fixed; inset: 0; z-index: 1;
-      background: linear-gradient(to bottom,
-        rgba(0,0,0,0.6) 0%,
-        rgba(0,0,0,0.2) 50%,
-        rgba(0,0,0,0.7) 100%);
+      background: linear-gradient(180deg, rgba(13,12,11,.55), rgba(13,12,11,.72) 45%, rgba(13,12,11,.96));
     }
 
-    /* ── Page ── */
+    /* ── Página ── */
     #page {
-      position: relative; z-index: 10;
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      padding: 32px 24px;
+      position: relative; z-index: 10; min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 28px clamp(18px, 3.4vw, 56px) clamp(28px, 5vw, 64px);
+      max-width: 1320px; margin-inline: auto;
     }
+    .top { position: absolute; top: 22px; left: clamp(18px, 3.4vw, 56px); right: clamp(18px, 3.4vw, 56px); display: flex; align-items: center; justify-content: space-between; gap: 12px }
+    .avatar-ring { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; border: 2px solid var(--flame); flex-shrink: 0 }
+    .avatar-ring img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block }
+    .location { display: inline-flex; align-items: center; gap: 8px; font-size: .78rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--dim) }
+    .location i { color: var(--flame) }
 
-    /* ── Card ── */
-    #card {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 14px;
-      padding: 44px 32px;
-      width: 100%; max-width: 420px;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 22px;
-      background: rgba(0,0,0,0.15);
-      backdrop-filter: blur(4px);
-      animation: card-in 0.7s cubic-bezier(.16,1,.3,1) forwards;
-    }
-    @keyframes card-in {
-      from { opacity: 0; transform: translateY(30px); filter: blur(8px); }
-      to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
-    }
-
-    /* ── Avatar ── */
-    .avatar-ring {
-      width: 100px; height: 100px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.18);
-      box-shadow: 0 0 40px rgba(255,255,255,0.1);
-      overflow: hidden; flex-shrink: 0;
-    }
-    .avatar-ring img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center top;
-      display: block;
-    }
-
-    /* ── Name ── */
+    .headline { display: flex; align-items: center; gap: 10px; color: var(--flame); font-size: .78rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; margin-bottom: 12px }
+    .headline::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--flame) }
     .name {
-      font-size: clamp(1.2rem, 5vw, 1.6rem);
-      font-weight: 400;
-      letter-spacing: 4px;
-      text-align: center;
-      text-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.2);
+      font-family: var(--display); font-weight: 800; text-transform: uppercase;
+      font-size: clamp(3.4rem, 13vw, 12rem); line-height: .84; letter-spacing: -.005em;
+      animation: entra .8s cubic-bezier(.16,1,.3,1) both;
     }
+    .lema { font-family: var(--serif); font-style: italic; font-size: clamp(1.6rem, 3.4vw, 2.8rem); line-height: 1.05; color: var(--flame); margin: 10px 0 28px }
+    @keyframes entra { from { opacity: 0; translate: 0 30px } }
 
-    /* ── Headline ── */
-    .headline {
-      font-size: 0.62rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.58);
-      text-align: center;
-    }
-
-    /* ── Location ── */
-    .location {
-      font-size: 0.56rem;
-      letter-spacing: 2px;
-      color: rgba(255,255,255,0.38);
-      display: flex; align-items: center; gap: 6px;
-    }
-
-    /* ── Divider ── */
-    .divider {
-      width: 100%;
-      height: 1px;
-      background: rgba(255,255,255,0.08);
-    }
-
-    /* ── Servicios grid ── */
-    .services {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      width: 100%;
-    }
+    /* ── Escoger servicio: cambia el mensaje del botón ── */
+    .pregunta { font-size: .78rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--dim); margin-bottom: 12px }
+    .services { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px }
     .service-chip {
-      display: flex; align-items: center; gap: 8px;
-      padding: 11px 14px;
-      border-radius: 11px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      font-size: 0.56rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
+      display: inline-flex; align-items: center; gap: 9px; min-height: 46px; padding: 10px 18px;
+      border-radius: 99px; border: 1px solid var(--border-h); background: rgba(13,12,11,.4);
+      font-weight: 600; font-size: .95rem; color: var(--paper);
+      transition: background .2s, color .2s, border-color .2s;
     }
-    .service-chip i { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+    .service-chip i { color: var(--flame); transition: color .2s }
+    .service-chip:hover { border-color: var(--paper) }
+    .service-chip[aria-pressed='true'] { background: var(--flame); border-color: var(--flame); color: var(--ink) }
+    .service-chip[aria-pressed='true'] i { color: var(--ink) }
 
-    /* ── Precio badge ── */
-    .price-badge {
-      font-size: 0.6rem;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.32);
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .price-badge strong {
-      color: rgba(255,255,255,0.7);
-      font-weight: 700;
-    }
-
-    /* ── CTA WhatsApp ── */
+    .acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px }
     .cta-wa {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      width: 100%;
-      padding: 18px 24px;
-      border-radius: 14px;
-      background: rgba(34, 197, 94, 0.12);
-      border: 1px solid rgba(34, 197, 94, 0.28);
-      color: #4ade80;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      text-decoration: none;
-      filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.18));
-      transition: transform 0.2s ease, filter 0.2s ease,
-                  background 0.2s ease, border-color 0.2s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 58px; padding: 14px 30px; border-radius: 99px;
+      background: #25d366; color: #06230f; font-weight: 700; font-size: 1.05rem;
+      transition: background .2s, transform .2s;
     }
-    .cta-wa i { font-size: 1.1rem; }
-    .cta-wa:hover {
-      transform: translateY(-3px);
-      background: rgba(34, 197, 94, 0.2);
-      border-color: rgba(34, 197, 94, 0.5);
-      filter: drop-shadow(0 0 22px rgba(34, 197, 94, 0.45));
-    }
-    .cta-wa:active { transform: translateY(-1px); }
+    .cta-wa i { font-size: 1.25rem }
+    .cta-wa:hover { background: var(--paper) }
+    .cta-wa:active { transform: scale(.98) }
+    .price-badge { color: var(--muted); font-size: .95rem }
+    .price-badge strong { font-family: var(--display); font-weight: 800; font-size: 1.9rem; color: var(--paper); margin-left: 4px }
+    .sec-link { align-self: flex-start; display: inline-block; margin-top: 22px; font-weight: 600; border-bottom: 1px solid currentColor; padding-bottom: 2px; color: var(--muted); transition: color .2s }
+    .sec-link:hover { color: var(--flame) }
 
-    /* ── Link secundario ── */
-    .sec-link {
-      font-size: 0.54rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.28);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    .sec-link:hover { color: rgba(255,255,255,0.55); }
+    /* ── Texto para Google, oculto a la vista ── */
+    .seo-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap }
 
-    /* ── Texto SEO oculto visualmente pero legible por Google ── */
-    .seo-text {
-      position: absolute;
-      width: 1px; height: 1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-    }
+    #particles { position: fixed; inset: 0; pointer-events: none; z-index: 5 }
 
-    /* ── Particles canvas ── */
-    #particles {
-      position: fixed; inset: 0;
-      pointer-events: none; z-index: 5;
+    @media (max-width: 600px) {
+      .avatar-ring { width: 52px; height: 52px }
+      .cta-wa { width: 100% }
     }
-
-    @media (max-height: 700px) {
-      #page { align-items: flex-start; padding: 20px 16px; }
-    }
+    @media (prefers-reduced-motion: reduce) { .name { animation: none } }
   </style>
 </head>
 <body>
@@ -223,46 +124,56 @@
   </p>
 
   <div id="page">
-    <div id="card">
-
+    <div class="top">
       <div class="avatar-ring">
-        <img src="/marcos-photo.webp" alt="Marcos Santiago — Fotógrafo en Puerto Rico" loading="eager" />
+        <img src="/marcos-photo.webp" alt="Marcos Santiago — Fotógrafo en Puerto Rico" loading="eager" width="64" height="64" />
       </div>
-
-      <h1 class="name">Marcos Santiago</h1>
-      <p class="headline">Fotógrafo · Videógrafo · Diseñador</p>
       <p class="location"><i class="fa-solid fa-location-dot"></i> Aibonito, Puerto Rico</p>
+    </div>
 
-      <div class="divider"></div>
+    <p class="headline">Fotógrafo · Videógrafo · Diseñador</p>
+    <h1 class="name">Marcos Santiago</h1>
+    <p class="lema">Cuéntame qué tienes en mente.</p>
 
-      <div class="services">
-        <div class="service-chip"><i class="fa-solid fa-heart"></i> Bodas</div>
-        <div class="service-chip"><i class="fa-solid fa-crown"></i> Quinceañeros</div>
-        <div class="service-chip"><i class="fa-solid fa-video"></i> Videografía</div>
-        <div class="service-chip"><i class="fa-solid fa-store"></i> Comercial</div>
-        <div class="service-chip" style="grid-column: span 2; justify-content: center;">
-          <i class="fa-solid fa-pen-nib"></i> Diseño Gráfico
-        </div>
-      </div>
+    <p class="pregunta" id="t-servicio">¿Qué quieres cotizar?</p>
+    <div class="services" role="group" aria-labelledby="t-servicio">
+      <button type="button" class="service-chip" aria-pressed="false" data-servicio="fotografía de boda"><i class="fa-solid fa-heart"></i> Bodas</button>
+      <button type="button" class="service-chip" aria-pressed="false" data-servicio="un quinceañero"><i class="fa-solid fa-crown"></i> Quinceañeros</button>
+      <button type="button" class="service-chip" aria-pressed="false" data-servicio="videografía"><i class="fa-solid fa-video"></i> Videografía</button>
+      <button type="button" class="service-chip" aria-pressed="false" data-servicio="fotografía comercial"><i class="fa-solid fa-store"></i> Comercial</button>
+      <button type="button" class="service-chip" aria-pressed="false" data-servicio="diseño gráfico"><i class="fa-solid fa-pen-nib"></i> Diseño Gráfico</button>
+    </div>
 
-      <div class="price-badge">paquetes <strong>desde $175</strong></div>
-
-      <div class="divider"></div>
-
-      <a class="cta-wa"
+    <div class="acciones">
+      <a class="cta-wa" id="ctaWa"
          href="https://wa.me/17872439670?text=Hola%2C+me+interesa+cotizar+un+proyecto."
          target="_blank" rel="noopener">
-        <i class="fab fa-whatsapp"></i> Cotiza tu proyecto
+        <i class="fab fa-whatsapp"></i> <span id="ctaTxt">Cotiza tu proyecto</span>
       </a>
-
-      <a class="sec-link" href="/portafolio/">Ver portafolio →</a>
-
+      <p class="price-badge">Paquetes desde <strong>$175</strong></p>
     </div>
+
+    <a class="sec-link" href="/portafolio/">Ver portafolio →</a>
   </div>
 
   <canvas id="particles"></canvas>
 
   <script is:inline>
+  // Escoger servicio: el botón de WhatsApp cambia de texto y de mensaje al momento
+  (function () {
+    const chips = document.querySelectorAll('.service-chip');
+    const cta = document.getElementById('ctaWa');
+    const txt = document.getElementById('ctaTxt');
+    chips.forEach((c) => c.addEventListener('click', () => {
+      const on = c.getAttribute('aria-pressed') !== 'true';
+      chips.forEach((x) => x.setAttribute('aria-pressed', 'false'));
+      c.setAttribute('aria-pressed', on ? 'true' : 'false');
+      const msg = on ? 'Hola, me interesa cotizar ' + c.dataset.servicio + '.' : 'Hola, me interesa cotizar un proyecto.';
+      cta.href = 'https://wa.me/17872439670?text=' + encodeURIComponent(msg);
+      txt.textContent = on ? 'Cotizar ' + c.textContent.trim() : 'Cotiza tu proyecto';
+    }));
+  })();
+
   (function () {
     const canvas = document.getElementById('particles');
     const ctx    = canvas.getContext('2d');
@@ -299,7 +210,7 @@
         if (p.life <= 0) { pts.splice(i, 1); continue; }
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${p.life * 0.45})`;
+        ctx.fillStyle = `rgba(255,79,31,${p.life * 0.6})`;
         ctx.fill();
       }
       requestAnimationFrame(draw);
