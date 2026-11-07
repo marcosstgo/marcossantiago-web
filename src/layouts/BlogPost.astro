@@ -2,8 +2,12 @@
 import Base from './Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import { Image } from 'astro:assets';
+import { portadaBlog, compartirBlog } from '../lib/blog-portadas';
 
 const { title, date, desc, tags, slug } = Astro.props.frontmatter;
+const portada = portadaBlog(slug);
+const compartir = compartirBlog(slug);
 const formattedDate = (() => {
   const [y, m, d] = date.split('-').map(Number);
   return new Date(y, m - 1, d).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -28,7 +32,7 @@ const idx  = allPosts.findIndex(p => p.slug === slug);
 const next = idx > 0                    ? allPosts[idx - 1] : null; // newer
 const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 ---
-<Base title={`${title} — Marcos Santiago`} description={desc} image="/marcos-photo.jpg">
+<Base title={`${title} — Marcos Santiago`} description={desc} image={compartir ?? '/marcos-photo.jpg'}>
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Article",
@@ -37,7 +41,8 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
     "datePublished": date,
     "author": { "@type": "Person", "name": "Marcos Santiago", "url": "https://marcossantiago.com" },
     "publisher": { "@type": "Person", "name": "Marcos Santiago", "url": "https://marcossantiago.com" },
-    "url": `https://marcossantiago.com/blog/${slug}/`
+    "url": `https://marcossantiago.com/blog/${slug}/`,
+    ...(compartir ? { "image": `https://marcossantiago.com${compartir}` } : {})
   })} />
   <Nav />
   <div class="read-progress" aria-hidden="true"><span id="read-bar"></span></div>
@@ -60,6 +65,13 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
         </div>
         <h1 class="post-title">{title}</h1>
       </div>
+
+      {portada && (
+        <figure class="post-portada">
+          <Image src={portada} alt="" widths={[640, 960, 1280, 1600]} sizes="(max-width: 1320px) calc(100vw - 2 * var(--gut)), 1208px"
+                 loading="eager" fetchpriority="high" decoding="async" />
+        </figure>
+      )}
 
       <article class="post-body">
         <slot />
@@ -101,6 +113,10 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 </Base>
 
 <style>
+/* ── Portada (ilustración del artículo) ── */
+.post-portada { margin: 0 0 clamp(36px, 5vw, 64px); border-radius: var(--radius); overflow: hidden; background: var(--surface); aspect-ratio: 16 / 9 }
+.post-portada img { width: 100%; height: 100%; object-fit: cover }
+
 /* ── Barra de progreso de lectura ── */
 .read-progress {
   position: fixed; top: 0; left: 0; right: 0; height: 3px;
