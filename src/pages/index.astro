@@ -10,6 +10,8 @@ import CtaBand from '../components/CtaBand.astro';
 import FiguraFlotante from '../components/FiguraFlotante.astro';
 import Director from '../components/Director.astro';
 import { video, brand, logos, videos } from '../lib/media';
+import { Image } from 'astro:assets';
+import { portadaBlog } from '../lib/blog-portadas';
 import heroImg from '../assets/hero/hero.jpg';
 
 const fig = async (src: any) => (await getImage({ src, width: 800, format: 'webp', quality: 72 })).src;
@@ -30,10 +32,12 @@ const historia = [
   { a: 'Hoy', t: 'Una visión completa.', d: 'Negocios, municipios y organizaciones de toda la isla. Marca, foto, video y web con una sola mirada, y contigo trato yo directamente.' },
 ];
 
-const posts = Object.values(import.meta.glob('./blog/*.mdx', { eager: true }) as Record<string, any>)
+const todos = Object.values(import.meta.glob('./blog/*.mdx', { eager: true }) as Record<string, any>)
   .map(p => p.frontmatter)
-  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-  .slice(0, 3);
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+// La baraja: los 5 más nuevos que tienen portada. La cinta: los títulos de todos.
+const posts = todos.map(p => ({ ...p, portada: portadaBlog(p.slug) })).filter(p => p.portada).slice(0, 5);
+const fecha = (d: string) => { const [y, m, dd] = d.split('-').map(Number); return new Date(y, m - 1, dd).toLocaleDateString('es-PR', { day: 'numeric', month: 'short', year: 'numeric' }); };
 
 const web = [
   { n: 'Concilia', d: 'Pagos de ATH Móvil aplicados solos en MikroWisp', h: '/portafolio/dev/concilia/', f: '/portfolio-cases/concilia/home-hero.webp' },
@@ -183,14 +187,40 @@ const areas = [
       </div>
     </section>
 
-    <section class="bl full" aria-labelledby="bl-t">
-      <div class="sec-top">
-        <h2 id="bl-t" class="sec-h">Del blog</h2>
-        <a class="link-a" href="/blog/">Todos los artículos →</a>
+    <!-- Blog: baraja de portadas que se baraja sola (pausa al tocarla) y cinta con todos los títulos -->
+    <section class="bl" aria-labelledby="bl-t">
+      <div class="bl-g full">
+        <div class="bl-t">
+          <p class="label bl-e">Blog · {todos.length} artículos</p>
+          <h2 id="bl-t" class="sec-h">Lo que aprendo <span class="it">haciendo</span></h2>
+          <p class="bl-s">Guías de video, foto, diseño y web con lo que uso trabajando. Gratis, en español y al grano.</p>
+          <div class="bl-ctl">
+            <button type="button" class="bl-b" data-bl="-1" aria-label="Artículo anterior">←</button>
+            <span class="bl-n" aria-live="polite"><b>01</b> / {String(posts.length).padStart(2, '0')}</span>
+            <button type="button" class="bl-b" data-bl="1" aria-label="Artículo siguiente">→</button>
+          </div>
+          <a class="btn primary" href="/blog/">Ver todos los artículos →</a>
+        </div>
+        <ol class="baraja" aria-label="Artículos más recientes">
+          {posts.map((p, i) => (
+            <li class="carta" style={`--p:${i}`} inert={i > 0 ? true : undefined}>
+              <a href={`/blog/${p.slug}/`}>
+                <Image src={p.portada} alt="" widths={[480, 800, 1100]} sizes="(max-width: 900px) 92vw, 46vw" loading="lazy" decoding="async" />
+                <span class="carta-tx">
+                  <small><i>{p.tags?.[0] ?? 'Blog'}</i> {fecha(p.date)}</small>
+                  <strong>{p.title}</strong>
+                </span>
+                <i class="carta-bar" aria-hidden="true"></i>
+              </a>
+            </li>
+          ))}
+        </ol>
       </div>
-      <ul class="bl-l">
-        {posts.map(p => <li><a href={`/blog/${p.slug}/`}><span>{p.title}</span><small>{p.desc}</small></a></li>)}
-      </ul>
+      <a class="cinta" href="/blog/" aria-label="Todos los artículos del blog">
+        <span class="cinta-in" aria-hidden="true">
+          {[0, 1].map(() => todos.map(p => <span>{p.title}<i>✺</i></span>))}
+        </span>
+      </a>
     </section>
 
     <CtaBand />
@@ -242,6 +272,47 @@ const areas = [
     bv.addEventListener('timeupdate', function () { if (!bo.classList.contains('usado') && bv.duration) br.value = bv.currentTime / bv.duration * 1000 });
   })();
 </script>
+
+<script is:inline>
+  // Baraja del blog: cada 5 s la carta de arriba sale volando y pasa al fondo. Se pausa con el ratón encima,
+  // con el foco dentro, fuera de pantalla o con la pestaña oculta; sin JS queda la primera arriba.
+  (function () {
+    var b = document.querySelector('.baraja'); if (!b) return;
+    var cs = [].slice.call(b.children), n = cs.length, orden = cs.map(function (_, i) { return i }), arriba = 0;
+    var num = document.querySelector('.bl-n b'), quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var DUR = 5000, t = null, visible = false, pausa = false, ocupado = false;
+    function pinta() {
+      orden.forEach(function (c, p) { cs[c].style.setProperty('--p', p); cs[c].inert = p > 0; cs[c].toggleAttribute('data-arriba', p === 0) });
+      num.textContent = String(orden[0] + 1).padStart(2, '0');
+      b.classList.remove('corre'); void b.offsetWidth; if (!quieto) b.classList.add('corre');
+    }
+    function mueve(dir) {
+      if (ocupado) return; ocupado = true;
+      if (dir > 0) {
+        var c = cs[orden[0]]; orden.push(orden.shift());
+        if (!quieto) { c.classList.add('sale'); setTimeout(function () { c.classList.remove('sale') }, 760) }
+      } else orden.unshift(orden.pop());
+      pinta(); setTimeout(function () { ocupado = false }, quieto ? 0 : 420); programa();
+    }
+    function programa() {
+      clearTimeout(t);
+      if (!quieto && visible && !pausa && !document.hidden) t = setTimeout(function () { mueve(1) }, DUR);
+    }
+    document.querySelectorAll('[data-bl]').forEach(function (x) { x.addEventListener('click', function () { mueve(+x.dataset.bl) }) });
+    b.addEventListener('pointerenter', function () { pausa = true; clearTimeout(t) });
+    b.addEventListener('pointerleave', function () { pausa = false; pinta(); programa() });
+    b.addEventListener('focusin', function () { pausa = true; clearTimeout(t) });
+    b.addEventListener('focusout', function () { pausa = false; programa() });
+    // Deslizar en el celular
+    var x0 = null;
+    b.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX }, { passive: true });
+    b.addEventListener('touchend', function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 40) mueve(dx < 0 ? 1 : -1) }, { passive: true });
+    document.addEventListener('visibilitychange', programa);
+    new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) pinta(); programa() }, { threshold: .35 }).observe(b);
+    pinta();
+  })();
+</script>
+
 
 <style>
   .h { position: relative; height: 100svh; min-height: 560px; display: flex; align-items: flex-end; overflow: clip; background: #06121f }
@@ -379,10 +450,67 @@ const areas = [
   .ms-t:has(.ms-r:focus-visible) .ms-l { outline: 2px solid var(--flame); outline-offset: 4px }
   @media (max-width: 700px) { .ms { grid-template-columns: 1fr } }
 
-  .bl { padding-bottom: var(--sec) }
-  .bl-l a { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 32px; padding-block: 20px; border-bottom: 1px solid var(--border); transition: color .2s }
-  .bl-l a:hover span { color: var(--flame) }
-  .bl-l span { font-weight: 600; font-size: 1.25rem; line-height: 1.25; letter-spacing: -.01em; transition: color .2s }
-  .bl-l small { color: var(--muted); font-size: .9375rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden }
-  @media (max-width: 700px) { .bl-l a { grid-template-columns: 1fr } }
+  /* ── Blog: baraja + cinta ── */
+  .bl { padding-bottom: var(--sec); overflow: hidden }
+  .bl-g { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 6vw, 96px); align-items: center; padding-block: clamp(24px, 4vw, 56px) clamp(56px, 7vw, 96px) }
+  .bl-e { color: var(--flame); margin-bottom: 14px }
+  .bl-t .sec-h { font-size: clamp(2.6rem, 5.6vw, 5.8rem); margin-bottom: 20px }
+  .bl-t .sec-h .it { color: var(--flame) }
+  .bl-s { color: var(--muted); font-size: var(--text-lg); line-height: 1.55; max-width: 40ch; margin-bottom: 28px }
+  .bl-ctl { display: flex; align-items: center; gap: 14px; margin-bottom: 28px }
+  .bl-b { width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--border-h); font-size: 1.2rem; transition: background .2s, color .2s, border-color .2s }
+  .bl-b:hover { background: var(--flame); border-color: var(--flame); color: var(--ink) }
+  .bl-n { font-variant-numeric: tabular-nums; color: var(--dim); font-size: var(--text-sm); letter-spacing: .08em }
+  .bl-n b { color: var(--white); font-family: var(--display); font-size: 1.6rem; letter-spacing: 0 }
+
+  /* La baraja: cada carta se coloca según --p (0 = la de arriba) */
+  .baraja { --dx: 34px; --dy: -26px; list-style: none; position: relative; aspect-ratio: 16 / 11; margin: 0 }
+  .carta {
+    position: absolute; inset: 104px 136px auto 0; aspect-ratio: 16 / 9; z-index: calc(10 - var(--p));
+    transform: translate(calc(var(--p) * var(--dx)), calc(var(--p) * var(--dy))) rotate(calc(var(--p) * 3deg - 1deg)) scale(calc(1 - var(--p) * .05));
+    transform-origin: 50% 100%; opacity: calc(1.8 - var(--p) * .4);
+    transition: transform .8s var(--ease), opacity .6s, filter .6s;
+    filter: brightness(calc(1 - var(--p) * .16));
+  }
+  .carta a { position: absolute; inset: 0; display: block; border-radius: 6px; overflow: hidden; background: var(--surface);
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7), 0 0 0 1px rgba(243, 238, 229, .08) }
+  .carta img { width: 100%; height: 100%; object-fit: cover; transition: scale 1.2s var(--ease) }
+  .carta a:hover img { scale: 1.04 }
+  .carta-tx { position: absolute; inset: auto 0 0 0; padding: clamp(18px, 3vw, 30px); padding-top: 70px;
+    background: linear-gradient(transparent, rgba(13, 12, 11, .9) 62%); display: grid; gap: 8px }
+  .carta-tx small { color: var(--muted); font-size: var(--text-xs); letter-spacing: .06em; text-transform: uppercase; font-weight: 600 }
+  .carta-tx small i { font-style: normal; color: var(--ink); background: var(--flame); padding: 3px 8px; border-radius: 99px; margin-right: 8px }
+  .carta-tx strong { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.15rem, 2vw, 1.85rem); line-height: .98; max-width: 26ch;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden }
+  .carta-bar { position: absolute; left: 0; top: 0; height: 3px; width: 100%; background: var(--flame); transform: scaleX(0); transform-origin: left }
+  .baraja.corre .carta[data-arriba] .carta-bar { animation: bl-barra var(--dur, 5s) linear forwards }
+  .baraja:hover .carta-bar, .baraja:focus-within .carta-bar { animation-play-state: paused !important }
+  @keyframes bl-barra { to { transform: scaleX(1) } }
+  /* La de arriba sale volando hacia la izquierda y vuelve al fondo */
+  .carta.sale { animation: bl-sale .75s var(--ease) forwards }
+  @keyframes bl-sale {
+    50% { transform: translate(-62%, -6%) rotate(-12deg); opacity: 1 }
+    100% { transform: translate(calc(var(--p) * var(--dx)), calc(var(--p) * var(--dy))) rotate(calc(var(--p) * 3deg - 1deg)) scale(calc(1 - var(--p) * .05)) }
+  }
+
+  /* Cinta con todos los títulos */
+  .cinta { display: block; overflow: hidden; border-block: 1px solid var(--border); padding-block: 18px; white-space: nowrap }
+  .cinta-in { display: inline-flex; animation: bl-cinta 120s linear infinite }
+  .cinta:hover .cinta-in { animation-play-state: paused }
+  .cinta-in > span { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.1rem, 2vw, 1.6rem); color: var(--dim); transition: color .2s }
+  .cinta:hover .cinta-in > span { color: var(--white) }
+  .cinta-in i { font-style: normal; color: var(--flame); margin-inline: 22px }
+  @keyframes bl-cinta { to { transform: translateX(-50%) } }
+
+  @media (max-width: 900px) {
+    .bl-g { grid-template-columns: 1fr }
+    .baraja { --dx: 16px; --dy: -14px; grid-row: 1; aspect-ratio: 16 / 10.6 }
+    .carta { inset: 58px 64px auto 0 }
+    .carta-tx { padding: 14px 16px; padding-top: 48px; gap: 6px }
+    .carta-tx strong { font-size: 1.05rem }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cinta-in { animation: none }
+    .carta { transition: none }
+  }
 </style>

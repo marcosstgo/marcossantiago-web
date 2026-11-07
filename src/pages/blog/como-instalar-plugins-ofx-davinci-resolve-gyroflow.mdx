@@ -1,0 +1,143 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Cómo Instalar Plugins OFX en DaVinci Resolve (Gyroflow Paso a Paso)"
+date: "2026-11-07"
+desc: "Cómo instalar plugins OFX en DaVinci Resolve en Windows, Mac y Linux, con Gyroflow como ejemplo: carpetas correctas, estabilización y errores comunes."
+tags: ["DaVinci Resolve", "Plugins", "Video"]
+slug: "como-instalar-plugins-ofx-davinci-resolve-gyroflow"
+---
+
+<p>Instalar un plugin en DaVinci Resolve casi siempre se reduce a lo mismo: poner el archivo correcto en la carpeta OFX correcta. Aquí uso Gyroflow como ejemplo porque es un caso real y útil. Estabiliza el video con los datos del giroscopio de la cámara, su plugin OpenFX es de código abierto y funciona dentro de Resolve como efecto en Mac, Windows y Linux. Lo que aprendas instalándolo te sirve para casi cualquier otro plugin OFX.</p>
+
+<h2>Qué es un plugin OFX y por qué importa la carpeta</h2>
+
+<p>OpenFX (OFX) es el formato de plugins de efectos que usa Resolve. El plugin viene empacado en una carpeta que termina en <code>.ofx.bundle</code>, y Resolve la busca en una ruta fija del sistema. Si el bundle queda en otro sitio, el efecto no aparece en Resolve.</p>
+
+<p>Estas son las rutas que indica la documentación oficial de Gyroflow para cada sistema:</p>
+
+<table>
+<thead>
+<tr><th>Sistema</th><th>Carpeta OFX</th><th>Aceleración del plugin Gyroflow</th></tr>
+</thead>
+<tbody>
+<tr><td>macOS</td><td><code>/Library/OFX/Plugins</code></td><td>Metal</td></tr>
+<tr><td>Windows</td><td><code>C:\Program Files\Common Files\OFX\Plugins</code></td><td>OpenGL, OpenCL y CUDA</td></tr>
+<tr><td>Linux</td><td><code>/usr/OFX/Plugins</code></td><td>OpenGL, OpenCL y CUDA</td></tr>
+</tbody>
+</table>
+
+<p>Guarda esta tabla. Si otro plugin te dice «copia el bundle a la carpeta OFX», lo más probable es que se refiera a esa ruta, pero confírmalo siempre en las instrucciones de ese plugin.</p>
+
+<h2>1. Descarga Gyroflow y su plugin OpenFX</h2>
+
+<p>Gyroflow tiene dos piezas: la aplicación principal, donde preparas la estabilización, y el plugin OpenFX, que la aplica dentro de Resolve. Las dos se bajan desde la <a href="https://gyroflow.xyz/download" rel="noopener" target="_blank">página oficial de descarga</a>. El plugin está en la sección de plugins de esa misma página.</p>
+
+<p>Al momento de escribir esto, la aplicación va por la versión 1.7.0. Esa versión añadió estabilización óptica para clips sin datos de movimiento (se activa en <code>Motion data -&gt; Optical correction</code> y requiere un perfil de lente válido) y un nuevo suavizado llamado «Optimal path». El código del plugin es público en <a href="https://github.com/gyroflow/gyroflow-plugins" rel="noopener" target="_blank">GitHub</a>, con licencia GPL-3.0.</p>
+
+<h2>2. Instala el plugin desde la app (la forma fácil)</h2>
+
+<p>La documentación dice que el camino más fácil para instalar o actualizar el plugin es desde la propia app de Gyroflow:</p>
+
+<ol>
+<li>Abre la app de Gyroflow.</li>
+<li>Busca el panel <strong>Video editor plugins</strong>, abajo en el lado derecho, debajo de <strong>Advanced</strong>.</li>
+<li>Haz clic en <strong>Install</strong> (o <strong>Update</strong>) al lado de <strong>OpenFX</strong>.</li>
+</ol>
+
+<p>Regla práctica: ten Resolve cerrado mientras instalas y ábrelo cuando termines, para que arranque con el plugin nuevo.</p>
+
+<p>Nota rápida: ese panel aparece en Windows y macOS cuando tienes instalado Resolve u otro programa compatible con OpenFX. Si no lo ves, o si estás en Linux, instálalo a mano.</p>
+
+<h2>3. Instálalo a mano si el panel no aparece</h2>
+
+<h3>macOS</h3>
+
+<ol>
+<li>Descarga el plugin desde la sección de plugins de la página de descarga.</li>
+<li>Crea la carpeta <code>/Library/OFX/Plugins</code>. Desde Terminal: <code>sudo mkdir -p /Library/OFX/Plugins ; open /Library/OFX/Plugins</code></li>
+<li>Abre <code>Gyroflow-OpenFX-macos.dmg</code>.</li>
+<li>Copia la carpeta <code>Gyroflow.ofx.bundle</code> dentro de <code>/Library/OFX/Plugins/</code>.</li>
+</ol>
+
+<p>Ojo con esto: la carpeta tiene que estar en el <code>/Library</code> de la raíz del disco, no en el <code>/Users/TU-USUARIO/Library</code>. La documentación lo marca como importante.</p>
+
+<h3>Windows</h3>
+
+<ol>
+<li>Descarga y extrae <code>Gyroflow-OpenFX-windows.zip</code>.</li>
+<li>Crea la carpeta <code>C:\Program Files\Common Files\OFX\Plugins</code> si no existe.</li>
+<li>Copia la carpeta <code>Gyroflow.ofx.bundle</code> completa dentro de esa ruta.</li>
+</ol>
+
+<h3>Linux</h3>
+
+<ol>
+<li>Descarga el plugin.</li>
+<li>Crea la carpeta y dale permisos a tu usuario: <code>sudo mkdir -p /usr/OFX/Plugins &amp;&amp; sudo chown $USER /usr/OFX/Plugins</code></li>
+<li>Extrae <code>Gyroflow-OpenFX-linux.zip</code> dentro de <code>/usr/OFX/Plugins</code>.</li>
+</ol>
+
+<p>Regla práctica: copia la carpeta <code>Gyroflow.ofx.bundle</code> completa, nunca solo los archivos que tiene adentro. Y abre Resolve de nuevo cuando termines de instalar.</p>
+
+<h2>4. Prepara el proyecto en la app de Gyroflow</h2>
+
+<p>El flujo más completo es preparar la estabilización en la app y guardarla como proyecto <code>.gyroflow</code>, que después cargas en el plugin. Abre el clip en Gyroflow, confirma que tiene datos de movimiento y verifica el perfil de lente.</p>
+
+<p>El perfil de lente es lo que más pesa en el resultado. La documentación dice que la calibración del lente es una pieza muy importante del algoritmo y que hay que usar un perfil preciso. Un detalle: el plugin tiene un botón <strong>Load preset/lens profile</strong>, pero ahí no puedes escoger los perfiles que trae la app, porque vienen en un solo archivo comprimido. Para eso bajas el perfil <code>.json</code> de la base de datos de perfiles de lente que enlaza la documentación. Cuando estés conforme, guarda el proyecto.</p>
+
+<h2>5. Aplica Gyroflow al clip en Resolve</h2>
+
+<p>En Resolve, aplica el efecto Gyroflow al clip desde los efectos OpenFX. Después tienes que cargarle el proyecto, y aquí cambia según tu versión de Resolve.</p>
+
+<h3>Si usas DaVinci Resolve Studio (de pago)</h3>
+
+<ol>
+<li>Ve a <code>Preferences… &gt; General</code>.</li>
+<li>En <strong>External scripting using</strong>, escoge <strong>Local</strong>.</li>
+<li>Selecciona el clip en la página Edit o Color.</li>
+<li>En el plugin, pulsa <strong>Load for current file</strong>.</li>
+</ol>
+
+<p>Esa función depende del scripting externo, y la documentación aclara que solo existe en Studio. Tampoco funciona en un <em>Compound Clip</em>, porque el plugin no puede leer la ruta del archivo.</p>
+
+<h3>Si usas la versión gratis de Resolve</h3>
+
+<ul>
+<li><strong>Last saved project</strong>: carga el último proyecto que guardaste en la app de Gyroflow. La documentación lo recomienda para la versión gratis.</li>
+<li><strong>Browse</strong>: busca a mano el archivo <code>.gyroflow</code> o el video. El plugin se acuerda de la última carpeta que abriste.</li>
+</ul>
+
+<p>Debajo de esos botones hay un mensaje de estado. Si dice <strong>No gyro data in this file</strong>, el clip no tiene datos de movimiento y te toca probar la corrección óptica en la app.</p>
+
+<h2>6. Ajusta y revisa antes de exportar</h2>
+
+<p>Dentro del plugin puedes retocar varios parámetros sin volver a la app, con keyframes si hace falta:</p>
+
+<ul>
+<li><strong>Input rotation</strong> y <strong>Video rotation</strong>: la primera compensa la rotación que Resolve le aplica al clip antes de pasárselo al plugin (por ejemplo, un <code>.mp4</code> con rotación en la metadata). La segunda rota la imagen después de estabilizar.</li>
+<li><strong>Video Speed</strong>: cambia la velocidad del clip dentro del plugin, en vez de usar los cambios de velocidad del editor.</li>
+<li><strong>Use Gyroflow's keyframes</strong>: viene activado y usa los keyframes de Gyroflow en vez de los de Resolve.</li>
+<li><strong>Stabilization overview</strong>: aleja la vista para que veas cómo trabaja la estabilización. Apágalo antes de exportar.</li>
+<li><strong>Embed .gyroflow data in plugin</strong>: guarda los datos dentro del proyecto de Resolve para que lo compartas sin mandar archivos aparte. Viene apagado porque hace el proyecto más pesado.</li>
+</ul>
+
+<p>Para video vertical: si el clip y el timeline tienen la misma proporción, funciona directo. Si pones material horizontal en un timeline vertical, primero cambia en la configuración del timeline la opción de resolución distinta (<em>Mismatched resolution</em>) a <strong>Scale entire image to fit</strong>.</p>
+
+<h2>Errores comunes al instalar plugins en Resolve</h2>
+
+<ul>
+<li><strong>El efecto no aparece:</strong> el bundle está en la carpeta equivocada (en Mac, revisa que no esté en el Library del usuario) o Resolve estaba abierto mientras instalabas.</li>
+<li><strong>Copiaste el contenido y no la carpeta:</strong> lo que va en la carpeta OFX es la carpeta <code>.ofx.bundle</code> completa.</li>
+<li><strong>Load for current file no hace nada:</strong> estás en la versión gratis, no activaste el scripting en <code>Local</code> o el clip es un Compound Clip.</li>
+<li><strong>El clip se ve deformado o raro:</strong> revisa que el perfil de lente sea el correcto y que la rotación de entrada cuadre con la del archivo.</li>
+<li><strong>Exportaste con la vista alejada:</strong> se te quedó prendido el Stabilization overview.</li>
+<li><strong>Plugin viejo:</strong> actualízalo desde el mismo panel de la app. Si quieres probar funciones nuevas antes de que salgan oficialmente, la documentación tiene enlaces a versiones <em>nightly</em>, pero esas no son para proyectos con fecha de entrega.</li>
+</ul>
+
+<h2>Otro recurso para después: Reactor</h2>
+
+<p>Cuando ya domines los OFX, el próximo paso lógico es Reactor. Es un gestor de paquetes que creó la comunidad We Suck Less para Fusion Studio y DaVinci Resolve, entre otros programas. Según su <a href="https://gitlab.com/WeSuckLess/Reactor/-/blob/master/Docs/Using-Reactor.md" rel="noopener" target="_blank">documentación en GitLab</a>, funciona tanto en Resolve gratis como en Resolve Studio. Es un tema aparte, así que vale la pena darle su propia guía.</p>
+
+<h2>Conclusión</h2>
+
+<p>Instalar plugins en DaVinci Resolve no tiene misterio cuando entiendes que todo depende de la carpeta OFX y de abrir el programa otra vez después de instalar. Gyroflow es buena práctica porque te obliga a repasar el proceso completo: descargar, instalar, cargar un proyecto externo y revisar antes de exportar. Y te deja con algo útil de verdad: estabilizar con los datos del giroscopio de tu cámara. Antes de instalar cualquier otro plugin, confirma en su página oficial si funciona en la versión gratis de Resolve, qué sistemas soporta y en qué carpeta va.</p>
