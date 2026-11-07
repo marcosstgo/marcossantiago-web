@@ -258,7 +258,9 @@ def mdx(a):
 
 def bloques(h):
     """Un bloque por línea y línea en blanco entre bloques, como los artículos escritos a mano."""
-    h = re.sub(r'>\s*<(?=/?(p|h2|h3|ol|ul|li|table|thead|tbody|tr|blockquote)\b)', '>\n<', h.strip())
+    # Salto antes de abrir un bloque y antes de cerrar un contenedor; nunca antes de </tr>, </li> ni </p>
+    # (MDX exige que la línea que abre <tr> o <li> también la cierre).
+    h = re.sub(r'>\s*<(?=(p|h2|h3|ol|ul|li|table|thead|tbody|tr|blockquote)\b|/(ol|ul|table|thead|tbody|blockquote)\b)', '>\n<', h.strip())
     return re.sub(r'(</(p|h2|h3|ol|ul|table|blockquote)>)\n', r'\1\n\n', h)
 
 
