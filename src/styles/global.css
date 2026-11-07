@@ -155,3 +155,41 @@ dialog#pagar {
   --ink-3: var(--panel);
   --line: rgba(243,238,229,.13);
 }
+
+/* ── Lenguaje de página (nov-2026, a partir de /ventanilla/) ──
+   Portada con título gigante, lema con acento en itálica, títulos de sección grandes,
+   franja de papel y cierre en flamboyán. Así todas las páginas hablan igual. */
+.pg-hero { padding-top: clamp(104px, 12vw, 150px); padding-bottom: clamp(48px, 7vw, 96px) }
+.pg-eyebrow { color: var(--flame); margin-bottom: 14px }
+.pg-titulo { font-size: clamp(3.6rem, 12.5vw, 11.5rem); line-height: .84; margin-left: -.04em; margin-bottom: 26px }
+.pg-lema { font-size: clamp(1.4rem, 2.7vw, 2.3rem); line-height: 1.14; max-width: 26ch; margin-bottom: 18px }
+.pg-sub { color: var(--muted); font-size: var(--text-lg); line-height: 1.6; max-width: 52ch; margin-bottom: 28px }
+.pg-acciones { display: flex; flex-wrap: wrap; gap: 10px }
+.pg-h2 { font-size: clamp(2.6rem, 6.4vw, 5.6rem); margin-bottom: 28px }
+.pg-sec { padding-block: clamp(72px, 10vw, 140px) }
+.pg-lema .it, .pg-h2 .it, .pg-titulo .it { color: var(--flame) }
+.pg-papel { background: var(--paper); color: var(--on-paper) }
+/* Sobre papel, el naranja se oscurece para leerse bien (contraste 4:1) */
+.pg-papel .it, .pg-papel .pg-num { color: #d93a10 }
+.pg-num { font-family: var(--display); font-weight: 800; line-height: .85; color: var(--flame) }
+.pg-cierre { background: var(--flame); color: var(--ink); padding-block: clamp(80px, 11vw, 150px) }
+.pg-cierre h2 { font-size: clamp(3.2rem, 9.5vw, 9rem); line-height: .86; margin-bottom: 26px; max-width: 13ch }
+.pg-cierre .it { color: var(--ink) }
+.pg-cierre p { font-size: var(--text-lg); line-height: 1.6; max-width: 48ch; margin-bottom: 30px }
+.pg-cierre .btn { background: var(--ink); color: var(--white); border-color: var(--ink) }
+.pg-cierre .btn:hover { background: var(--white); color: var(--ink); border-color: var(--white) }
+.pg-cierre .btn i { color: #25d366 }
+.pg-faq details { border-top: 1px solid var(--border); padding: 20px 0 }
+.pg-faq details:last-child { border-bottom: 1px solid var(--border) }
+.pg-faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 20px; font-size: 1.12rem; font-weight: 600 }
+.pg-faq summary::-webkit-details-marker { display: none }
+.pg-faq summary::after { content: '+'; color: var(--flame); font-size: 1.5rem; line-height: 1; transition: rotate .25s var(--ease) }
+.pg-faq details[open] summary::after { rotate: 45deg }
+.pg-faq details p { margin-top: 12px; color: var(--muted); line-height: 1.7; max-width: 62ch }
+/* Selector en cápsula (radios): lo que tocas cambia algo al momento */
+.pg-switch { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 5px; border: 1px solid var(--border-h); border-radius: 999px }
+.pg-switch input { position: absolute; opacity: 0; pointer-events: none }
+.pg-switch label span { display: block; padding: 11px 20px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: var(--text-sm); color: var(--muted); transition: background .25s var(--ease), color .25s }
+.pg-switch label:hover span { color: var(--white) }
+.pg-switch input:checked + span { background: var(--flame); color: var(--ink) }
+.pg-switch input:focus-visible + span { outline: 2px solid var(--white); outline-offset: 2px }

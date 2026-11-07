@@ -30,313 +30,195 @@ const features = [
   },
 ];
 
+// Al tocar un evento, el cierre y el mensaje de WhatsApp hablan de ese evento
 const events = [
-  'Bodas', 'Quinceañeros', 'Cumpleaños', 'Corporativos',
-  'Graduaciones', 'Fiestas privadas', 'Activaciones de marca', 'Conciertos y festivales',
+  { e: 'Bodas', tu: 'tu boda' },
+  { e: 'Quinceañeros', tu: 'tu quinceañero' },
+  { e: 'Cumpleaños', tu: 'tu cumpleaños' },
+  { e: 'Corporativos', tu: 'tu evento corporativo' },
+  { e: 'Graduaciones', tu: 'tu graduación' },
+  { e: 'Fiestas privadas', tu: 'tu fiesta' },
+  { e: 'Activaciones de marca', tu: 'tu activación de marca' },
+  { e: 'Conciertos y festivales', tu: 'tu concierto o festival' },
 ];
+const stats = [
+  { n: '360°', l: 'Rotación automática' },
+  { n: '4K', l: 'Calidad de video' },
+  { n: 'QR', l: 'Entrega instantánea' },
+  { n: '∞', l: 'Tomas ilimitadas' },
+];
+const pasos = [
+  { t: 'Súbete a la plataforma', d: 'Tus invitados se paran en la plataforma circular — solos, en pareja o en grupo.' },
+  { t: 'La cámara gira sola', d: 'El brazo motorizado gira 360° alrededor capturando todo desde el ángulo perfecto.' },
+  { t: 'Efectos al instante', d: 'Slow motion, música y overlay del evento aplicados automáticamente al clip.' },
+  { t: 'Comparte en segundos', d: 'Escanea el QR y el video llega directo al teléfono. Listo para compartir en redes.' },
+];
+const waBooth = 'https://wa.me/17872439670?text=' + encodeURIComponent('Hola Marcos, me interesa el 360 Video Booth para mi evento.');
 ---
+
 <Base
   title="360 Video Booth — Marcos Santiago · Puerto Rico"
   description="360 Video Booth profesional para eventos en Puerto Rico. Air-39 automático — clips 360 con entrega instantánea, efectos, overlay y galería digital. Bodas, quinceañeros, corporativos."
 >
   <Nav />
-  <main id="main" style="padding-top:120px">
-    <div class="container">
-
-      <p class="section-label">Servicio · 360 Video Booth</p>
-      <h1 class="section-title">360 Video Booth</h1>
-      <p class="section-sub">
-        La experiencia que todos quieren en su evento. La plataforma Air-39 gira automáticamente alrededor de tus invitados y genera clips 360° cinematográficos — con entrega instantánea, efectos personalizados y el recuerdo perfecto para cada uno.
-      </p>
-
-      <!-- Video recap -->
-      <div class="booth-video-wrap">
+  <main id="main">
+    <section class="pg-hero container bh">
+      <div>
+        <p class="label pg-eyebrow">Servicio · Air-39 Automatic 360 Pro</p>
+        <h1 class="display pg-titulo">360 <span class="it">Video Booth</span></h1>
+        <p class="pg-lema">La experiencia que todos quieren <span class="it">en su evento.</span></p>
+        <p class="pg-sub">
+          La plataforma Air-39 gira automáticamente alrededor de tus invitados y genera clips 360° cinematográficos — con
+          entrega instantánea, efectos personalizados y el recuerdo perfecto para cada uno.
+        </p>
+        <div class="pg-acciones">
+          <a class="btn primary" href={waBooth} target="_blank" rel="noopener" data-track="booth-hero">Pedir fecha</a>
+          <a class="btn ghost" href="#accion">Verlo en acción</a>
+        </div>
+      </div>
+      <div class="bh-video">
         <video
           class="booth-video"
-          src="/booth-360/360-Recap.mp4"
-          autoplay muted loop playsinline
-          controls
+          data-src="/booth-360/360-Recap.mp4"
+          poster="/booth-360/360photo2.jpg"
+          muted loop playsinline controls preload="none"
+          aria-label="Recap del 360 Video Booth en un evento"
         ></video>
       </div>
+    </section>
 
-      <!-- Hero visual -->
-      <div class="booth-hero">
-        <div class="booth-hero-badge">
-          <span class="badge-dot"></span>
-          Air-39 Automatic 360 Pro
-        </div>
-        <div class="booth-hero-grid">
-          <div class="booth-stat">
-            <span class="stat-num">360°</span>
-            <span class="stat-lbl">Rotación automática</span>
-          </div>
-          <div class="booth-stat">
-            <span class="stat-num">4K</span>
-            <span class="stat-lbl">Calidad de video</span>
-          </div>
-          <div class="booth-stat">
-            <span class="stat-num">QR</span>
-            <span class="stat-lbl">Entrega instantánea</span>
-          </div>
-          <div class="booth-stat">
-            <span class="stat-num">∞</span>
-            <span class="stat-lbl">Tomas ilimitadas</span>
-          </div>
-        </div>
+    <div class="container">
+      <dl class="b-stats">
+        {stats.map((s) => <div><dt class="pg-num">{s.n}</dt><dd>{s.l}</dd></div>)}
+      </dl>
+    </div>
+
+    <section class="pg-papel pg-sec b-pasos" aria-labelledby="t-pasos">
+      <div class="container">
+        <h2 class="display pg-h2" id="t-pasos">Cómo <span class="it">funciona</span></h2>
+        <ol>
+          {pasos.map((p, i) => <li><span class="pg-num">0{i + 1}</span><h3>{p.t}</h3><p>{p.d}</p></li>)}
+        </ol>
       </div>
+    </section>
 
-      <!-- Cómo funciona -->
-      <div style="margin-top:80px">
-        <p class="section-label">Proceso</p>
-        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">Cómo funciona</h2>
+    <section class="container pg-sec b-incluye" aria-labelledby="t-incluye">
+      <h2 class="display pg-h2" id="t-incluye">Todo <span class="it">incluido</span></h2>
+      <div class="b-feat">
+        {features.map((f) => <article><h3>{f.label}</h3><p>{f.desc}</p></article>)}
       </div>
+    </section>
 
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-num">01</div>
-          <h3 class="step-title">Súbete a la plataforma</h3>
-          <p class="step-desc">Tus invitados se paran en la plataforma circular — solos, en pareja o en grupo.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-num">02</div>
-          <h3 class="step-title">La cámara gira sola</h3>
-          <p class="step-desc">El brazo motorizado gira 360° alrededor capturando todo desde el ángulo perfecto.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-num">03</div>
-          <h3 class="step-title">Efectos al instante</h3>
-          <p class="step-desc">Slow motion, música y overlay del evento aplicados automáticamente al clip.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-num">04</div>
-          <h3 class="step-title">Comparte en segundos</h3>
-          <p class="step-desc">Escanea el QR y el video llega directo al teléfono. Listo para compartir en redes.</p>
-        </div>
+    <section class="container b-eventos" aria-labelledby="t-eventos">
+      <h2 class="display pg-h2" id="t-eventos">¿Para qué <span class="it">evento?</span></h2>
+      <div class="b-chips" role="radiogroup" aria-label="Tipo de evento">
+        {events.map((ev) => (
+          <label><input type="radio" name="evento" value={ev.tu} data-e={ev.e} /><span>{ev.e}</span></label>
+        ))}
       </div>
+    </section>
 
-      <!-- Features -->
-      <div style="margin-top:80px">
-        <p class="section-label">Qué incluye</p>
-        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">Todo incluido</h2>
-      </div>
-
-      <div class="features-grid">
-        {features.map(f => (
-          <div class="feature-card">
-            <h3 class="feature-label">{f.label}</h3>
-            <p class="feature-desc">{f.desc}</p>
+    <section class="container pg-sec" id="accion" aria-labelledby="t-accion">
+      <h2 class="display pg-h2" id="t-accion">En <span class="it">acción</span></h2>
+      <div class="gallery-carousel" role="region" aria-label="Galería 360 Booth — desliza para ver más" tabindex="0">
+        {[1,2,3,4,5,6,7,8,9].map((n) => (
+          <div class="gallery-carousel-item">
+            <img src={`/booth-360/360photo${n}.jpg`} alt={`360 Video Booth evento ${n}`} loading="lazy" />
           </div>
         ))}
       </div>
+    </section>
 
-      <!-- Eventos -->
-      <div class="events-section">
-        <p class="section-label">Disponible para</p>
-        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">Cualquier evento</h2>
-        <div class="events-pills">
-          {events.map(e => (
-            <span class="event-pill">{e}</span>
-          ))}
-        </div>
-      </div>
-
-      <!-- Galería -->
-      <div class="gallery-section">
-        <p class="section-label">Galería</p>
-        <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.2rem)">En acción</h2>
-        <div class="gallery-carousel" role="region" aria-label="Galería 360 Booth — desliza para ver más">
-          {[1,2,3,4,5,6,7,8,9].map(n => (
-            <div class="gallery-carousel-item">
-              <img src={`/booth-360/360photo${n}.jpg`} alt={`360 Video Booth evento ${n}`} loading="lazy" />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <!-- CTA -->
-      <div class="contact-cta">
-        <div>
-          <h2 class="cta-title">¿Tu evento merece el 360?</h2>
-          <p class="cta-sub">Disponible en todo Puerto Rico. Escríbeme para fecha, disponibilidad y cotización.</p>
-        </div>
-        <a href="https://wa.me/17872439670" target="_blank" rel="noopener" class="btn whatsapp">
+    <section class="pg-cierre">
+      <div class="container">
+        <h2 class="display">¿<span class="b-tu">Tu evento</span> merece <span class="it">el 360?</span></h2>
+        <p>Disponible en todo Puerto Rico. Escríbeme para fecha, disponibilidad y cotización.</p>
+        <a href={waBooth} target="_blank" rel="noopener" class="btn b-wa" data-track="booth-cta">
           <i class="fab fa-whatsapp"></i> (787) 243-9670
         </a>
       </div>
-
-    </div>
+    </section>
   </main>
   <Footer />
 </Base>
 
+<script>
+  // El video se baja solo al acercarse (regla del sitio)
+  const v = document.querySelector<HTMLVideoElement>('.booth-video');
+  if (v) {
+    const io = new IntersectionObserver((es) => {
+      if (es.some((e) => e.isIntersecting)) {
+        io.disconnect();
+        v.src = v.dataset.src!;
+        v.play().catch(() => {});
+      }
+    }, { rootMargin: '200px' });
+    io.observe(v);
+  }
+  // Escoger el evento cambia el cierre y el mensaje
+  const tu = document.querySelector('.b-tu');
+  const wa = document.querySelectorAll<HTMLAnchorElement>('[data-track^="booth"]');
+  document.querySelectorAll<HTMLInputElement>('input[name=evento]').forEach((i) =>
+    i.addEventListener('change', () => {
+      const t = i.value;
+      if (tu) tu.textContent = t.charAt(0).toUpperCase() + t.slice(1);
+      const txt = `Hola Marcos, me interesa el 360 Video Booth para ${t}.`;
+      wa.forEach((a) => (a.href = 'https://wa.me/17872439670?text=' + encodeURIComponent(txt)));
+    })
+  );
+</script>
+
 <style>
-/* ── Video ── */
-.booth-video-wrap {
-  margin-top: 48px;
-  border-radius: 16px; overflow: hidden;
-  border: 1px solid var(--border);
-  background: #000;
-  aspect-ratio: 16/9;
-}
-.booth-video {
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
-}
+  .bh { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: center }
+  .bh .pg-titulo { font-size: clamp(3.6rem, 10vw, 9.5rem) }
+  .bh .pg-titulo .it { display: block; font-size: .62em; line-height: 1 }
+  .bh-video { border-radius: 24px; overflow: hidden; border: 1px solid var(--border-h); box-shadow: 0 50px 100px -40px rgba(255, 79, 31, .5); background: #000 }
+  .booth-video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block }
+  @media (max-width: 900px) { .bh { grid-template-columns: 1fr } }
 
-/* ── Gallery (carrusel 9:16 Stories-style) ── */
-.gallery-section { margin-top: 80px; padding-top: 56px; border-top: 1px solid var(--border); }
-.gallery-carousel {
-  margin-top: 28px;
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  padding: 4px 4px 14px;
-  scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--accent) 50%, transparent) transparent;
-}
-.gallery-carousel::-webkit-scrollbar { height: 6px }
-.gallery-carousel::-webkit-scrollbar-track { background: transparent }
-.gallery-carousel::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--accent) 40%, transparent);
-  border-radius: 3px;
-}
-.gallery-carousel-item {
-  flex: 0 0 auto;
-  width: 220px;
-  aspect-ratio: 9 / 16;
-  border-radius: 16px;
-  overflow: hidden;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  scroll-snap-align: start;
-  transition: transform .2s, box-shadow .2s, border-color .2s;
-}
-.gallery-carousel-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 40px rgba(0,0,0,.4);
-  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
-}
-.gallery-carousel-item img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: center;
-  display: block;
-  transition: transform .35s ease;
-}
-.gallery-carousel-item:hover img { transform: scale(1.04) }
-@media (max-width: 600px) {
-  .gallery-carousel-item { width: 180px; border-radius: 14px }
-}
-@media (max-width: 400px) {
-  .gallery-carousel-item { width: 160px }
-}
+  .b-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding-bottom: clamp(64px, 9vw, 120px) }
+  .b-stats div { border-top: 1px solid var(--border-h); padding-top: 18px }
+  .b-stats dt { font-size: clamp(3.4rem, 7.5vw, 6.4rem) }
+  .b-stats dd { color: var(--muted); font-size: var(--text-sm); letter-spacing: .06em; text-transform: uppercase; margin-top: 8px }
+  @media (max-width: 700px) { .b-stats { grid-template-columns: 1fr 1fr; row-gap: 28px } }
 
-/* ── Hero ── */
-.booth-hero {
-  margin-top: 48px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 48px;
-}
-.booth-hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: .65rem;
-  letter-spacing: 3px; text-transform: uppercase;
-  color: var(--page-c); margin-bottom: 40px;
-}
-.badge-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--page-c); flex-shrink: 0;
-}
-.booth-hero-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
-}
-@media (max-width: 600px) {
-  .booth-hero-grid { grid-template-columns: repeat(2, 1fr); }
-  .booth-hero { padding: 28px 20px; }
-}
-.booth-stat {
-  display: flex; flex-direction: column; gap: 6px;
-}
-.stat-num {
-  font-family: var(--display);
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
-  letter-spacing: 2px; color: var(--page-c); line-height: 1;
-}
-.stat-lbl {
-  font-size: .78rem; color: var(--muted); line-height: 1.4;
-}
+  .b-pasos ol { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr) }
+  .b-pasos li { padding: 26px 24px 8px 0; border-top: 2px solid var(--on-paper); margin-right: 20px }
+  .b-pasos .pg-num { display: block; font-size: clamp(3.6rem, 6vw, 5.4rem); margin-bottom: 18px }
+  .b-pasos h3 { font-size: 1.2rem; margin-bottom: 8px }
+  .b-pasos p { color: rgba(20, 18, 15, .72); line-height: 1.6 }
+  @media (max-width: 900px) { .b-pasos ol { grid-template-columns: 1fr 1fr; row-gap: 28px } }
+  @media (max-width: 520px) { .b-pasos ol { grid-template-columns: 1fr } }
 
-/* ── Steps ── */
-.steps-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 12px; margin-top: 32px;
-}
-@media (max-width: 900px) { .steps-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 500px)  { .steps-grid { grid-template-columns: 1fr; } }
-.step-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 28px 20px;
-}
-.step-num {
-  font-family: var(--display); font-size: 3rem;
-  color: var(--page-c); opacity: .35; line-height: 1;
-  margin-bottom: 16px;
-}
-.step-title {
-  font-family: var(--mono); font-size: .65rem;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--white); margin-bottom: 10px;
-}
-.step-desc { font-size: .88rem; color: var(--muted); line-height: 1.65; }
+  .b-feat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 }
+  .b-feat article { padding: 26px 26px 26px 0; border-top: 1px solid var(--border) }
+  .b-feat h3 { font-size: 1.15rem; margin-bottom: 8px }
+  .b-feat h3::before { content: '✓'; color: var(--flame); margin-right: 10px; font-weight: 800 }
+  .b-feat p { color: var(--muted); line-height: 1.65 }
+  @media (max-width: 900px) { .b-feat { grid-template-columns: 1fr 1fr } }
+  @media (max-width: 560px) { .b-feat { grid-template-columns: 1fr } }
 
-/* ── Features ── */
-.features-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 12px; margin-top: 32px;
-}
-@media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } }
-.feature-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-left: 3px solid var(--page-c);
-  border-radius: 12px; padding: 28px 24px;
-}
-.feature-label {
-  font-family: var(--mono); font-size: .6rem;
-  letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--page-c); margin-bottom: 10px;
-}
-.feature-desc { font-size: .88rem; color: var(--muted); line-height: 1.65; }
+  .b-chips { display: flex; flex-wrap: wrap; gap: 10px }
+  .b-chips input { position: absolute; opacity: 0; pointer-events: none }
+  .b-chips span {
+    display: block;
+    padding: 14px 22px;
+    border: 1px solid var(--border-h);
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: var(--display);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    transition: background .2s, color .2s, border-color .2s, translate .2s var(--ease);
+  }
+  .b-chips label:hover span { border-color: var(--flame) }
+  .b-chips input:checked + span { background: var(--flame); color: var(--ink); border-color: var(--flame); translate: 0 -3px }
+  .b-chips input:focus-visible + span { outline: 2px solid var(--white); outline-offset: 2px }
 
-/* ── Events ── */
-.events-section { margin-top: 80px; padding-top: 56px; border-top: 1px solid var(--border); }
-.events-pills {
-  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px;
-}
-.event-pill {
-  font-family: var(--mono); font-size: .65rem;
-  letter-spacing: 2px; text-transform: uppercase;
-  padding: 8px 18px; border-radius: 100px;
-  border: 1px solid var(--border);
-  color: var(--muted);
-}
+  .gallery-carousel { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: thin }
+  .gallery-carousel-item { flex: 0 0 auto; height: clamp(320px, 42vw, 520px); scroll-snap-align: start; border-radius: 18px; overflow: hidden }
+  .gallery-carousel-item img { height: 100%; width: auto; object-fit: cover }
 
-/* ── CTA ── */
-.contact-cta {
-  margin-top: 64px; padding: 48px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 20px;
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 32px; flex-wrap: wrap;
-}
-.cta-title {
-  font-family: var(--display);
-  font-size: clamp(2rem, 4vw, 3rem);
-  letter-spacing: 2px; margin-bottom: 12px;
-}
-.cta-sub { color: var(--muted); font-size: .9rem; line-height: 1.7; }
+  .b-tu { transition: color .3s }
 </style>

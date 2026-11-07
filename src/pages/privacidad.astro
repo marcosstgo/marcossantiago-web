@@ -10,11 +10,11 @@ const updated = '7 de abril de 2026';
   description="Política de privacidad de marcossantiago.com — cómo se recopila, usa y protege tu información personal."
 >
   <Nav />
-  <main id="main" style="padding-top:120px; padding-bottom:100px">
+  <main id="main" class="pg-hero" style="padding-bottom:100px">
     <div class="container">
 
-      <p class="section-label">Legal</p>
-      <h1 class="section-title">Política de Privacidad</h1>
+      <p class="label pg-eyebrow">Legal</p>
+      <h1 class="display pg-titulo legal-t"><span class="it">Política de</span> privacidad</h1>
       <p class="section-sub">
         Esta política describe cómo Marcos Santiago recopila, usa y protege tu información.
         Última actualización: {updated}.
@@ -122,6 +122,8 @@ const updated = '7 de abril de 2026';
 </Base>
 
 <style>
+  .legal-t { font-size: clamp(3.2rem, 9vw, 8rem) }
+  .legal-t .it { color: var(--flame) }
 .terms-body {
   margin-top: 64px;
   max-width: 72ch;

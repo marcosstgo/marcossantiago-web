@@ -118,7 +118,7 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 }
 
 .post-header {
-  max-width: 72ch; margin-bottom: 56px;
+  max-width: 1100px; margin-bottom: 56px;
 }
 .back-link {
   font-family: var(--mono); font-size: var(--text-2xs);
@@ -174,10 +174,10 @@ const prev = idx < allPosts.length - 1  ? allPosts[idx + 1] : null; // older
 [data-cat="Técnicas"]       { --c: #64748b }
 [data-cat="LUTS"]           { --c: #0ea5e9 }
 .post-title {
-  font-family: var(--display);
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  letter-spacing: 2px; line-height: .95;
-  margin-top: 8px;
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(2.6rem, 6.4vw, 6rem);
+  text-transform: uppercase; letter-spacing: -.005em; line-height: .9;
+  margin-top: 8px; max-width: 18ch;
 }
 
 /* ── Article body ── */

@@ -14,32 +14,42 @@ import { pagos } from '../data/site';
   payDialog={false}
 >
   <Nav />
-  <main id="main" class="pg-pagar">
+  <main id="main" class="pg-pagar container">
+    <div class="txt">
+      <p class="label pg-eyebrow">Pagos en línea · ATH Móvil</p>
+      <h1 class="display pg-titulo">Pagar</h1>
+      <p class="pg-lema">Depósitos de reserva y pagos de proyectos, <span class="it">desde tu celular.</span></p>
+      <p class="pg-sub">Escribe la cantidad acordada, aprueba en tu app de ATH Móvil y recibe tu recibo aquí mismo.</p>
+      <p class="nota">¿Quieres esto en tu página? <a href="/ventanilla/">Conoce Ventanilla →</a></p>
+    </div>
     <div class="caja">
       <Pagar {...pagos} />
     </div>
-    <p class="nota">
-      ¿Quieres esto en tu página? <a href="/ventanilla/">Conoce Ventanilla →</a>
-    </p>
   </main>
   <Footer />
 </Base>
 
 <style>
   .pg-pagar {
-    padding: 128px var(--gut) 96px;
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 460px);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+    padding-top: clamp(110px, 12vw, 150px);
+    padding-bottom: 96px;
+  }
+  @media (max-width: 900px) {
+    .pg-pagar { grid-template-columns: 1fr }
   }
   .caja {
-    width: min(460px, 100%);
-    margin-inline: auto;
+    width: 100%;
+    box-shadow: 0 50px 100px -40px rgba(255, 79, 31, .45);
     padding: clamp(24px, 5vw, 40px);
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 20px;
   }
   .nota {
-    margin-top: 28px;
-    text-align: center;
     color: var(--dim);
     font-size: var(--text-xs);
   }
