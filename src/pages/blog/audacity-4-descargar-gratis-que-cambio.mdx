@@ -1,0 +1,116 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Audacity 4: Cómo Descargarlo Gratis, Qué Cambió y Si Debes Actualizar"
+date: "2026-11-10"
+desc: "Audacity 4 gratis: cómo descargar la versión 4.0.2 del sitio oficial, qué trae la interfaz nueva y cuándo te conviene quedarte en la 3.x."
+tags: ["Audio", "Software gratis", "Edición"]
+slug: "audacity-4-descargar-gratis-que-cambio"
+---
+
+<p>Llegó Audacity 4, con la interfaz rehecha desde cero sobre Qt, workspaces, manijas para recortar y estirar clips y medidores por pista. Ahora mismo la versión actual es la <strong>4.0.2</strong>, que salió el 2 de noviembre de 2026. Sigue siendo gratis y de código abierto (GPL v3). Abajo te explico cómo bajarla del sitio correcto, qué cambió de verdad y cuándo te conviene esperar antes de pasar tus proyectos.</p>
+
+<h2>1. Descarga Audacity desde el sitio oficial</h2>
+
+<p>Ve directo a la <a href="https://www.audacityteam.org/download/" rel="noopener" target="_blank">página de descargas de Audacity</a>. Arriba aparece la versión actual y hay un botón para cada sistema. Escoge el instalador según tu computadora:</p>
+
+<table>
+<thead>
+<tr><th>Sistema</th><th>Qué ofrece la página oficial</th><th>Cuál bajar</th></tr>
+</thead>
+<tbody>
+<tr><td>Windows</td><td>Instaladores x86_64 y ARM64</td><td>x86_64 para procesadores Intel o AMD; ARM64 para laptops con procesador ARM (como las Snapdragon)</td></tr>
+<tr><td>macOS</td><td>Universal, Apple Silicon e Intel</td><td>Universal si no estás seguro de qué Mac tienes; si no, la de tu procesador</td></tr>
+<tr><td>Linux</td><td>AppImages x86_64 y ARM64</td><td>La que corresponda a tu procesador</td></tr>
+</tbody>
+</table>
+
+<p>Nota rápida: en la <a href="https://www.audacityteam.org/audacity-4" rel="noopener" target="_blank">página de Audacity 4</a>, el botón principal para Windows y Mac baja un instalador que pasa por MuseHub. Si no quieres eso, justo debajo está el enlace <em>Download without MuseHub</em>, que baja el programa directo.</p>
+
+<p>Regla práctica: si alguien te ofrece Audacity en un sitio de «descargas gratis» con botones raros, sal de ahí. El programa es gratis y la descarga oficial no cuesta nada. Los instaladores reempaquetados son la forma más fácil de meterle basura a tu computadora.</p>
+
+<h2>2. ¿Y MuseHub? Es opcional</h2>
+
+<p>Audacity lo mantiene Muse Group, y <a href="https://www.musehub.com/app/audacity" rel="noopener" target="_blank">MuseHub</a> es su plataforma para distribuir el programa, plugins, samples y loops. Allí Audacity aparece como gratis. Puedes instalarlo desde ahí, pero no lo necesitas para usar el programa.</p>
+
+<p>Dentro de Audacity 4, el botón <code>Get effects</code> te enseña lo que hay en MuseHub organizado por categoría. Hay opciones gratis y pagas, así que fíjate bien antes de darle a cualquier botón. El programa en sí no se paga.</p>
+
+<h2>3. Instala y abre el programa por primera vez</h2>
+
+<ol>
+<li><strong>Windows:</strong> corre el instalador que bajaste y sigue los pasos.</li>
+<li><strong>macOS:</strong> abre el archivo que bajaste y sigue las instrucciones para instalarlo.</li>
+<li><strong>Linux:</strong> el AppImage no se instala. Dale permiso de ejecución con <code>chmod +x</code> seguido del nombre del archivo, y ábrelo.</li>
+</ol>
+
+<p>En la misma página de descargas, bajo <em>Additional resources</em>, hay dos cosas que vale la pena tener presentes. Una es la librería <strong>FFmpeg</strong>, que Audacity usa para importar y exportar formatos adicionales: si un archivo no te abre, es lo primero que debes revisar. La otra es el <strong>manual offline</strong>, por si trabajas en un sitio sin internet.</p>
+
+<h2>4. Escoge un workspace</h2>
+
+<p>La novedad que más vas a notar de entrada son los <strong>workspaces</strong>. Cada uno cambia las herramientas que aparecen en la barra, y la regla de la línea de tiempo pasa de segundos a compases y tiempos según el que uses. Hay cuatro:</p>
+
+<table>
+<thead>
+<tr><th>Workspace</th><th>Qué vas a ver</th></tr>
+</thead>
+<tbody>
+<tr><td><code>Classic</code></td><td>Si vienes de la 3.x, pruébalo junto a los demás para ver con cuál te sientes más cómodo</td></tr>
+<tr><td><code>Modern</code></td><td>En la demo oficial, el contador marca el tiempo en horas, minutos y segundos</td></tr>
+<tr><td><code>Music</code></td><td>En la demo oficial se ven el tempo (120 bpm) y el compás (4/4). Te sirve para loops y música</td></tr>
+<tr><td><code>Custom</code></td><td>Te armas el tuyo con las herramientas que de verdad usas</td></tr>
+</tbody>
+</table>
+
+<p>Arriba siguen los menús de siempre (<code>File</code>, <code>Edit</code>, <code>Select</code>, <code>View</code>, <code>Record</code>, <code>Tracks</code>, <code>Generate</code>, <code>Effect</code>, <code>Analyze</code>, <code>Tools</code>, <code>Extra</code>, <code>Help</code>), y ahora vienen acompañados de las pestañas <code>Home</code>, <code>Project</code> y <code>Export</code>. Puedes personalizar la interfaz con un color de acento y con temas claros u oscuros, cada uno con una variante de alto contraste.</p>
+
+<h2>5. Lo que cambió al editar</h2>
+
+<p>La forma de editar cambió bastante. Esto es lo que vas a usar todos los días:</p>
+
+<ul>
+<li><strong>Manijas para recortar y estirar:</strong> la manija de arriba del clip lo recorta y la de abajo lo estira. Ya no tienes que buscar la herramienta en un menú.</li>
+<li><strong>Edición directa de muestras:</strong> haces zoom hasta el fondo y arrastras las muestras sin cambiar a la herramienta de dibujo ni a la multiherramienta. Así se arregla rápido un clic suelto.</li>
+<li><strong>Medidores por pista:</strong> mientras grabas, cada pista te enseña su nivel de entrada, y el resto del tiempo te enseña el de reproducción. Así balanceas la mezcla sin adivinar.</li>
+<li><strong>Marcadores y regiones:</strong> marcas un punto o un tramo de la línea de tiempo y después exportas el audio a base de esas etiquetas. Si editas podcasts, esto te ahorra exportar cada segmento uno por uno.</li>
+<li><strong>Región de loop:</strong> ahora tiene su propia fila en la regla y se prende o se apaga con un solo botón.</li>
+</ul>
+
+<p>Los proyectos de Audacity 4 se guardan con la extensión <code>.aup4</code>. Los <code>.aup3</code> de la 3.x abren directo en la 4. Tenlo en cuenta cuando organices tus carpetas o le pases un proyecto a otra persona.</p>
+
+<h2>6. ¿Actualizar ya o esperar?</h2>
+
+<p>La nota de la <a href="https://www.audacityteam.org/changelog/4.0.2/" rel="noopener" target="_blank">versión 4.0.2</a> lo dice claro: el equipo está trabajando en la 4.1 para añadir funciones y <strong>traer de vuelta algunas que faltan</strong>, y este parche corrige muchos crasheos y problemas de proyectos que se corrompían. Entre los arreglos están proyectos que se dañaban al cargar clips vacíos o al copiar entre proyectos, y también regresó el guardado automático mientras grabas.</p>
+
+<p>Eso no quiere decir que la 4 sea mala. Quiere decir que todavía está madurando. Así es como yo lo decidiría:</p>
+
+<table>
+<thead>
+<tr><th>Tu situación</th><th>Qué hacer</th></tr>
+</thead>
+<tbody>
+<tr><td>Vas a empezar un proyecto nuevo y no tienes prisa</td><td>Usa la 4.0.2 y ve aprendiendo la interfaz nueva</td></tr>
+<tr><td>Tienes un trabajo con fecha de entrega en la 3.x</td><td>Termínalo en la 3.x y prueba la 4 aparte</td></tr>
+<tr><td>Usas una función que no encuentras en la 4</td><td>Quédate en la 3.x y revisa las notas de cada versión nueva para ver si ya regresó</td></tr>
+<tr><td>Tienes instalada la 4.0.0 o la 4.0.1</td><td>Actualiza a la 4.0.2 por los arreglos de corrupción de proyectos</td></tr>
+</tbody>
+</table>
+
+<p>Si necesitas volver atrás, la página de descargas tiene una sección de versiones anteriores con todas las versiones desde la 3.0.0. Tener las dos instaladas para comparar es una opción válida mientras te acostumbras.</p>
+
+<blockquote>
+<p>Regla práctica: nunca abras en una versión nueva la única copia de un proyecto importante. Duplica la carpeta primero y trabaja sobre la copia.</p>
+
+</blockquote>
+
+<h2>Errores comunes con Audacity 4</h2>
+
+<ul>
+<li><strong>Bajarlo de sitios de terceros:</strong> usa la página oficial o MuseHub y nada más.</li>
+<li><strong>Escoger el instalador equivocado en Windows:</strong> ARM64 es solo para computadoras con procesador ARM. En una PC con Intel o AMD, baja x86_64.</li>
+<li><strong>Pensar que perdiste una función por error tuyo:</strong> el propio equipo dice que faltan algunas y que trabaja en traerlas de vuelta en la 4.1.</li>
+<li><strong>Ignorar FFmpeg:</strong> si un formato no te importa o no te exporta, revisa esa librería antes de rendirte.</li>
+<li><strong>Pelearte con la interfaz:</strong> si la barra no tiene lo que buscas, cambia de workspace o hazte uno <code>Custom</code>.</li>
+</ul>
+
+<h2>Conclusión</h2>
+
+<p>Audacity 4 sigue siendo gratis, se baja en un minuto del sitio oficial y trae mejoras de verdad: workspaces, manijas para recortar y estirar, medidores por pista y exportación por regiones. Como el equipo todavía está trayendo de vuelta algunas funciones en la 4.1, úsala para proyectos nuevos y deja los trabajos con fecha de entrega en la 3.x hasta que se estabilice. Guarda esta página para cuando salga la 4.1 y te toque decidir si ya es hora de mudarte del todo.</p>
