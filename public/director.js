@@ -1,6 +1,6 @@
 // Modo Director: pide el plan, lo pinta mientras llega y recolora la página.
 (function () {
-  var sec = document.getElementById('director'), f = document.getElementById('dr-f'), R = document.getElementById('dr-r'),
+  var giro = 0, sec = document.getElementById('director'), f = document.getElementById('dr-f'), R = document.getElementById('dr-r'),
       inp = document.getElementById('dr-i'), go = f.querySelector('.dr-b'), cat = null, vivo = 0, ultimo = {};
   var INK = '#0d0c0b', PAPEL = '#f3eee5', WA = 'https://wa.me/17872439670?text=';
 
@@ -122,6 +122,62 @@
     pon(U.bu, 'Hola Marcos. ' + idea); U.wa.href = WA + encodeURIComponent('Hola Marcos. ' + idea); U.en.hidden = false;
   }
 
+  // ── Pantalla flotante mientras se arma el plan (la página no se mueve hasta que haya algo que ver) ──
+  var QUIETO = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches, V = null, ctrl = null, quien = null;
+  function flotante(idea, sentir, ajuste) {
+    if (!V) {
+      V = el('div', 'dr-ov'); V.hidden = true;
+      V.setAttribute('role', 'dialog'); V.setAttribute('aria-modal', 'true'); V.setAttribute('aria-labelledby', 'dr-ov-t');
+      var c = el('div', 'dr-ov-c');
+      V.k = el('p', 'dr-ov-k', 'Modo Director');
+      V.t = el('p', 'dr-ov-t'); V.t.id = 'dr-ov-t';
+      V.q = el('p', 'dr-ov-q');
+      V.pasos = el('ol', 'dr-ov-p'); V.pasos.setAttribute('aria-live', 'polite');
+      V.barra = el('div', 'dr-ov-b'); V.barra.append(el('i'));
+      V.x = el('button', 'dr-ov-x', 'Cancelar'); V.x.type = 'button';
+      V.x.onclick = cancela;
+      c.append(V.k, V.t, V.q, V.barra, V.pasos, V.x); V.append(c); sec.append(V);
+      V.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') cancela();
+        if (e.key === 'Tab') { e.preventDefault(); V.x.focus() }   // el foco no se sale de la pantalla
+      });
+    }
+    pon(V.t, ajuste ? 'Dándole otra vuelta' : 'Estoy dirigiendo tu idea');
+    pon(V.q, '«' + idea + '»' + (sentir ? ', que se sienta ' + sentir : ''));
+    V.pasos.replaceChildren();
+    FRASES().forEach(function (f, i) { var li = el('li', i ? '' : 'va', f); V.pasos.append(li) });
+    quien = document.activeElement;
+    V.hidden = false;
+    requestAnimationFrame(function () { V.classList.add('ve') });
+    V.x.focus({ preventScroll: true });
+    V.desde = performance.now();
+  }
+  function paso(n) {
+    if (!V) return;
+    [].forEach.call(V.pasos.children, function (li, i) { li.className = i < n ? 'ok' : i === n ? 'va' : '' });
+  }
+  function cierra() {
+    if (!V || V.hidden) return;
+    V.classList.remove('ve');
+    setTimeout(function () { V.hidden = true }, QUIETO ? 0 : 250);
+  }
+  function cancela() {
+    vivo++; if (ctrl) ctrl.abort(); clearInterval(giro); clearTimeout(V.tm);
+    cierra(); ocupado(false); R.hidden = true;
+    if (quien && quien.focus) quien.focus({ preventScroll: true });
+  }
+  // Cuando ya hay título que ver, se quita la pantalla y la página baja al plan, que se sigue llenando solo
+  function mostrar() {
+    if (!V || V.hidden) return;
+    var falta = Math.max(0, 1400 - (performance.now() - V.desde));   // que no sea un parpadeo
+    clearTimeout(V.tm);
+    V.tm = setTimeout(function () {
+      cierra();
+      R.scrollIntoView({ behavior: QUIETO ? 'auto' : 'smooth', block: 'start' });
+      U.ti.setAttribute('tabindex', '-1'); U.ti.focus({ preventScroll: true });
+    }, falta);
+  }
+
   // ── Pedido ──
   var FRASES = function () { return ['Leyendo tu idea', 'Buscando en ' + cat.nv + ' videos y ' + cat.nb + ' marcas', 'Probando colores', 'Pensando las tomas'] };
   function ocupado(si) { go.disabled = si; R.querySelectorAll('.dr-aj button').forEach(function (b) { b.disabled = si }) }
@@ -131,12 +187,14 @@
     ultimo = { idea: idea, sentir: sentir };
     ocupado(true);
     try { cat = cat || await (await fetch('/director-catalogo.json')).json() } catch (e) { cat = { trabajos: {}, servicios: {}, nv: 29, nb: 12 } }
-    arma(); R.scrollIntoView();
-    var fr = FRASES(), k = 0; pon(U.st, fr[0]);
-    var giro = setInterval(function () { if (U.st.textContent) pon(U.st, fr[++k % fr.length]) }, 1800);
+    arma(); R.hidden = true; flotante(idea, sentir, ajuste);
+    var fr = FRASES(), k = 0, listo = false; pon(U.st, fr[0]);
+    clearInterval(giro);
+    giro = setInterval(function () { if (k < fr.length - 1) { k++; pon(U.st, fr[k]); paso(k) } }, 1800);
     var fin = null, txt = '', t0 = performance.now();
+    ctrl = window.AbortController ? new AbortController() : null;
     try {
-      var r = await fetch('/api/director', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ idea: idea, sentir: sentir, ajuste: ajuste || '' }) });
+      var r = await fetch('/api/director', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ idea: idea, sentir: sentir, ajuste: ajuste || '' }), signal: ctrl ? ctrl.signal : undefined });
       if (!r.ok) {
         var er = await r.json().catch(function () { return {} });
         fin = er.error === 'limite' ? 'limite' : 'error';
@@ -149,7 +207,13 @@
           for (var i = 0; i < ls.length; i++) {
             if (!ls[i]) continue;
             var m = JSON.parse(ls[i]);
-            if (m.t) { txt += m.t; var o = parcial(txt); if (o && id === vivo) render(o) }
+            if (m.t) {
+              txt += m.t; var o = parcial(txt);
+              if (o && id === vivo) {
+                if (!listo && (o.nota != null || o.relevante === false)) { listo = true; R.hidden = false; render(o); mostrar() }   // título completo
+                else if (listo) render(o);
+              }
+            }
             if (m.fin) fin = m.fin;
           }
         }
@@ -158,6 +222,7 @@
     clearInterval(giro);
     if (id !== vivo) return;
     ocupado(false);
+    if (!listo) { R.hidden = false; mostrar() }   // errores o planes sin nota: igual se quita la pantalla
     if (fin === 'ok') {
       var o2 = parcial(txt) || {};
       render(o2); pon(U.st, ''); U.st.classList.remove('anda');
