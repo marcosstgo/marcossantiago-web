@@ -1,0 +1,163 @@
+---
+// Portada de /sobre-mi/: Marcos recortado delante de una palabra gigante, sobre la pared naranja del estudio.
+// Tres canales como el hero del inicio; cambian solos cada 6.5 s hasta que alguien toca uno.
+// Capas sacadas con scripts/marcos-recorte.py (figura recortada + pared sin la persona).
+import { getImage } from 'astro:assets';
+import sonrisa from '../assets/marcos/marcos-camara-sonrisa.png';
+import paz from '../assets/marcos/marcos-camara-paz.png';
+import perfil from '../assets/marcos/marcos-camara-perfil.png';
+import paredSonrisa from '../assets/marcos/marcos-camara-sonrisa-pared.jpg';
+import paredPaz from '../assets/marcos/marcos-camara-paz-pared.jpg';
+import paredPerfil from '../assets/marcos/marcos-camara-perfil-pared.jpg';
+
+const canales = [
+  { f: sonrisa, p: paredSonrisa, w: 'Foto', x: '15%', xm: '0vw', t: ['Retrato en estudio', 'Fotografía y video'], alt: 'Marcos Santiago sonriendo con su cámara de cine en las manos' },
+  { f: paz, p: paredPaz, w: 'Video', x: '15%', xm: '0vw', t: ['Desde Aibonito', 'para toda la isla'], alt: 'Marcos Santiago haciendo la señal de paz con su cámara de cine' },
+  { f: perfil, p: paredPerfil, w: 'Diseño', x: '17%', xm: '-2vw', t: ['Detrás de la cámara', 'más de 20 años'], alt: 'Marcos Santiago de perfil, con la cámara lista para grabar' },
+];
+
+const capas = await Promise.all(canales.map(async (c) => {
+  const fig = await Promise.all([480, 900].map(async (w) => ({ w, avif: (await getImage({ src: c.f, width: w, format: 'avif', quality: 60 })).src, webp: (await getImage({ src: c.f, width: w, format: 'webp', quality: 78 })).src })));
+  const pared = await Promise.all([800, 1600].map(async (w) => ({ w, s: (await getImage({ src: c.p, width: w, format: 'webp', quality: 70 })).src })));
+  return {
+    ...c,
+    alto: Math.round(c.f.height * 900 / c.f.width), // alto de la figura a 900 px de ancho
+    avif: fig.map(v => `${v.avif} ${v.w}w`).join(', '),
+    webp: fig.map(v => `${v.webp} ${v.w}w`).join(', '),
+    src: fig[1].webp,
+    pared: pared.map(v => `${v.s} ${v.w}w`).join(', '),
+    paredSrc: pared[0].s,
+  };
+}));
+const sizes = '(max-width: 760px) 135vw, (max-width: 1100px) 100vw, 55vw';
+---
+<section class="pm" id="pm" aria-label="Marcos Santiago">
+  {capas.map((c, i) => (
+    <div class:list={['pm-s', { on: i === 0 }]} style={`--x:${c.x};--xm:${c.xm};--c:${c.w.length};--a:${c.f.width}/${c.f.height}`} data-i={i} aria-hidden={i === 0 ? undefined : 'true'}>
+      <img class="pm-p" srcset={c.pared} src={c.paredSrc} sizes="100vw" alt="" width="1600" height="903" decoding="async" loading={i === 0 ? 'eager' : 'lazy'} />
+      <span class="pm-w" aria-hidden="true"><span>{c.w}</span></span>
+      <div class="pm-f">
+        <picture>
+          <source type="image/avif" srcset={c.avif} sizes={sizes} />
+          <img srcset={c.webp} src={c.src} sizes={sizes} alt={c.alt} width="900" height={c.alto} decoding="async" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+        </picture>
+      </div>
+    </div>
+  ))}
+  <div class="pm-grano" aria-hidden="true"></div>
+  <div class="pm-static" aria-hidden="true"></div>
+
+  <h1 class="pm-t">
+    <span class="pm-desc">Fotógrafo, videógrafo y diseñador <em class="it">desde Aibonito, Puerto Rico</em></span>
+    <span class="pm-nombre"><span>Marcos</span> <span>Santiago</span></span>
+  </h1>
+  <div class="pm-cred">
+    <div class="pm-ch" role="group" aria-label="Cambiar la foto">
+      {capas.map((c, i) => (
+        <button type="button" aria-pressed={i === 0 ? 'true' : 'false'} aria-label={`Foto ${i + 1}`} data-i={i} data-t={c.t.join('<br />')}>{i + 1}</button>
+      ))}
+    </div>
+    <p id="pm-cr" aria-live="polite"><Fragment set:html={capas[0].t.join('<br />')} /></p>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    var pm = document.getElementById('pm'); if (!pm) return;
+    var ss = pm.querySelectorAll('.pm-s'), bs = pm.querySelectorAll('.pm-ch button'), st = pm.querySelector('.pm-static'), cr = document.getElementById('pm-cr');
+    var quieto = matchMedia('(prefers-reduced-motion: reduce)').matches, actual = 0, t = null, tocado = false, visible = true;
+
+    // Las otras dos fotos se arman después de cargar la página: no compiten con la primera.
+    addEventListener('load', function () { (window.requestIdleCallback || setTimeout)(function () { pm.classList.add('listo'); programa() }, { timeout: 1200 }) }, { once: true });
+
+    function ve(i) {
+      if (i === actual) return;
+      bs.forEach(function (b, j) { b.setAttribute('aria-pressed', j === i) });
+      cr.innerHTML = bs[i].dataset.t;
+      var sale = ss[actual], entra = ss[i]; actual = i;
+      if (!quieto) { st.classList.add('on'); setTimeout(function () { st.classList.remove('on') }, 220) }
+      sale.classList.remove('on'); sale.setAttribute('aria-hidden', 'true');
+      entra.classList.add('on'); entra.removeAttribute('aria-hidden');
+    }
+    function programa() {
+      clearTimeout(t);
+      if (!quieto && !tocado && visible && !document.hidden) t = setTimeout(function () { ve((actual + 1) % ss.length); programa() }, 6500);
+    }
+    bs.forEach(function (b) { b.addEventListener('click', function () { pm.classList.add('listo'); tocado = true; clearTimeout(t); ve(+b.dataset.i) }) });
+    document.addEventListener('visibilitychange', programa);
+    new IntersectionObserver(function (e) { visible = e[0].isIntersecting; programa() }).observe(pm);
+
+    // Profundidad: con el ratón, la palabra y la figura se mueven distinto.
+    if (!quieto && matchMedia('(pointer: fine)').matches) {
+      var raf = 0, mx = 0, my = 0;
+      pm.addEventListener('pointermove', function (e) {
+        var r = pm.getBoundingClientRect(); mx = (e.clientX - r.left) / r.width - .5; my = (e.clientY - r.top) / r.height - .5;
+        if (!raf) raf = requestAnimationFrame(function () { raf = 0; pm.style.setProperty('--mx', mx.toFixed(3)); pm.style.setProperty('--my', my.toFixed(3)) });
+      });
+      pm.addEventListener('pointerleave', function () { pm.style.setProperty('--mx', 0); pm.style.setProperty('--my', 0) });
+    }
+  })();
+</script>
+
+<style>
+  .pm { --mx: 0; --my: 0; position: relative; height: 100svh; min-height: 600px; max-height: 1200px; overflow: clip; background: #d5773e; isolation: isolate; color: #f3eee5 }
+  .pm-s { position: absolute; inset: 0; display: none }
+  .pm-s.on, .pm:global(.listo) .pm-s { display: block }
+  .pm-s { opacity: 0; transition: opacity .5s ease .1s }
+  .pm-s.on { opacity: 1; z-index: 1 }
+  .pm-p { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover }
+
+  /* La palabra gigante va detrás de Marcos */
+  .pm-w { position: absolute; left: var(--gut); right: 0; top: clamp(96px, 14svh, 150px); text-align: left; font-family: var(--display); font-weight: 800; text-transform: uppercase; line-height: .8; letter-spacing: -.02em; color: #0d0c0b;
+    font-size: min(calc(66vw / (var(--c) * .58)), 44svh); white-space: nowrap }
+  .pm-w span { display: inline-block; translate: calc(var(--mx) * -26px) calc(var(--my) * -12px); clip-path: inset(-10% -10% -10% -10%); transform: translateX(0);
+    transition: translate .6s var(--ease), transform 1.1s var(--ease), clip-path 1.1s var(--ease) }
+  .pm-s:not(.on) .pm-w span { transform: translateX(8%); clip-path: inset(-10% -10% -10% 100%) }
+
+  /* Marcos: entra enfocando, como un rack focus */
+  .pm-f { position: absolute; bottom: 0; left: calc(50% + var(--x)); height: min(calc(100% - 92px), 1100px); translate: calc(-50% + var(--mx) * 14px) calc(var(--my) * 6px); transform-origin: 50% 100%; transition: translate .6s var(--ease) }
+  .pm-f { aspect-ratio: var(--a) }
+  .pm-f picture, .pm-f img { display: block; width: 100%; height: 100%; max-width: none; object-fit: contain }
+  .pm-f img { filter: drop-shadow(26px 18px 34px rgba(90, 28, 0, .38)); transform-origin: 50% 100%; transition: transform 1.2s var(--ease), filter 1.2s var(--ease), opacity .8s ease }
+  .pm-s:not(.on) .pm-f img { transform: scale(1.05); filter: drop-shadow(26px 18px 34px rgba(90, 28, 0, .38)) blur(10px); opacity: 0 }
+
+  .pm::after { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(180deg, rgba(13,12,11,0) 52%, rgba(13,12,11,.55) 78%, rgba(13,12,11,.88) 100%) }
+  .pm-grano { position: absolute; inset: -160px; z-index: 2; pointer-events: none; opacity: .55; mix-blend-mode: overlay; background: url(/grano.webp) 0 0 / 160px; animation: pm-grano .7s steps(1) infinite }
+  @keyframes pm-grano { 0% { translate: 0 0 } 20% { translate: -47px 31px } 40% { translate: 62px -58px } 60% { translate: -83px -24px } 80% { translate: 29px 76px } }
+  .pm-static { position: absolute; inset: -320px; z-index: 2; opacity: 0; pointer-events: none; background: #1a1a1a url(/grano.webp) 0 0 / 80px; transition: opacity .1s }
+  .pm-static:global(.on) { opacity: .85; animation: pm-grano .28s steps(1) infinite }
+
+  .pm-t { position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; padding: 0 var(--gut) clamp(14px, 2vw, 26px); font-weight: inherit; pointer-events: none }
+  .pm-desc { display: block; font-size: clamp(1.0625rem, 1.6vw, 1.5rem); font-weight: 500; line-height: 1.25; margin-bottom: clamp(8px, 1.2vw, 16px); max-width: 26ch; text-shadow: 0 1px 12px rgba(0,0,0,.5) }
+  .pm-desc .it { display: block; font-size: 1.14em }
+  .pm-nombre { display: flex; flex-wrap: wrap; column-gap: .18em; font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: calc((100vw - 2 * var(--gut)) / 7.5); line-height: .84; white-space: nowrap; letter-spacing: -.012em }
+
+  .pm-cred { position: absolute; z-index: 3; right: var(--gut); bottom: calc((100vw - 2 * var(--gut)) / 7.5 * .84 + clamp(14px, 2vw, 26px) + clamp(8px, 1.2vw, 16px)); text-align: right; font-size: .875rem; font-weight: 500; line-height: 1.3; text-shadow: 0 1px 10px rgba(0,0,0,.65) }
+  .pm-ch { display: inline-flex; gap: 4px; margin-bottom: 8px; padding: 3px; border-radius: 99px; background: rgba(13,12,11,.55) }
+  .pm-ch button { width: 38px; height: 38px; border-radius: 50%; font-weight: 700; font-size: .875rem; color: #f3eee5; transition: background .2s, color .2s, scale .2s var(--ease) }
+  .pm-ch button:hover { background: rgba(243,238,229,.22); scale: 1.08 }
+  .pm-ch button[aria-pressed='true'] { background: #f3eee5; color: #0d0c0b }
+
+  @media (max-width: 760px) {
+    .pm { height: 100svh; min-height: 560px }
+    .pm-w { top: max(140px, 30svh); font-size: calc(100vw / (var(--c) * .6)) }
+    .pm-f { height: auto; width: min(96vw, 66svh * var(--a)); left: calc(50% + var(--xm)); translate: -50% 0 }
+    .pm-nombre { font-size: calc((100vw - 2 * var(--gut)) / 4.1); white-space: normal }
+    .pm-cred { bottom: auto; top: 80px }
+    .pm-cred p { display: none }
+  }
+  /* Al bajar, la palabra sube más rápido que Marcos */
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .pm-w, .pm-f { animation: linear both; animation-timeline: scroll(root); animation-range: 0 100svh }
+      .pm-w { animation-name: pm-sube }
+      .pm-f { animation-name: pm-sube-f }
+      @keyframes pm-sube { to { transform: translateY(-30%) } }
+      @keyframes pm-sube-f { to { scale: 1.06 } }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pm-grano { animation: none }
+    .pm-s, .pm-s .pm-w, .pm-f img { transition: none }
+  }
+</style>

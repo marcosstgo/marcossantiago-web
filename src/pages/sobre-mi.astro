@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import CtaBand from '../components/CtaBand.astro';
+import PortadaMarcos from '../components/PortadaMarcos.astro';
 import { video, brand, logos, videos } from '../lib/media';
 
 const anios = new Date().getFullYear() - 2001;
@@ -49,13 +50,13 @@ const publicos = [
   title="Sobre mí — Marcos Santiago"
   description="Marcos Santiago, artista visual y desarrollador en Aibonito, Puerto Rico. Más de 20 años integrando diseño, fotografía, video y programación para negocios, municipios y organizaciones de toda la isla."
 >
-  <Fragment slot="head"><link rel="preload" href="/marcos-photo.webp" as="image" /></Fragment>
   <Nav />
   <main id="main">
+    <PortadaMarcos />
 
     <!-- 1 · El visor: enfocas girando el anillo y disparas -->
     <section class="vi" id="vi">
-      <h1 class="ti"><span>Aprendiendo</span> <em class="it">a ver</em></h1>
+      <h2 class="ti"><span>Aprendiendo</span> <em class="it">a ver</em></h2>
       <div class="vi-t">
         <p class="vi-s">Soy Marcos Santiago. Integro diseño, fotografía, video y programación para que negocios, municipios y organizaciones se proyecten con claridad, desde el logo hasta el sitio web.</p>
         <dl class="vi-d">
@@ -72,7 +73,7 @@ const publicos = [
       </div>
       <figure class="vi-f">
         <div class="vi-m">
-          <img id="vi-i" src="/marcos-photo.webp" width="1080" height="1080" alt="Marcos Santiago apuntando su cámara, Aibonito, Puerto Rico" fetchpriority="high" />
+          <img id="vi-i" src="/marcos-photo.webp" width="1080" height="1080" alt="Marcos Santiago apuntando su cámara, Aibonito, Puerto Rico" loading="lazy" decoding="async" />
           <div class="vi-c" aria-hidden="true"><i></i><i></i></div>
           <div class="vi-h" aria-hidden="true">
             <span class="af" id="vi-af">AF</span>
