@@ -1,4 +1,5 @@
 # Video de fotos tipo proyector de cine («el efecto» que Marcos aprobó el 7-nov-2026 para el hero del inicio).
+# «EFECTO PROYECTOR» — así lo llama Marcos (nombre puesto el 13-nov-2026). Usos: canal 1 del inicio y portada de /sobre-mi/.
 # Acercamiento lento + paneo, vaivén de proyector, cambio que sube como cuadro de película con raya negra,
 # destello al encajar, manchas de luz naranja en algunos cambios, parpadeo y viñeta. El grano lo pone la página (CSS).
 # Uso: python3 -m venv /tmp/v && /tmp/v/bin/pip install numpy pillow
