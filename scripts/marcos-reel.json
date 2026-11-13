@@ -1,0 +1,12 @@
+{
+  "shots": [
+    ["arte/marcos/marcos-camara-sonrisa.jpg", 0.55, 0.45, 1],
+    ["arte/marcos/marcos-camara-perfil.jpg", 0.52, 0.45, -1],
+    ["arte/marcos/marcos-camara-paz.jpg", 0.55, 0.45, 1],
+    ["arte/marcos/marcos-camara-sonrisa.jpg", 0.55, 0.25, -1, 1.55],
+    ["arte/marcos/marcos-camara-perfil.jpg", 0.62, 0.25, 1, 1.5],
+    ["arte/marcos/marcos-camara-paz.jpg", 0.57, 0.27, -1, 1.55]
+  ],
+  "durs": [60, 52, 48, 48, 52, 60],
+  "leaks": [0, 3]
+}

@@ -31,8 +31,19 @@ shots = [
 ]
 # Ritmo: arranca pausado, se acelera en el medio y respira al final
 durs = [36, 30, 26, 24, 22, 20, 20, 20, 22, 22, 24, 26, 28, 30]
+leaks = {2, 6, 10, 0}
+# Otro video sin tocar el script: tercer argumento con un JSON {"shots": [[ruta desde la raíz del repo, x, y, dir], ...],
+# "durs": [...], "leaks": [...]}. Ejemplo: scripts/marcos-reel.json (portada de /sobre-mi/).
+if len(sys.argv) > 3:
+    import json
+    cfg = json.load(open(sys.argv[3]))
+    raiz = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+    shots = [(os.path.join(raiz, f), *r) for f, *r in cfg['shots']]
+    durs = cfg['durs']; leaks = set(cfg.get('leaks', []))
+    imgs = [Image.open(f).convert('RGB') for f, *_ in shots]
+else:
+    imgs = [Image.open(f'{R}{f}.webp').convert('RGB') for f, *_ in shots]
 TR = 5  # cuadros del cambio tipo proyector
-imgs = [Image.open(f'{R}{f}.webp').convert('RGB') for f, *_ in shots]
 rnd = random.Random(7)
 yy, xx = np.mgrid[0:H, 0:W]
 vig = 1 - 0.38 * (((xx - W/2)/(W/2))**2 + ((yy - H/2)/(H/2))**2) ** 1.4
@@ -42,11 +53,11 @@ naranja = np.array([255, 120, 50], np.float32)
 
 def cuadro(k, t):
     """Foto k en el momento t (0..1 de su toma), con acercamiento lento y paneo."""
-    im = imgs[k]; _, fx, fy, d = shots[k]
+    im = imgs[k]; _, fx, fy, d, *zz = shots[k]
     iw, ih = im.size
     # recorte 16:9 más grande que cabe
     cw = min(iw, ih * W / H); ch = cw * H / W
-    z = 1.04 + 0.10 * t  # acercamiento
+    z = (zz[0] if zz else 1.04) + 0.10 * t  # acercamiento (en el JSON, 5.º valor = acercamiento inicial)
     cw2, ch2 = cw / z, ch / z
     cx = fx * iw + d * (t - .5) * cw * 0.05
     cy = fy * ih
@@ -61,7 +72,6 @@ def ease(x): return 1 - (1 - x) ** 3
 out = subprocess.Popen(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-',
   '-c:v', 'libx264', '-preset', 'slow', '-crf', sys.argv[2] if len(sys.argv) > 2 else '20', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', sys.argv[1]], stdin=subprocess.PIPE)
 n = len(shots); total = 0
-leaks = {2, 6, 10, 0}
 for k in range(n):
     D = durs[k]
     for f in range(D):
