@@ -41,6 +41,10 @@ artículo nuevo sale con una historia de Instagram (dura 24 horas) con un enlace
 1. `articulo-auto.py`: añadir al esquema un campo `historia` (3 datos con `grande` corto, de 6 caracteres o menos, y
    `texto` de 110 caracteres o menos, sacados del artículo, nada inventado, más `cta`). Se comprueban en la misma
    pasada que el artículo. Guardarlo en `src/data/historias/<slug>.json`.
+   **Datos que caducan:** en la historia sirven (precio de oferta, fecha límite: dura 24 h y sale el mismo día que el
+   artículo), pero el carrusel fijo de la Fase 3 NO debe usarlos. Pedir al modelo que marque cada dato con
+   `caduca: true/false` y que el carrusel use solo los que no caducan. Ejemplo: el «$236 hasta el 20 de noviembre» del
+   artículo de DaVinci sale de la tabla de precios del artículo; sirve hoy, no en un carrusel.
 2. Después del push, correr `historia-blog.py <slug>`. El video **no va al repo** (pesa), solo se manda.
 3. Enviar a Marcos por Discord: el video, el enlace con
    `?utm_source=instagram&utm_medium=story` y el texto sugerido para el sticker («LEER ARTÍCULO»).
