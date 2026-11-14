@@ -51,3 +51,6 @@ public/obs-setting.png
 # Generador de artículos (copia ~/marcossantiago-blog-auto)
 .venv/
 logs/
+
+# Videos de las historias (pesan; se mandan, no se publican)
+public/blog/historias/
