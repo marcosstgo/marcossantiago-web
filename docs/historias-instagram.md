@@ -1,7 +1,33 @@
 # Historias de Instagram para los artículos del blog
 
-Notas del 14-nov-2026. Estado: **pendiente**. El diseño de los videos está aprobado por Marcos; falta conectarlo al
-artículo automático, y para eso hace falta Corillo Server prendido.
+Notas del 14-nov-2026, al día el 20-nov-2026. Estado: **pendiente de conectar**. El diseño de los videos está aprobado
+por Marcos. Corillo Server ya está arriba otra vez (20-nov).
+
+## Dónde nos quedamos (20-nov-2026)
+
+Hecho:
+- 14-nov: en el artículo de DaVinci (`davinci-resolve-gratis-vs-studio-diferencias-2026`), el precio de $236 enlaza a
+  la página de Studio en Blackmagic, la nota cita a RedShark para la fecha del 20-nov, y se corrigió la versión
+  (21.2 del 4-nov, no 21.1.2). Publicado en `main` y comprobado en vivo.
+- 20-nov: historia hecha a mano para `mejores-editores-de-video-gratis-pc-2026` (artículo del 17-nov), con los datos
+  comprobados en la web: «5» editores sin marca de agua, «¡OJO!» la marca de agua de Resolve con efectos de Studio,
+  «1080p» el tope de Clipchamp gratis. Datos en `src/data/historias/`. Se mandó a Marcos para subir con el sticker:
+  `https://marcossantiago.com/blog/mejores-editores-de-video-gratis-pc-2026/?utm_source=instagram&utm_medium=story`
+- 20-nov: `historia-blog.py` también quita el paréntesis final del titular (si no, «(SIN MARCA DE AGUA)» daba 5 líneas).
+- Revisado el artículo del 17-nov: fechas y versiones correctas (OpenShot 4.1 se anunció el 25-oct). Solo salió
+  después la 4.1.1 (2-nov), un arreglo menor; actualizarlo es opcional.
+
+Lo que sigue, en orden:
+1. **21-nov: la oferta de DaVinci Studio ($236) terminó el 20-nov.** Cambiar el artículo de DaVinci para que diga solo
+   el precio regular de $295 y quitar lo de la oferta (tabla, nota que sigue a la tabla y conclusión).
+2. **Escoger cómo se conecta al servidor** (Marcos no decidió todavía):
+   a) Claude lo programa desde la nube y Marcos hace `git pull` en `~/marcossantiago-blog-auto` y prueba con `--dry-run`;
+   b) Marcos da acceso a Corillo Server con Remote Control (app de Claude en esa computadora) y Claude lo instala y prueba allá.
+3. Conectar la historia a `articulo-auto.py` y el envío por Discord (ver «Pendiente» abajo).
+4. Hacer más estricta la comprobación de `articulo-auto.py`: buscar de nuevo el mismo día todo lo que diga «más
+   reciente», «actual», precios, ofertas y fechas límite, y exigir un enlace a la fuente en cada precio u oferta.
+   Por qué: el artículo de DaVinci salió con la versión vieja (21.1.2) y la verificación no lo vio.
+5. Próximo artículo automático: martes 24-nov a las 8 AM. Si para entonces no está conectado, se hace la historia a mano.
 
 ## Por qué
 
