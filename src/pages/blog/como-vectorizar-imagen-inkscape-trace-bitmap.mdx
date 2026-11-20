@@ -1,0 +1,138 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Cómo vectorizar una imagen en Inkscape gratis: Trace Bitmap paso a paso (2026)"
+date: "2026-11-20"
+desc: "Cómo vectorizar una imagen en Inkscape gratis con Trace Bitmap: cuál modo usar para logos, colores o pixel art, cómo ajustarlo y los errores comunes."
+tags: ["Diseño", "Software gratis"]
+slug: "como-vectorizar-imagen-inkscape-trace-bitmap"
+---
+
+<p>Te llega un logo en JPG de 300 píxeles sacado de Facebook y hay que imprimirlo en un banner. Estirarlo no sirve: se pixela. La salida es vectorizarlo, o sea, convertir los píxeles en trazados que puedes escalar al tamaño que quieras. Inkscape es gratis, de código abierto, y trae una herramienta para esto: <strong>Trace Bitmap</strong>. Aquí va el proceso completo, qué modo usar según la imagen y los errores que más tiempo hacen perder.</p>
+
+<h2>Antes de empezar: qué puede y qué no puede hacer Trace Bitmap</h2>
+
+<p>Trace Bitmap analiza la imagen y dibuja trazados vectoriales siguiendo las zonas de brillo o de color. Funciona muy bien con logos, siluetas, ilustraciones planas, firmas e íconos. Con una foto de una persona o de un paisaje el resultado es un efecto de póster con muchísimos nodos, no una copia limpia.</p>
+
+<p><strong>Regla práctica:</strong> mientras menos colores y más definidos los bordes, mejor sale el trazado. Si el logo tiene degradados, sombras o texturas, cuenta con que vas a tener que redibujar partes a mano.</p>
+
+<h2>1. Descarga Inkscape 1.4.4</h2>
+
+<p>La versión estable actual es <strong>Inkscape 1.4.4</strong>, que salió el 6 de mayo de 2026. Es una versión de mantenimiento: según las notas oficiales trae 20 arreglos de cierres inesperados (incluyendo tres que no dejaban ni abrir el programa), más de 25 arreglos de errores y mejoras de rendimiento, y una paleta de colores nueva. Bájala desde la <a href="https://inkscape.org/release/inkscape-1.4.4/" rel="noopener" target="_blank">página oficial de descarga de Inkscape</a>, que tiene instaladores para Windows (incluyendo Windows on Arm), macOS y Linux.</p>
+
+<p>Nota rápida: el equipo está trabajando en <a href="https://wiki.inkscape.org/wiki/Release_notes/1.5" rel="noopener" target="_blank">Inkscape 1.5</a>, que pasa la interfaz a GTK 4 y abre los archivos como pestañas. Todavía está en desarrollo. Las versiones 1.4.3 y 1.4.4 funcionan como versiones puente para convertir archivos con varias páginas del formato nuevo de 1.5 al anterior. Para trabajar a diario, quédate con la 1.4.4.</p>
+
+<p>Los nombres de los menús van en inglés, que es como aparecen en la interfaz original. Si tienes Inkscape en español, las opciones están en los mismos menús, pero traducidas.</p>
+
+<h2>2. Prepara la imagen antes de importarla</h2>
+
+<p>Lo que hagas aquí pesa más que cualquier ajuste del trazado. Trace Bitmap no adivina: si la imagen tiene ruido, el vector va a tener ruido.</p>
+
+<ul>
+<li><strong>Busca la versión más grande que haya.</strong> Una imagen de 2000 píxeles da curvas más suaves que una de 300.</li>
+<li><strong>Recorta.</strong> Deja solo lo que quieres vectorizar, sin pedazos de fondo ni de otros elementos.</li>
+<li><strong>Sube el contraste.</strong> Si es un logo de un color, oscurece el logo y aclara el fondo en tu editor de fotos antes de traerlo.</li>
+<li><strong>Evita JPG muy comprimidos.</strong> Los artefactos de compresión alrededor de los bordes se convierten en manchitas en el vector.</li>
+</ul>
+
+<h2>3. Importa la imagen y selecciónala</h2>
+
+<ol>
+<li>Abre un documento nuevo en Inkscape.</li>
+<li>Ve a <code>File &gt; Import</code> y escoge tu imagen. Inkscape te pregunta si quieres incrustarla o enlazarla. Para vectorizar da igual cuál escojas.</li>
+<li>Haz clic sobre la imagen para seleccionarla. Si no está seleccionada, Trace Bitmap no tiene nada que trazar.</li>
+</ol>
+
+<h2>4. Abre Trace Bitmap</h2>
+
+<p>Con la imagen seleccionada, ve a <code>Path &gt; Trace Bitmap</code> o usa el atajo <code>Shift + Alt + B</code>. Se abre un panel con tres pestañas: <strong>Single Scan</strong> para trazados de un solo color, <strong>Multicolor</strong> para trazados a color y <strong>Pixel Art</strong> para íconos pequeños o gráficos hechos a nivel de píxel.</p>
+
+<h2>5. Escoge el modo correcto</h2>
+
+<p>Aquí es donde la mayoría se equivoca: usar el modo que no es y pensar que la herramienta no sirve. Guarda esta tabla:</p>
+
+<table>
+<thead>
+<tr><th>Pestaña</th><th>Modo</th><th>Qué hace</th><th>Úsalo para</th></tr>
+</thead>
+<tbody>
+<tr><td>Single Scan</td><td>Brightness cutoff</td><td>Separa lo claro de lo oscuro con un umbral</td><td>Logos de un color, firmas, siluetas, texto escaneado</td></tr>
+<tr><td>Single Scan</td><td>Edge detection</td><td>Traza solo los bordes que encuentra</td><td>Contornos, dibujos de línea</td></tr>
+<tr><td>Single Scan</td><td>Color quantization</td><td>Reduce los colores y traza los límites entre ellos</td><td>Imágenes con zonas de color bien marcadas cuando quieres un resultado de un solo color</td></tr>
+<tr><td>Multicolor</td><td>Colors (escaneos múltiples)</td><td>Hace varias pasadas y crea un trazado por cada color</td><td>Logos e ilustraciones a color</td></tr>
+<tr><td>Pixel Art</td><td>—</td><td>Respeta la cuadrícula de píxeles</td><td>Íconos pequeños, sprites, gráficos de pocos píxeles</td></tr>
+</tbody>
+</table>
+
+<p>Para la mayoría de los logos que llegan en mala calidad, <strong>Brightness cutoff</strong> (si es de un color) o <strong>Multicolor</strong> (si tiene varios) resuelven.</p>
+
+<h2>6. Ajusta el umbral y mira la vista previa</h2>
+
+<p>En <strong>Brightness cutoff</strong> el control principal es <strong>Threshold</strong>, el umbral. Decide a partir de qué brillo un píxel cuenta como forma y cuándo cuenta como fondo.</p>
+
+<ol>
+<li>Mira la vista previa del panel. Si sale vacía, sube el <code>Threshold</code>.</li>
+<li>Si las letras se cierran o las formas se engordan, bájalo.</li>
+<li>Ve en pasos pequeños. Una diferencia de centésimas puede abrir o cerrar el hueco de una «a» o una «e».</li>
+</ol>
+
+<p>En <strong>Multicolor</strong>, escoge cuántos colores (escaneos) quieres. Pon el número real de colores del logo: si tiene tres colores más el fondo, empieza con cuatro. Si le pones de más, Inkscape te crea capas para cada sombra y cada artefacto de compresión.</p>
+
+<p>Cuando la vista previa se vea bien, dale a <code>Apply</code>.</p>
+
+<h2>7. Separa el vector y borra la imagen original</h2>
+
+<p>Esto confunde a mucha gente: después de aplicar parece que no pasó nada. Lo que pasa es que el trazado nuevo se crea <strong>encima</strong> de la imagen original, en la misma posición.</p>
+
+<ol>
+<li>Arrastra el resultado hacia un lado para ver los dos juntos.</li>
+<li>Compara. Si el vector se ve bien, selecciona la imagen original y bórrala.</li>
+<li>Si no te convence, borra el vector, selecciona otra vez la imagen y prueba con otro umbral u otro modo.</li>
+</ol>
+
+<h2>8. Revisa los nodos y guarda en SVG</h2>
+
+<p>Un trazado automático casi nunca sale perfecto. Acércate bien y busca manchitas sueltas, curvas que deberían ser rectas y esquinas redondeadas que en el original eran puntiagudas. Corrígelas con la herramienta de edición de nodos o borra los fragmentos que sobran. Inkscape 1.4.2 añadió herramientas nuevas para limpiar trazados, así que en la 1.4.4 tienes más opciones para esa limpieza que en versiones viejas.</p>
+
+<p>Cuando termines, guarda en <strong>SVG</strong>. Desde ahí puedes exportar a PDF para la imprenta o a PNG del tamaño que necesites. Yo siempre guardo el SVG como archivo maestro y exporto lo demás a partir de él.</p>
+
+<h2>Errores comunes al vectorizar en Inkscape</h2>
+
+<h3>Vectorizar una foto y esperar un logo</h3>
+
+<p>Trace Bitmap no inventa bordes que no existen. Con una foto vas a obtener un efecto artístico de cientos o miles de trazados, pesado de editar y de imprimir.</p>
+
+<h3>Usar demasiados colores en Multicolor</h3>
+
+<p>Cada color de más es otra capa de trazados. Un logo de dos colores trazado con muchos escaneos sale lleno de bordes de transición que después tienes que borrar uno a uno.</p>
+
+<h3>Pensar que no funcionó</h3>
+
+<p>El vector está encima de la imagen. Muévelo o esconde la imagen antes de concluir que falló.</p>
+
+<h3>Trazar texto que podrías reescribir</h3>
+
+<p>Si el logo tiene texto en una tipografía que puedes identificar, a menudo sale más limpio escribirlo con la fuente correcta y convertirlo a trazado que vectorizar letras pixeladas. Verifica la licencia de la fuente antes de usarla en un trabajo comercial.</p>
+
+<h3>Entregar sin revisar de cerca</h3>
+
+<p>A tamaño de pantalla todo se ve bien. A 400% aparecen los nodos torcidos y las manchas que en un banner de 6 pies se van a notar. Revisa siempre de cerca antes de mandarlo a imprimir.</p>
+
+<h2>Atajos y rutas para tener a mano</h2>
+
+<table>
+<thead>
+<tr><th>Acción</th><th>Ruta o atajo</th></tr>
+</thead>
+<tbody>
+<tr><td>Importar imagen</td><td><code>File &gt; Import</code></td></tr>
+<tr><td>Abrir Trace Bitmap</td><td><code>Path &gt; Trace Bitmap</code> o <code>Shift + Alt + B</code></td></tr>
+<tr><td>Logo de un color</td><td>Pestaña <code>Single Scan</code>, modo <code>Brightness cutoff</code></td></tr>
+<tr><td>Logo a color</td><td>Pestaña <code>Multicolor</code></td></tr>
+<tr><td>Íconos y sprites</td><td>Pestaña <code>Pixel Art</code></td></tr>
+<tr><td>Generar el vector</td><td>Botón <code>Apply</code></td></tr>
+</tbody>
+</table>
+
+<h2>Conclusión</h2>
+
+<p>Para vectorizar en Inkscape, prepara bien la imagen, escoge el modo según cuántos colores tenga y ajusta el umbral viendo la vista previa. Con un logo limpio, Brightness cutoff o Multicolor te dan un SVG usable en pocos minutos. Con una imagen de baja calidad, el trazado automático es solo un punto de partida y lo demás lo terminas a mano con los nodos. En los dos casos te ahorra tiempo, y con Inkscape 1.4.4 no pagas nada.</p>
