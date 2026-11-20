@@ -103,7 +103,9 @@ class Escena:
 
 
 def escenas(meta, info):
-    titulo = meta['titulo'].split(':')[0].strip() if len(meta['titulo'].split(':')[0].split()) >= 3 else meta['titulo']
+    # Gancho: lo que va antes de los dos puntos y sin el paréntesis final, si queda con 3 palabras o más.
+    corto = re.sub(r'\s*\([^)]*\)\s*$', '', meta['titulo'].split(':')[0]).strip()
+    titulo = corto if len(corto.split()) >= 3 else meta['titulo']
     datos = info.get('datos', [])[:3]
     tag = (meta['tags'] or ['Blog'])[0].upper()
     out, t = [], 0.0
