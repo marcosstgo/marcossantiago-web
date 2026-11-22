@@ -27,7 +27,8 @@ Lo que sigue, en orden:
 4. Hacer más estricta la comprobación de `articulo-auto.py`: buscar de nuevo el mismo día todo lo que diga «más
    reciente», «actual», precios, ofertas y fechas límite, y exigir un enlace a la fuente en cada precio u oferta.
    Por qué: el artículo de DaVinci salió con la versión vieja (21.1.2) y la verificación no lo vio.
-5. Próximo artículo automático: martes 24-nov a las 8 AM. Si para entonces no está conectado, se hace la historia a mano.
+5. Fotografía y video: las fotos saldrán de enlaces de galerías de Pixieset que Marcos le pasa al bot (ver «Ideas para después»).
+6. Próximo artículo automático: martes 24-nov a las 8 AM. Si para entonces no está conectado, se hace la historia a mano.
 
 ## Por qué
 
@@ -89,3 +90,10 @@ artículo nuevo sale con una historia de Instagram (dura 24 horas) con un enlace
   un reel con el «efecto proyector» (`fotos-reel.py` en vertical), escribe el texto y propone fecha. Marcos dice «sí» y
   se publica solo. Esto sí necesita la API de Meta: cuenta profesional, app de Meta y token de usuario del sistema
   (los normales vencen a los 60 días). Se conversa más adelante.
+  **Entrada de las fotos (22-nov): enlaces de galerías de Pixieset.** Marcos le pasa al bot el enlace de la galería del
+  cliente en Pixieset (bodas, quinces, eventos, sesiones) y el bot saca de ahí las fotos para Instagram. Por resolver:
+  - Pixieset no tiene una API pública para bajar galerías: hay que ver si Marcos activa la descarga en la galería (o
+    comparte un enlace de descarga) o si se bajan las fotos de la página de la galería. Probar con una galería real.
+  - Permiso del cliente: solo galerías que Marcos marque como publicables; nunca publicar sin su «sí».
+  - Con las fotos: escoger las mejores (`escoger-fotos.mjs`), carrusel 4:5 o reel con el «efecto proyector», texto con
+    la voz de Marcos y propuesta de fecha; Marcos aprueba y se publica.
