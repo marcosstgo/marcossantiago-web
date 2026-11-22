@@ -96,6 +96,12 @@ artículo nuevo sale con una historia de Instagram (dura 24 horas) con un enlace
   por omisión, `--publicar` para publicar de verdad). `publicar_reel.py` publica reels, `nube.py` sube las fotos un
   momento a Cloudflare R2 y `verificar_conexion.py` prueba la conexión. El token y las llaves de R2 NO están en el
   repo: están en `N:\Sol de Noche\Instagram\` (`.instagram_token`, que vence a los ~60 días, y `.r2_credenciales`).
+  **Video desde una foto (lo que Marcos describe: «acomodo por rostro y centralización»):** `instagram-reels/reel_fotos.py`
+  en `video-kit`. Detecta caras (YuNet, `reencuadre.py`), encuadra la foto en 9:16 centrada en las caras y la anima con un
+  look de `efectos.py` (natural, película suave/antigua, flash Y2K, camcorder, neón, cinemático, B/N). Dos estilos:
+  `dinamico` (si las caras no caben, cada persona en su cuadro) y `tranquilo` (foto completa sobre fondo difuminado).
+  Uso: `python reel_fotos.py dinamico CARPETA LOOK SALIDA.mp4 "Título" foto1 foto2 ...`. Sin música (se pone en la app).
+  Ojo: busca fuentes en `C:\Windows\Fonts`, así que corre en la PC de Windows de Marcos, no en Linux tal cual.
   Lo que hacía la cola (escoger una foto de un enlace y prepararla para Instagram) no está en ningún repo: puede estar
   en esa carpeta N:, en Corillo Server o en una conversación anterior. Hay que buscarlo ahí.
   **Entrada de las fotos (22-nov): enlaces de galerías de Pixieset.** Marcos le pasa al bot el enlace de la galería del
