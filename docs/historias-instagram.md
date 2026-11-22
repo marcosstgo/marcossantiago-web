@@ -90,10 +90,21 @@ artículo nuevo sale con una historia de Instagram (dura 24 horas) con un enlace
   un reel con el «efecto proyector» (`fotos-reel.py` en vertical), escribe el texto y propone fecha. Marcos dice «sí» y
   se publica solo. Esto sí necesita la API de Meta: cuenta profesional, app de Meta y token de usuario del sistema
   (los normales vencen a los 60 días). Se conversa más adelante.
+  **Ya existe (encontrado el 22-nov) en el repo `marcosstgo/video-kit`, carpeta `instagram-reels/`:** conexión con la
+  API de Instagram de @m4rcos (IG_ID 17841401493010180, Graph API v27.0). `publicar.py` publica un carrusel de 2 a 20
+  fotos desde una cola (`Listas para publicar/<evento>/cola.json`, con `orden`, `carpeta`, `imagenes`, `texto`; ensayo
+  por omisión, `--publicar` para publicar de verdad). `publicar_reel.py` publica reels, `nube.py` sube las fotos un
+  momento a Cloudflare R2 y `verificar_conexion.py` prueba la conexión. El token y las llaves de R2 NO están en el
+  repo: están en `N:\Sol de Noche\Instagram\` (`.instagram_token`, que vence a los ~60 días, y `.r2_credenciales`).
+  Lo que hacía la cola (escoger una foto de un enlace y prepararla para Instagram) no está en ningún repo: puede estar
+  en esa carpeta N:, en Corillo Server o en una conversación anterior. Hay que buscarlo ahí.
   **Entrada de las fotos (22-nov): enlaces de galerías de Pixieset.** Marcos le pasa al bot el enlace de la galería del
   cliente en Pixieset (bodas, quinces, eventos, sesiones) y el bot saca de ahí las fotos para Instagram. Por resolver:
-  - Pixieset no tiene una API pública para bajar galerías: hay que ver si Marcos activa la descarga en la galería (o
-    comparte un enlace de descarga) o si se bajan las fotos de la página de la galería. Probar con una galería real.
+  - Pixieset no tiene API pública, y la galería tiene la protección de Cloudflare (Turnstile): un navegador automático
+    no la pasa, y la regla de Marcos (`mis-proyectos/proyectos/marcossantiago-web.md`) es **no saltarla**. Probado el
+    22-nov con `fotos.marcossantiago.com/encendidonavidadmanati/instagram/` (descarga activada, pero detrás del captcha).
+    Opciones: Marcos baja las fotos (o el zip de la carpeta «instagram» de la galería) a Corillo Server y el bot sigue
+    desde ahí, o se le manda al bot por Telegram o Discord.
   - Permiso del cliente: solo galerías que Marcos marque como publicables; nunca publicar sin su «sí».
   - Con las fotos: escoger las mejores (`escoger-fotos.mjs`), carrusel 4:5 o reel con el «efecto proyector», texto con
     la voz de Marcos y propuesta de fecha; Marcos aprueba y se publica.
