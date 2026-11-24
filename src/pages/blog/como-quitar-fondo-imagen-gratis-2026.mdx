@@ -1,0 +1,126 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Cómo quitar el fondo de una imagen gratis en 2026: Paint, Mac, Photopea, GIMP (y el cierre de remove.bg)"
+date: "2026-11-24"
+desc: "Cómo quitar el fondo de una imagen gratis en 2026 con Paint, Vista Previa en Mac, Photopea o GIMP, y qué cambia con el cierre de remove.bg el 1 de diciembre."
+tags: ["Edición", "Software gratis", "Diseño"]
+slug: "como-quitar-fondo-imagen-gratis-2026"
+---
+
+<p>Para quitarle el fondo a una foto no necesitas pagar una suscripción. Windows 11 y macOS ya traen herramientas que lo hacen en un clic. Photopea lo hace desde el navegador y GIMP te da control fino cuando el recorte automático no da la talla. Además, si usabas remove.bg, ojo: el sitio cierra la semana que viene y abajo te explico qué cambia.</p>
+
+<blockquote>
+<p><strong>Aviso importante:</strong> remove.bg anunció en su propio sitio que su remoción de fondo se está mudando a Canva y que el sitio independiente dejará de estar disponible a partir del <strong>1 de diciembre de 2026 a las 9:00 a.m. CET</strong>. Si tienes ese flujo de trabajo montado, busca un reemplazo ya.</p>
+
+</blockquote>
+
+<h2>Qué método usar (resumen rápido)</h2>
+
+<table>
+<thead>
+<tr><th>Método</th><th>Dónde funciona</th><th>Mejor para</th><th>Control sobre el borde</th></tr>
+</thead>
+<tbody>
+<tr><td>Paint</td><td>Windows 11</td><td>Recortes rápidos de producto o persona</td><td>Bajo</td></tr>
+<tr><td>Vista Previa (Preview)</td><td>Mac con macOS Ventura o más reciente</td><td>Sacar el sujeto en segundos</td><td>Bajo, se retoca un poco con Markup</td></tr>
+<tr><td>Photopea</td><td>Navegador (cualquier sistema)</td><td>Recorte automático más edición estilo Photoshop</td><td>Medio a alto</td></tr>
+<tr><td>GIMP</td><td>Windows, Mac y Linux</td><td>Fondos difíciles, pelo, objetos complejos</td><td>Alto</td></tr>
+<tr><td>remove.bg</td><td>Web, hasta el 1 de diciembre de 2026</td><td>Vistas previas de baja resolución</td><td>Bajo</td></tr>
+</tbody>
+</table>
+
+<p>Regla práctica: empieza por la herramienta automática que ya tienes en tu sistema. Si el borde sale feo, pasa a Photopea o GIMP para arreglarlo a mano.</p>
+
+<h2>1. Quitar el fondo con Paint en Windows 11</h2>
+
+<p>El Paint de Windows 11 trae un botón para quitar el fondo que funciona en cualquier PC con Windows 11. No necesitas una PC Copilot+ ni cuenta de Microsoft. Paint viene incluido con el sistema y se actualiza desde Microsoft Store.</p>
+
+<ol>
+<li>Abre la imagen en Paint.</li>
+<li>En las herramientas de imagen, al lado de Recortar, haz clic en el botón de quitar fondo (<em>Remove background</em>).</li>
+<li>Paint aísla el sujeto principal sobre un fondo transparente.</li>
+<li>Guarda como <strong>PNG</strong> para conservar la transparencia: <code>Archivo → Guardar como → PNG</code>.</li>
+</ol>
+
+<p>Si no ves el botón, actualiza Paint desde <code>Microsoft Store → Biblioteca → Obtener actualizaciones</code>. En Windows 10 esta función no existe, así que usa Photopea o GIMP.</p>
+
+<p>Nota rápida: también puedes hacer una selección rectangular antes de darle al botón para que Paint trabaje solo dentro de esa zona. Sirve cuando hay varios objetos en la foto y nada más te interesa uno.</p>
+
+<h2>2. Quitar el fondo en Mac con Vista Previa</h2>
+
+<p>Desde macOS Ventura, Apple tiene una función que saca el sujeto de la foto (en inglés le llaman <em>Lift Subject</em> o <em>Remove Background</em>). Procesa la imagen en tu Mac con aprendizaje automático, sin subirla a ningún servicio.</p>
+
+<h3>Opción A: directo en Vista Previa</h3>
+
+<ol>
+<li>Abre la foto en Vista Previa.</li>
+<li>Haz clic en el botón de quitar fondo o búscalo en el menú Herramientas (<code>Tools → Remove Background</code> si tu Mac está en inglés).</li>
+<li>Si te pregunta si quieres convertir el archivo a PNG, dale a convertir. Si prefieres no tocar el original, cancela, haz <code>Archivo → Duplicar</code> y quita el fondo en la copia.</li>
+</ol>
+
+<h3>Opción B: copiar el sujeto</h3>
+
+<ol>
+<li>Haz Control-clic sobre la foto (en Fotos, Quick Look o Vista Previa) y escoge copiar el sujeto (<em>Copy Subject</em>).</li>
+<li>En Vista Previa usa <code>Archivo → Nuevo desde el portapapeles</code>.</li>
+<li>Guarda como PNG y deja marcada la casilla de canal alfa para que no se pierda la transparencia.</li>
+</ol>
+
+<p>Ojo con esta función: a veces se lleva un poquito del fondo pegado al borde o se come parte del sujeto. El recorte se aplica directo a la imagen y, si no te gusta, lo deshaces con <code>Edición → Deshacer</code>. Puedes limpiar un poco el borde con las herramientas de Markup de Vista Previa (Instant Alpha, Smart Lasso), pero si es para un trabajo de cliente, termínalo en Photopea o GIMP.</p>
+
+<h2>3. Quitar el fondo en Photopea (en el navegador)</h2>
+
+<p>Photopea es un editor estilo Photoshop que corre en el navegador, sin instalar nada. Según su <a href="https://www.photopea.com/tuts/single-click-background-removal/" rel="noopener" target="_blank">tutorial oficial</a>, quitar el fondo se hace en un clic:</p>
+
+<ol>
+<li>Entra a photopea.com y abre la foto con <code>File → Open</code>.</li>
+<li>Haz clic en <code>Select → Remove BG</code>.</li>
+<li>Exporta con <code>File → Export As → PNG</code>.</li>
+</ol>
+
+<p>La ventaja de Photopea sobre Paint o Vista Previa es lo que puedes hacer después: retocar con máscaras de capa, refinar el borde y poner un fondo nuevo, todo en la misma herramienta. Si ya conoces Photoshop, los menús te van a resultar familiares.</p>
+
+<h2>4. Quitar el fondo en GIMP con Selección de primer plano</h2>
+
+<p>Cuando el sujeto tiene un borde complicado o se confunde con el fondo, los botones automáticos se quedan cortos. Para eso GIMP tiene la herramienta <strong>Foreground Select</strong> (Selección de primer plano). Los pasos salen de la <a href="https://docs.gimp.org/3.2/en/gimp-tool-foreground-select.html" rel="noopener" target="_blank">documentación oficial de GIMP 3.2</a>.</p>
+
+<h3>Activar la herramienta</h3>
+
+<p>Ve a <code>Tools → Selection Tools → Foreground Select</code> o haz clic en su icono en la caja de herramientas. No trae atajo de teclado, pero le puedes asignar uno en <code>Edit → Keyboard Shortcuts</code>.</p>
+
+<h3>Paso a paso</h3>
+
+<ol>
+<li><strong>Selección inicial:</strong> traza a mano alzada alrededor del objeto, igual que con la selección libre, dejando un poco de fondo por fuera.</li>
+<li><strong>Crear la máscara:</strong> al cerrar la selección, GIMP cubre la imagen con una máscara azul y aparecen las opciones de la herramienta, entre ellas la casilla <em>Preview mask</em> y el botón <em>Select</em>.</li>
+<li><strong>Marcar el primer plano:</strong> con el pincel, traza una línea sobre los colores del objeto que quieres conservar. Ajusta el tamaño del pincel en las opciones de herramienta y no pintes sobre el fondo.</li>
+<li><strong>Revisar:</strong> activa <em>Preview mask</em> para ver cómo va quedando la extracción. Si falta algo, sigue marcando primer plano.</li>
+<li><strong>Finalizar:</strong> haz clic en <em>Select</em> para convertir el resultado en selección.</li>
+</ol>
+
+<p>Con el sujeto seleccionado, invierte la selección y borra el fondo. Si al borrar ves blanco en vez del patrón de cuadritos, a la capa le falta canal alfa: añádelo desde el menú <code>Capa → Transparencia</code>. Exporta como PNG con <code>Archivo → Exportar como</code>.</p>
+
+<p>Advertencia de la propia documentación: esta herramienta usa mucha memoria y se puede poner lenta o cerrarse con imágenes grandes. Para aliviarla, usa el motor <em>Matting Global</em> en vez de <em>Matting Levin</em>, o sube los niveles de reducción (<em>Levels</em>) para que procese más rápido, aunque eso gasta más memoria. En ambos casos el borde sale un poco menos preciso. Nota: según la documentación, Matting Levin está quitado temporalmente en Windows, así que ahí ya vas a estar usando Global.</p>
+
+<h2>5. remove.bg: qué cambia el 1 de diciembre</h2>
+
+<p>Por años, remove.bg fue la respuesta automática a «quitar fondo online». Su página de ayuda todavía dice que el servicio es gratis para imágenes de baja resolución (hasta <strong>0.25 megapíxeles</strong>, unos 625 × 400 px) procesadas en la web y para uso personal. También da 50 vistas previas gratis al mes en su app de escritorio o por API. Para resoluciones de hasta 50 megapíxeles y uso comercial hay que pagar.</p>
+
+<p>El problema es que ese sitio tiene los días contados. El aviso en <a href="https://www.remove.bg/help/a/is-remove-bg-free-" rel="noopener" target="_blank">remove.bg</a> dice que la función se muda a Canva y que el sitio independiente deja de estar disponible desde el 1 de diciembre de 2026. Si lo usabas por API o con la app de escritorio, revisa ya qué pasa con tu cuenta y tus créditos. Antes de montar tu flujo nuevo en Canva, verifica allá qué incluye su plan gratis, porque no lo pude confirmar.</p>
+
+<p>De todos modos, 0.25 megapíxeles no da para imprimir ni para una foto de producto decente. Para eso, Paint, Vista Previa o Photopea te entregan el recorte a la resolución original de la foto.</p>
+
+<h2>Errores comunes al quitar el fondo</h2>
+
+<ul>
+<li><strong>Guardar en JPG.</strong> JPG no tiene transparencia y el fondo vuelve como blanco o negro. Guarda en PNG (o WebP si es para web).</li>
+<li><strong>Fondos parecidos al sujeto.</strong> Una camisa gris contra una pared gris confunde a cualquier herramienta automática. Si tú haces la foto, separa al sujeto del fondo con color o con luz.</li>
+<li><strong>Pelo y bordes finos.</strong> Ahí se notan los recortes automáticos. Usa GIMP o refina la máscara en Photopea, y revisa el resultado con zoom al 100 %.</li>
+<li><strong>Trabajar sobre una copia chiquita.</strong> Haz el recorte sobre la foto original y reduce el tamaño al final. Así no tienes que repetirlo cuando te pidan una versión más grande.</li>
+<li><strong>No revisar sobre otro fondo.</strong> Pon el PNG sobre un color oscuro y uno claro antes de entregarlo. Los halos del fondo viejo se ven enseguida.</li>
+<li><strong>Uso comercial con planes gratis.</strong> El plan gratis de remove.bg era para uso personal. Lee los términos de cualquier servicio en línea antes de usarlo en trabajos pagados.</li>
+</ul>
+
+<h2>Conclusión</h2>
+
+<p>Para la mayoría de los recortes, lo que ya tienes en tu sistema basta: Paint en Windows 11 o Vista Previa en Mac. Cuando el borde importa, como en una foto de producto, un logo sobre otro fondo o un retrato con pelo suelto, pasa a Photopea o a la Selección de primer plano de GIMP y termínalo a mano. Exporta siempre en PNG. Y si remove.bg era tu herramienta, cámbiala antes del 1 de diciembre para que no te coja de sorpresa en medio de un trabajo.</p>
