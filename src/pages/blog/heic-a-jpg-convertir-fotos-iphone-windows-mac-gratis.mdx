@@ -1,0 +1,130 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "HEIC a JPG: cómo abrir y convertir las fotos del iPhone en Windows y Mac gratis (2026)"
+date: "2026-11-27"
+desc: "Cómo convertir HEIC a JPG en Mac, Windows y GIMP con opciones gratis, y cómo configurar el iPhone para no tener que convertir más. Guía paso a paso 2026."
+tags: ["Fotografía", "Software gratis", "Edición"]
+slug: "heic-a-jpg-convertir-fotos-iphone-windows-mac-gratis"
+---
+
+<p>Te mandan fotos del iPhone, las pasas a la computadora y aparecen como <code>.heic</code>: Windows no te enseña la vista previa, la imprenta no las acepta o el formulario web te dice que el archivo no es válido. Tienes dos caminos: convertir esos archivos a JPG o configurar el iPhone para que no te vuelva a pasar. Abajo tienes los dos, casi todos con herramientas gratis que ya tienes o puedes instalar.</p>
+
+<h2>Qué es HEIC y por qué da problemas</h2>
+
+<p>HEIF (High Efficiency Image File Format) es el formato de fotos que Apple adoptó desde iOS 11 y macOS High Sierra. Según Apple, comprime mejor que JPEG con la misma calidad visual, así que las fotos ocupan menos espacio en el teléfono y en iCloud. HEIC es la variante más común: imagen comprimida con HEVC (H.265) dentro del contenedor HEIF.</p>
+
+<p>El problema es la compatibilidad. HEVC tiene patentes, y por eso muchos programas y sistemas no traen soporte de fábrica. La propia documentación de GIMP explica que muchos distribuidores de software libre prefieren no empaquetar el soporte HEIC por ese motivo. Mac y iPhone lo abren sin problema; fuera del mundo Apple, depende.</p>
+
+<p>Una nota de 2026: en Macs compatibles con macOS Tahoe 26, si el formato de captura de la app de capturas de pantalla está en HDR, las capturas se guardan en HEIF y las grabaciones de pantalla en HEVC. O sea, ya no son solo las fotos del teléfono.</p>
+
+<h2>1. Evita el problema desde el iPhone: «Más compatible»</h2>
+
+<p>Si las fotos van a terminar en Windows, en la imprenta o en una web, lo más fácil es que el iPhone dispare directamente en JPEG. Apple lo documenta así:</p>
+
+<ol>
+<li>Abre <code>Ajustes &gt; Cámara</code>.</li>
+<li>Toca <code>Formatos</code> y escoge <strong>Más compatible</strong>.</li>
+<li>Desde ese momento, las fotos nuevas se guardan en JPEG y los videos en H.264.</li>
+</ol>
+
+<p>Para volver al formato que ahorra espacio, escoge <strong>Alta eficiencia</strong>. La opción solo aparece en iPhone y iPad que pueden capturar en HEIF/HEVC (iPhone 7 en adelante, según Apple). Ojo: esto no convierte las fotos que ya tienes, solo las nuevas.</p>
+
+<p>Regla práctica: si el teléfono es tu cámara de trabajo y siempre entregas en JPEG, usa «Más compatible». Si es tu teléfono personal y el espacio te aprieta, deja «Alta eficiencia» y convierte solo lo que necesites.</p>
+
+<h2>2. Pasa las fotos a la PC ya convertidas</h2>
+
+<p>Hay un ajuste que mucha gente no conoce. Cuando importas fotos por cable USB a la app Fotos, a Captura de Imagen o a una PC, el iPhone puede convertirlas a JPEG (y los videos a H.264) en el camino. Eso pasa si está en automático; si está en «Conservar originales», te llegan los HEIC tal cual.</p>
+
+<ol>
+<li>Abre <code>Ajustes &gt; Apps &gt; Fotos</code>.</li>
+<li>Baja hasta la sección de transferencia a Mac o PC.</li>
+<li>Escoge <strong>Automático</strong> si quieres que lleguen convertidas, o <strong>Conservar originales</strong> si quieres los HEIC.</li>
+</ol>
+
+<p>Si al conectar el iPhone a Windows te siguen llegando HEIC, revisa este ajuste antes de instalar cualquier cosa.</p>
+
+<p>Algo parecido pasa al compartir. Apple indica que por AirDrop, Mensajes o correo, si el equipo que recibe no soporta los formatos nuevos, la foto puede enviarse automáticamente en un formato más compatible como JPEG. Por iCloud Fotos, en cambio, se mantiene el formato original. Todo esto está en la <a href="https://support.apple.com/en-us/116944" rel="noopener" target="_blank">página de Apple sobre HEIF y HEVC</a>.</p>
+
+<h2>3. Convertir HEIC a JPG en Mac con Vista Previa</h2>
+
+<p>En Mac no necesitas instalar nada. Vista Previa (Preview) convierte entre formatos y te deja controlar la calidad del JPG:</p>
+
+<ol>
+<li>Abre el archivo HEIC en Vista Previa.</li>
+<li>Ve a <code>Archivo &gt; Exportar</code>.</li>
+<li>En el menú <strong>Formato</strong>, escoge <strong>JPEG</strong>. Las otras opciones que lista Apple son HEIC, JPEG-2000, OpenEXR, PDF, PNG y TIFF.</li>
+<li>Ajusta el regulador de <strong>Calidad</strong>, que aparece cuando escoges JPEG.</li>
+<li>Ponle nombre, escoge dónde guardarlo y dale a <code>Guardar</code>.</li>
+</ol>
+
+<p>Si buscas un formato que no aparece, aguanta la tecla <code>Opción</code> mientras haces clic en el menú Formato y verás formatos especializados o más viejos. Desde la app Fotos del Mac también se puede: <code>Archivo &gt; Exportar</code> y escoges JPEG o PNG. Los pasos oficiales están en la <a href="https://support.apple.com/guide/preview/convert-image-file-types-prvw1012/mac" rel="noopener" target="_blank">guía de Vista Previa de Apple</a>.</p>
+
+<p>Sobre la calidad: cada vez que guardas en JPG la imagen se vuelve a comprimir. Para impresión o para un cliente, yo no bajaría mucho el regulador. Para mandar por WhatsApp o subir a un formulario, un punto medio basta.</p>
+
+<h2>4. Convertir HEIC a JPG en Windows</h2>
+
+<p>Windows abre HEIC con dos extensiones que Microsoft distribuye en la Microsoft Store. Hacen falta las dos:</p>
+
+<ol>
+<li>Abre la Microsoft Store e instala <strong><a href="https://www.microsoft.com/en-us/p/heif-image-extensions/9pmmsr1cgpwg" rel="noopener" target="_blank">HEIF Image Extensions</a></strong> (publicada por Microsoft Corporation). Es gratis.</li>
+<li>Instala también <strong>HEVC Video Extensions</strong>, de Microsoft. La misma página de HEIF Image Extensions lo explica: los <code>.heic</code> se comprimen con HEVC, y sin ese paquete la extensión no los puede leer ni escribir.</li>
+<li>Abre el archivo HEIC con la app <strong>Fotos</strong>.</li>
+<li>En el menú de tres puntos (<code>…</code>), escoge <code>Guardar como</code> y selecciona JPG como tipo de archivo.</li>
+<li>Otra opción: abre la foto en <strong>Paint</strong> y usa <code>Archivo &gt; Guardar como</code> con JPEG.</li>
+</ol>
+
+<p>Un detalle antes de sacar la tarjeta: HEIF Image Extensions es gratis, pero HEVC Video Extensions sale en la Store por alrededor de US$0.99, y el precio cambia según el país. Si no quieres pagar nada, usa el paso 2 (que el iPhone convierta al transferir) o el paso 5 con GIMP.</p>
+
+<h2>5. Convertir con GIMP (Windows, Mac y Linux)</h2>
+
+<p>GIMP es gratis y de código abierto, y su documentación oficial lista HEIC con soporte para <strong>importar y exportar</strong> mediante la librería libheif. Desde la versión 2.10.22 también importa y exporta HEIF en alta profundidad de bits (10 y 12 bits por canal).</p>
+
+<ol>
+<li>Abre el HEIC con <code>Archivo &gt; Abrir</code>.</li>
+<li>Haz los ajustes que necesites (recorte, exposición, tamaño).</li>
+<li>Ve a <code>Archivo &gt; Exportar como</code>, cambia la extensión a <code>.jpg</code> y dale a Exportar.</li>
+<li>Escoge la calidad en la ventana de opciones de JPEG.</li>
+</ol>
+
+<p>Ventaja para quien edita: si la foto viene en 10 bits, la ajustas con más información y solo bajas a JPG (8 bits) al final. En Linux, si GIMP no abre el HEIC, puede que tu distribución no haya incluido ese soporte por el tema de patentes que menciona la <a href="https://developer.gimp.org/core/standards/images/" rel="noopener" target="_blank">página de formatos de GIMP</a>. En ese caso, busca un paquete de GIMP o de libheif que sí traiga soporte HEIC.</p>
+
+<h2>6. Bonus: videos HEVC a H.264 en Mac</h2>
+
+<p>El mismo problema pasa con los videos del iPhone grabados en HEVC: hay programas y equipos viejos que no los leen bien. Apple documenta dos formas de convertirlos en Mac sin instalar nada:</p>
+
+<ul>
+<li><strong>QuickTime Player:</strong> abre el video, ve a <code>Archivo &gt; Exportar como</code> y cambia de «menor tamaño de archivo (HEVC)» a «mayor compatibilidad (H.264)». Si en vez del menú ves una casilla de HEVC, desmárcala antes de guardar.</li>
+<li><strong>Finder:</strong> Control-clic sobre el video, <code>Servicios</code> y la opción para codificar los archivos de video seleccionados. En el menú de ajustes, escoge una opción H.264.</li>
+</ul>
+
+<p>Apple también advierte que en algunos equipos viejos la compatibilidad con HEVC depende de la resolución y los cuadros por segundo. Hasta 1080p y 60 fps es lo más compatible. Lo puedes cambiar en <code>Ajustes &gt; Cámara</code>, en las opciones de Grabar video y Grabar cámara lenta.</p>
+
+<h2>Comparación rápida</h2>
+
+<table>
+<thead>
+<tr><th>Método</th><th>Sistema</th><th>Instala algo</th><th>Mejor para</th></tr>
+</thead>
+<tbody>
+<tr><td>iPhone en «Más compatible»</td><td>iPhone/iPad</td><td>No</td><td>Que no vuelvan a salir HEIC</td></tr>
+<tr><td>Transferencia en «Automático»</td><td>iPhone + Mac/PC por USB</td><td>No</td><td>Pasar fotos ya convertidas por cable</td></tr>
+<tr><td>Vista Previa o Fotos</td><td>Mac</td><td>No</td><td>Convertir con control de calidad</td></tr>
+<tr><td>Fotos o Paint + extensiones</td><td>Windows</td><td>HEIF (gratis) + HEVC (alrededor de US$0.99) de la Microsoft Store</td><td>Abrir y convertir en Windows</td></tr>
+<tr><td>GIMP</td><td>Windows, Mac, Linux</td><td>Sí (gratis)</td><td>Editar antes de convertir, fotos de 10 bits</td></tr>
+<tr><td>QuickTime / Finder</td><td>Mac</td><td>No</td><td>Videos HEVC a H.264</td></tr>
+</tbody>
+</table>
+
+<h2>Errores comunes</h2>
+
+<ul>
+<li><strong>Cambiarle la extensión al archivo.</strong> Renombrar <code>foto.heic</code> a <code>foto.jpg</code> no lo convierte. El contenido sigue siendo HEIC y el programa que lo abra va a fallar o a dar error.</li>
+<li><strong>Pensar que «Más compatible» arregla las fotos viejas.</strong> Solo afecta lo que captures después. Lo que ya tienes hay que convertirlo.</li>
+<li><strong>Convertir varias veces.</strong> Cada pase a JPG recomprime la imagen. Guarda el HEIC original y exporta desde él cada vez que necesites una versión nueva.</li>
+<li><strong>Subir fotos de clientes a convertidores en línea sin pensarlo.</strong> Esos archivos salen de tu computadora. Con las opciones de arriba conviertes localmente, sin subir nada a ningún lado.</li>
+<li><strong>Tener «Conservar originales» activado sin saberlo.</strong> Si por cable te siguen llegando HEIC, revisa ese ajuste en <code>Ajustes &gt; Apps &gt; Fotos</code>.</li>
+</ul>
+
+<h2>Conclusión</h2>
+
+<p>Si trabajas con Windows o entregas a gente que no usa Apple, la solución más limpia está en el teléfono: «Más compatible» para las fotos nuevas y «Automático» al transferir. Para lo que ya tienes en HEIC, en Mac usa Vista Previa y en Windows o Linux usa GIMP. Así no dependes de extensiones de pago ni de subir fotos a sitios de terceros. Guarda esta página para la próxima vez que alguien te mande un <code>.heic</code>.</p>
